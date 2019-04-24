@@ -8,7 +8,7 @@ Team members: Hannah Chung
 When running the server use "npm run devstart" this will start the server using nodemon and sets the 
 debug path to see the output from debug() calls.
 
-The current setup is to potentially hold regular files such as the opening window and login screen
+The current setup is to hold regular files such as the opening window and login screen
 in the public/ folder and to use the game/public/ to holder the game files, this design may change
 in the future. If we use Phaser to handle menus (i.e. log in), we can remove the extra game folder
 and store everything in public/
