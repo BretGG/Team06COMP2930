@@ -5,7 +5,7 @@ const logger = require("morgan");
 const debug = require("debug")("comp2930-team2:server");
 const consolidate = require("consolidate");
 
-var indexRouter = require("./routes/index");
+var mainRouter = require("./routes/main");
 var gameRouter = require("./routes/game");
 var usersRouter = require("./routes/users");
 
@@ -33,14 +33,14 @@ app.use(cookieParser());
 // public will hold static basic files
 // game/public will hold static files for games
 
+// / - route basic windows such as logging in and stuff
+// /game - route to game files
+app.use("/", mainRouter);
+app.use("/game", gameRouter);
+app.use("/users", usersRouter);
+
 // Remove the public static folder if handling all UI with Phaser
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "game/public")));
-
-// / - route basic windows such as logging in and stuff
-// /game - route to game files
-app.use("/", indexRouter);
-app.use("/game", gameRouter);
-app.use("/users", usersRouter);
 
 module.exports = app;

@@ -15,6 +15,8 @@ router.post("/", (req, res) => {
 
   let user = new User(_.pick(req.body, ["username", "email", "password"]));
 
+  console.log(user);
+
   // TODO: insert user into the database, salt password using bcrypt
 
   res.send(_.pick(user, ["username", "email"]));

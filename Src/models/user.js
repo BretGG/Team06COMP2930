@@ -18,6 +18,10 @@ const schema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  password: {
+    type: String,
+    required: true
+  },
   points: {
     type: Number,
     default: 0
