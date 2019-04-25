@@ -41,5 +41,6 @@ app.use(express.static(path.join(__dirname, "game/public")));
 // /game - route to game files
 app.use("/", indexRouter);
 app.use("/game", gameRouter);
+app.use("/users", usersRouter);
 
 module.exports = app;
