@@ -6,7 +6,7 @@ const _ = require("lodash");
 
 /*
 
-This file is the router for handling user connections (creating, updating, removing, validating/login)
+This file is the router for handling user connections (creating, updating, removing)
 
 */
 
@@ -26,18 +26,16 @@ router.post("/", async (req, res) => {
   userName = await User.findOne({ username: user.username });
   if (userName) return res.status(400).send("Username Taken");
 
-  // TODO: salt password
-
+  // Create user and hash password
   user = new User(user);
-
-  // Encrpyt password
   const salt = await bcrypt.genSalt(10);
-  user.password = bcrypt.hash(user.password, salt);
+  user.password = await bcrypt.hash(user.password, salt);
 
+  // Saving the user to the database
   await user.save();
 
   debug("Creating user: " + JSON.stringify(user));
-  res.send(_.pick(user, ["username", "email"]));
+  res.send(_.pick(user, ["username", "email"]).x_auth_token);
 });
 
 // TODO: update user

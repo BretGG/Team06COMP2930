@@ -7,6 +7,14 @@ const { User } = require("../src/models/user");
 
 const router = express.Router();
 
+/*
+
+Login is seperated from users so that we can use router.post.
+
+'post' is more secure than 'get' dues to post storing less information
+
+*/
+
 // Authorizing a user, reurns status 400 if not a valid login.
 // A valid login will return a web token
 router.post("/", async (req, res) => {

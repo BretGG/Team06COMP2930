@@ -12,3 +12,5 @@ The current setup is to hold regular files such as the opening window and login 
 in the public/ folder and to use the game/public/ to holder the game files, this design may change
 in the future. If we use Phaser to handle menus (i.e. log in), we can remove the extra game folder
 and store everything in public/
+
+Before running the server, download and run mongodb.
