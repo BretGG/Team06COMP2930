@@ -18,26 +18,26 @@ Login is seperated from users so that we can use router.post.
 // Authorizing a user, reurns status 400 if not a valid login.
 // A valid login will return a web token
 router.post("/", async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  let user = _.pick(req.body, ["email", "password"]);
 
+  // Check if the information is in the correct format
+  const { error } = validate(user);
+  if (error) return res.status(400).send(error.details[0].message);
   debug(
-    `Login request from: ${req.connection.remoteAddress} user: ${
-      req.body.email
-    }`
+    `Login request from: ${req.connection.remoteAddress} user: ${user.email}`
   );
 
-  let user = await User.findOne({ email: req.body.email });
+  // Grabbing the user from the database, and check if it found one
+  user = await User.findOne({ email: user.email });
   if (!user) {
     // req.connection.remoteAddress will return ::1 if logging in from localhost
     debug(
-      `Invalid login from: ${req.connection.remoteAddress} user: ${
-        req.body.email
-      }`
+      `Invalid login from: ${req.connection.remoteAddress} user: ${user.email}`
     );
     return res.status(400).send("Invalid email or password.");
   }
 
+  // Using bcrypt to check the password
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) {
     console.log(
@@ -53,6 +53,7 @@ router.post("/", async (req, res) => {
     `Valid login from: ${req.connection.remoteAddress} user: ${req.body.email}`
   );
 
+  // Returning a json object containing success and the jwt token that needs to be stored
   const token = user.generateAuthToken();
   res.send({
     success: true,

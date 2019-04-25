@@ -13,6 +13,10 @@ const authRouter = require("./routes/login");
 
 var app = express();
 
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // Set the rendering engine to mustache
 app.engine("html", consolidate.mustache);
 app.set("view engine", "html");
@@ -30,10 +34,6 @@ require("console-stamp")(console, {
     stamp: "yellow"
   }
 });
-
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
 // Not sure if we are going to use cookies, maybe for game data
 app.use(cookieParser());

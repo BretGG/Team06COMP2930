@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
   await user.save();
 
   debug("Creating user: " + JSON.stringify(user));
-  res.send(_.pick(user, ["username", "email"]).x_auth_token);
+  res.send(_.pick(user, ["username", "email"]));
 });
 
 // TODO: update user
