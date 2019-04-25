@@ -18,7 +18,7 @@ app.set("view engine", "html");
 
 // Starting database connection
 mongoose
-  .connect("mongodb://localhost/anywear")
+  .connect("mongodb://localhost/ecoQuest")
   .then(() => console.log("Connected to mongo...\n"))
   .catch(err => console.log("Failed connection to mongo ", err));
 

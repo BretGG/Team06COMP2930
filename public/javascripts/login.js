@@ -14,7 +14,7 @@ $(document).ready(() => {
         password: $("#pass").val()
       },
       success: user => print(user),
-      error: err => print(err)
+      error: err => print(err.responseText)
     });
   });
 });
