@@ -62,6 +62,7 @@ router.post("/", async (req, res) => {
 });
 
 //  Validates if the input is correct before authorizing function
+// Using this validate over the User class one due to this one only checking email and password
 function validate(req) {
   const schema = {
     email: Joi.string()
