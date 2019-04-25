@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/server.js",
-    "devstart": "set DEBUG=comp2930-team2:server && nodemon ./bin/server.js"
+    "devstart": "set DEBUG=comp2930-team2:server && nodemon --no-deprecation ./bin/server.js"
   },
   "dependencies": {
     "console-stamp": "^0.2.7",
