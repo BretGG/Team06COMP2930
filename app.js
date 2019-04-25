@@ -6,9 +6,10 @@ const debug = require("debug")("comp2930-team2:server");
 const consolidate = require("consolidate");
 const mongoose = require("mongoose");
 
-var mainRouter = require("./routes/main");
-var gameRouter = require("./routes/game");
-var usersRouter = require("./routes/users");
+const mainRouter = require("./routes/main");
+const gameRouter = require("./routes/game");
+const usersRouter = require("./routes/users");
+const authRouter = require("./routes/login");
 
 var app = express();
 
@@ -45,6 +46,7 @@ app.use(cookieParser());
 app.use("/", mainRouter);
 app.use("/game", gameRouter);
 app.use("/users", usersRouter);
+app.use("/login", authRouter);
 
 // Remove the public static folder if handling all UI with Phaser
 app.use(express.static(path.join(__dirname, "public")));

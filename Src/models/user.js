@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
-const debug = require("debug")("comp2930-team2:server");
+const jwt = require("jsonwebtoken");
 
 /*
 
@@ -56,6 +56,10 @@ exports.validate = user => {
   });
 
   return joi.validate(user, schema);
+};
+
+schema.methods.generateAuthToken = () => {
+  return jwt.sign({ _id: this._id }, "FiveAlive");
 };
 
 exports.User = mongoose.model("User", schema);

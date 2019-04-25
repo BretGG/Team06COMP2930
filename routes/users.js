@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const debug = require("debug")("comp2930-team2:server");
+const bcrypt = require("bcrypt");
 const { User, validate } = require("../src/models/user");
 const _ = require("lodash");
 
@@ -28,6 +29,11 @@ router.post("/", async (req, res) => {
   // TODO: salt password
 
   user = new User(user);
+
+  // Encrpyt password
+  const salt = await bcrypt.genSalt(10);
+  user.password = bcrypt.hash(user.password, salt);
+
   await user.save();
 
   debug("Creating user: " + JSON.stringify(user));
