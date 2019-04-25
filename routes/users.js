@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { User } = require("../src/models/user");
+const debug = require("debug")("comp2930-team2:server");
+const { User, validate } = require("../src/models/user");
 const _ = require("lodash");
 
 /*
@@ -9,16 +10,20 @@ This file is the router for handling user connections (creating, updating, remov
 */
 
 // Creates a user off of the req body, this call will return the username and email of the new user.
-// If an error occurs due to invalid req body or requirements, this call will return code (fill in).
+// If an error occurs due to invalid req body or requirements, this call will return code 400.
 router.post("/", (req, res) => {
-  // TODO: validate user
+  var user = _.pick(req.body, ["username", "email", "password"]);
+  debug("Request to create user: " + JSON.stringify(user));
 
-  let user = new User(_.pick(req.body, ["username", "email", "password"]));
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-  console.log(user);
+  // TODO: check if user is in the database
 
+  user = new User(user);
   // TODO: insert user into the database, salt password using bcrypt
 
+  debug("Creating user: " + JSON.stringify(user));
   res.send(_.pick(user, ["username", "email"]));
 });
 
