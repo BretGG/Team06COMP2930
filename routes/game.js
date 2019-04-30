@@ -3,10 +3,17 @@ const router = express.Router();
 const path = require("path");
 
 /* GET game home page. */
-router.get("/", function(req, res, next) {
+// Probably  remove this because the game files will be served based on the post (create game)
+// and put (join game)
+router.get("/", (req, res) => {
   res.render(path.resolve(__dirname, "../game/public/index.html"), {
     title: "Express"
   });
+});
+
+/* POST to create new game session */
+router.post("/", (req, res) => {
+  debug("Creating game thing");
 });
 
 module.exports = router;

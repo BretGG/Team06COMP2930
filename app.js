@@ -38,16 +38,21 @@ require("console-stamp")(console, {
 // Not sure if we are going to use cookies, maybe for game data
 app.use(cookieParser());
 
-// public will hold static basic files
-// game/public will hold static files for games
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// TODO: Add in the authentication middleware
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-// / - route basic windows such as logging in and stuff
-// /game - route to game files
+// / - route to index type files...
+// /game - route to game files...
+// /users - creating account...
+// /login - logging in...
 app.use("/", mainRouter);
 app.use("/game", gameRouter);
 app.use("/users", usersRouter);
 app.use("/login", authRouter);
 
+// public will hold static basic files
+// game/public will hold static files for games
 // Remove the public static folder if handling all UI with Phaser
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "game/public")));
