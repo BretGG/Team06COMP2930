@@ -8,3 +8,25 @@ gameSession will also handle the connection of new user sorting them into the co
 events.
 
 */
+
+const gamePools = [];
+var runningSessions = 0;
+
+function endSession(sessionId) {
+  // TODO: remove session from correct pool
+}
+
+function addSession(sessionInfo) {
+  // TODO: add session
+}
+
+function getSessions() {
+  // TODO: return all running sessions
+}
+
+function mergePools() {
+  // TODO: merge pools to avoid extra overhead
+}
+
+module.exports.addSession = addSession(sessionInfo);
+module.exports.getSessions = getSessions();
