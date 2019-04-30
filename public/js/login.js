@@ -5,7 +5,7 @@ $(document).ready(() => {
 
   $("#submit").click(() => {
     console.log("hello");
-    if($("#pass").val().equals($("#cpass").val()));
+    if($("#pass").val().equals($("#cpass").val()))
     $.ajax({
       type: "post",
       url: "/users",
