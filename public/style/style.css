@@ -2,6 +2,7 @@
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
     body, html {
       min-width: 262px;
+      height: 100%;
       margin: 0 auto;
       font-family: 'Segoe UI Regular';
     }
