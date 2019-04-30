@@ -1,10 +1,11 @@
 $(document).ready(() => {
   let print = user => {
-    $("#userInfo").html("User Info: " + JSON.stringify(user));
+    console.log(JSON.stringify(user));
   };
 
   $("#submit").click(() => {
     console.log("hello");
+    if($("#pass").val().equals($("#cpass").val()));
     $.ajax({
       type: "post",
       url: "/users",
