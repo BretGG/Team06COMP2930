@@ -1,6 +1,7 @@
 @media screen and (max-width: 1920px){
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
     body, html {
+      min-width: 262px;
       height: 100%;
       margin: 0 auto;
       font-family: 'Segoe UI Regular';
@@ -40,14 +41,15 @@
         margin: 0 auto;
         background-color: rgba(255,255,255, 0.53);
         border: 4px solid #707070;
-        width: 80%;
-        padding-bottom: 8%;
+        width: 50%;
+        padding-bottom: 4%;
+        font-size: 1em;
       }
 
       #signcon{
         height: auto;
         padding-top: 2%;
-        padding-bottom: 6%;
+        padding-bottom: 4%;
         display: flex;
       }
 
@@ -68,7 +70,7 @@
         margin: 0 auto;
         text-align: left;
         width: 80%;
-        margin-bottom: 2%;
+        margin-bottom: 4%;
       }
 
       #inputcon label {
@@ -99,10 +101,18 @@
 
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 1024px){
+      #logincon{
+        width: 80%;
+        font-size: 1.7em;
+      }
+
 
 }
 
 @media screen and (max-width: 375px){
-
+      #logincon{
+        width: 80%;
+        font-size: 1em;
+      }
 }
