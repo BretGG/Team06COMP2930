@@ -2,54 +2,103 @@
 <html>
   <head>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+    <!--for the scale manager-->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.min.js"></script>
+
   </head>
   <body>
     <script>
+    var w = window.innerWidth;
+    var h = window.innerHeight;
       var config = {
-        type: Phaser.AUTO,
+        type: Phaser.CANVAS,
         width: 800,
         height: 600,
         physics: {
-          default: "arcade",
-          arcade: {
-            gravity: { y: 200 }
-          }
+            default: "arcade",
+            arcade: {
+              gravity: { y: 200 }
+            }
         },
+        <!--Phaser scale manager -->
+        scale: {
+          mode: Phaser.Scale.EXACT_FIT,
+          parent: 'phaser-example',
+          autoCenter: Phaser.Scale.CENTER_BOTH,
+          width: 800,
+          height: 600,
+        },
+
         scene: {
           preload: preload,
           create: create
-        }
+
+        },
+        PhaserGame
       };
+      var player1;
+      var player2;
+      var player3;
+      var platforms;
 
       var game = new Phaser.Game(config);
+      var PhaserGame = function () {
 
+        this.background = null;
+
+
+        this.player1 = null;
+        this.player2 = null;
+        this.player3 = null;
+
+
+        this.platforms = null;
+
+    };
       function preload() {
-        // this.load.setBaseURL("http://labs.phaser.io");
 
-        this.load.image("sky", "assets/backgrounds/wtf.png");
+        this.load.image("backGround", "assets/backgrounds/background4.jpg");
+        this.load.image("purpledude", "assets/purpleAvatar.png");
+        this.load.image("greydude", "assets/greyAvatar.png");
+        this.load.image("bluedude", "assets/blueAvatar.png");
+        this.load.image("platform", "assets/platform.png");
         // this.load.image("sky", "assets/skies/space3.png");
         // this.load.image("logo", "assets/sprites/phaser3-logo.png");
         // this.load.image("red", "assets/particles/red.png");
       }
 
       function create() {
-        this.add.image(400, 300, "sky");
+        // this.add.image(400, 300, "sky");
 
-        var particles = this.add.particles("red");
+        this.add.sprite(0, 0, 'backGround');
+        // this.background.fixedToCamera = true;
+        //  Platforms that move
+        platforms = this.add.group();
 
-        var emitter = particles.createEmitter({
-          speed: 100,
-          scale: { start: 1, end: 0 },
-          blendMode: "ADD"
-        });
+        // var platform1 = new Platform1(this.game, 300, 450, 'platform', this.platforms);
+        platforms.create(0,0,'platform');
+        // var purpledude = new
 
-        var logo = this.physics.add.image(400, 100, "logo");
 
-        logo.setVelocity(100, 200);
-        logo.setBounce(1, 1);
-        logo.setCollideWorldBounds(true);
 
-        emitter.startFollow(logo);
+
+
+
+        // var particles = this.add.particles("red");
+
+        // var emitter = particles.createEmitter({
+        //   speed: 100,
+        //   scale: { start: 1, end: 0 },
+        //   blendMode: "ADD"
+        // });
+
+        // var logo = this.physics.add.image(400, 100, "logo");
+
+        // logo.setVelocity(100, 200);
+        // logo.setBounce(1, 1);
+        // logo.setCollideWorldBounds(true);
+        //
+        // emitter.startFollow(logo);
       }
     </script>
   </body>
