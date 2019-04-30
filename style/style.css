@@ -1,0 +1,108 @@
+@media screen and (max-width: 1920px){
+  @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+    body, html {
+      height: 100%;
+      margin: 0 auto;
+      font-family: 'Segoe UI Regular';
+    }
+
+    @font-face {
+      font-family: 'Segoe UI Regular';
+      font-style: normal;
+      font-weight: normal;
+      src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
+    }
+    
+    a {
+      text-decoration: none;
+    }
+
+     #logo{
+        text-align: center;
+        padding-top: 2%;
+        font: #013F17;
+        text-shadow:
+        -1px -1px 0 #FFF,
+        1px -1px 0 #FFF,
+        -1px 1px 0 #FFF,
+        1px 1px 0 #FFF;  
+      }
+
+      #container{
+        height: 100%;
+        background-image: url('../images/BG.png');
+        background-position: bottom;
+        background-repeat: no-repeat;
+        overflow: hidden;
+      }
+
+      #logincon{
+        margin: 0 auto;
+        background-color: rgba(255,255,255, 0.53);
+        border: 4px solid #707070;
+        width: 80%;
+        padding-bottom: 4%;
+      }
+
+      #signcon{
+        height: auto;
+        padding-top: 2%;
+        padding-bottom: 4%;
+        display: flex;
+      }
+
+      #signcon div{
+        width: 50%;
+        margin: 0;
+        text-align: center;
+        color: #000000;
+        font-size: 1.2em;
+        margin-bottom: 2%;
+      }
+
+      #signup {
+        border-bottom: 2px solid #42A164;
+      }
+
+      #inputcon{
+        margin: 0 auto;
+        text-align: left;
+        width: 80%;
+        margin-bottom: 2%;
+      }
+
+      #inputcon label {
+        display: block;
+        clear:right;
+        font-size: 1em;
+      }
+
+      #inputcon input {
+        width: 100%;
+        margin-bottom: 2%;
+        border: 2px solid #FFFFF;
+        border-radius: 8px;
+        background-color: #D9F2ED;
+      }
+
+      #submit {
+        width: 60%;
+        clear:both;
+        display: block;
+        margin: 0 auto;
+        background-color: #7FC4B5;
+      }
+
+      #submit label {
+        margin: 0;
+      }
+
+}
+
+@media screen and (max-width: 768px){
+
+}
+
+@media screen and (max-width: 375px){
+
+}
