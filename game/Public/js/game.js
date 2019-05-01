@@ -4,6 +4,7 @@ var platform1, platform2, platform3;
 var cursors;
 //flashcard class that creates 
 
+
 function Flashcard(text, answer) {
     this.text = text,
     this.answer = answer,
@@ -20,9 +21,20 @@ function Flashcard(text, answer) {
     
 var config = {
     type: Phaser.AUTO,
-    width: 600,
-    height: 800,
-
+    scale: {
+        mode: Phaser.Scale,
+        parent: 'phaser-example',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 800,
+        height: 600
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
     scene: {
         preload: preload,
         create: create,
@@ -30,14 +42,10 @@ var config = {
     }
 };
 
-var game = new Phaser.Game(config);
-
 function preload() {
     // this.load.setBaseURL("http://labs.phaser.io");
-
-    this.load.image("sky", "assets/backgrounds/sky.png");
+        this.load.image("sky", "assets/backgrounds/sky.png");
     this.load.image("peach", "assets/static/peach.png");
-    this.load.image("vine", "assets/dynamic/vine.png");
     this.load.image("cake", "assets/static/cake.png");
     this.load.image("platform", "assets/dynamic/platform.png");
     this.load.image("scroll", "assets/dynamic/scroll.png");
@@ -48,7 +56,7 @@ function preload() {
 function create() {
     
     // setting the backgroubnd image
-    this.add.image(000, 00, "sky").setOrigin(0).setDisplaySize(600, 800);
+    this.add.image(000, 00, "sky").setOrigin(0).setDisplaySize(800, 600);
     //invisible platforms for players to stand on.
    cursors = this.input.keyboard.createCursorKeys();
     p1 = this.add.image(400, 300, 'cake').setScale(0.4);
@@ -79,3 +87,4 @@ function update(){
 }
 
 
+var game = new Phaser.Game(config);
