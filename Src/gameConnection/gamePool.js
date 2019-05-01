@@ -18,19 +18,34 @@ class gamePool {
     if (this.currentSessionsCount === this.poolLimit) return null;
     else {
       // TODO: add session to pool
-
       this.currentSessionsCount = this.currentSessions++;
     }
+
+    return sessionInfo;
     // returns session info for a success
     // returns null if not successful
   }
+
   getSession(sessionId) {
-    // TODO: find and return the given session
-    // if session is null on return, no session was found
+    for (var session of this.sessions) 
+      if (session.sessionId === sessionId) return session;
+
+    // If session is null on return, no session was found
+    return null;
   }
+
   removeSession(sessionId) {
-    // TODO: remove session
+    let removed = false;
+
+      for (var session of this.sessions)
+        if (session.sessionId === sessionId) {
+            removed = true;
+            delete session;
+        }
+
+    return removed;
   }
+
   mergePool() {
     // TODO: handle some stuff for merging pools
   }
