@@ -1,6 +1,6 @@
 /*
 
-gamePool holds all the running game instances including additional information on each pool.
+gamePool holds running game instances added to this pool, including additional information on each pool.
 
 Also handles finished games, errors, and disconnects.
 
@@ -15,15 +15,15 @@ class gamePool {
   }
 
   addSession(sessionInfo) {
-    if (this.currentSessionsCount === this.poolLimit) return null;
+    if (this.sessions.length === this.poolLimit) return null;
     else {
+
       // TODO: add session to pool
-      this.currentSessionsCount = this.currentSessions++;
     }
 
-    return sessionInfo;
     // returns session info for a success
     // returns null if not successful
+    return sessionInfo;
   }
 
   getSession(sessionId) {
@@ -46,7 +46,22 @@ class gamePool {
     return removed;
   }
 
-  mergePool() {
+  // pool paramater will be merge its sessions into this pool and be handled by the
+  // thread assigned to this pool
+  mergePool(pool) {
     // TODO: handle some stuff for merging pools
   }
+
+  isFull() {
+    return currentSessions
+  }
+
+  getPoolStrain(){
+    // TODO: return the strain on the current pool thread
+
+    // Maybe make this for fun
+
+    // Calculate how much strain this pool is under (i.e. how many requests are coming in)
+  }
+
 }

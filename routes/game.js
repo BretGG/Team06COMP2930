@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 
-/* Example game object:
+/* Example session/game object:
 
   {
     gameType: "ecoQuizlet",
-    players: ['playerId', 'playerId'],
-    game
+    owner: "[playerId]",
+    sessionId: "bobsGame", // Used for joining a running game
+    sessionPass: "password" // Can be stored in plane text
   }
 
 */
