@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
+const debug = require("debug")("comp2930-team2:server");
+const Session = require("../Src/models/session");
+const _ = require("lodash");
+const {
+  addSession,
+  getSession
+} = require("../Src/gameConnection/sessionsManager");
 
 /* Example session/game object:
 
@@ -24,9 +31,19 @@ router.get("/", (req, res) => {
 
 /* POST to create new game session */
 router.post("/", (req, res) => {
-  debug("Creating game thing");
+  debug("Request to make new game session");
 
   // TODO: Create game session
+  const gameSessionInfo = _.pick(req.body, [
+    "gameType",
+    "owner",
+    "sessionId",
+    "sessionPass"
+  ]);
+
+  const gameSession = new Session(gameSessionInfo);
+
+  addSession(gameSession);
 });
 
 module.exports = router;

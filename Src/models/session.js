@@ -41,3 +41,5 @@ class session {
     // TODO: handle some state changes in the game (finished, paused, error)
   }
 }
+
+module.exports = session;

@@ -1,3 +1,6 @@
+const debug = require("debug")("comp2930-team2:server");
+const _ = require("lodash");
+
 /*
 
 gameSessions will handle the creating of game pools, game pools holds the objects for running games, each pool
@@ -19,7 +22,16 @@ function endSession(sessionId) {
 }
 
 function addSession(sessionInfo) {
-  // TODO: add session
+  debug("Registering new game session: " + JSON.stringify(sessionInfo));
+
+  for (var pool in gamePools) {
+    // Adds to the first pool with space, should add some better load balancing
+    if (pool.is) {
+      return;
+    }
+
+    // No acceptable pool found, create a new one
+  }
 }
 
 function getSessions() {
@@ -30,5 +42,5 @@ function mergePools() {
   // TODO: merge pools to avoid extra overhead
 }
 
-module.exports.addSession = addSession(sessionInfo);
-module.exports.getSessions = getSessions();
+module.exports.addSession = addSession;
+module.exports.getSessions = getSessions;

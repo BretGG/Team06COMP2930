@@ -9,7 +9,7 @@ router.get("/", function(req, res) {
 
 /* GET login page. */
 router.get("/login", function(req, res) {
-  res.render(path.resolve(__dirname, "../public/views/login.html"));
+  res.render(path.resolve(__dirname, "../login/BretsTest.html"));
 });
 
 module.exports = router;

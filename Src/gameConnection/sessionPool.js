@@ -53,7 +53,7 @@ class gamePool {
   }
 
   isFull() {
-    return currentSessions
+    return this.currentSessionsCount >= this.poolLimit;
   }
 
   getPoolStrain(){
