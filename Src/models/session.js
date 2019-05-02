@@ -42,7 +42,7 @@ class Session {
     // TODO: Check session limit
     if (sessionPass === this.sessionPass) {
       players.push(playerId);
-      return { add: true, reason: null };
+      return { added: true, reason: null };
     } else {
       return { added: false, reason: "InvalidPass" };
     }
