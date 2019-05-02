@@ -45,10 +45,11 @@ var config = {
 function preload() {
     // this.load.setBaseURL("http://labs.phaser.io");
         this.load.image("sky", "assets/backgrounds/sky.png");
-    this.load.image("peach", "assets/static/peach.png");
-    this.load.image("cake", "assets/static/cake.png");
-    this.load.image("platform", "assets/dynamic/platform.png");
-    this.load.image("scroll", "assets/dynamic/scroll.png");
+        this.load.image("peach", "assets/character/peach.png");
+        this.load.image("ghost", "assets/character/ghost.png");
+    this.load.image("cake", "assets/character/cake.png");
+    this.load.image("platform", "assets/character/platform.png");
+    this.load.image("scroll", "assets/character/scroll.png");
 
 
 }
@@ -60,6 +61,8 @@ function create() {
     //invisible platforms for players to stand on.
    cursors = this.input.keyboard.createCursorKeys();
     p1 = this.add.image(400, 300, 'cake').setScale(0.4);
+    p2 = this.add.image(400, 300, 'peach').setScale(0.4);
+    p3 = this.add.image(400, 300, 'ghost').setScale(0.4);
   
 
 
