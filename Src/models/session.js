@@ -27,8 +27,6 @@ class Session {
     this.sessionPass = sessionInfo.sessionPass;
     this.players = [];
     this.players.push(sessionInfo.owner); // Adding the owner to the list of players
-
-    console.log(this instanceof Session);
   }
 
   killSession() {

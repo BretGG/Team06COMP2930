@@ -6,7 +6,7 @@ Also handles finished games, errors, and disconnects.
 
 */
 
-class gamePool {
+class GamePool {
   constructor(poolLimit, poolId) {
     this.poolId = poolId;
     this.poolLimit = poolLimit;
@@ -14,20 +14,21 @@ class gamePool {
     this.sessions = [];
   }
 
-  registerSession(sessionInfo) {
+  registerSession(session) {
     if (this.sessions.length === this.poolLimit) return null;
     else {
-
       // TODO: add session to pool
+      this.sessions.push(session);
+      this.currentSessionsCount++;
     }
 
     // returns session info for a success
     // returns null if not successful
-    return sessionInfo;
+    return session;
   }
 
   getSession(sessionId) {
-    for (var session of this.sessions) 
+    for (var session of this.sessions)
       if (session.sessionId === sessionId) return session;
 
     // If session is null on return, no session was found
@@ -37,11 +38,13 @@ class gamePool {
   removeSession(sessionId) {
     let removed = false;
 
-      for (var session of this.sessions)
-        if (session.sessionId === sessionId) {
-            removed = true;
-            delete session;
-        }
+    for (var session of this.sessions)
+      if (session.sessionId === sessionId) {
+        removed = true;
+
+        // This may not work, needs testing
+        session = null;
+      }
 
     return removed;
   }
@@ -56,14 +59,11 @@ class gamePool {
     return this.currentSessionsCount >= this.poolLimit;
   }
 
-  getPoolStrain(){
+  getPoolStrain() {
     // TODO: return the strain on the current pool thread
-
     // Maybe make this for fun
-
     // Calculate how much strain this pool is under (i.e. how many requests are coming in)
   }
-
 }
 
-// hello
+module.exports = GamePool;

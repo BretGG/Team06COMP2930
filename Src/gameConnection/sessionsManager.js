@@ -1,6 +1,7 @@
 const debug = require("debug")("comp2930-team2:server");
 const _ = require("lodash");
 const Session = require("../models/session");
+const SessionPool = require("./sessionPool");
 
 /*
 
@@ -16,7 +17,8 @@ A session is a running instance of a game
 */
 
 const gamePools = [];
-var runningSessions = 0;
+let runningSessions = 0;
+let runningPools = 0;
 
 function endSession(sessionId) {
   // TODO: remove session from correct pool
@@ -25,20 +27,36 @@ function endSession(sessionId) {
 function addSession(session) {
   debug("Registering new game session: " + JSON.stringify(session));
 
+  // Cancel if the object type is wrong
   if (!(session instanceof Session)) {
     debug("Invalid session object");
     return;
   }
 
-  for (var pool in gamePools) {
+  for (var pool of gamePools) {
     // Adds to the first pool with space, should add some better load balancing
-    if (pool.isFull()) {
-      pool.registerSession(sessionInfo);
-      return;
+    if (!pool.isFull()) {
+      debug(`Adding new session: ${session.sessionId} to pool: ${pool.poolId}`);
+      pool.registerSession(session);
+      runningSessions++;
+      return session;
     }
-
-    // No acceptable pool found, create a new one
   }
+
+  // No acceptable pool found, create a new one
+  // Setting pool limit to 5 for testing, setting id to the current number of running sessions
+  debug(
+    `Creating new session pool, id: ${runningSessions} session limit: ${5}`
+  );
+  const newPool = new SessionPool(5, runningPools);
+  gamePools.push(newPool);
+  runningPools++;
+
+  // Adding session to new pool;
+  debug(`Adding new session: ${session.sessionId} to pool: ${newPool.poolId}`);
+  newPool.registerSession(session);
+  runningSessions++;
+  return session;
 }
 
 function getSessions() {

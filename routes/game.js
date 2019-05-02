@@ -43,6 +43,7 @@ router.post("/", (req, res) => {
 
   const gameSession = new Session(gameSessionInfo);
 
+  // Passing off the game session object to the sessions manager
   addSession(gameSession);
 });
 
