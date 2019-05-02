@@ -24,16 +24,11 @@ $(document).ready(() => {
     console.log("sign-in");
     $("#signup").css("border-bottom", "none");
     $("#signin").css("border-bottom", "2px solid #42A164");
-    $("#signin").css("height", "#signupcon.height");
-    $("#signupcon").css("display", "none");
-    $("#signincon").css("display", "block");
   });
 
   $("#signup").click(() => {
     console.log("sign-up");
     $("#signin").css("border-bottom", "none");
     $("#signup").css("border-bottom", "2px solid #42A164");
-    $("#signincon").css("display", "none");
-    $("#signupcon").css("display", "block");
   });
 });
