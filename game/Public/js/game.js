@@ -4,7 +4,6 @@ var platform1, platform2, platform3;
 var cursors;
 //flashcard class that creates 
 
-
 function Flashcard(text, answer) {
     this.text = text,
     this.answer = answer,
@@ -25,8 +24,8 @@ var config = {
         mode: Phaser.Scale,
         parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 800,
-        height: 600
+        width: 1600,
+        height: 1200
     },
     physics: {
         default: 'arcade',
@@ -45,28 +44,59 @@ var config = {
 function preload() {
     // this.load.setBaseURL("http://labs.phaser.io");
         this.load.image("sky", "assets/backgrounds/sky.png");
-        this.load.image("peach", "assets/character/peach.png");
-        this.load.image("ghost", "assets/character/ghost.png");
+    this.load.image("peach", "assets/character/peach.png");
     this.load.image("cake", "assets/character/cake.png");
     this.load.image("platform", "assets/character/platform.png");
     this.load.image("scroll", "assets/character/scroll.png");
+    this.load.image("card", "assets/character/empty_card.png");
 
 
 }
 
 function create() {
-    
     // setting the backgroubnd image
-    this.add.image(000, 00, "sky").setOrigin(0).setDisplaySize(800, 600);
+    this.add.image(000, 00, "sky").setOrigin(0).setDisplaySize(1600, 1200);
     //invisible platforms for players to stand on.
-   cursors = this.input.keyboard.createCursorKeys();
-    p1 = this.add.image(400, 300, 'cake').setScale(0.4);
-    p2 = this.add.image(400, 300, 'peach').setScale(0.4);
-    p3 = this.add.image(400, 300, 'ghost').setScale(0.4);
+    this.add.image(800, 200, 'scroll').setScale(.3);
+
+    cursors = this.input.keyboard.createCursorKeys();
+    p1 = this.add.image(200, 350, 'cake').setScale(0.5);
+
+    var card1 = this.add.image(330, 1100, 'card').setScale(.9);
+    card1.setInteractive();
+    card1.on('clicked', clickHandler, this);
+
+    var card2 = this.add.image(830, 1100, 'card').setScale(.9);
+    card2.setInteractive();
+    card2.on('clicked', clickHandler, this);
+
+    var card3 = this.add.image(1330, 1100, 'card').setScale(.9);
+    card3.setInteractive();
+    card3.on('clicked', clickHandler, this);
+
+
+    //  If a Game Object is clicked on, this event is fired.
+    //  We can use it to emit the 'clicked' event on the game object itself.
+    this.input.on('gameobjectup', function (pointer, gameObject)
+    {
+        gameObject.emit('clicked', gameObject);
+    }, this);
+
+    //  Display the game stats
   
 
 
+
 }
+
+////////////////////////click handler////////////////////
+function clickHandler (box)
+{ 
+    p1.y += 32;
+}
+////////////////////////////////////////////////////////
+
+
 
 function update(){
  if (this.input.keyboard.checkDown(cursors.left, 250))
