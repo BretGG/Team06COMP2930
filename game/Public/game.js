@@ -1,8 +1,39 @@
+var question,  numOfPlayers;
+var smallPlatform, bigPlatform, p1, p2, p3, p1cursor, p2cursor, p3cursor;
+var platform1, platform2, platform3;
+var cursors;
+//flashcard class that creates 
+
+function Flashcard(text, answer) {
+    this.text = text,
+    this.answer = answer,
+
+    function getText(){
+        return this.text;
+    }
+
+   function getAnswer() {
+        return this.answer;
+    }
+}    
+    
+    
 var config = {
     type: Phaser.AUTO,
-    parent: 'phaser-example',
-    width: 800,
-    height: 600,
+    scale: {
+        mode: Phaser.Scale,
+        parent: 'phaser-example',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 1600,
+        height: 1200
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
     scene: {
         preload: preload,
         create: create,
@@ -10,39 +41,39 @@ var config = {
     }
 };
 
-var info;
-var timer;
-var alive = 0;
+function preload() {
+    // this.load.setBaseURL("http://labs.phaser.io");
+        this.load.image("sky", "assets/backgrounds/sky.png");
+    this.load.image("peach", "assets/static/peach.png");
+    this.load.image("cake", "assets/static/cake.png");
+    this.load.image("platform", "assets/dynamic/platform.png");
+    this.load.image("scroll", "assets/dynamic/scroll.png");
+    this.load.image("card", "assets/dynamic/empty_card.png");
 
-var game = new Phaser.Game(config);
 
-function preload ()
-{
-    this.load.image('bg', 'assets/skies/sky.png');
-    this.load.image('crate', 'assets/character/peach.png');
 }
 
-function create ()
-{
-    //  How many crates can you click on in 10 seconds?
-    this.add.image(400, 300, 'bg');
+function create() {
+    // setting the backgroubnd image
+    this.add.image(000, 00, "sky").setOrigin(0).setDisplaySize(1600, 1200);
+    //invisible platforms for players to stand on.
+    this.add.image(800, 200, 'scroll').setScale(.3);
 
-    //  Create a bunch of images
-    for (var i = 0; i < 4; i++)
-    {
-        var x = Phaser.Math.Between(0, 800);
-        var y = Phaser.Math.Between(0, 600);
+    cursors = this.input.keyboard.createCursorKeys();
+    p1 = this.add.image(200, 350, 'cake').setScale(0.5);
 
-        var box = this.add.image(x, y, 'crate');
+    var card1 = this.add.image(330, 1100, 'card').setScale(.9);
+    card1.setInteractive();
+    card1.on('clicked', clickHandler, this);
 
-        //  Make them all input enabled
-        box.setInteractive();
+    var card2 = this.add.image(830, 1100, 'card').setScale(.9);
+    card2.setInteractive();
+    card2.on('clicked', clickHandler, this);
 
-        //  The images will dispatch a 'clicked' event when they are clicked on
-        box.on('clicked', clickHandler, this);
+    var card3 = this.add.image(1330, 1100, 'card').setScale(.9);
+    card3.setInteractive();
+    card3.on('clicked', clickHandler, this);
 
-        alive++;
-    }
 
     //  If a Game Object is clicked on, this event is fired.
     //  We can use it to emit the 'clicked' event on the game object itself.
@@ -52,26 +83,41 @@ function create ()
     }, this);
 
     //  Display the game stats
-    info = this.add.text(10, 10, '', { font: '48px Arial', fill: '#000000' });
+  
 
-    timer = this.time.addEvent({ delay: 10000, callback: gameOver, callbackScope: this });
+
+
 }
 
-function update ()
-{
-    info.setText('Alive: ' + alive + '\nTime: ' + Math.floor(10000 - timer.getElapsed()));
-}
-
+////////////////////////click handler////////////////////
 function clickHandler (box)
-{
-    alive--;
+{ 
+    p1.y += 32;
+}
+////////////////////////////////////////////////////////
 
-    box.off('clicked', clickHandler);
-    box.input.enabled = false;
-    box.setVisible(false);
+
+
+function update(){
+ if (this.input.keyboard.checkDown(cursors.left, 250))
+    {
+        p1.x -= 32;
+    }
+    else if (this.input.keyboard.checkDown(cursors.right, 250))
+    {
+        p1.x += 32;
+    }
+
+    //  Vertical movement every 150ms
+    if (this.input.keyboard.checkDown(cursors.up, 150))
+    {
+        p1.y -= 32;
+    }
+    else if (this.input.keyboard.checkDown(cursors.down, 150))
+    {
+        p1.y += 32;
+    }
 }
 
-function gameOver ()
-{
-    this.input.off('gameobjectup');
-}
+
+var game = new Phaser.Game(config);
