@@ -4,6 +4,8 @@ gamePool holds running game instances added to this pool, including additional i
 
 Also handles finished games, errors, and disconnects.
 
+Each GamePool will work on its own worker thread
+
 */
 
 class GamePool {

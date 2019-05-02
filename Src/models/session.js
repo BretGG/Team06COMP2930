@@ -21,6 +21,8 @@ Example session/game info object:
 
 class Session {
   constructor(sessionInfo) {
+    // TODO: add session limits
+
     this.sessionId = sessionInfo.sessionId;
     this.gameType = sessionInfo.gameType;
     this.owner = sessionInfo.owner;
@@ -33,13 +35,23 @@ class Session {
     // TODO: kill the session... nicely
   }
 
-  connectPlayer(playerInfo) {
-    // TODO: add player to the game and subscribe them to envents
+  // Returns an object { added: true, reason: null }
+  // failed to connect player { added: false, reason: InvalidPass }
+  connectPlayer(playerId, sessionPass) {
+    // TODO: Check session limit
+    if (sessionPass === this.sessionPass) {
+      players.push(playerId);
+      return { add: true, reason: null };
+    } else {
+      return { added: false, reason: "InvalidPass" };
+    }
   }
 
   updateSession() {
     // TODO: handle some state changes in the game (finished, paused, error)
   }
+
+  // A bunch of soket stuff to handle all the fun game stuff
 }
 
 module.exports = Session;
