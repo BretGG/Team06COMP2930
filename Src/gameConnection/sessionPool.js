@@ -29,6 +29,14 @@ class GamePool {
     return session;
   }
 
+  // Returns object explained @Session.registerPlayer()
+  registerPlayer(sessionId, sessionPass, PlayerId) {
+    for (var session of this.sessions) {
+      if (sessionId === session.sessionId)
+        return session.registerPlayer(PlayerId, sessionPass);
+    }
+  }
+
   getSession(sessionId) {
     for (var session of this.sessions)
       if (session.sessionId === sessionId) return session;

@@ -45,6 +45,8 @@ class Session {
     } else {
       return { added: false, reason: "InvalidPass" };
     }
+
+    // TODO: subscribe user to all the connectors in the world
   }
 
   updateSession() {

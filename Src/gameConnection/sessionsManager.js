@@ -16,7 +16,7 @@ A session is a running instance of a game
 
 */
 
-const gamePools = [];
+const gamePools = new Map();
 let runningSessions = 0;
 let runningPools = 0;
 
