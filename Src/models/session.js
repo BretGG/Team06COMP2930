@@ -19,7 +19,7 @@ Example session/game info object:
 
 */
 
-class session {
+class Session {
   constructor(sessionInfo) {
     this.sessionId = sessionInfo.sessionId;
     this.gameType = sessionInfo.gameType;
@@ -27,6 +27,8 @@ class session {
     this.sessionPass = sessionInfo.sessionPass;
     this.players = [];
     this.players.push(sessionInfo.owner); // Adding the owner to the list of players
+
+    console.log(this instanceof Session);
   }
 
   killSession() {
@@ -42,4 +44,4 @@ class session {
   }
 }
 
-module.exports = session;
+module.exports = Session;

@@ -1,5 +1,6 @@
 const debug = require("debug")("comp2930-team2:server");
 const _ = require("lodash");
+const Session = require("../models/session");
 
 /*
 
@@ -21,12 +22,18 @@ function endSession(sessionId) {
   // TODO: remove session from correct pool
 }
 
-function addSession(sessionInfo) {
-  debug("Registering new game session: " + JSON.stringify(sessionInfo));
+function addSession(session) {
+  debug("Registering new game session: " + JSON.stringify(session));
+
+  if (!(session instanceof Session)) {
+    debug("Invalid session object");
+    return;
+  }
 
   for (var pool in gamePools) {
     // Adds to the first pool with space, should add some better load balancing
-    if (pool.is) {
+    if (pool.isFull()) {
+      pool.registerSession(sessionInfo);
       return;
     }
 

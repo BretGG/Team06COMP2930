@@ -14,7 +14,7 @@ class gamePool {
     this.sessions = [];
   }
 
-  addSession(sessionInfo) {
+  registerSession(sessionInfo) {
     if (this.sessions.length === this.poolLimit) return null;
     else {
 
