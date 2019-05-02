@@ -26,10 +26,18 @@ class session {
     this.owner = sessionInfo.owner;
     this.sessionPass = sessionInfo.sessionPass;
     this.players = [];
-    this.players.push(sessionInfo.owner);
+    this.players.push(sessionInfo.owner); // Adding the owner to the list of players
   }
 
   killSession() {
     // TODO: kill the session... nicely
+  }
+
+  connectPlayer(playerInfo) {
+    // TODO: add player to the game and subscribe them to envents
+  }
+
+  updateSession() {
+    // TODO: handle some state changes in the game (finished, paused, error)
   }
 }
