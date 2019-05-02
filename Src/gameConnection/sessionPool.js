@@ -35,6 +35,8 @@ class GamePool {
       if (sessionId === session.sessionId)
         return session.registerPlayer(PlayerId, sessionPass);
     }
+
+    return { added: false, reason: "NoSessionId" };
   }
 
   getSession(sessionId) {

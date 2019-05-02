@@ -33,6 +33,7 @@ class Session {
 
   killSession() {
     // TODO: kill the session... nicely
+    // i.e send all connected people a game state change to terminated
   }
 
   // Returns an object { added: true, reason: null }
