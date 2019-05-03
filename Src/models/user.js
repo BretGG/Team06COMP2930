@@ -59,7 +59,7 @@ exports.validate = user => {
 };
 
 schema.methods.generateAuthToken = () => {
-  return jwt.sign({ _id: this._id }, "FiveAlive");
+  return jwt.sign({ _id: this._id, username: this.username }, "FiveAlive");
 };
 
 exports.User = mongoose.model("User", schema);

@@ -6,18 +6,22 @@ $(document).ready(() => {
 
   $("#submit").click(() => {
     console.log("hello");
-    if($("#pass").val().equals($("#cpass").val()))
-    $.ajax({
-      type: "post",
-      url: "/users",
-      data: {
-        username: $("#uname").val(),
-        email: $("#email").val(),
-        password: $("#pass").val()
-      },
-      success: user => print(user),
-      error: err => print(err.responseText)
-    });
+    if (
+      $("#pass")
+        .val()
+        .equals($("#cpass").val())
+    )
+      $.ajax({
+        type: "post",
+        url: "/users",
+        data: {
+          username: $("#uname").val(),
+          email: $("#email").val(),
+          password: $("#pass").val()
+        },
+        success: user => print(user),
+        error: err => print(err.responseText)
+      });
   });
 
   $("#signin").click(() => {
@@ -28,7 +32,6 @@ $(document).ready(() => {
     $("#cpass1").css("display", "none");
     $("#email0").css("display", "none");
     $("#email1").css("display", "none");
-
   });
 
   $("#signup").click(() => {
@@ -39,6 +42,5 @@ $(document).ready(() => {
     $("#cpass1").css("display", "inline");
     $("#email0").css("display", "inline");
     $("#email1").css("display", "inline");
-
   });
 });
