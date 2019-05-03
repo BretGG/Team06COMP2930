@@ -11,6 +11,8 @@ const gameRouter = require("./routes/game");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/login");
 
+const io = require("socket.io");
+
 var app = express();
 
 app.use(logger("dev"));

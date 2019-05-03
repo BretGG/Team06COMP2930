@@ -8,6 +8,7 @@ var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 
+
 /**
  * Get port from environment and store in Express.
  */
@@ -20,6 +21,8 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -28,6 +31,7 @@ var server = http.createServer(app);
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
+server.lastPlayderID = 0;
 
 /**
  * Normalize a port into a number, string, or false.
@@ -84,3 +88,34 @@ function onListening() {
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }
+
+//added
+io.on('connection',function(socket){
+  console.log("hello");
+    socket.on('newplayer',function(){
+        socket.player = {
+            id: server.lastPlayderID++,
+            x: randomInt(100,400),
+            y: randomInt(100,400)
+        };
+        // socket.emit('allplayers',getAllPlayers());
+        socket.broadcast.emit('newplayer',socket.player);
+
+        socket.on('click',function(data){
+          console.log(JSON.stringify(data));
+
+            console.log('click to '+data.x+', '+data.y);
+            socket.player.x = data.x;
+            socket.player.y = data.y;
+
+            io.emit('move',socket.player);
+        });
+
+        socket.on('disconnect',function(){
+            io.emit('remove',socket.player.id);
+        });
+    });
+    socket.on('test',function(){
+      console.log('test received');
+  });
+});
