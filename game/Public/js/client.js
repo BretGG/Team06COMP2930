@@ -15,7 +15,7 @@ Client.askNewPlayer = function(){
 };
 
 Client.sendClick = function(x,y){
-  Client.socket.emit('click',{x:x,y:y, message: "hello"});
+  Client.socket.emit('click',{x:x,y:y, message: "hello ad"});
 };
 
 Client.socket.on('newplayer',function(data){
@@ -28,7 +28,7 @@ Client.socket.on('allplayers',function(data){
     }
 
     Client.socket.on('move',function(data){
-        Game.movePlayer(data.id,data.x,data.y);
+        Game.clickHandler(data.id,data.x,data.y);
     });
 
     Client.socket.on('remove',function(id){

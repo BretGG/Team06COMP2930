@@ -2,6 +2,7 @@ var question,  numOfPlayers;
 var smallPlatform, bigPlatform, playercursor, p2cursor, p3cursor;
 var platform1, platform2, platform3;
 var cursors;
+var p1;
 //flashcard class that creates
 var Game = {};
 function Flashcard(text, answer) {
@@ -46,14 +47,15 @@ Game.preload = function() {
     this.load.image("card", "../assets/character/empty_card.png");
 
 
-}
+};
 
 Game.create = function() {
+    Game.playerMap={};
     // setting the backgroubnd image
     this.add.image(000, 00, "sky").setOrigin(0).setDisplaySize(800, 600);
     //invisible platforms for players to stand on.
     this.add.image(400, 100, 'scroll').setScale(.15);
-
+    p1 = this.add.image (300,300,'cake').setScale(0.25);
     cursors = this.input.keyboard.createCursorKeys();
     // player = this.add.image(200, 350, 'cake').setScale(0.5);
 
@@ -76,47 +78,55 @@ Game.create = function() {
     {
         gameObject.emit('clicked', gameObject);
     }, this);
-
+    Client.askNewPlayer();
     //  Display the game stats
 
 
 
 
-}
+};
 
 Game.addNewPlayer = function(id,x,y){
-  game.add.image(x, y, 'cake').setScale(0.25);
-}
+  Game.playerMap[id] = this.add.image(x, y, 'cake').setScale(0.25);
+
+};
 ////////////////////////click handler////////////////////
-Game.clickHandler = function(box)
+Game.clickHandler = function(id,x,y)
 {
-    player.y += 32;
-}
+  var player = Game.playerMap[id];
+    // player.y += 32;
+    console.log(Game.playerMap[0]);
+};
 ////////////////////////////////////////////////////////
 
 
 
-Game.update = function(){
- if (this.input.keyboard.checkDown(cursors.left, 250))
-    {
-        player.x -= 16;
-    }
-    else if (this.input.keyboard.checkDown(cursors.right, 250))
-    {
-        player.x += 16;
-    }
+// Game.update = function(id,x,y){
+//   var player = Game.playerMap[id];
+//  if (this.input.keyboard.checkDown(cursors.left, 250))
+//     {
+//         player.x -= 16;
+//     }
+//     else if (this.input.keyboard.checkDown(cursors.right, 250))
+//     {
+//         player.x += 16;
+//     }
+//
+//     //  Vertical movement every 150ms
+//     if (this.input.keyboard.checkDown(cursors.up, 150))
+//     {
+//         player.y -= 16;
+//     }
+//     else if (this.input.keyboard.checkDown(cursors.down, 150))
+//     {
+//         player.y += 16;
+//     }
+// };
 
-    //  Vertical movement every 150ms
-    if (this.input.keyboard.checkDown(cursors.up, 150))
-    {
-        player.y -= 16;
-    }
-    else if (this.input.keyboard.checkDown(cursors.down, 150))
-    {
-        player.y += 16;
-    }
-}
-
+Game.removePlayer = function(id){
+    Game.playerMap[id].destroy();
+    delete Game.playerMap[id];
+};
 
 var game = new Phaser.Game(config);
 game.scene.add('Game',Game);

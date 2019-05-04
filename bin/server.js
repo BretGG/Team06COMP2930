@@ -3,8 +3,10 @@
 /**
  * Module dependencies.
  */
+var application = require("../app");
 
-var app = require("../app");
+
+// var express = express();
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 
@@ -14,13 +16,13 @@ var http = require("http");
  */
 
 var port = normalizePort(process.env.PORT || "3000");
-app.set("port", port);
+application.set("port", port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.Server(application);
 var io = require('socket.io').listen(server);
 
 
@@ -91,14 +93,14 @@ function onListening() {
 
 //added
 io.on('connection',function(socket){
-  console.log("hello");
+  console.log("hello inside connection");
     socket.on('newplayer',function(){
         socket.player = {
             id: server.lastPlayderID++,
-            x: randomInt(100,400),
-            y: randomInt(100,400)
+            x: getRandomInt(100,400),
+            y: getRandomInt(100,400)
         };
-        // socket.emit('allplayers',getAllPlayers());
+        socket.emit('allplayers',getAllPlayers());
         socket.broadcast.emit('newplayer',socket.player);
 
         socket.on('click',function(data){
@@ -119,3 +121,14 @@ io.on('connection',function(socket){
       console.log('test received');
   });
 });
+function getAllPlayers(){
+    var players = [];
+    Object.keys(io.sockets.connected).forEach(function(socketID){
+        var player = io.sockets.connected[socketID].player;
+        if(player) players.push(player);
+    });
+    return players;
+}
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
