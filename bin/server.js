@@ -4,12 +4,10 @@
 * Module dependencies.
 */
 var app = require("../app");
-
-
-// var express = express();
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 
+var players = {};
 
 /**
 * Get port from environment and store in Express.
@@ -25,7 +23,6 @@ app.set("port", port);
 var server = http.Server(app);
 var io = require('socket.io').listen(server);
 
-var players = {};
 
 /**
 * Listen on provided port, on all network interfaces.
@@ -92,10 +89,11 @@ function onListening() {
 }
 
 
-//added
+//on the new user connection do the following
 io.on('connection',function(socket){
   console.log("hello inside connection");
   console.log('a user connected: ', socket.id);
+  //Make new player by new connection on random x,y coordinates. 
   players[socket.id] = {
     playerId: socket.id,
     x: getRandomInt(100,400),
@@ -104,7 +102,7 @@ io.on('connection',function(socket){
   // send the players object to the new player
   socket.emit('currentPlayers', players);
   // update all other players of the new player
-  socket.broadcast.emit('newplayer', players[socket.id]);
+  socket.broadcast.emit('newPlayer', players[socket.id]);
 
 
   //user disconnect

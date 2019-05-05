@@ -73,12 +73,14 @@ function create() {
       if (players[id].playerId === self.socket.id) {
         addPlayer(self, players[id]);
       } else {
+        console.log("inside currentPlayers");
         addOtherPlayers(self, players[id]);
       }
     });
   });
 
   this.socket.on('newPlayer', function (playerInfo) {
+    console.log("inside newplayer");//never ran
     addOtherPlayers(self, playerInfo);
   });
 
@@ -99,16 +101,20 @@ function create() {
   });
 
   var card1 = this.add.image(165, 550, 'card').setScale(.45);
-  card1.setInteractive();
-  card1.on('clicked', clickHandler, this);
+  card1.setInteractive().on('clicked', clickHandler, this);
 
   var card2 = this.add.image(415, 550, 'card').setScale(.45);
-  card2.setInteractive();
-  card2.on('clicked', clickHandler, this);
+  card2.setInteractive().on('clicked', clickHandler, this);
 
   var card3 = this.add.image(670, 550, 'card').setScale(.45);
-  card3.setInteractive();
-  card3.on('clicked', clickHandler, this);
+  card3.setInteractive().on('clicked', clickHandler, this);
+
+  //  If a Game Object is clicked on, this event is fired.
+   //  We can use it to emit the 'clicked' event on the game object itself.
+   this.input.on('gameobjectup', function (pointer, gameObject)
+   {
+       gameObject.emit('clicked', gameObject);
+   }, this);
 
 }
 
@@ -117,6 +123,7 @@ function addPlayer(self, playerInfo) {
 }
 
 function addOtherPlayers(self, playerInfo) {
+  console.log("addOtherPlayers called");
   const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'otherPlayer').setScale(0.25);
   // if (playerInfo.team === 'blue') {
   //   otherPlayer.setTint(0x0000ff);
@@ -132,6 +139,7 @@ function addOtherPlayers(self, playerInfo) {
 ////////////////////////click handler////////////////////
 function clickHandler(box)
 {
+  console.log("card clicked");
   // player.y += 32;
   if(this.cake){
   this.cake.y += 32;
