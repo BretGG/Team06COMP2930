@@ -94,16 +94,12 @@
         background-color: #D9F2ED;
       }
 
-      #submit {
+      #inputcon button {
         width: 60%;
         clear:both;
         display: block;
         margin: 0 auto;
         background-color: #7FC4B5;
-      }
-
-      #submit label {
-        margin: 0;
       }
 
 /*
