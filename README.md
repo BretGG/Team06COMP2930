@@ -1,4 +1,7 @@
 # Team 06 FiveAlive
+
+<img src="https://github.com/BretGG/Team06COMP2930/blob/master/superSize.jpg" alt="Team Logo" width="450"/>
+
 Comp 2930 project. 
 ### Team members: 
 - Hannah Chung
