@@ -3,6 +3,10 @@
         min-width: 500px;
      
     }
+
+    #signincon{
+      display: none;
+    }
     
     body {
          margin: 0 auto;
@@ -39,8 +43,8 @@
         
       }
 
-      #signincon{
-       display: none;
+      #container{
+       
       
       }
 
@@ -54,23 +58,12 @@
         height:500px;
       }
 
-      #signcon{
-        padding-top: 2%;
-        padding-bottom: 4%;
-        display: flex;
-      }
-
-      #signcon div{
-        width: 50%;
-        margin: 0;
+      #session{
+        padding: 2%;
         text-align: center;
-        color: #000000;
-        font-size: 1.4em;
+        font-size: 1.6em;
         margin-bottom: 2%;
-      }
-
-      #signup {
-        border-bottom: 4px solid #42A164;
+        border-bottom: 2px solid #42A164;
       }
 
       #inputcon{
@@ -94,7 +87,7 @@
         background-color: #D9F2ED;
       }
 
-      #submit {
+      #start {
         width: 60%;
         clear:both;
         display: block;
@@ -105,7 +98,6 @@
       #submit label {
         margin: 0;
       }
-
 
 @media screen and (min-width: 1501px){
       #logincon{
