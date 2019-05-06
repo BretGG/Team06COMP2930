@@ -22,7 +22,38 @@ Team members: Hannah Chung
 ## Project Architecture
 ![Project Architecure](https://github.com/BretGG/Team06COMP2930/blob/master/ProjectArchitecture.png)
 
-The current setup is to hold regular files such as the opening window and login screen
-in the public/ folder and to use the game/public/ to holder the game files, this design may change
-in the future. If we use Phaser to handle menus (i.e. log in), we can remove the extra game folder
-and store everything in public/
+## Guidelines
+The following section shows the styles that will be used on the project for both coding and organizing git
+
+#### JavaScript: https://google.github.io/styleguide/jsguide.html#formatting
+This a semi-long document and probably a good idea to read the entire thing but for this project please
+follow these sections:
+- 4
+- 5.1
+- 5.6.2
+- 5.8.1
+- 5.8.3.1
+- 6.1
+- 6.2.3
+- 6.2.5
+- 6.2.7
+
+#### Git Commits: https://chris.beams.io/posts/git-commit/
+We should aim for the guidelines shown in the section **The seven rules of a great Git commit message**.
+This section shows both a header line and body for each commit. If your commit changes something that
+requires more explanation or you are merging a branch please write a body, otherwise, just a concise 
+header is fine.
+
+#### Git Flow: https://nvie.com/posts/a-successful-git-branching-model/ 
+We are using a stripped down version of this git flow. Our git will use both a protected master and
+develop branch with new development taking place on branches off of the develop branch.
+
+![git flow](https://nvie.com/img/git-model@2x.png)
+
+#### Git Branch
+- For naming the branches apply the prefix **[firstname]_**
+- If using the branch for learning or testing apply the prefix **[firstname]_test_**
+- Be concise with name i.e. bob_user_authentication
+- Keep branches scoped to a single fix or feature so we can merge them in faster keeping everyones code up to date
+
+
