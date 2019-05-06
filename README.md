@@ -1,10 +1,11 @@
-Team 06 FiveAlive
+# Team 06 FiveAlive
 Comp 2930 project. 
-Team members: Hannah Chung
-              Bret Getz
-              Jessica Kim
-              Stella Tran
-              Rose Song
+### Team members: 
+- Hannah Chung
+- Bret Getz
+- Jessica Kim
+- Stella Tran
+- Rose Song
               
 ## Setting up EcoQuest
 - Clone/download the repo
@@ -39,10 +40,10 @@ follow these sections:
 - 6.2.7
 
 #### Git Commits: https://chris.beams.io/posts/git-commit/
-We should aim for the guidelines shown in the section **The seven rules of a great Git commit message**.
-This section shows both a header line and body for each commit. If your commit changes something that
-requires more explanation or you are merging a branch please write a body, otherwise, just a concise 
-header is fine.
+We should aim for the guidelines shown in the section **The seven rules of a great Git commit message**
+in the document above. This section shows both a header line and body for each commit. If your commit 
+changes something that requires more explanation or you are merging a branch please write a body, 
+otherwise, just a concise header is fine.
 
 #### Git Flow: https://nvie.com/posts/a-successful-git-branching-model/ 
 We are using a stripped down version of this git flow. Our git will use both a protected master and
