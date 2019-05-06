@@ -28,19 +28,15 @@ $(document).ready(() => {
     console.log("sign-in");
     $("#signup").css("border-bottom", "none");
     $("#signin").css("border-bottom", "2px solid #42A164");
-    $("#cpass0").css("display", "none");
-    $("#cpass1").css("display", "none");
-    $("#email0").css("display", "none");
-    $("#email1").css("display", "none");
+    $("#signupcon").css("display", "none");
+    $("#signincon").css("display", "inline");
   });
 
   $("#signup").click(() => {
     console.log("sign-up");
     $("#signin").css("border-bottom", "none");
     $("#signup").css("border-bottom", "2px solid #42A164");
-    $("#cpass0").css("display", "inline");
-    $("#cpass1").css("display", "inline");
-    $("#email0").css("display", "inline");
-    $("#email1").css("display", "inline");
+    $("#signincon").css("display", "none");
+    $("#signupcon").css("display", "inline");
   });
 });

@@ -3,6 +3,10 @@
         min-width: 500px;
      
     }
+
+    #signincon{
+      display: none;
+    }
     
     body {
          margin: 0 auto;
