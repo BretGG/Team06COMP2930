@@ -1,8 +1,17 @@
-var question,  numOfPlayers;
-var smallPlatform, bigPlatform, playercursor, p2cursor, p3cursor;
+var question;
+var smallPlatform, bigPlatform;
 var platform1, platform2, platform3;
 var cursors;
-var p1;
+var numberOfPlayers=3;
+//limiting number of players to 3
+var player1, player2, player3;
+//To be changed to true if they are connected to server.
+player1=false;
+player2=false;
+player3=false;
+
+
+
 //flashcard class that creates
 
 function Flashcard(text, answer) {
@@ -57,6 +66,7 @@ function preload() {
 };
 
 function create() {
+
   this.socket = io();
   this.otherPlayers = this.physics.add.group();
   cursors = this.input.keyboard.createCursorKeys();
@@ -110,11 +120,11 @@ function create() {
   card3.setInteractive().on('clicked', clickHandler, this);
 
   //  If a Game Object is clicked on, this event is fired.
-   //  We can use it to emit the 'clicked' event on the game object itself.
-   this.input.on('gameobjectup', function (pointer, gameObject)
-   {
-       gameObject.emit('clicked', gameObject);
-   }, this);
+  //  We can use it to emit the 'clicked' event on the game object itself.
+  this.input.on('gameobjectup', function (pointer, gameObject)
+  {
+    gameObject.emit('clicked', gameObject);
+  }, this);
 
 }
 
@@ -142,7 +152,7 @@ function clickHandler(box)
   console.log("card clicked");
   // player.y += 32;
   if(this.cake){
-  this.cake.y += 32;
+    this.cake.y += 32;
   }
 }
 ////////////////////////////////////////////////////////

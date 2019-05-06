@@ -8,6 +8,18 @@ var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 
 var players = {};
+var count = 1;
+var increaseX = 250;
+var times = 0;
+
+//TODO:
+//1. Implement limited number of max players ..
+//How to get the variable e.g. numberOfPlayers from game.js?
+//emit from game.js doesn't work...
+//2. Give the players different colors..
+//3. Is there way to get the initial spawn location coordinates from game.js?
+
+
 
 /**
 * Get port from environment and store in Express.
@@ -91,14 +103,24 @@ function onListening() {
 
 //on the new user connection do the following
 io.on('connection',function(socket){
-  console.log("hello inside connection");
-  console.log('a user connected: ', socket.id);
-  //Make new player by new connection on random x,y coordinates. 
-  players[socket.id] = {
-    playerId: socket.id,
-    x: getRandomInt(100,400),
-    y: getRandomInt(100,400)
-  };
+
+
+  console.log('a user connected: '+ socket.id );
+
+  //Make new player by new connection on random x,y coordinates.
+
+  // if(count <= numberOfPlayers){
+    players[socket.id] = {
+      playerNo: count++,
+      playerId: socket.id,
+      //initial player spawn location x,y
+      x: 165 + (increaseX * (times++)),
+      y: 225,
+    };
+  // }else{
+  //   console.log("The room is full");
+  // }
+
   // send the players object to the new player
   socket.emit('currentPlayers', players);
   // update all other players of the new player
