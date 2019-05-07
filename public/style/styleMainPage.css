@@ -33,7 +33,7 @@
       }
 
       #avatar{
-        padding-bottom: 8%;
+        padding-bottom: 6%;
       }
 
       #welcomecon {
@@ -51,14 +51,14 @@
 
       #mainpagecon button{
         width: 50%;
-        margin-bottom: 4%;
+        margin-bottom: 2%;
         background-color: rgba(255,255,255, 0.75);
         border: 4px solid #707070;
         border-radius: 5px;
       }
 
       #mainpagecon label{
-        font-size: 1.5em;
+        font-size: 1.2em;
       }
 
 
