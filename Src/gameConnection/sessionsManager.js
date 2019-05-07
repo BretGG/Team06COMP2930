@@ -20,8 +20,10 @@ const sessionPools = new Map();
 let runningSessions = 0;
 let runningPools = 0;
 
+// Remove a session from the correct pool based on the pool ID
 function endSession(sessionId) {
   for (let pool of sessionPools) {
+    debug(`Attempting to remove session: ${sessionId}`);
     let session = pool.removeSession(sessionId);
     if (session) {
       debug(`Removed session: ${session} from pool: ${pool.poolId}`);
@@ -29,6 +31,7 @@ function endSession(sessionId) {
   }
 }
 
+// Adds a session to the first free spot in a pool
 function addSession(session) {
   debug("Registering new game session: " + JSON.stringify(session));
 
@@ -64,10 +67,12 @@ function addSession(session) {
   return session;
 }
 
+// Returns object with data on current sessions
 function getSessions() {
   // TODO: return all running sessions
 }
 
+// Merge pools is a manual call to compress pools
 function mergePools() {
   // TODO: merge pools to avoid extra overhead
 }
