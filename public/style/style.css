@@ -1,31 +1,27 @@
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+     html {
+        min-width: 500px;
 
-  html {
-      min-width: 500px;
-  }
+    }
 
-  .hoverPointer :hover {
-      cursor: pointer;
-  }
+    body {
+         margin: 0 auto;
+         background: url('../images/BG.png') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        font-family: 'Segoe UI Regular';
+    }
 
-  body {
-      margin: 0 auto;
-      background: url('../images/BG.png') no-repeat center center fixed;
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
-      font-family: 'Segoe UI Regular';
-  }
-
-  @font-face {
+    @font-face {
       font-family: 'Segoe UI Regular';
       font-style: normal;
       font-weight: normal;
       src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
-  }
+    }
 
-  a {
+    a {
       text-decoration: none;
     }
 
@@ -76,7 +72,6 @@
         border-bottom: 2px solid #42A164;
       }
 
-<<<<<<< HEAD
       #inputcon{
         margin: 0 auto;
         text-align: left;
@@ -133,111 +128,7 @@
         font-size: 1.2em;
         height:500px;
       }
-
-  #logo {
-      text-align: center;
-      padding-top: 2%;
-      font: #013F17;
-      text-shadow:
-      -1px -1px 0 #FFF,
-      1px -1px 0 #FFF,
-      -1px 1px 0 #FFF,
-      1px 1px 0 #FFF;
-  }
-
-  #signincon {
-      display: none;
-  }
-
-  #logincon {
-      margin: 0 auto;
-      background-color: rgba(255, 255, 255, 0.53);
-      border: 4px solid #707070;
-      width: 450px;
-      padding-bottom: 4%;
-      font-size: 1em;
-      height: 450px;
-  }
-
-  #signcon {
-      padding-top: 2%;
-      padding-bottom: 4%;
-      display: flex;
-  }
-
-  #signcon div {
-      width: 50%;
-      margin: 0;
-      text-align: center;
-      color: #000000;
-      font-size: 1.4em;
-      margin-bottom: 2%;
-  }
-
-  #signup {
-      border-bottom: 2px solid #42A164;
-  }
-
-  #inputcon {
-      margin: 0 auto;
-      text-align: left;
-      width: 80%;
-      margin-bottom: 4%;
-  }
-
-  #inputcon label {
-      display: block;
-      clear: right;
-      font-size: 1em;
-  }
-
-  #inputcon input {
-      width: 100%;
-      margin-bottom: 3%;
-      border-radius: 8px;
-      background-color: #D9F2ED;
-  }
-
-  #inputcon button {
-      width: 60%;
-      clear: both;
-      display: block;
-      margin: 0 auto;
-      background-color: #7FC4B5;
-  }
-
-  @media screen and (min-width: 1501px) {
-      #logincon {
-          font-size: 1em;
-          width: 500px;
-          height: 450px;
+       #logo{
+          font-size:2.5em;
       }
-
-      #logo {
-          font-size: 3em;
-      }
-  }
-
-  @media screen and (min-width: 1080px) and (max-width: 1500px) {
-      #logincon {
-          width: 400px;
-          height: 450px;
-          font-size: 1em;
-      }
-
-      #logo {
-          font-size: 2em;
-      }
-  }
-
-  @media screen and (min-width: 800px) and (max-width: 1079px) {
-      #logincon {
-          width: 600px;
-          font-size: 1.2em;
-          height: 500px;
-      }
-
-      #logo {
-          font-size: 2.5em;
-      }
-  }
+}
