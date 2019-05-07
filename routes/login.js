@@ -18,21 +18,21 @@ Login is seperated from users so that we can use router.post.
 // Authorizing a user, reurns status 400 if not a valid login.
 // A valid login will return a web token
 router.post("/", async (req, res) => {
-  let user = _.pick(req.body, ["email", "password"]);
+  let user = _.pick(req.body, ["username", "password"]);
 
   // Check if the information is in the correct format
   const { error } = validate(user);
   if (error) return res.status(400).send(error.details[0].message);
   debug(
-    `Login request from: ${req.connection.remoteAddress} user: ${user.email}`
+    `Login request from: ${req.connection.remoteAddress} user: ${user.username}`
   );
 
   // Grabbing the user from the database, and check if it found one
-  user = await User.findOne({ email: user.email });
+  user = await User.findOne({ username: user.username });
   if (!user) {
     // req.connection.remoteAddress will return ::1 if logging in from localhost
     debug(
-      `Invalid login from: ${req.connection.remoteAddress} user: ${user.email}`
+      `Invalid login from: ${req.connection.remoteAddress} user: ${user.username}`
     );
     return res.status(400).send("Invalid email or password.");
   }
@@ -42,15 +42,15 @@ router.post("/", async (req, res) => {
   if (!validPassword) {
     console.log(
       `Invalid login from: ${req.connection.remoteAddress} user: ${
-        req.body.email
+        req.body.username
       }`
     );
-    return res.status(400).send("Invalid email or password.");
+    return res.status(400).send("Invalid username or password.");
   }
 
   // req.connection.remoteAddress will return ::1 if logging in from localhost
   console.log(
-    `Valid login from: ${req.connection.remoteAddress} user: ${req.body.email}`
+    `Valid login from: ${req.connection.remoteAddress} user: ${req.body.username}`
   );
 
   // Returning a json object containing success and the jwt token that needs to be stored
@@ -65,10 +65,9 @@ router.post("/", async (req, res) => {
 // Using this validate over the User class one due to this one only checking email and password
 function validate(req) {
   const schema = {
-    email: Joi.string()
+    username: Joi.string()
       .max(50)
-      .required()
-      .email(),
+      .required(),
     password: Joi.string()
       .min(8)
       .max(20)
