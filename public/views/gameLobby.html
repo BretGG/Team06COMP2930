@@ -4,13 +4,11 @@
     <meta charset="utf-8">
     <link rel="icon" href="../images/icon.png" type="../images/icon.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" href="../style/styleCreateRoom.css" >
+    <link rel="stylesheet" href="../style/styleGameLobby.css" >
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>EcoQuest</title>
     <style>
-      #back {
 
-      }
     </style>
     </head>
 
@@ -18,29 +16,24 @@
     <div id='container'>
       <h1 id='logo'> EcoQuest </h1>
       <div id='logincon'>
-      <div id='create'><b>Create Room</b> </div>
+      <div id='create'><b>Game Lobby</b> </div>
 
         <div id='roomcon'>
           <label for="roomNo0"><b>Room#</b></label>
           <input
-           id="roomNo0"
+           id="roomNo1"
             type="text"
-            name="roomNumber"
+            name="uname"
             required
           />
+          <label for="memberpool"><b>Members</b></label>
+          <div id='memberpool'>
 
-          <label for="roomPass1"><b>Room Password</b></label>
-          <input
-            id="roomPass1"
-            type="text"
-            name="roomPass"
-            required
-          />  
 
           </div>
-          <button id="createRoom"><label>Create</label></button> 
-        <button id='back'>Back </button>
-        </div>
+          <button id="start"><label>Start Game</label></button> 
+
+          </div>
              
     </div>
     </div>
