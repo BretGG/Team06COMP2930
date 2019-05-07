@@ -1,9 +1,10 @@
 var question;
+
 var smallPlatform, bigPlatform;
 var platform1, platform2, platform3;
 var cursors;
-var numberOfPlayers=3;
-//limiting number of players to 3
+
+
 var player1, player2, player3;
 //To be changed to true if they are connected to server.
 player1=false;
