@@ -19,8 +19,8 @@ $(document).ready(() => {
   });
 
 
-  $("#submit").click(() => {
-    console.log("hello");
+  $("#submitUP").click(() => {
+    console.log("Sign up");
     if ( $("#pass1").val() == $("#cpass1").val() )
       $.ajax({
         type: "post",
@@ -30,6 +30,22 @@ $(document).ready(() => {
           username: $("#uname1").val(),
           email: $("#email1").val(),
           password: $("#pass1").val()
+        },
+        success: user => print(user),
+        error: err => print(err.responseText)
+    });
+  });
+
+  $("#submitIN").click(() => {
+    console.log("Sign in");
+    if ( $("#pass1").val() == $("#cpass1").val() )
+      $.ajax({
+        type: "post",
+        url: "/users",
+        dataType: 'json',
+        data: {
+          username: $("#unameIN0").val(),
+          password: $("#passIN1").val()
         },
         success: user => print(user),
         error: err => print(err.responseText)

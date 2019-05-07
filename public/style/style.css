@@ -1,26 +1,26 @@
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
      html {
         min-width: 500px;
-     
+
     }
-    
+
     body {
          margin: 0 auto;
-         background: url('../images/BG.png') no-repeat center center fixed; 
+         background: url('../images/BG.png') no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
         font-family: 'Segoe UI Regular';
     }
-    
+
     @font-face {
       font-family: 'Segoe UI Regular';
       font-style: normal;
       font-weight: normal;
       src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
     }
-    
+
     a {
       text-decoration: none;
     }
@@ -29,19 +29,19 @@
         text-align: center;
         padding-top: 2%;
         font: #013F17;
-        text-shadow:   
+        text-shadow:
             font-size:2.5em;
-        
+
         -1px -1px 0 #FFF,
         1px -1px 0 #FFF,
         -1px 1px 0 #FFF,
-        1px 1px 0 #FFF;  
-        
+        1px 1px 0 #FFF;
+
       }
 
       #signincon{
         display: none;
-      
+
       }
 
       #logincon{
@@ -76,14 +76,14 @@
       #inputcon{
         margin: 0 auto;
         text-align: left;
-        width: 80%; 
+        width: 80%;
         margin-bottom: 4%;
       }
 
       #inputcon label {
         display: block;
         clear:right;
-        font-size: 1.6em;
+        font-size: 1.2em;
       }
 
       #inputcon input {
@@ -115,7 +115,7 @@
 @media screen and (min-width: 1501px){
       #logincon{
         font-size: 1em;
-        width:500px; 
+        width:500px;
         height:600px;
       }
       #logo{
@@ -134,7 +134,7 @@
       }
 }
 
-@media screen and (min-width: 800px) and (max-width: 1079px) {  
+@media screen and (min-width: 800px) and (max-width: 1079px) {
       #logincon{
         width: 600px;
         font-size: 1.2em;
