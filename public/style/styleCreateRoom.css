@@ -1,7 +1,6 @@
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
      html {
         min-width: 500px;
-     
     }
     
     body {
@@ -30,13 +29,7 @@
         padding-top: 2%;
         font: #013F17;
         text-shadow:   
-        font-size:2.5em;
-        
-        -1px -1px 0 #FFF,
-        1px -1px 0 #FFF,
-        -1px 1px 0 #FFF,
-        1px 1px 0 #FFF;  
-        
+        font-size:2.5em;   
       }
 
       #create{
@@ -54,7 +47,7 @@
         width: 450px;
         padding-bottom: 4%;
         font-size: 1em;
-        height:450px;
+        height:350px;
       }
 
       #roomcon{
@@ -85,36 +78,75 @@
         background-color: #7FC4B5;
       }
 
+      #back {
+        border-color: rgb(127,196,181, 0.99);
+        background-color: rgb(127,196,181, 0.3);
+      }
+
+      #back{
+        margin-left: 2%;
+        margin-top: 8%;
+      }
+
+      #roomNo{
+        width: 100%;
+        margin-bottom: 3%;
+        border-radius: 8px;
+        border-width: 2px;
+        border-color: rgb(238, 238, 238);
+        background-color: #D9F2ED;
+        border-style: inset;
+        box-sizing: border-box;
+        display: inline-block;  
+        height: 34px;
+        padding-left: 4px;
+        padding-top: 2px;
+      }
+
 @media screen and (min-width: 1501px){
       #logincon{
         font-size: 1em;
         width:500px; 
-        height:550px;
+        height:380px;
       }
       #logo{
           font-size:3em;
       }
+
+      #back{
+        margin-left: 2%;
+        margin-top: 10%;
+      }
+
 }
 
 @media screen and (min-width: 1080px) and (max-width: 1500px){
       #logincon{
         width: 400px;
-        height:650px;
+        height:330px;
         font-size: 1em;
       }
       #logo{
           font-size:2em;
       }
+      #back{
+        margin-left: 2%;
+        margin-top: 4%;
+      }
 }
 
 @media screen and (min-width: 800px) and (max-width: 1079px) {  
       #logincon{
-        width: 600px;
-        font-size: 1.2em;
-        height:750px;
-
+        width: 400px;
+        font-size: 1em;
+        height:330px;
       }
        #logo{
           font-size:2.5em;
       }
+      #back{
+        margin-left: 2%;
+        margin-top: 4%;
+      }
+
 }
