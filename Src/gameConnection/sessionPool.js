@@ -48,17 +48,14 @@ class GamePool {
   }
 
   removeSession(sessionId) {
-    let removed = false;
-
     for (var session of this.sessions)
       if (session.sessionId === sessionId) {
-        removed = true;
-
         // This may not work, needs testing
-        session = null;
+        return this.sessions.splice(this.sessions.indexOf(session), 1);
       }
 
-    return removed;
+    // Failed to remove if it reaches this point
+    return;
   }
 
   // pool paramater will be merge its sessions into this pool and be handled by the

@@ -28,6 +28,7 @@ class Session {
     this.owner = sessionInfo.owner;
     this.sessionPass = sessionInfo.sessionPass;
     this.players = [];
+    this.state = "NotRunning";
     this.players.push(sessionInfo.owner); // Adding the owner to the list of players
   }
 

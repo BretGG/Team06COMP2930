@@ -16,12 +16,17 @@ A session is a running instance of a game
 
 */
 
-const gamePools = new Map();
+const sessionPools = new Map();
 let runningSessions = 0;
 let runningPools = 0;
 
 function endSession(sessionId) {
-  // TODO: remove session from correct pool
+  for (let pool of sessionPools) {
+    let session = pool.removeSession(sessionId);
+    if (session) {
+      debug(`Removed session: ${session} from pool: ${pool.poolId}`);
+    }
+  }
 }
 
 function addSession(session) {
@@ -33,7 +38,7 @@ function addSession(session) {
     return;
   }
 
-  for (var pool of gamePools) {
+  for (var pool of sessionPools) {
     // Adds to the first pool with space, should add some better load balancing
     if (!pool.isFull()) {
       debug(`Adding new session: ${session.sessionId} to pool: ${pool.poolId}`);
@@ -49,7 +54,7 @@ function addSession(session) {
     `Creating new session pool, id: ${runningSessions} session limit: ${5}`
   );
   const newPool = new SessionPool(5, runningPools);
-  gamePools.push(newPool);
+  sessionPools.push(newPool);
   runningPools++;
 
   // Adding session to new pool;
