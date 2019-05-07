@@ -7,6 +7,11 @@ router.get("/", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/index.html"));
 });
 
+/* GET main page. */
+router.get("/main", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/mainPage.html"));
+});
+
 /* GET login page. */
 router.get("/login", function(req, res) {
   res.render(path.resolve(__dirname, "../login/BretsTest.html"));
