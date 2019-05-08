@@ -1,38 +1,3 @@
-  @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-     html {
-        min-width: 500px;
-
-    }
-
-    body {
-         margin: 0 auto;
-         background: url('../images/BG.png') no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        font-family: 'Segoe UI Regular';
-    }
-
-    @font-face {
-      font-family: 'Segoe UI Regular';
-      font-style: normal;
-      font-weight: normal;
-      src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-     #logo{
-        text-align: center;
-        padding-top: 2%;
-        font: #013F17;
-        text-shadow:
-            font-size:2.5em;
-      }
-
       #signupcon{
         display: none;
 
@@ -106,9 +71,6 @@
         width:500px; 
         height:450px;
       }
-      #logo{
-          font-size:3em;
-      }
 }
 
 @media screen and (min-width: 1080px) and (max-width: 1500px){
@@ -117,18 +79,12 @@
         height:450px;
         font-size: 1em;
       }
-      #logo{
-          font-size:2em;
-      }
 }
 
 @media screen and (min-width: 800px) and (max-width: 1079px) {
       #logincon{
         width: 600px;
-        font-size: 1.2em;
+        font-size: 1em;
         height:500px;
-      }
-       #logo{
-          font-size:2.5em;
       }
 }
