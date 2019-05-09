@@ -6,18 +6,22 @@
     html {
         min-width: 500px;
     }
-    
+
     /* Centers elements, sets and stretches default background, and sets font. */
     body {
          margin: 0 auto;
-         background: url('../images/BG.png') no-repeat center center fixed; 
+         background: url('../images/BG.png') no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
         font-family: 'Segoe UI Regular';
     }
-    
+
+    .hoverPointer :hover{
+        cursor: pointer;
+    }
+
     /* Setting font properties */
     @font-face {
       font-family: 'Segoe UI Regular';
@@ -25,13 +29,13 @@
       font-weight: normal;
       src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
     }
-    
+
     /* Removes all text decorations for links */
     a {
       text-decoration: none;
     }
 
-    /* Header to indicate Page */ 
+    /* Header to indicate Page */
     #header{
       padding: 2%;
       text-align: center;
@@ -43,7 +47,7 @@
     #logo{
       text-align: center;
       font: #013F17;
-      text-shadow:   
+      text-shadow:
       font-size:2.5em;
     }
 

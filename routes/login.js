@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const debug = require("debug")("comp2930-team2:server");
 const { User } = require("../src/models/user");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -69,6 +70,8 @@ router.get('/me', async (req, res) => {
     console.log(`Request for me from user ${token._id} at ${req.connection.remoteAddress}`)
 
     const user = await User.findById(token._id).select('-password');
+    console.log(JSON.stringify(user));
+
     if (!user) return res.status(400).send("Uh Oh! You dont exist!");
     console.log(`Returning user ${user._id} to ${req.connection.remoteAddress}`)
     res.send({user});

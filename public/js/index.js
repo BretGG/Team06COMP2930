@@ -30,7 +30,10 @@ $(document).ready(() => {
                     email: $("#email1").val(),
                     password: $("#pass1").val()
                 },
-                success: user => print(user),
+                success: user => {
+                    print(user)
+                    window.location.href="/";
+                },
                 error: err => print(err.responseText)
             });
     });
@@ -52,7 +55,7 @@ $(document).ready(() => {
                 password: $("#passIN1").val()
             },
             success: user => {
-                print(user);
+                print(user.token);
                 localStorage.setItem('auth-token', user.token);
                 window.location.href="main";
             },
