@@ -24,8 +24,8 @@ var config = {
         mode: Phaser.Scale,
         parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 1600,
-        height: 1200
+        width: 400,
+        height: 400
     },
     physics: {
         default: 'arcade',
@@ -55,22 +55,22 @@ function preload() {
 
 function create() {
     // setting the backgroubnd image
-    this.add.image(000, 00, "sky").setOrigin(0).setDisplaySize(1600, 1200);
+    this.add.image(000, 00, "sky").setOrigin(0).setDisplaySize(400, 400);
     //invisible platforms for players to stand on.
-    this.add.image(800, 200, 'scroll').setScale(.3);
+    this.add.image(200, 200, 'scroll').setScale(.3);
 
     cursors = this.input.keyboard.createCursorKeys();
     p1 = this.add.image(200, 350, 'cake').setScale(0.5);
 
-    var card1 = this.add.image(330, 1100, 'card').setScale(.9);
+    var card1 = this.add.image(330, 400, 'card').setScale(.9);
     card1.setInteractive();
     card1.on('clicked', clickHandler, this);
 
-    var card2 = this.add.image(830, 1100, 'card').setScale(.9);
+    var card2 = this.add.image(230, 300, 'card').setScale(.9);
     card2.setInteractive();
     card2.on('clicked', clickHandler, this);
 
-    var card3 = this.add.image(1330, 1100, 'card').setScale(.9);
+    var card3 = this.add.image(330, 100, 'card').setScale(.9);
     card3.setInteractive();
     card3.on('clicked', clickHandler, this);
 
