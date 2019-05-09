@@ -58,7 +58,7 @@ function preload() {
   // this.load.setBaseURL("http://labs.phaser.io");
   this.load.image("sky", "../assets/backgrounds/sky.png");
   this.load.image("cake", "../assets/character/cake.png");
-  this.load.image('otherPlayer', 'assets/character/cake.png');
+  this.load.image('opponentPlayer', 'assets/character/cake.png');
   this.load.image("platform", "../assets/character/platform.png");
   this.load.image("scroll", "../assets/character/scroll.png");
   this.load.image("card", "../assets/character/empty_card.png");
@@ -69,7 +69,7 @@ function preload() {
 function create() {
 
   this.socket = io();
-  this.otherPlayers = this.physics.add.group();
+  this.opponentPlayers = this.physics.add.group();
   cursors = this.input.keyboard.createCursorKeys();
   var self = this;
   // setting the backgroubnd image
@@ -85,28 +85,28 @@ function create() {
         addPlayer(self, players[id]);
       } else {
         console.log("inside currentPlayers");
-        addOtherPlayers(self, players[id]);
+        addopponentPlayers(self, players[id]);
       }
     });
   });
 
   this.socket.on('newPlayer', function (playerInfo) {
     console.log("inside newplayer");//never ran
-    addOtherPlayers(self, playerInfo);
+    addopponentPlayers(self, playerInfo);
   });
 
   this.socket.on('disconnect', function (playerId) {
-    self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-      if (playerId === otherPlayer.playerId) {
-        otherPlayer.destroy();
+    self.opponentPlayers.getChildren().forEach(function (opponentPlayer) {
+      if (playerId === opponentPlayer.playerId) {
+        opponentPlayer.destroy();
       }
     });
   });
   this.socket.on('playerMoved', function (playerInfo) {
-    self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-      if (playerInfo.playerId === otherPlayer.playerId) {
-        // otherPlayer.setRotation(playerInfo.rotation);
-        otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+    self.opponentPlayers.getChildren().forEach(function (opponentPlayer) {
+      if (playerInfo.playerId === opponentPlayer.playerId) {
+        // opponentPlayer.setRotation(playerInfo.rotation);
+        opponentPlayer.setPosition(playerInfo.x, playerInfo.y);
       }
     });
   });
@@ -133,16 +133,16 @@ function addPlayer(self, playerInfo) {
   self.cake = self.physics.add.image(playerInfo.x, playerInfo.y, 'cake').setScale(0.25);
 }
 
-function addOtherPlayers(self, playerInfo) {
-  console.log("addOtherPlayers called");
-  const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'otherPlayer').setScale(0.25);
+function addopponentPlayers(self, playerInfo) {
+  console.log("addopponentPlayers called");
+  const opponentPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'opponentPlayer').setScale(0.25);
   // if (playerInfo.team === 'blue') {
-  //   otherPlayer.setTint(0x0000ff);
+  //   opponentPlayer.setTint(0x0000ff);
   // } else {
-  //   otherPlayer.setTint(0xff0000);
+  //   opponentPlayer.setTint(0xff0000);
   // }
-  otherPlayer.playerId = playerInfo.playerId;
-  self.otherPlayers.add(otherPlayer);
+  opponentPlayer.playerId = playerInfo.playerId;
+  self.opponentPlayers.add(opponentPlayer);
 }
 
 
