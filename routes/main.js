@@ -12,6 +12,16 @@ router.get("/main", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/mainPage.html"));
 });
 
+/* GET createRoom page. */
+router.get("/createRoom", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/createRoom.html"));
+});
+
+/* GET gameLobby page. */
+router.get("/gameLobby", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/gameLobby.html"));
+});
+
 /* GET login page. */
 router.get("/login", function(req, res) {
   res.render(path.resolve(__dirname, "../login/BretsTest.html"));
