@@ -110,57 +110,25 @@ const Game1_XYCoordinates=[{x:110,y:225, isTaken:false},{x:310,y:225,isTaken:fal
   io.on('connection',function(socket){
     console.log('a user connected: '+ socket.id );
     let x,y,playerNo;
-
     if(isRoomFull()!= -1){
-      switch (isRoomFull()) {
-        case 0:
-        x=Game1_XYCoordinates[0].x;
-        y=Game1_XYCoordinates[0].y;
-        playerNo = 0;
-        Game1_XYCoordinates[0].isTaken=true;
-        break;
-        case 1:
-        x=Game1_XYCoordinates[1].x;
-        y=Game1_XYCoordinates[1].y;
-        playerNo = 1;
-        Game1_XYCoordinates[1].isTaken=true;
-        break;
-        case 2:
-        x=Game1_XYCoordinates[2].x;
-        y=Game1_XYCoordinates[2].y;
-        playerNo = 2;
-        Game1_XYCoordinates[2].isTaken=true;
-        break;
-        case 3:
-        x=Game1_XYCoordinates[3].x;
-        y=Game1_XYCoordinates[3].y;
-        playerNo = 3;
-        Game1_XYCoordinates[3].isTaken=true;
-        break;
-        default://when adding first player
-        x=Game1_XYCoordinates[0].x;
-        y=Game1_XYCoordinates[0].y;
-        playerNo = 0;
-        Game1_XYCoordinates[0].isTaken=true;
+      for(let i=0; i<Game1_XYCoordinates.length; i++){
+        if(!Game1_XYCoordinates[i].isTaken){
+          playerNo = i;
+          players[socket.id] = {
+            playerNo: playerNo,
+            playerId: socket.id,
+            x: Game1_XYCoordinates[i].x,
+            y: Game1_XYCoordinates[i].y
+          };
+          Game1_XYCoordinates[i].isTaken=true;
+          console.log("new player added");
+          printPlayers(Game1_XYCoordinates);
+          break;
+        }
       }
-      players[socket.id] = {
-        playerNo: playerNo,
-        playerId: socket.id,
-        // player spawn location x,y
-        // x: 110 + (increaseX * (times++)),
-        x: x,
-        y: y
-      };
-
-      console.log("new player added");
-      printPlayers(Game1_XYCoordinates);
-
-
-
     }else{
       console.log("The room is full");
       delete players[socket.id];
-
     }
 
     // send the players object to the new player
@@ -198,7 +166,7 @@ const Game1_XYCoordinates=[{x:110,y:225, isTaken:false},{x:310,y:225,isTaken:fal
       socket.broadcast.emit('playerMoved', players[socket.id]);
 
     });
-  });
+  });//io.on ends here
   function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
