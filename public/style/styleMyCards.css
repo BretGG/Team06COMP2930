@@ -1,0 +1,98 @@
+      #logincon{
+        margin: 0 auto;
+        background-color: rgba(255,255,255, 0.53);
+        border: 4px solid #707070;
+        width: 450px;
+        padding-bottom: 4%;
+        font-size: 1em;
+        height:410px;
+      }
+
+      #roomcon{
+        margin: 0 auto;
+        text-align: left;
+        width: 80%; 
+        margin-bottom: 4%;
+      }
+
+      #roomcon label {
+        display: block;
+        clear:right;
+        font-size: 1em;
+      }
+
+      #roomcon input {
+        width: 100%;
+        margin-bottom: 3%;
+        border-radius: 8px;
+        background-color: #D9F2ED;
+      }
+
+      #createRoom {
+        width: 30%;
+        clear:both;
+        display: block;
+        margin: 0 auto;
+        background-color: #7FC4B5;
+      }
+
+      #back {
+        border-color: rgb(127,196,181, 0.99);
+        background-color: #D9F2ED;
+        margin-left: 2%;
+        margin-top: 22%;
+      }
+
+      #roomNo{
+        width: 100%;
+        margin-bottom: 3%;
+        border-radius: 8px;
+        border-width: 2px;
+        border-color: rgb(238, 238, 238);
+        background-color: #D9F2ED;
+        border-style: inset;
+        box-sizing: border-box;
+        display: inline-block;  
+        height: 34px;
+        padding-left: 4px;
+        padding-top: 2px;
+      }
+
+@media screen and (min-width: 1501px){
+      #logincon{
+        font-size: 1em;
+        width:500px; 
+        height:430px;
+      }
+
+      #back{
+        margin-left: 2%;
+        margin-top: 22%;
+      }
+
+}
+
+@media screen and (min-width: 1080px) and (max-width: 1500px){
+      #logincon{
+        width: 400px;
+        height:400px;
+        font-size: 1em;
+      }
+      #back{
+        margin-left: 2%;
+        margin-top: 24%;
+      }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1079px) {  
+      #logincon{
+        width: 500px;
+        font-size: 1em;
+        height:430px;
+      }
+      #back{
+        margin-left: 2%;
+        margin-top: 22%;
+      }
+
+}
