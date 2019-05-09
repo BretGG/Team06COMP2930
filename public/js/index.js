@@ -20,7 +20,6 @@ $(document).ready(() => {
 
 
     $("#submitUP").click(() => {
-        console.log("Sign up");
         if ($("#pass1").val() == $("#cpass1").val())
             $.ajax({
                 type: "post",
@@ -37,14 +36,13 @@ $(document).ready(() => {
     });
 
     $("#submitIN").click(() => {
-        if($("#unameIN1").val()===("showmea") 
+        if($("#unameIN1").val()===("showmea")
             && $("#passIN1").val()===("sunset")){
             $('body').css('background-image', 'url("../images/sunset.png');
             $("#unameIN1").val("Anything else you would to see?");
             $("#passIN1").val(null);
-            return; 
-        } 
-        console.log("Sign in");
+            return;
+        }
         $.ajax({
             type: "post",
             url: "/login",
@@ -55,6 +53,7 @@ $(document).ready(() => {
             },
             success: user => {
                 print(user);
+                localStorage.setItem('auth-token', user.token);
                 window.location.href="main";
             },
             error: err => print(err.responseText)

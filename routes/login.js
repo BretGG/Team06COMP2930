@@ -55,10 +55,24 @@ router.post("/", async (req, res) => {
 
   // Returning a json object containing success and the jwt token that needs to be stored
   const token = user.generateAuthToken();
-  res.send({
+  res.status(200).send({
     success: true,
     token: token
   });
+});
+
+router.get('/me', async (req, res) => {
+    var token = req.get('auth-token');
+    if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
+    token = jwt.decode(token);
+
+    console.log(`Request for me from user ${token._id} at ${req.connection.remoteAddress}`)
+
+    const user = await User.findById(token._id).select('-password');
+    if (!user) return res.status(400).send("Uh Oh! You dont exist!");
+    console.log(`Returning user ${user._id} to ${req.connection.remoteAddress}`)
+    res.send({user});
+
 });
 
 //  Validates if the input is correct before authorizing function
