@@ -1,4 +1,10 @@
 $(document).ready(() => {
+    $('#easteregg').hover(() => {
+        $('body').css('background-image', 'url("../images/sunset.png');
+        $('#easteregg').css('width', '6%');
+        $('#easteregg').css('bottom', '-50px');
+    });
+
     let print = user => {
         console.log(JSON.stringify(user));
         // $("#userInfo").html("User Info: " + JSON.stringify(user));
