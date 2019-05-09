@@ -3,7 +3,7 @@ const path = require("path");
 const _ = require("lodash");
 const Session = require("../models/session");
 const SessionPool = require("./sessionPool");
-const { Worker, parentPort } = require("worker_threads");
+const { Worker } = require("worker_threads");
 
 /*
 
@@ -20,6 +20,7 @@ A session is a running instance of a game
 
 const sessionPools = new Map();
 const poolWorkers = new Map();
+const sessions = new Map();
 let runningSessions = 0;
 
 // The runningPools count will be the same value as the runningWorkers
@@ -37,14 +38,8 @@ function endSession(sessionId) {
 }
 
 // Adds a session to the first free spot in a pool
-function addSession(session) {
-  debug("Registering new game session: " + JSON.stringify(session));
-
-  // Cancel if the object type is wrong
-  if (!(session instanceof Session)) {
-    debug("Invalid session object");
-    return;
-  }
+function addSession(sessionInfo) {
+  debug("Registering new game session: " + JSON.stringify(sessionInfo));
 
   for (var pool of sessionPools.values()) {
     // Adds to the first pool with space, should add some better load balancing
@@ -64,18 +59,20 @@ function addSession(session) {
 
   // Creation of new worker and session pool using sessionCreator
   let newWorker = new Worker(path.join(__dirname, "/sessionPoolCreator.js"), {
-    session: session
+    workerData: sessionInfo
   });
 
-  newWorker.on("SessionPoolCreated", sessionPool => {
+  newWorker.on("message", sessionPool => {
     // Once the worker creates the new session pool add it to the master list
-    runningSessions.set(sessionPool.poolId, sessionPool);
+    sessionPools.set(sessionPool.poolId, sessionPool);
     // Adding session to new pool;
     debug(
-      `Adding new session: ${session.sessionId} to pool: ${newPool.poolId}`
+      `Adding new session pool: ${sessionInfo.sessionId} to pool: ${
+        sessionPool.poolId
+      }`
     );
 
-    newPool.registerSession(session);
+    sessionPool.registerSession(session);
     runningSessions++;
     return session;
   });

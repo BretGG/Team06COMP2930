@@ -41,10 +41,8 @@ router.post("/", (req, res) => {
     "sessionPass"
   ]);
 
-  const gameSession = new Session(gameSessionInfo);
-
-  // Passing off the game session object to the sessions manager
-  addSession(gameSession);
+  // Pass game session Info session manager to be created
+  addSession(gameSessionInfo);
 });
 
 module.exports = router;
