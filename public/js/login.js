@@ -1,10 +1,4 @@
 $(document).ready(() => {
-    $('#easteregg').hover(() => {
-        $('body').css('background-image', 'url("../images/sunset.png');
-        $('#easteregg').css('width', '6%');
-        $('#easteregg').css('bottom', '-50px');
-    });
-
     let print = user => {
         console.log(JSON.stringify(user));
         // $("#userInfo").html("User Info: " + JSON.stringify(user));
@@ -43,6 +37,13 @@ $(document).ready(() => {
     });
 
     $("#submitIN").click(() => {
+        if($("#unameIN1").val()===("showmea") 
+            && $("#passIN1").val()===("sunset")){
+            $('body').css('background-image', 'url("../images/sunset.png');
+            $("#unameIN1").val("Anything else you would to see?");
+            $("#passIN1").val(null);
+            return; 
+        } 
         console.log("Sign in");
         $.ajax({
             type: "post",
