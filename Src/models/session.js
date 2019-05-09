@@ -1,3 +1,4 @@
+const { isMainThread } = require("worker_threads");
 /*
 
 session is the base class for a game object that will handle game interactions with clients and
@@ -30,6 +31,10 @@ class Session {
     this.players = [];
     this.state = "NotRunning";
     this.players.push(sessionInfo.owner); // Adding the owner to the list of players
+
+    setInterval(() => {
+      console.log(isMainThread);
+    }, 1000);
   }
 
   killSession() {

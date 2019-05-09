@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/server.js",
-    "devstart": "set DEBUG=comp2930-team2:server && nodemon --no-deprecation ./bin/server.js"
+    "devstart": "set DEBUG=comp2930-team2:server && nodemon --experimental-worker --no-deprecation ./bin/server.js"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
     "console-stamp": "^0.2.7",
     "consolidate": "^0.15.1",
     "cookie-parser": "~1.4.3",
