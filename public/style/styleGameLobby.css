@@ -40,6 +40,7 @@
         border-color: rgb(127,196,181, 0.99);
         background-color: #D9F2ED;
         margin-left: 2%;
+        margin-top: 0.5%;
       }
 
       #start {
@@ -71,6 +72,11 @@
         width:500px; 
         height:430px;
       }
+
+      #back{
+        margin-left: 2%;
+        margin-top: 3%;
+      }
 }
 
 @media screen and (min-width: 1080px) and (max-width: 1500px){
@@ -79,6 +85,10 @@
         height:400px;
         font-size: 1em;
       }
+      #back{
+        margin-left: 2%;
+        margin-top: 0.5%;
+      }
 }
 
 @media screen and (min-width: 800px) and (max-width: 1079px) {  
@@ -86,6 +96,15 @@
         width: 500px;
         font-size: 1em;
         height:430px;
+      }
 
+      #back{
+        margin-left: 2%;
+        margin-top: 5%;
+      }
+
+      #back{
+        margin-left: 2%;
+        margin-top: 3%;
       }
 }
