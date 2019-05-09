@@ -4,18 +4,18 @@ $(document).ready(() => {
         // $("#userInfo").html("User Info: " + JSON.stringify(user));
     };
 
-    $("#signin").click(() => {
-        $("#signup").css("border-bottom", "none");
-        $("#signin").css("border-bottom", "2px solid #42A164");
-        $("#signupcon").css("display", "none");
-        $("#signincon").css("display", "inline");
+    $(".headerRight").click(() => {
+        $(".headerLeft").css("border-bottom", "none");
+        $(".headerRight").css("border-bottom", "2px solid #42A164");
+        $(".headerLeftCon").css("display", "none");
+        $(".headerRightCon").css("display", "inline");
     });
 
-    $("#signup").click(() => {
-        $("#signin").css("border-bottom", "none");
-        $("#signup").css("border-bottom", "2px solid #42A164");
-        $("#signincon").css("display", "none");
-        $("#signupcon").css("display", "inline");
+    $(".headerLeft").click(() => {
+        $(".headerRight").css("border-bottom", "none");
+        $(".headerLeft").css("border-bottom", "2px solid #42A164");
+        $(".headerRightCon").css("display", "none");
+        $(".headerLeftCon").css("display", "inline");
     });
 
 
