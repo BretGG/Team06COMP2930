@@ -1,37 +1,3 @@
-  @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-     html {
-        min-width: 500px;
-    }
-    
-    body {
-        margin: 0 auto;
-        background: url('../images/BG.png') no-repeat center center fixed; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        font-family: 'Segoe UI Regular';
-    }
-    
-    @font-face {
-      font-family: 'Segoe UI Regular';
-      font-style: normal;
-      font-weight: normal;
-      src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
-    }
-    
-    a {
-      text-decoration: none;
-    }
-
-     #logo{
-        text-align: center;
-        padding-top: 2%;
-        font: #013F17;
-        text-shadow:   
-        font-size:2.5em;
-      }
-
       #avatar{
         padding-bottom: 6%;
       }

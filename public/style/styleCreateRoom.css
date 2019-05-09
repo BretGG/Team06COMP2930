@@ -1,37 +1,3 @@
-  @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-     html {
-        min-width: 500px;
-    }
-    
-    body {
-         margin: 0 auto;
-         background: url('../images/BG.png') no-repeat center center fixed; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        font-family: 'Segoe UI Regular';
-    }
-    
-    @font-face {
-      font-family: 'Segoe UI Regular';
-      font-style: normal;
-      font-weight: normal;
-      src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
-    }
-    
-    a {
-      text-decoration: none;
-    }
-
-     #logo{
-        text-align: center;
-        padding-top: 2%;
-        font: #013F17;
-        text-shadow:   
-        font-size:2.5em;   
-      }
-
       #create{
         padding: 2%;
         text-align: center;
@@ -47,7 +13,7 @@
         width: 450px;
         padding-bottom: 4%;
         font-size: 1em;
-        height:350px;
+        height:410px;
       }
 
       #roomcon{
@@ -71,7 +37,7 @@
       }
 
       #createRoom {
-        width: 50%;
+        width: 30%;
         clear:both;
         display: block;
         margin: 0 auto;
@@ -80,12 +46,9 @@
 
       #back {
         border-color: rgb(127,196,181, 0.99);
-        background-color: rgb(127,196,181, 0.3);
-      }
-
-      #back{
+        background-color: #D9F2ED;
         margin-left: 2%;
-        margin-top: 8%;
+        margin-top: 22%;
       }
 
       #roomNo{
@@ -107,15 +70,12 @@
       #logincon{
         font-size: 1em;
         width:500px; 
-        height:380px;
-      }
-      #logo{
-          font-size:3em;
+        height:430px;
       }
 
       #back{
         margin-left: 2%;
-        margin-top: 10%;
+        margin-top: 22%;
       }
 
 }
@@ -123,30 +83,24 @@
 @media screen and (min-width: 1080px) and (max-width: 1500px){
       #logincon{
         width: 400px;
-        height:330px;
+        height:400px;
         font-size: 1em;
-      }
-      #logo{
-          font-size:2em;
       }
       #back{
         margin-left: 2%;
-        margin-top: 4%;
+        margin-top: 24%;
       }
 }
 
 @media screen and (min-width: 800px) and (max-width: 1079px) {  
       #logincon{
-        width: 400px;
+        width: 500px;
         font-size: 1em;
-        height:330px;
-      }
-       #logo{
-          font-size:2.5em;
+        height:430px;
       }
       #back{
         margin-left: 2%;
-        margin-top: 4%;
+        margin-top: 22%;
       }
 
 }
