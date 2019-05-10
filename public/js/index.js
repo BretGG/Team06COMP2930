@@ -61,7 +61,9 @@ $(document).ready(() => {
                 localStorage.setItem('auth-token', user.token);
                     window.location.href="main";
             },
-            error: err => print(err.responseText)
+            error: err => {
+                $("#status").text(err.responseText);
+            }
         });
     });
 
