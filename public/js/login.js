@@ -23,7 +23,7 @@ $(document).ready(() => {
     console.log("StartSession");
     $.ajax({
       type: "post",
-      url: "/users",
+      url: "/game",
       data: {
         username: $("#uname").val(),
         email: $("#email").val(),

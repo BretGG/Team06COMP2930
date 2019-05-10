@@ -1,3 +1,4 @@
+const { isMainThread } = require("worker_threads");
 /*
 
 session is the base class for a game object that will handle game interactions with clients and
@@ -12,7 +13,8 @@ Example session/game info object:
     owner: "[playerId]",
     sessionId: "bobsGame", // Used for joining a running game
     sessionPass: "password", // Can be stored in plane text
-    players: "[owener, ...]" // only required 
+    players: "[owener, ...]", 
+    pool: { pool } // reference to pool that is running this session
   }
 
   This object will be passed from the client to start a new 
@@ -28,7 +30,12 @@ class Session {
     this.owner = sessionInfo.owner;
     this.sessionPass = sessionInfo.sessionPass;
     this.players = [];
+    this.state = "NotRunning";
     this.players.push(sessionInfo.owner); // Adding the owner to the list of players
+
+    setInterval(() => {
+      console.log(isMainThread);
+    }, 1000);
   }
 
   killSession() {
