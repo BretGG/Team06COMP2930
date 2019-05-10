@@ -4,7 +4,7 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
     /* Minimum width for application */
     html {
-        min-width: 500px;
+        min-width: 300px;
     }
 
     /* Centers elements, sets and stretches default background, and sets font. */
