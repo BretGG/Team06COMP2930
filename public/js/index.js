@@ -34,7 +34,9 @@ $(document).ready(() => {
                     print(user)
                     window.location.href="/";
                 },
-                error: err => print(err.responseText)
+                error: err => {
+                    $("#status").text(err.responseText);
+                }
             });
     });
 
