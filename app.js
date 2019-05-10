@@ -8,13 +8,10 @@ const debug = require("debug")("comp2930-team2:server");
 const consolidate = require("consolidate");
 const mongoose = require("mongoose");
 
-
 const mainRouter = require("./routes/main");
 const gameRouter = require("./routes/game");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/login");
-
-// const mainPage = require("./public/views/mainPage");
 
 var app = express();
 
