@@ -34,10 +34,6 @@ $(document).ready(() => {
 
     $("#submitLeft").click(() => {
         $("#status").text("Card successfully added. Check under My Cards");
-        $("#status").delay(1000).fadeOut();
-
-        // $("#status").L("Unforunate circumstance. Card failed to be added.");
-        // $("#status").fadeOut().delay(3000).innerHTML("");
 
         //Did not route to myCards.html yet so idk if this ajax will work.
 
