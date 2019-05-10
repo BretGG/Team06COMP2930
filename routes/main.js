@@ -22,6 +22,11 @@ router.get("/gameLobby", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/gameLobby.html"));
 });
 
+/* GET joinRoom page. */
+router.get("/joinRoom", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/joinRoom.html"));
+});
+
 /* GET login page. */
 router.get("/login", function(req, res) {
   res.render(path.resolve(__dirname, "../login/BretsTest.html"));

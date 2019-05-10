@@ -46,6 +46,7 @@ $(document).ready(() => {
             $("#passIN1").val(null);
             return;
         }
+
         $.ajax({
             type: "post",
             url: "/login",
@@ -55,9 +56,8 @@ $(document).ready(() => {
                 password: $("#passIN1").val()
             },
             success: user => {
-                print(user.token);
                 localStorage.setItem('auth-token', user.token);
-                window.location.href="main";
+                    window.location.href="main";
             },
             error: err => print(err.responseText)
         });

@@ -58,7 +58,12 @@ exports.validate = user => {
   return joi.validate(user, schema);
 };
 
-schema.methods.generateAuthToken = () => {
+function somethng(){
+
+}
+
+
+schema.methods.generateAuthToken = function() {
   return jwt.sign({ _id: this._id, username: this.username }, "FiveAlive");
 };
 

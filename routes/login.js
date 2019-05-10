@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const debug = require("debug")("comp2930-team2:server");
 const { User } = require("../src/models/user");
-const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken"); //h
+// const auth = require('../middleware/auth'); //h
 
 const router = express.Router();
 
@@ -54,8 +55,11 @@ router.post("/", async (req, res) => {
     `Valid login from: ${req.connection.remoteAddress} user: ${req.body.username}`
   );
 
+
   // Returning a json object containing success and the jwt token that needs to be stored
   const token = user.generateAuthToken();
+  console.log("Sending token: " + token);
+  console.log("decoded: " + JSON.stringify(jwt.decode(token)));
   res.status(200).send({
     success: true,
     token: token
@@ -65,6 +69,7 @@ router.post("/", async (req, res) => {
 router.get('/me', async (req, res) => {
     var token = req.get('auth-token');
     if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
+    const decode = jwt.verify(token, "FiveAlive");
     token = jwt.decode(token);
 
     console.log(`Request for me from user ${token._id} at ${req.connection.remoteAddress}`)
