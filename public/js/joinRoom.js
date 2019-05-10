@@ -1,6 +1,6 @@
 $(document).ready(() => {
 
-    $("#createRoom").click(() => {
+    $("#join").click(() => {
 
     window.location.href="gameLobby";
     });
