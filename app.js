@@ -1,3 +1,5 @@
+// var authAccess = require('./middleware/auth'); //h
+
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -6,10 +8,13 @@ const debug = require("debug")("comp2930-team2:server");
 const consolidate = require("consolidate");
 const mongoose = require("mongoose");
 
+
 const mainRouter = require("./routes/main");
 const gameRouter = require("./routes/game");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/login");
+
+// const mainPage = require("./public/views/mainPage");
 
 var app = express();
 
@@ -50,6 +55,10 @@ app.use("/", mainRouter);
 app.use("/game", gameRouter);
 app.use("/users", usersRouter);
 app.use("/login", authRouter);
+
+// app.get('/mainPage', function(req, res) {
+//   res.render('public/views/mainPage.html');
+// });
 
 // public will hold static basic files
 // game/public will hold static files for games

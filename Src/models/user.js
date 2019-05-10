@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 /*
 
 This file contains the the schema (essentially a class) for the database, that
-holds the information for a user account. This file will also contain the validation 
+holds the information for a user account. This file will also contain the validation
 for User account creation, this will be added after meshing with the database.
 
 */
@@ -58,7 +58,12 @@ exports.validate = user => {
   return joi.validate(user, schema);
 };
 
-schema.methods.generateAuthToken = () => {
+function somethng(){
+
+}
+
+
+schema.methods.generateAuthToken = function() {
   return jwt.sign({ _id: this._id, username: this.username }, "FiveAlive");
 };
 
