@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="../style/styleBase.css" >
     <link rel="stylesheet" href="../style/styleDoubleHeaderInput.css" >
+    <link rel="stylesheet" href="../style/styleMyCards.css" >
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>EcoQuest</title>
     <style>
+      #status {
+        text-align: center;
+      }
+
+
+
+
     </style>
     </head>
 
@@ -20,60 +28,26 @@
           <div class='headerLeft'> Create Cards</div>
           <div class='headerRight'> My Cards</div>
         </div>
-
+        <div id='status'></div>
         <div id='inputcon'>
           <div class='headerLeftCon' >
-          <label for="uname0"><b>Username</b></label>
-          <input
-           id="uname1"
-            type="text"
-            name="uname"
-            required
-          />
+            <label for="question"><b>Question</b></label>
+            <input
+             id="question"
+              type="text"
+              required
+            />
 
-          <label id="email0" for="email"><b>Email</b></label>
-          <input
-            id="email1"
-            type="text"
-            name="email"
-            required
-          />
-
-          <label for="pass0"><b>Password</b></label>
-          <input
-            id="pass1"
-            type="password"
-            name="psw"
-            required
-          />
-
-          <label id= "cpass0" for="cpsw"><b>Confirm Password</b></label>
-          <input
-            id="cpass1"
-            type="password"
-            name="cpsw"
-            required
-          />
-          <button id="submitUP" class='hoverPointer'><label>Sign Up</label></button>
+            <label for="answer"><b>Answer</b></label>
+            <input
+              id="answer"
+              type="text"
+              required
+            />
+          <button id="submitLeft" class='hoverPointer'><label>Create</label></button>
         </div>
         <div class='headerRightCon' >
-          <label for="unameIN0"><b>Username</b></label>
-          <input
-           id="unameIN1"
-            type="text"
-            name="uname"
-            required
-          />
-
-          <label for="passIN0"><b>Password</b></label>
-          <input
-            id="passIN1"
-            type="password"
-            name="psw"
-            required
-          />
-
-          <button id="submitIN" class='hoverPointer'><label>Sign In</label></button>
+          <div id='cardsCon'> </div>
         </div>
 
       </div>
@@ -83,6 +57,6 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="../js/index.js"></script>
+    <script src="../js/myCards.js"></script>
   </body>
 </html>
