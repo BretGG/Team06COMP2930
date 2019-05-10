@@ -13,7 +13,8 @@ Example session/game info object:
     owner: "[playerId]",
     sessionId: "bobsGame", // Used for joining a running game
     sessionPass: "password", // Can be stored in plane text
-    players: "[owener, ...]" // only required 
+    players: "[owener, ...]", 
+    pool: { pool } // reference to pool that is running this session
   }
 
   This object will be passed from the client to start a new 

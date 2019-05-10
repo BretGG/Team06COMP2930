@@ -33,7 +33,6 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   debug("Request to make new game session");
 
-  // TODO: Create game session
   const gameSessionInfo = _.pick(req.body, [
     "gameType",
     "owner",
@@ -41,7 +40,7 @@ router.post("/", (req, res) => {
     "sessionPass"
   ]);
 
-  // Pass game session Info session manager to be created
+  // Pass game session Info to session manager to be created
   addSession(gameSessionInfo);
 });
 

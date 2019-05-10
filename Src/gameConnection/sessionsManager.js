@@ -2,7 +2,7 @@ const debug = require("debug")("comp2930-team2:server");
 const path = require("path");
 const _ = require("lodash");
 const Session = require("../models/session");
-const SessionPool = require("./sessionPool");
+const { isFull, registerSession } = require("./sessionPool");
 const { Worker } = require("worker_threads");
 
 /*
@@ -58,37 +58,43 @@ function addSession(sessionInfo) {
   );
 
   // Creation of new worker and session pool using sessionCreator
-  let newWorker = new Worker(path.join(__dirname, "/sessionPoolCreator.js"), {
-    workerData: sessionInfo
+  let worker = new Worker(path.join(__dirname, "/SessionPool.js"), {
+    workerData: {
+      poolId: runningPools,
+      poolLimit: 5
+    }
   });
 
-  newWorker.on("message", sessionPool => {
-    // Once the worker creates the new session pool add it to the master list
-    sessionPools.set(sessionPool.poolId, sessionPool);
-    // Adding session to new pool;
+  worker.on("message", sessionPool => {
+    // Once the worker creates the new session pool, add it to the master list
+
     debug(
-      `Adding new session pool: ${sessionInfo.sessionId} to pool: ${
-        sessionPool.poolId
-      }`
+      `Adding new session pool: ${runningPools} to pool: ${sessionPool.poolId}`
     );
 
-    sessionPool.registerSession(session);
+    // Add new session to pool, master list, and increment counts
+    sessionPools.set(sessionPool.poolId, sessionPool);
+    // sessions.set(session.sessionId, session);
+    runningPools++;
     runningSessions++;
-    return session;
   });
 
-  newWorker.on("error", err => {
+  worker.on("error", err => {
+    // TODO: handle a failed pool creation
     debug(`Failed to create new session pool, error: ${err}`);
     return;
   });
 
-  poolWorkers.set(runningPools, newWorker);
-  runningPools++;
+  // Add worker to master list, number of workers == number of pools
+  poolWorkers.set(runningPools, worker);
 }
 
 // Returns object with data on current sessions
 function getSessions() {
-  // TODO: return all running sessions
+  return {
+    count: runningSessions,
+    sessions: sessions
+  };
 }
 
 // Merge pools is a manual call to compress pools
