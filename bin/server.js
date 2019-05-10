@@ -104,18 +104,23 @@ const Game1_XYCoordinates=[{x:110,y:225, isTaken:false},{x:310,y:225,isTaken:fal
   }
 
 
+
+  const self = this;
+
   //on the new user connection do the following
-
-
   io.on('connection',function(socket){
+    //number of current sockets
+    const numberOfCurrentPlayers = Object.keys(io.sockets.sockets).length;
     console.log('a user connected: '+ socket.id );
-    let x,y,playerNo;
-    if(isRoomFull()!= -1){
+    let x,y;
+    console.log("number of USER LISTS ", numberOfCurrentPlayers);
+    if(numberOfCurrentPlayers<=numberOfPlayers){
       for(let i=0; i<Game1_XYCoordinates.length; i++){
         if(!Game1_XYCoordinates[i].isTaken){
-          playerNo = i;
+          self.playerNo = i;
+          console.log("room: " + this);
           players[socket.id] = {
-            playerNo: playerNo,
+            playerNo: self.playerNo,
             playerId: socket.id,
             x: Game1_XYCoordinates[i].x,
             y: Game1_XYCoordinates[i].y
@@ -128,7 +133,8 @@ const Game1_XYCoordinates=[{x:110,y:225, isTaken:false},{x:310,y:225,isTaken:fal
       }
     }else{
       console.log("The room is full");
-      delete players[socket.id];
+      disconnectPlayer(socket.id);
+      console.log("deleted attempted connect, current players: ", numberOfCurrentPlayers);
     }
 
     // send the players object to the new player
@@ -140,19 +146,7 @@ const Game1_XYCoordinates=[{x:110,y:225, isTaken:false},{x:310,y:225,isTaken:fal
     //user disconnect
     // when a player disconnects, remove them from our players object
     socket.on('disconnect', function () {
-      console.log('user disconnected: ', socket.id);
-      if(Game1_XYCoordinates[playerNo]!=undefined){
-        Game1_XYCoordinates[playerNo].isTaken = false;
-        console.log("set ISTAKEN to false");
-        delete players[socket.id];
-        io.emit('disconnect', socket.id);
-
-        console.log("after disconnect");
-        printPlayers(Game1_XYCoordinates);
-      }else{
-        console.log('disconnected user undefined');
-      }
-      // emit a message to all players to remove this player
+      disconnectPlayer(socket.id);
     });
 
     // when a player moves, update the player data
@@ -160,27 +154,32 @@ const Game1_XYCoordinates=[{x:110,y:225, isTaken:false},{x:310,y:225,isTaken:fal
       if(players[socket.id]!=undefined){
         players[socket.id].x = movementData.x;
         players[socket.id].y = movementData.y;
-
       }
       // emit a message to all players about the player that moved
       socket.broadcast.emit('playerMoved', players[socket.id]);
 
     });
+    //Kicks the user out when he's not doing anything for 1 min.
+    setTimeout(() => disconnectPlayer(socket.id), 60000);
+    ////
   });//io.on ends here
-  function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-  function isRoomFull(){
-    for(let i=0; i<Game1_XYCoordinates.length; i++){
-      if(!Game1_XYCoordinates[i].isTaken){
-        return i; //false
-      }
-    }
-    return -1; //true
-  }
 
   function printPlayers(coordinates){
     for(let i=0;i<coordinates.length;i++){
       console.log(coordinates[i].isTaken);
+    }
+  }
+
+  function disconnectPlayer(id){
+    console.log('user ',id,' attempts to disconnect..');
+    if(players[id]!=undefined){
+      // console.log("disc: ", players[id].playerNo);
+      Game1_XYCoordinates[players[id].playerNo].isTaken = false;
+      delete players[id];
+      io.emit('disconnect', id);
+      console.log("after disconnect");
+      printPlayers(Game1_XYCoordinates);
+    }else{
+      console.log('User not exist, deleted already or never created');
     }
   }

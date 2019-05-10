@@ -99,6 +99,7 @@ function create() {
     self.opponentPlayers.getChildren().forEach(function (opponentPlayer) {
       if (playerId === opponentPlayer.playerId) {
         opponentPlayer.destroy();
+        console.log("ran destroy()");
       }
     });
   });
