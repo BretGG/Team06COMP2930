@@ -12,7 +12,7 @@
       font-weight: normal;
       src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
     }
-    
+
     a {
       text-decoration: none;
     }
@@ -25,7 +25,7 @@
         -1px -1px 0 #FFF,
         1px -1px 0 #FFF,
         -1px 1px 0 #FFF,
-        1px 1px 0 #FFF;  
+        1px 1px 0 #FFF;
       }
 
       #container{
@@ -74,7 +74,7 @@
       #inputcon label {
         display: block;
         clear:right;
-        font-size: 1em;
+        font-size: 0.5em;
       }
 
       #inputcon input {

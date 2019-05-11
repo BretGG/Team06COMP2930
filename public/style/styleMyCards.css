@@ -1,0 +1,18 @@
+#status {
+  text-align: center;
+}
+
+.card {
+  margin: 1rem;
+  background: white;
+  box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all .2s linear;
+}
+
+#cardsCon{
+	overflow-y: scroll;
+	background-color: blue;
+	height: 320px;
+}

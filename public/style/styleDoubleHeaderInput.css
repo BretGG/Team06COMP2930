@@ -1,0 +1,103 @@
+      #mainCon{
+        margin: 0 auto;
+        background-color: rgba(255,255,255, 0.53);
+        border: 4px solid #707070;
+        padding-bottom: 4%;
+        font-size: 1em;
+        width: 100%;
+        height: 450px;
+      }
+
+      .headerLeftCon{
+        display: none;
+
+      }
+
+      #backcon{
+        position: relative;
+        padding-top: 32%;
+        padding-left: 2%;
+      }
+
+      #headerCon{
+        padding-top: 2%;
+        padding-bottom: 1.5%;
+        display: flex;
+      }
+
+      #headerCon div{
+        width: 50%;
+        margin: 0;
+        text-align: center;
+        color: #000000;
+        font-size: 1.4em;
+        margin-bottom: 2%;
+      }
+
+      .headerRight {
+        border-bottom: 2px solid #42A164;
+      }
+
+      #inputcon{
+        margin: 0 auto;
+        text-align: left;
+        width: 80%;
+        margin-bottom: 4%;
+      }
+
+      #inputcon label {
+        display: block;
+        clear:right;
+        font-size: 1em;
+      }
+
+      #inputcon input {
+        width: 100%;
+        margin-bottom: 3%;
+        border-radius: 8px;
+        background-color: #D9F2ED;
+      }
+
+      #inputcon button {
+        width: 60%;
+        clear:both;
+        display: block;
+        margin: 0 auto;
+        background-color: #7FC4B5;
+      }
+
+@media screen and (min-width: 500px) and (max-width: 799px){
+      #mainCon{
+        margin: 0 auto;
+        background-color: rgba(255,255,255, 0.53);
+        border: 4px solid #707070;
+        padding-bottom: 4%;
+        font-size: 1em;
+        width: 450px;
+        height: 450px;
+      }
+}
+
+@media screen and (min-width: 1501px){
+      #mainCon{
+        font-size: 1em;
+        width:500px; 
+        height:450px;
+      }
+}
+
+@media screen and (min-width: 1080px) and (max-width: 1500px){
+      #mainCon{
+        width: 400px;
+        height:450px;
+        font-size: 1em;
+      }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1079px) {
+      #mainCon{
+        width: 600px;
+        font-size: 1em;
+        height:500px;
+      }
+}

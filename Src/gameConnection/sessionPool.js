@@ -1,3 +1,4 @@
+const { isMainThread, parentPort, workerData } = require("worker_threads");
 /*
 
 gamePool holds running game instances added to this pool, including additional information on each pool.
@@ -8,12 +9,16 @@ Each GamePool will work on its own worker thread
 
 */
 
-class GamePool {
+class SessionPool {
   constructor(poolLimit, poolId) {
     this.poolId = poolId;
     this.poolLimit = poolLimit;
     this.currentSessionsCount = 0;
     this.sessions = [];
+
+    setInterval(() => {
+      console.log(isMainThread);
+    }, 1000);
   }
 
   registerSession(session) {
@@ -78,4 +83,13 @@ class GamePool {
   }
 }
 
-module.exports = GamePool;
+// This chunk of code allows us to create sessionPool objects on a worker thread
+// without creating a new file for creating sessionPools, due to worker threads
+// requiring a script
+if (!isMainThread) {
+  parentPort.postMessage(
+    new SessionPool(workerData.poolLimit, workerData.poolId)
+  );
+}
+
+module.exports = SessionPool;

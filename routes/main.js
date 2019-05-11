@@ -7,6 +7,26 @@ router.get("/", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/index.html"));
 });
 
+/* GET main page. */
+router.get("/main", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/mainPage.html"));
+});
+
+/* GET createRoom page. */
+router.get("/createRoom", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/createRoom.html"));
+});
+
+/* GET gameLobby page. */
+router.get("/gameLobby", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/gameLobby.html"));
+});
+
+/* GET joinRoom page. */
+router.get("/joinRoom", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/joinRoom.html"));
+});
+
 /* GET login page. */
 router.get("/login", function(req, res) {
   res.render(path.resolve(__dirname, "../login/BretsTest.html"));
