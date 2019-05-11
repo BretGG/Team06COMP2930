@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const debug = require("debug")("comp2930-team2:server");
-const Session = require("../src/models/session");
 const _ = require("lodash");
 const {
   addSession,

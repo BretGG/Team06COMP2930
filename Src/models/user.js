@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const joi = require("./node_modules/joi");
-const jwt = require("./node_modules/jsonwebtoken");
+const joi = require("joi");
+const jwt = require("jsonwebtoken");
 
 /*
 
