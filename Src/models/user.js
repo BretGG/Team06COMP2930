@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const joi = require("joi");
-const jwt = require("jsonwebtoken");
+const joi = require("./node_modules/joi");
+const jwt = require("./node_modules/jsonwebtoken");
 
 /*
 
@@ -58,10 +58,7 @@ exports.validate = user => {
   return joi.validate(user, schema);
 };
 
-function somethng(){
-
-}
-
+function somethng() {}
 
 schema.methods.generateAuthToken = function() {
   return jwt.sign({ _id: this._id, username: this.username }, "FiveAlive");

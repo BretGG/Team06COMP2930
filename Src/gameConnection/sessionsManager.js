@@ -1,6 +1,6 @@
-const debug = require("debug")("comp2930-team2:server");
+const debug = require("./node_modules/debug")("comp2930-team2:server");
 const path = require("path");
-const _ = require("lodash");
+const _ = require("./node_modules/lodash");
 const Session = require("../models/session");
 const { isFull, registerSession } = require("./sessionPool");
 const { Worker } = require("worker_threads");
