@@ -42,6 +42,7 @@ function addSession(sessionInfo) {
 
   for (var pool of sessionPools.values()) {
     // Adds to the first pool with space, should add some better load balancing
+    debug(pool);
     if (!pool.isFull()) {
       debug(`Adding new session: ${session.sessionId} to pool: ${pool.poolId}`);
       pool.registerSession(session);
