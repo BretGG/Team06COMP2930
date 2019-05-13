@@ -12,7 +12,32 @@
 }
 
 #cardsCon{
-	overflow-y: scroll;
-	background-color: blue;
-	height: 320px;
+	height: 370px;
+  overflow-y: scroll;
+  background-color: #D9F2ED;
+  border: 2px solid #A7BAB6;
+}
+
+@media screen and (min-width: 500px) and (max-width: 799px){
+  #cardsCon{
+  height: 360px;
+}
+}
+
+@media screen and (min-width: 1501px){
+  #cardsCon{
+    height: 355px;
+  }
+}
+
+@media screen and (min-width: 1080px) and (max-width: 1500px){
+  #cardsCon{
+    height: 360px;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1079px) {  
+  #cardsCon{
+    height: 400px;
+  }
 }
