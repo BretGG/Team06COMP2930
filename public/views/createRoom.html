@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <link rel="icon" href="../images/icon.png" type="../images/icon.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- Base CSS file all pages follow -->
     <link rel="stylesheet" href="../style/styleBase.css" >
     <link rel="stylesheet" href="../style/styleBaseRoom.css" >
     <link rel="stylesheet" href="../style/styleCreateRoom.css" >
@@ -17,14 +18,19 @@
   <body>
     <div id='container'>
       <h1 id='logo'> EcoQuest </h1>
+      <!-- Container that holds all main content -->
       <div class='mainCon'>
       <div id='header'><b>Create Room</b> </div>
 
         <div id='roomcon'>
+          <!-- Label for room number -->
           <label for="roomNo0"><b>Room Number</b></label>
+          <!-- RoomNo grabbed from server -->
           <div id='roomNo'>123ABC</div>
 
+          <!-- Label for room password -->
           <label for="roomPass1"><b>Room Password</b></label>
+          <!-- Takes input to set password for room-->
           <input
             id="roomPass1"
             type="text"
@@ -34,8 +40,10 @@
           />
 
           </div>
+          <!-- Creates room -->
           <button class="submit"><label>Create</label></button>
-        <div id='backcon'> <button id='back'>Back </button></div>
+          <!-- Returns you to main menu-->
+        <div id='backcon'> <button id='back'>Main Menu </button></div>
         </div>
 
     </div>

@@ -1,23 +1,28 @@
 var question = ["1", "2", "3", "54", "324"];
 var answer = ["sad", "dad", "da", "ba", "saa"];
+
 $(document).ready(() => {
     $('#cardsCon').click(()=>{
       const card = document.createElement('div');
       card.setAttribute('class', 'card');
 
-      const h4 = document.createElement('h4');
-      h4.textContent = question[0];
+      const h5 = document.createElement('h5');
+      $(h5).css("padding-left", "8px");
+      $(h5).css("padding-top", "3px");
+      h5.textContent = question[0];
 
       const p = document.createElement('p');
+      $(p).css("padding-left", "8px");
       // movie.description = movie.description.substring(0, 300);
       p.textContent = `${answer[0]}...`;
 
       $('#cardsCon').append(card);
-      card.appendChild(h4);
+      card.appendChild(h5);
       card.appendChild(p);     
     });
 
     $(".headerRight").click(() => {
+        $("#status").text("");
         $(".headerLeft").css("border-bottom", "none");
         $(".headerRight").css("border-bottom", "2px solid #42A164");
         $(".headerLeftCon").hide();

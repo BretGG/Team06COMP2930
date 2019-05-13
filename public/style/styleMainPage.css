@@ -1,5 +1,9 @@
       #avatar{
-        padding-bottom: 4%;
+      margin: 0 auto;
+      background-image: url("../images/platform.png");
+      width: 176px;
+      height: 251px;
+      margin-bottom: 3%;
       }
 
       #welcomecon {
