@@ -19,6 +19,10 @@ class SessionPool {
     setInterval(() => {
       console.log(isMainThread);
     }, 1000);
+
+    parentPort.on("isFull", () => {
+      parentPort.emit("isFull", this.isFull());
+    });
   }
 
   registerSession(session) {

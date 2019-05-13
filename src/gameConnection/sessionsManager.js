@@ -2,7 +2,7 @@ const debug = require("debug")("comp2930-team2:server");
 const path = require("path");
 const _ = require("lodash");
 const { isFull, registerSession } = require("./sessionPool");
-const { Worker } = require("worker_threads");
+const { Worker, parentPort } = require("worker_threads");
 
 /*
 
@@ -40,7 +40,7 @@ function endSession(sessionId) {
 function addSession(sessionInfo) {
   debug("Registering new game session: " + JSON.stringify(sessionInfo));
 
-  for (var pool of sessionPools.values()) {
+  for (var pool of sessionPools) {
     // Adds to the first pool with space, should add some better load balancing
     if (!pool.isFull()) {
       debug(`Adding new session: ${session.sessionId} to pool: ${pool.poolId}`);
@@ -64,19 +64,19 @@ function addSession(sessionInfo) {
     }
   });
 
-  worker.on("message", sessionPool => {
-    // Once the worker creates the new session pool, add it to the master list
+  // worker.on("message", sessionPool => {
+  //   // Once the worker creates the new session pool, add it to the master list
 
-    debug(
-      `Adding new session pool: ${runningPools} to pool: ${sessionPool.poolId}`
-    );
+  //   debug(
+  //     `Adding new session pool: ${runningPools} to pool: ${sessionPool.poolId}`
+  //   );
 
-    // Add new session to pool, master list, and increment counts
-    sessionPools.set(sessionPool.poolId, sessionPool);
-    // sessions.set(session.sessionId, session);
-    runningPools++;
-    runningSessions++;
-  });
+  // Testing is full
+  worker.on("isFull", full => console.log("full: " + full));
+  parentPort.emit("isFull");
+
+  runningPools++;
+  runningSessions++;
 
   worker.on("error", err => {
     // TODO: handle a failed pool creation
@@ -85,7 +85,7 @@ function addSession(sessionInfo) {
   });
 
   // Add worker to master list, number of workers == number of pools
-  poolWorkers.set(runningPools, worker);
+  poolWorkers.set(worker.threadId, worker);
 }
 
 // Returns object with data on current sessions
