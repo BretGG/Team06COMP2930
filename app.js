@@ -2,7 +2,6 @@
 
 const express = require("express");
 const path = require("path");
-const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const debug = require("debug")("comp2930-team2:server");
 const consolidate = require("consolidate");
@@ -38,9 +37,6 @@ require("console-stamp")(console, {
     stamp: "yellow"
   }
 });
-
-// Not sure if we are going to use cookies, maybe for game data
-app.use(cookieParser());
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // TODO: Add in the authentication middleware

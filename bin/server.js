@@ -1,27 +1,41 @@
 #!/usr/bin/env node
-const app = require("../app");
-const debug = require("debug")("comp2930-team2:server");
-const http = require("http");
-require("../middleware/prod")(app);
+
+/**
+ * Module dependencies.
+ */
+var app = require("../app");
+var debug = require("debug")("comp2930-team2:server");
+var http = require("http");
 
 var players = {};
-//EcoQuest code
+const self = this;
 const numberOfPlayers = 4;
-const Game1_XYCoordinates = [
-  { x: 110, y: 225, isTaken: false },
-  { x: 310, y: 225, isTaken: false },
-  { x: 510, y: 225, isTaken: false },
-  { x: 710, y: 225, isTaken: false }
+const Game1_players = [
+  {
+    x: 110,
+    y: 225,
+    isTaken: false,
+    answeredQuestion: false
+  },
+  {
+    x: 310,
+    y: 225,
+    isTaken: false,
+    answeredQuestion: false
+  },
+  {
+    x: 510,
+    y: 225,
+    isTaken: false,
+    answeredQuestion: false
+  },
+  {
+    x: 710,
+    y: 225,
+    isTaken: false,
+    answeredQuestion: false
+  }
 ];
-
-//TODO: //////////////////////////////////
-//1. Implement limited number of max players ..
-//How to get the variable e.g. numberOfPlayers from game.js?
-//emit from game.js doesn't work...=> It can't come from the client side. use namespace instead.
-//2. Give the players different colors..
-//3. Is there way to get the initial spawn location coordinates from game.js?
-//4. Use namespace(multiple channel feature of socket.io) to implement different game
-/////////////////////////////////////////
 
 /**
  * Get port from environment and store in Express.
@@ -101,29 +115,43 @@ function onListening() {
   debug("Listening on " + bind);
 }
 
-const self = this;
-
 //on the new user connection do the following
+/// /////////
+/// A1
+/// server is up and running
+/// server is made here.
+/// //////
+
+/// Connected A901
+
 io.on("connection", function(socket) {
   //number of current sockets
-  const numberOfCurrentPlayers = Object.keys(io.sockets.sockets).length;
+
+  if (Object.keys(io.sockets.sockets).length <= numberOfPlayers) {
+    self.EcoQuest_numberOfCurrentPlayers = Object.keys(
+      io.sockets.sockets
+    ).length;
+  }
   console.log("a user connected: " + socket.id);
+  // console.log(Object.keys(io.sockets.sockets));
   let x, y;
-  console.log("number of USER LISTS ", numberOfCurrentPlayers);
-  if (numberOfCurrentPlayers <= numberOfPlayers) {
-    for (let i = 0; i < Game1_XYCoordinates.length; i++) {
-      if (!Game1_XYCoordinates[i].isTaken) {
+
+  if (self.EcoQuest_numberOfCurrentPlayers <= numberOfPlayers) {
+    for (let i = 0; i < Game1_players.length; i++) {
+      if (!Game1_players[i].isTaken) {
         self.playerNo = i;
-        console.log("room: " + this);
         players[socket.id] = {
           playerNo: self.playerNo,
           playerId: socket.id,
-          x: Game1_XYCoordinates[i].x,
-          y: Game1_XYCoordinates[i].y
+          x: Game1_players[i].x,
+          y: Game1_players[i].y
         };
-        Game1_XYCoordinates[i].isTaken = true;
-        console.log("new player added");
-        printPlayers(Game1_XYCoordinates);
+        Game1_players[i].isTaken = true;
+        console.log(
+          "new player added, current players: ",
+          self.EcoQuest_numberOfCurrentPlayers
+        );
+        printPlayers(Game1_players);
         break;
       }
     }
@@ -132,22 +160,21 @@ io.on("connection", function(socket) {
     disconnectPlayer(socket.id);
     console.log(
       "deleted attempted connect, current players: ",
-      numberOfCurrentPlayers
+      self.EcoQuest_numberOfCurrentPlayers
     );
   }
-
-  // send the players object to the new player
+  // send the players array object to the new player
   socket.emit("currentPlayers", players);
-  // update all opponent players of the new player
+  // update all other players of the new player
   socket.broadcast.emit("newPlayer", players[socket.id]);
 
   //user disconnect
-  // when a player disconnects, remove them from our players object
   socket.on("disconnect", function() {
     disconnectPlayer(socket.id);
   });
 
   // when a player moves, update the player data
+  //then sends it to the other players in socket.broadcast.emit*'playermoved'
   socket.on("playerMovement", function(movementData) {
     if (players[socket.id] != undefined) {
       players[socket.id].x = movementData.x;
@@ -156,10 +183,25 @@ io.on("connection", function(socket) {
     // emit a message to all players about the player that moved
     socket.broadcast.emit("playerMoved", players[socket.id]);
   });
-  //Kicks the user out when he's not doing anything for 1 min.
-  setTimeout(() => disconnectPlayer(socket.id), 60000);
-  ////
-}); //io.on ends here
+  //Kicks the user out when he's not doing anything for 2 min.
+
+  // setTimeout(() => disconnectPlayer(socket.id), 120000);
+
+  socket.on("playerAnswered", function(data) {
+    Game1_players[players[socket.id].playerNo].answeredQuestion = data.data;
+    // for (let i = 0; i < 4; i++) {
+    //   console.log("user", Game1_players[i], " answred question: ",Game1_players[i].answeredQuestion);
+    // }
+
+    if (allPlayerAnswered(self.EcoQuest_numberOfCurrentPlayers)) {
+      io.sockets.emit("allPlayerAnswered", { data: true });
+      for (let i = 0; i < numberOfPlayers; i++) {
+        Game1_players[i].answeredQuestion = false;
+      }
+      console.log("server.js allPlayerAnswered fired.");
+    }
+  });
+}); ///////////io.on ends here
 
 function printPlayers(coordinates) {
   for (let i = 0; i < coordinates.length; i++) {
@@ -171,12 +213,40 @@ function disconnectPlayer(id) {
   console.log("user ", id, " attempts to disconnect..");
   if (players[id] != undefined) {
     // console.log("disc: ", players[id].playerNo);
-    Game1_XYCoordinates[players[id].playerNo].isTaken = false;
+    Game1_players[players[id].playerNo].isTaken = false;
     delete players[id];
     io.emit("disconnect", id);
-    console.log("after disconnect");
-    printPlayers(Game1_XYCoordinates);
+    if (self.EcoQuest_numberOfCurrentPlayers > 0) {
+      self.EcoQuest_numberOfCurrentPlayers--;
+    }
+    console.log(
+      "current number of players ",
+      self.EcoQuest_numberOfCurrentPlayers
+    );
+    printPlayers(Game1_players);
   } else {
     console.log("User not exist, deleted already or never created");
+    console.log(
+      "current number of players ",
+      self.EcoQuest_numberOfCurrentPlayers
+    );
   }
+}
+
+function allPlayerAnswered(number) {
+  console.log("allPlayerAnswered called ", number);
+  // console.log(players," list of players");
+  // console.log(Object.keys(io.sockets.sockets)[0].playerNo);
+
+  for (let i = 0; i < number; i++) {
+    let num = players[Object.keys(io.sockets.sockets)[i]].playerNo;
+    console.log("current playerNumbers...: ", num);
+    console.log(i, " hi");
+    if (!Game1_players[num].answeredQuestion) {
+      console.log("all player answered return false");
+      return false;
+    }
+  }
+  console.log("all player answered return true");
+  return true;
 }
