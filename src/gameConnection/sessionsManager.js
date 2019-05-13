@@ -72,8 +72,7 @@ function addSession(sessionInfo) {
   //   );
 
   // Testing is full
-  worker.on("isFull", full => console.log("full: " + full));
-  parentPort.emit("isFull");
+  worker.on("message", full => console.log("full: " + JSON.stringify(full)));
 
   runningPools++;
   runningSessions++;
@@ -84,8 +83,15 @@ function addSession(sessionInfo) {
     return;
   });
 
+  worker.postMessage("isFull");
   // Add worker to master list, number of workers == number of pools
   poolWorkers.set(worker.threadId, worker);
+
+  setInterval(() => {
+    for (let work of poolWorkers.values()) {
+      work.postMessage("isFull");
+    }
+  }, 5000);
 }
 
 // Returns object with data on current sessions

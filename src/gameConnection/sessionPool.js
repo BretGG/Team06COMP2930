@@ -20,9 +20,7 @@ class SessionPool {
       console.log(isMainThread);
     }, 1000);
 
-    parentPort.on("isFull", () => {
-      parentPort.emit("isFull", this.isFull());
-    });
+    parentPort.on("message", message => this.handleParentRequest(message));
   }
 
   registerSession(session) {
@@ -68,6 +66,18 @@ class SessionPool {
       }
 
     return removed;
+  }
+
+  handleParentRequest(request) {
+    switch (request) {
+      case "isFull":
+        console.log("checking if full");
+        parentPort.postMessage({ responseTo: "isFull", full: this.isFull() });
+        break;
+      case "addSession":
+        console.log("adding session");
+        break;
+    }
   }
 
   // pool paramater will be merge its sessions into this pool and be handled by the
