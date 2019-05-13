@@ -21,6 +21,8 @@ player2 = false;
 player3 = false;
 var globalFlashCard, globalTurnFinished;
 var questionList;
+var currentPlayerAnswered=false;
+var opponentPlayerAnswered=false;
 ///////////////////////////////////////////////////////////////////////////////
 //////////////Should probably be in a different file///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,15 +60,15 @@ class qandA {
           this.getQuestion = function() {return this.question;};
 
         }
- 
+
     /**
     Adds a dummy answer card to the original array.
-    Goes through a while loop, and pushes a random index 
+    Goes through a while loop, and pushes a random index
     from the original array into the temp array,
     Removes that index that is pushed into the temp array.
     Object pushed into the array is removed from the original array.
     While loop repeats until all objects are randomly selected and
-    pushed into the new array. 
+    pushed into the new array.
     Then the original Array is reassigned to temp array.
     **/
     addDummy(dummy) {
@@ -82,25 +84,25 @@ class qandA {
         this.answersList = tempArray;
         console.log(this.answersList);
     }
-    
+
 }
 ////////////////////////////////////////////////
 class answers {
     constructor(text, correct){
         this.answer = text;
-        this.correct = correct;    
+        this.correct = correct;
     };
-    
+
 }
 /**
  player object skeleton:
- 
+
     this.name = name;
     this.active = active;
     this.score = 0;
     this.platform;
     this.spriter;
-    this.   
+    this.
 }
 **/
 
@@ -131,7 +133,7 @@ function startGame() {
     questionAnswer3.addDummy(card111);
     questionAnswer3.addDummy(card222);
     questionAnswer3.addDummy(card333);
-    
+
      Node0 = new Node( questionAnswer1, null);
     let Node1 = new Node( questionAnswer2, null);
     let Node2 = new Node( questionAnswer3, null);
@@ -140,10 +142,10 @@ function startGame() {
     Node1.next = Node2;
     Node2.next = -1;
     questionList = new NodeHolder(Node0);
-    
-    
-    
-    
+
+
+
+
 }
 
 
@@ -193,6 +195,8 @@ function preload() {
 };
 
 function create() {
+
+
     /// connected A901
     this.socket = io();
     this.opponentPlayers = this.physics.add.group();
@@ -222,9 +226,9 @@ function create() {
         });
     });
 
-    ///A6 receives player object in a call back function and calls at other players. to show it. 
+    ///A6 receives player object in a call back function and calls at other players. to show it.
     this.socket.on('newPlayer', function(newOpponentInfo) {
-        console.log("ins ide newplayer"); //never ran
+;
         playersArray[newOpponentInfo.playerId] = newOpponentInfo;
         let graphic = opponentGraphicChooser(self, newOpponentInfo);
       //  updateSpriteGroup(self.opponentPlayers, graphic, newOpponentInfo);
@@ -238,7 +242,7 @@ function create() {
             }
         });
     });
-    
+
     this.socket.on('playerMoved', function(movementData) {
         //  console.log("inside plyaer moved");
         self.opponentPlayers.getChildren().forEach(function(opponent) {
@@ -252,14 +256,24 @@ function create() {
             }
         });
     });
-    
+
     globalFlashcard = createQuestionAnswer(this, questionList.getValue());
     globalTurnFinished = false;
     //  If a Game Object is clicked on, this event is fired.
     //  We can use it to emit the 'clicked' event on the game object itself.
 
+    this.socket.on('allPlayerAnswered', function(msg){
+      console.log("opponentPlayerAnswered=true ");
+      opponentPlayerAnswered=true;
+      if(currentPlayerAnswered&&opponentPlayerAnswered){
+        console.log("moving on to next question!!");
+      afterGlobalTurnFinished();
+    }
+    });
 
-}
+
+
+}//create() ends here.
 
 function scoreAndPlayer() {
     scoreText = this.add.text(16, 16, 'score: 0', {
@@ -272,26 +286,56 @@ function scoreAndPlayer() {
 ////////////////////////click handler////////////////////
 function clickHandler(box) {
     console.log("card clicked");
+    currentPlayerAnswered=true;
+    this.socket.emit("playerAnswered",{data:true});
     // player.y += 32;
 ///1
+
+    if(thisSprite && opponentPlayerAnswered){
+      console.log("moving on to next question");
+      afterGlobalTurnFinished();
+    }else if(thisSprite){
+
+
+
     if(box.isItCorrect){
         box.setTint(0x00FF00);
-        self.time.delayedCall(1500, callbackEvent);
 
-        
+        // self.time.delayedCall(500, callbackEvent);
+
+
+        console.log(this.socket, " inside green");
+
+
     }else{
         box.setTint(0xFF0000);
+
         thisSprite.y += 32;
+
+        // self.time.delayedCall(500, callbackEvent);
+
+      
+
     }
+    this.socket.emit('playerMovement', {
+        x: thisSprite.x,
+        y: thisSprite.y
+    });
+  }
+
+
 }
 ///2
-function callbackEvent ()
-{
-        globalTurnFinished = true;
-}
+// function callbackEvent()
+// {
+//   console.log(this.socket, " inside callbackEvent");
+//   this.socket.emit("playerAnswered",{data:true});
+//         // globalTurnFinished = true;
+// }
 ////////////////////////////////////////////////////////
-///A12 it emits new X and Y coordinates 
+///A12 it emits new X and Y coordinates
 function update() {
+
     if (thisSprite) {
         if (this.input.keyboard.checkDown(cursors.left, 250)) {
             thisSprite.x -= 32;
@@ -310,20 +354,24 @@ function update() {
         });
     }
     //console.log(playersArray[myPlayerSocket]);
-    
-        if (globalTurnFinished){
-           afterGlobalTurnFinished();
-        }
-    
+
+        // if (globalTurnFinished){
+        //
+        //    afterGlobalTurnFinished();
+        // }
+
 }
 function afterGlobalTurnFinished(){
-            removeQuestionAnswer();
-            globalTurnFinished = false;
+
+            opponentPlayerAnswered=false;
+            currentPlayerAnswered=false;
             globalFlashCard = null;
+            removeQuestionAnswer();
             questionList.updateToNextValue();
-            
             globalFlashcard = createQuestionAnswer(self, questionList.getValue());
-    
+
+            console.log("finished turn, uopdate to next val");
+
 }
 
 function opponentGraphicChooser(selff, opponentInfo) {
@@ -341,7 +389,7 @@ function opponentGraphicChooser(selff, opponentInfo) {
         default:
             playerVisual = self.add.sprite(opponentInfo.x, opponentInfo.y, 'p1').setScale(0.25);
     }
-    //add sprite attribute to access srpite in the array. 
+    //add sprite attribute to access srpite in the array.
     opponentInfo.sprite = playerVisual;
     //adding attributes to the sprite.
     playerVisual.playerId = opponentInfo.playerId;
@@ -374,55 +422,56 @@ function createQuestionAnswer(self, Node){
             let cardText =  self.add.text(100, 100, "END OF FLASHCARDS", { fontFamily: '"Roboto Condensed"', fontSize: 55, color:'#000000'});
 
     } else{
-        
-    
+
+
     let scrollEmpty;
     let questionText;
     let emptyCardArray = []
     let textArray = [];
     let scale = (width /  Node.value.answersList.length)
         - ((width /  Node.value.answersList.length)/2);
-        
+
     let ehhh = self.input.on('gameobjectup', function(pointer, gameObject) {
         gameObject.emit('clicked', gameObject);
-        
+
+
     }, self);
-    
-    
-    
+
+
+
     for (let i  = 0; i < Node.value.answersList.length; i++){
         let card = self.add.image(scale + (scale * i * 2) + 5, 550, 'card').setScale(.35);
-       
+
         card.isItCorrect = Node.value.answersList[i].correct;
         emptyCardArray.push(card);
         card.setInteractive().on('clicked', clickHandler, self);
        // console.log(Node.value.answersList[i]);
-    
+
     let cardText =  self.add.text(scale + (scale * i * 2) - 4, 540, Node.value.answersList[i].answer, { fontFamily: '"Roboto Condensed"', fontSize: 24, color:'#000000'});
         textArray.push(cardText)
     }
 
     scrollEmpty = self.add.image(400, 100, 'scroll').setScale(.15); // p1 = this.add.image (300,300,'cake').setScale(0.25);
     questionText = self.add.text(300, 90, Node.value.getQuestion(), {fontFamily: '"Roboto Condensed"', fontSize: 36, color:'#000000' });
-    
+
 
     return {
             eh: ehhh,
-            questionCard: scrollEmpty, 
+            questionCard: scrollEmpty,
             questionText: questionText,
             cardArray: emptyCardArray,
             answerArray: textArray
     };
     }
-    
+
 }
 function removeQuestionAnswer(){
 
     for (let i = 0; i < globalFlashcard.cardArray.length; i++){
-       console.log(globalFlashcard.cardArray[i]);
+       // console.log(globalFlashcard.cardArray[i]);
        globalFlashcard.cardArray[i].destroy();
     }
-    
+
     for (let i = 0; i < globalFlashcard.answerArray.length; i++){
         globalFlashcard.answerArray[i].destroy();
     }

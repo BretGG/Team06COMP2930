@@ -10,23 +10,27 @@ var http = require("http");
 var players = {};
 const self = this;
 const numberOfPlayers = 4;
-const Game1_XYCoordinates = [{
+const Game1_players = [{
   x: 110,
   y: 225,
-  isTaken: false
+  isTaken: false,
+  answeredQuestion: false
 }, {
   x: 310,
   y: 225,
-  isTaken: false
+  isTaken: false,
+  answeredQuestion: false
 },
 {
   x: 510,
   y: 225,
-  isTaken: false
+  isTaken: false,
+  answeredQuestion: false
 }, {
   x: 710,
   y: 225,
-  isTaken: false
+  isTaken: false,
+  answeredQuestion: false
 }
 ];
 
@@ -123,24 +127,27 @@ function onListening() {
 
 io.on('connection', function(socket) {
   //number of current sockets
-  const numberOfCurrentPlayers = Object.keys(io.sockets.sockets).length;
+
+  if(Object.keys(io.sockets.sockets).length<=numberOfPlayers){
+  self.EcoQuest_numberOfCurrentPlayers = Object.keys(io.sockets.sockets).length;
+}
   console.log('a user connected: ' + socket.id);
+  // console.log(Object.keys(io.sockets.sockets));
   let x, y;
 
-  console.log("number of USER LISTS ", numberOfCurrentPlayers);
-  if(numberOfCurrentPlayers<=numberOfPlayers){
-    for (let i = 0; i < Game1_XYCoordinates.length; i++){
-      if (!Game1_XYCoordinates[i].isTaken){
+  if(self.EcoQuest_numberOfCurrentPlayers<=numberOfPlayers){
+    for (let i = 0; i < Game1_players.length; i++){
+      if (!Game1_players[i].isTaken){
         self.playerNo = i;
         players[socket.id] = {
           playerNo: self.playerNo,
           playerId: socket.id,
-          x:  Game1_XYCoordinates[i].x,
-          y:  Game1_XYCoordinates[i].y
+          x:  Game1_players[i].x,
+          y:  Game1_players[i].y
         };
-        Game1_XYCoordinates[i].isTaken = true;
-        console.log("new player added");
-        printPlayers(Game1_XYCoordinates);
+        Game1_players[i].isTaken = true;
+        console.log("new player added, current players: ", self.EcoQuest_numberOfCurrentPlayers);
+        printPlayers(Game1_players);
         break;
       }
     }
@@ -148,7 +155,7 @@ io.on('connection', function(socket) {
   else {
     console.log("The room is full");
     disconnectPlayer(socket.id);
-    console.log("deleted attempted connect, current players: ", numberOfCurrentPlayers);
+    console.log("deleted attempted connect, current players: ", self.EcoQuest_numberOfCurrentPlayers);
   }
   // send the players array object to the new player
   socket.emit('currentPlayers', players);
@@ -171,7 +178,25 @@ io.on('connection', function(socket) {
     socket.broadcast.emit('playerMoved', players[socket.id]);
   });
   //Kicks the user out when he's not doing anything for 2 min.
-  setTimeout(() => disconnectPlayer(socket.id), 120000);
+
+  // setTimeout(() => disconnectPlayer(socket.id), 120000);
+
+  socket.on('playerAnswered', function(data){
+    Game1_players[players[socket.id].playerNo].answeredQuestion = data.data;
+    // for (let i = 0; i < 4; i++) {
+    //   console.log("user", Game1_players[i], " answred question: ",Game1_players[i].answeredQuestion);
+    // }
+
+    if(allPlayerAnswered(self.EcoQuest_numberOfCurrentPlayers)){
+      io.sockets.emit('allPlayerAnswered', {data:true});
+      for (let i = 0; i < numberOfPlayers; i++) {
+        Game1_players[i].answeredQuestion = false;
+
+         }
+      console.log("server.js allPlayerAnswered fired.");
+    }
+  });
+
 }); ///////////io.on ends here
 
 function printPlayers(coordinates) {
@@ -184,12 +209,37 @@ function disconnectPlayer(id){
   console.log('user ',id,' attempts to disconnect..');
   if(players[id]!=undefined){
     // console.log("disc: ", players[id].playerNo);
-    Game1_XYCoordinates[players[id].playerNo].isTaken = false;
+    Game1_players[players[id].playerNo].isTaken = false;
     delete players[id];
     io.emit('disconnect', id);
-    console.log("after disconnect");
-    printPlayers(Game1_XYCoordinates);
+    if (self.EcoQuest_numberOfCurrentPlayers>0 ){
+
+      self.EcoQuest_numberOfCurrentPlayers--;
+    }
+    console.log("current number of players ",self.EcoQuest_numberOfCurrentPlayers);
+    printPlayers(Game1_players);
   }else{
+
     console.log('User not exist, deleted already or never created');
+    console.log("current number of players ",self.EcoQuest_numberOfCurrentPlayers);
   }
+}
+
+function allPlayerAnswered(number){
+  console.log("allPlayerAnswered called ",number);
+  // console.log(players," list of players");
+  // console.log(Object.keys(io.sockets.sockets)[0].playerNo);
+
+
+  for(let i=0; i<number; i++){
+    let num = players[Object.keys(io.sockets.sockets)[i]].playerNo;
+    console.log("current playerNumbers...: ",num);
+    console.log(i," hi");
+    if(!Game1_players[num].answeredQuestion){
+      console.log("all player answered return false");
+      return false;
+    }
+  }
+  console.log("all player answered return true");
+  return true;
 }
