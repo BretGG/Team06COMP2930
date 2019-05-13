@@ -182,10 +182,10 @@ function preload() {
     // this.load.setBaseURL("http://labs.phaser.io");
     this.load.image("sky", "../assets/backgrounds/sky.png");
     this.load.image("cake", "../assets/character/cake.png");
-    this.load.image("p1", "../assets/character/dratini.png");
-    this.load.image("p2", "../assets/character/eevee.png");
-    this.load.image("p3", "../assets/character/pikachu.png");
-    this.load.image("p4", "../assets/character/rapidash.png");
+    this.load.image("p1", "../assets/character/dratini2.png");
+    this.load.image("p2", "../assets/character/eevee2.png");
+    this.load.image("p3", "../assets/character/pikachu2.png");
+    this.load.image("p4", "../assets/character/rapidash2.png");
 
     this.load.image('otherPlayer', 'assets/character/cake.png');
     this.load.image("platform", "../assets/character/platform.png");
@@ -314,7 +314,7 @@ function clickHandler(box) {
 
         // self.time.delayedCall(500, callbackEvent);
 
-      
+
 
     }
     this.socket.emit('playerMovement', {
