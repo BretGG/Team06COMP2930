@@ -68,11 +68,14 @@ class SessionPool {
     return removed;
   }
 
-  handleParentRequest(request) {
-    switch (request) {
+  handleParentRequest(message) {
+    switch (message.request) {
       case "isFull":
-        console.log("checking if full");
-        parentPort.postMessage({ responseTo: "isFull", full: this.isFull() });
+        parentPort.postMessage({
+          responseTo: "isFull",
+          threadId: this,
+          full: this.isFull()
+        });
         break;
       case "addSession":
         console.log("adding session");

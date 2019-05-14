@@ -83,7 +83,7 @@ function addSession(sessionInfo) {
     return;
   });
 
-  worker.postMessage("isFull");
+  worker.postMessage({ request: "isFull" });
   // Add worker to master list, number of workers == number of pools
   poolWorkers.set(worker.threadId, worker);
 
