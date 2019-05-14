@@ -97,16 +97,17 @@ function create() {
   // -------------------------------------------------------------------------------------------------------
 }
 
-function playerJump(playerId) {
-  players.find(player => player.playerId === playerId)[0].setVelocityY(-300);
-}
-
 function update() {
   // Jumping player
   if (cursor.space.isDown && mainPlayer.body.touching.down) {
     mainPlayer.setVelocityY(-300);
     this.socket.emit("playerJump");
   }
+}
+
+// Make the player with the given id jump
+function playerJump(playerId) {
+  players.find(player => player.playerId === playerId).setVelocityY(-300);
 }
 
 // Create to player object, could be another class but...
