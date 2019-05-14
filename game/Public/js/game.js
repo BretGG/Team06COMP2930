@@ -1,12 +1,17 @@
 const config = {
   type: Phaser.AUTO,
-  width: 1000,
-  height: 800,
+  scale: {
+    mode: Phaser.Scale,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
+  width: 800,
+  height: 600,
   parent: "gameDiv",
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { y: 450 }
+      gravity: { y: 450 },
+      debug: "true"
     }
   },
   scene: {
@@ -16,11 +21,95 @@ const config = {
   }
 };
 
-function preload() {}
+// Main game object
+const game = new Phaser.Game(config);
+let self;
+let background;
+let cursor;
+let mainPlayer;
+let players = [];
+let platforms = [];
 
-function create() {}
+function preload() {
+  this.load.image("sky", "../assets/backgrounds/sky.png");
+  this.load.image("cake", "../assets/character/cake.png");
+  this.load.image("p1", "../assets/character/dratini.png");
+  this.load.image("p2", "../assets/character/eevee.png");
+  this.load.image("p3", "../assets/character/pikachu.png");
+  this.load.image("p4", "../assets/character/rapidash.png");
+  this.load.image("platform1", "../assets/backgrounds/platform2.png");
+  this.load.image("platform2", "../assets/backgrounds/platform2.png");
+  this.load.image("platform3", "../assets/backgrounds/platform2.png");
+  this.load.image("platform4", "../assets/backgrounds/platform2.png");
+  this.load.image("otherPlayer", "assets/character/cake.png");
+  this.load.image("platform", "../assets/character/platform.png");
+}
 
-function update() {}
+function create() {
+  background = this.add
+    .image(000, 00, "sky")
+    .setOrigin(0)
+    .setDisplaySize(800, 600);
+
+  cursor = this.input.keyboard.createCursorKeys();
+  self = this;
+
+  setInterval(() => {
+    createPlayer();
+  }, 3000);
+  createPlayer();
+
+  // Physics.moveTo(object, x, y, speed, max_time) for changing platform height
+  // body.checkWorldBounds() might be useful for checking if a player loses
+}
+
+function update() {
+  if (cursor.space.isDown && mainPlayer.body.touching.down) {
+    console.log("here");
+    mainPlayer.setVelocityY(-300);
+  }
+}
+
+// Create to player object, could be another class but...
+function createPlayer(playerInfo) {
+  console.log("create player");
+  let startX;
+  if (players.length) {
+    startX = 800 / players.length + 2;
+  } else {
+    startX = 800 / 2;
+  }
+
+  let newPlayer = self.physics.add.sprite(startX, 0, "p1");
+  console.log(newPlayer);
+  players.push(newPlayer);
+  newPlayer.setBounce(0.3);
+  newPlayer.setDepth(5);
+  newPlayer.body.height = newPlayer.body.height - newPlayer.body.height / 2.5;
+
+  // Set the current player if no already
+  if (!mainPlayer) {
+    mainPlayer = newPlayer;
+  }
+
+  // Create the platform for this player
+  createPlatform({ x: startX, supportingPlayer: newPlayer });
+}
+
+function createPlatform(platformInfo) {
+  let newPlatform = self.physics.add.sprite(platformInfo.x, 400, "platform1");
+  newPlatform.setImmovable(true);
+  newPlatform.body.allowGravity = false;
+
+  newPlatform.supportingPlayer = platformInfo.supportingPlayer;
+  self.physics.add.collider(platformInfo.supportingPlayer, newPlatform);
+  platforms.push(newPlatform);
+}
+
+// Used for adding and removing players
+function updateDisplay() {
+  for (let plat of platforms) plat.setVelocityY(50);
+}
 
 // var question;
 // var myPlayerSocket;
@@ -171,14 +260,14 @@ function update() {}
 //   width: 800,
 //   height: 600,
 //   scale: {
-//         mode: Phaser.Scale,
-//         autoCenter: Phaser.Scale.CENTER_BOTH
-//     },
+//     mode: Phaser.Scale,
+//     autoCenter: Phaser.Scale.CENTER_BOTH
+//   },
 //   physics: {
 //     default: "arcade",
 //     arcade: {
 //       gravity: {
-//         y: 0
+//         y: 300
 //       },
 //       debug: false
 //     }
@@ -199,10 +288,10 @@ function update() {}
 //   this.load.image("p2", "../assets/character/eevee.png");
 //   this.load.image("p3", "../assets/character/pikachu.png");
 //   this.load.image("p4", "../assets/character/rapidash.png");
-//   this.load.image("platform1", "../assets/backgrounds/platform2.png")
-//   this.load.image("platform2", "../assets/backgrounds/platform2.png")
-//   this.load.image("platform3", "../assets/backgrounds/platform2.png")
-//   this.load.image("platform4", "../assets/backgrounds/platform2.png")
+//   this.load.image("platform1", "../assets/backgrounds/platform2.png");
+//   this.load.image("platform2", "../assets/backgrounds/platform2.png");
+//   this.load.image("platform3", "../assets/backgrounds/platform2.png");
+//   this.load.image("platform4", "../assets/backgrounds/platform2.png");
 //   this.load.image("otherPlayer", "assets/character/cake.png");
 //   this.load.image("platform", "../assets/character/platform.png");
 //   scroll = this.load.image("scroll", "../assets/character/scroll.png");
@@ -234,19 +323,18 @@ function update() {}
 //         playersArray[self.socket.id].sprite = thisSprite;
 //         //global variable to save the self.socket.id
 //         myPlayerSocket = self.socket.id;
-//         console.log(myPlatformChooser(self, playersArray[id]),"testing!");
+//         console.log(myPlatformChooser(self, playersArray[id]), "testing!");
 //         thisSprite = myPlatformChooser(self, playersArray[id]);
 //         thisAvatar = myAvatarChooser(self, playersArray[id]);
 //       } else {
 //         opponentPlatformChooser(self, playersArray[id]);
 //         opponentAvatarChooser(self, playersArray[id]);
-
 //       }
 //     });
 //   });
 
-//   this.opponentAvatars.children.iterate(function(child){
-//     child.setBounceY(Phaser.Math.FloatBetween(0.4,0.8));
+//   this.opponentAvatars.children.iterate(function(child) {
+//     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
 //   });
 
 //   this.physics.add.collider(this.opponentAvatars, this.opponentPlatforms);
@@ -255,7 +343,6 @@ function update() {}
 //   this.socket.on("newPlayer", function(newOpponentInfo) {
 //     playersArray[newOpponentInfo.playerId] = newOpponentInfo;
 //     let graphic = opponentPlatformChooser(self, newOpponentInfo);
-
 //   });
 
 //   this.socket.on("disconnect", function(playerId) {
@@ -278,19 +365,16 @@ function update() {}
 //     self.opponentPlatforms.getChildren().forEach(function(opponent) {
 //       if (movementData.playerId === opponent.playerId) {
 //         opponent.setPosition(movementData.platformX, movementData.platformY);
-
 //       }
 //     });
 //     self.opponentAvatars.getChildren().forEach(function(opponent) {
 //       if (movementData.playerId === opponent.playerId) {
 //         opponent.setPosition(movementData.avatarX, movementData.avatarY);
-
 //       }
 //     });
-
 //   });
 
-// self.opponentAvatars.setVelocityX(50);
+//   self.opponentAvatars.setVelocityX(50);
 
 //   globalFlashcard = createQuestionAnswer(this, questionList.getValue());
 //   globalTurnFinished = false;
@@ -364,7 +448,6 @@ function update() {}
 // ////////////////////////////////////////////////////////
 // ///A12 it emits new X and Y coordinates
 // function update() {
-
 //   if (thisSprite) {
 //     if (this.input.keyboard.checkDown(cursors.left, 250)) {
 //       thisSprite.x -= 32;
@@ -384,7 +467,6 @@ function update() {}
 //       avatarY: thisAvatar.y
 //     });
 //   }
-
 // }
 // function afterGlobalTurnFinished() {
 //   opponentPlayerAnswered = false;
@@ -467,16 +549,24 @@ function update() {}
 //   let picture;
 //   switch (playerInfo.playerNo) {
 //     case 1:
-//       picture = self.physics.add.sprite(playerInfo.platformX, playerInfo.platformY, "platform2").setScale(0.35);
+//       picture = self.physics.add
+//         .sprite(playerInfo.platformX, playerInfo.platformY, "platform2")
+//         .setScale(0.35);
 //       break;
 //     case 2:
-//       picture =self.physics.add.sprite(playerInfo.platformX, playerInfo.platformY, "platform3").setScale(0.35);
+//       picture = self.physics.add
+//         .sprite(playerInfo.platformX, playerInfo.platformY, "platform3")
+//         .setScale(0.35);
 //       break;
 //     case 3:
-//       picture = self.physics.add.sprite(playerInfo.platformX, playerInfo.platformY, "platform4").setScale(0.35);
+//       picture = self.physics.add
+//         .sprite(playerInfo.platformX, playerInfo.platformY, "platform4")
+//         .setScale(0.35);
 //       break;
 //     default:
-//       picture = self.physics.add.sprite(playerInfo.platformX, playerInfo.platformY, "platform4").setScale(0.35);
+//       picture = self.physics.add
+//         .sprite(playerInfo.platformX, playerInfo.platformY, "platform4")
+//         .setScale(0.35);
 //   }
 //   return picture;
 // }

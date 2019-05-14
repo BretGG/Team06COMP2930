@@ -1,5 +1,6 @@
 {
   "typeAcquisition": {
-    "include": ["jquery"]
-  }
+    "include": []
+  },
+  "exclude": ["node_modules"]
 }
