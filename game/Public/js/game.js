@@ -64,12 +64,6 @@ function create() {
     .setOrigin(0)
     .setDisplaySize(800, 600);
 
-  setInterval(() => {
-    for (let id of players) {
-      console.log(JSON.stringify(id.playerId));
-    }
-  }, 5000);
-
   // ----------------------------------------Server Connection----------------------------------------------
   this.socket.on("newPlayer", createPlayer);
   this.socket.on("removePlayer", removePlayer);
