@@ -1,70 +1,80 @@
-      #mainCon{
-        margin: 0 auto;
-        background-color: rgba(255,255,255, 0.53);
-        border: 4px solid #707070;
-        padding-bottom: 4%;
-        font-size: 1em;
-        width: 100%;
-        height: 450px;
-      }
+/* Main Content Container */
+#mainCon{
+  margin: 0 auto;
+  background-color: rgba(255,255,255, 0.53);
+  border: 4px solid #707070;
+  padding-bottom: 4%;
+  font-size: 1em;
+  width: 100%;
+  height: 450px;
+}
 
-      .headerLeftCon{
-        display: none;
+/* Header on left side */
+.headerLeftCon{
+  display: none;
 
-      }
+}
 
-      #backcon{
-        position: relative;
-        padding-top: 32%;
-        padding-left: 2%;
-      }
+/** Container holding back button */
+#backcon{
+  position: relative;
+  padding-top: 32%;
+  padding-left: 2%;
+}
 
-      #headerCon{
-        padding-top: 2%;
-        padding-bottom: 1.5%;
-        display: flex;
-      }
+/** Container holding header */
+#headerCon{
+  padding-top: 2%;
+  padding-bottom: 1.5%;
+  display: flex;
+}
 
-      #headerCon div{
-        width: 50%;
-        margin: 0;
-        text-align: center;
-        color: #000000;
-        font-size: 1.4em;
-        margin-bottom: 2%;
-      }
+/** All divs under headerCon */
+#headerCon div{
+  width: 50%;
+  margin: 0;
+  text-align: center;
+  color: #000000;
+  font-size: 1.4em;
+  margin-bottom: 2%;
+}
 
-      .headerRight {
-        border-bottom: 2px solid #42A164;
-      }
+/**Header on the right */
+.headerRight {
+  border-bottom: 2px solid #42A164;
+}
 
-      #inputcon{
-        margin: 0 auto;
-        text-align: left;
-        width: 80%;
-        margin-bottom: 4%;
-      }
+/** Container holding all input field */
+#inputcon{
+  margin: 0 auto;
+  text-align: left;
+  width: 80%;
+  margin-bottom: 4%;
+}
 
-      #inputcon label {
-        display: block;
-        clear:right;
-        font-size: 1em;
-      }
+/** All labels under #inputcontainer */
+#inputcon label {
+  display: block;
+  clear:right;
+  font-size: 1em;
+}
 
-      #inputcon input {
-        width: 100%;
-        margin-bottom: 3%;
-        border-radius: 8px;
-        background-color: #D9F2ED;
-      }
+/** All input under #inputcontainer */
+#inputcon input {
+  width: 100%;
+  margin-bottom: 3%;
+  border-radius: 8px;
+  background-color: #D9F2ED;
+}
 
-      #inputcon button {
-        width: 60%;
-        clear:both;
-        display: block;
-        margin: 0 auto;
-        background-color: #7FC4B5;
-      }
+/** All buttons under #inputcontainer */
+#inputcon button {
+  width: 60%;
+  clear:both;
+  display: block;
+  margin: 0 auto;
+  background-color: #7FC4B5;
+}
 
 /** WIDTH RANGE FROM 500px to 799px */
 @media screen and (min-width: 500px) and (max-width: 799px){
