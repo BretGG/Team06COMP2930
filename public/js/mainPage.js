@@ -5,7 +5,7 @@
 // const router = express.Router();
 
 $(document).ready(() => {
-    window.onload = function() {     
+    window.onload = function() {
         $('#avatar').toggleClass('bounceIn');
     };
 
@@ -49,9 +49,14 @@ $(document).ready(() => {
 
     $("#join").click(() => {
         window.location.href = "joinRoom";
-    })
+    });
+
+
+        $("#cards").click(() => {
+            window.location.href = "mycard";
+        });
 
     $("#logout").click(() => {
-        window.location.href = "/";
+        window.location.href = "/"; //need to deal with a token for logout
     });
 });

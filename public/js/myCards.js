@@ -2,23 +2,23 @@ var question = ["1", "2", "3", "54", "324"];
 var answer = ["sad", "dad", "da", "ba", "saa"];
 
 $(document).ready(() => {
-    $('#cardsCon').click(()=>{
-      const card = document.createElement('div');
-      card.setAttribute('class', 'card');
+    $('#cardsCon').click(() => {
+        const card = document.createElement('div');
+        card.setAttribute('class', 'card');
 
-      const h5 = document.createElement('h5');
-      $(h5).css("padding-left", "8px");
-      $(h5).css("padding-top", "3px");
-      h5.textContent = question[0];
+        const h5 = document.createElement('h5');
+        $(h5).css("padding-left", "8px");
+        $(h5).css("padding-top", "3px");
+        h5.textContent = question[0];
 
-      const p = document.createElement('p');
-      $(p).css("padding-left", "8px");
-      // movie.description = movie.description.substring(0, 300);
-      p.textContent = `${answer[0]}...`;
+        const p = document.createElement('p');
+        $(p).css("padding-left", "8px");
+        // movie.description = movie.description.substring(0, 300);
+        p.textContent = `${answer[0]}...`;
 
-      $('#cardsCon').append(card);
-      card.appendChild(h5);
-      card.appendChild(p);     
+        $('#cardsCon').append(card);
+        card.appendChild(h5);
+        card.appendChild(p);
     });
 
     $(".headerRight").click(() => {
@@ -37,30 +37,32 @@ $(document).ready(() => {
     });
 
     $("#submitLeft").click(() => {
-        $("#status").text("Card successfully added. Check under My Cards");
 
-        //Did not route to myCards.html yet so idk if this ajax will work.
+        $.ajax({
+            type: "post",
+            url: "/cards",
+            dataType: 'json',
+            data: {
+                question: $("#question").val(),
+                format: "tf",
+                answer: $("#answer").val(),
+                deck: "test"
+            },
+            success: card => {
+                $("#status").text("Card successfully added. Check under My Cards");
+                console.log(JSON.stringify(card));
+                // window.location.href="";
+                $("#status").fadeOut().delay(3000).text("");
 
-        // $.ajax({
-        //         type: "post",
-        //         url: "/users",
-        //         dataType: 'json',
-        //         data: {
-        //             question: $("#question").val(),
-        //             correct_answer: $("#answer").val(),
-        //         },
-        //         success: user => {
-        //             $("#status").innerHTML("Card successfully added. Check under My Cards");
-        //             print($("#question").val() + "\n" + $("#answer").val())
-        //             window.location.href="/";
-        //             $("#status").fadeOut().delay(3000).innerHTML("");
-        //         },
-        //         error: err => {
-        //             // print(err.responseText)
-        //             $("#status").innerHTML("Unforunate circumstance. Card failed to be added.");
-        //             $("#status").fadeOut().delay(3000).innerHTML("");
-        //         }
-        // });
+            },
+            error: err => {
+                $("#status").text("Unforunate circumstance. Card failed to be added.");
+                console.log(err);
+                // $("#status").fadeOut().delay(3000).innerHTML("");
+            }
+        });
+
+
     });
 
 });
