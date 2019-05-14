@@ -42,14 +42,14 @@ const spawnPoints = [
 function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
   this.load.image("cake", "../assets/character/cake.png");
-  this.load.image("p1", "../assets/character/dratini.png");
-  this.load.image("p2", "../assets/character/eevee.png");
-  this.load.image("p3", "../assets/character/pikachu.png");
-  this.load.image("p4", "../assets/character/rapidash.png");
-  this.load.image("platform1", "../assets/backgrounds/platform2.png");
-  this.load.image("platform2", "../assets/backgrounds/platform2.png");
-  this.load.image("platform3", "../assets/backgrounds/platform2.png");
-  this.load.image("platform4", "../assets/backgrounds/platform2.png");
+  this.load.image("p1", "../assets/character/dratini_resize.png");
+  this.load.image("p2", "../assets/character/eevee_resize.png");
+  this.load.image("p3", "../assets/character/pikachu_resize.png");
+  this.load.image("p4", "../assets/character/rapidash_resize.png");
+  this.load.image("platform1", "../assets/backgrounds/platform3.png");
+  this.load.image("platform2", "../assets/backgrounds/platform3.png");
+  this.load.image("platform3", "../assets/backgrounds/platform3.png");
+  this.load.image("platform4", "../assets/backgrounds/platform3.png");
   this.load.image("otherPlayer", "assets/character/cake.png");
   this.load.image("platform", "../assets/character/platform.png");
 }
