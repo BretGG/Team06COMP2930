@@ -73,6 +73,7 @@ function create() {
   // ----------------------------------------Server Connection----------------------------------------------
   this.socket.on("newPlayer", createPlayer);
   this.socket.on("removePlayer", removePlayer);
+  this.socket.on("playerJump", playerJump);
 
   // Update all current players
   this.socket.on("currentPlayers", currentPlayers => {
@@ -96,10 +97,15 @@ function create() {
   // -------------------------------------------------------------------------------------------------------
 }
 
+function playerJump(playerId) {
+  players.find(player => player.playerId === playerId)[0].setVelocityY(-300);
+}
+
 function update() {
   // Jumping player
   if (cursor.space.isDown && mainPlayer.body.touching.down) {
     mainPlayer.setVelocityY(-300);
+    this.socket.emit("playerJump");
   }
 }
 

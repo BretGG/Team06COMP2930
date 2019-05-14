@@ -155,6 +155,10 @@ io.on("connection", function(socket) {
       console.log("server.js allPlayerAnswered fired.");
     }
   });
+
+  socket.on("playerJump", () => {
+    socket.broadcast.emit("playerJump", socket.id);
+  });
 });
 
 function printPlayers(coordinates) {
