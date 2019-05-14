@@ -1,6 +1,7 @@
 var question;
 var myPlayerSocket;
 var thisSprite;
+var thisAvatar;
 var Node0;
 var playersArray = [];
 //number of players in the room.
@@ -92,7 +93,6 @@ class answers {
 }
 /**
  player object skeleton:
-
     this.name = name;
     this.active = active;
     this.score = 0;
@@ -143,13 +143,13 @@ function startGame() {
 
 var config = {
   type: Phaser.AUTO,
+  parent: "phaser-example",
+  width: 800,
+  height: 600,
   scale: {
-    mode: Phaser.Scale,
-    parent: "phaser-example",
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 800,
-    height: 600
-  },
+        mode: Phaser.Scale,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
   physics: {
     default: "arcade",
     arcade: {
@@ -171,11 +171,14 @@ function preload() {
   // this.load.setBaseURL("http://labs.phaser.io");
   this.load.image("sky", "../assets/backgrounds/sky.png");
   this.load.image("cake", "../assets/character/cake.png");
-  this.load.image("p1", "../assets/character/dratini2.png");
-  this.load.image("p2", "../assets/character/eevee2.png");
-  this.load.image("p3", "../assets/character/pikachu2.png");
-  this.load.image("p4", "../assets/character/rapidash2.png");
-
+  this.load.image("p1", "../assets/character/dratini.png");
+  this.load.image("p2", "../assets/character/eevee.png");
+  this.load.image("p3", "../assets/character/pikachu.png");
+  this.load.image("p4", "../assets/character/rapidash.png");
+  this.load.image("platform1", "../assets/backgrounds/platform2.png")
+  this.load.image("platform2", "../assets/backgrounds/platform2.png")
+  this.load.image("platform3", "../assets/backgrounds/platform2.png")
+  this.load.image("platform4", "../assets/backgrounds/platform2.png")
   this.load.image("otherPlayer", "assets/character/cake.png");
   this.load.image("platform", "../assets/character/platform.png");
   scroll = this.load.image("scroll", "../assets/character/scroll.png");
@@ -185,7 +188,8 @@ function preload() {
 function create() {
   /// connected A901
   this.socket = io();
-  this.opponentPlayers = this.physics.add.group();
+  this.opponentPlatforms = this.physics.add.group();
+  this.opponentAvatars = this.physics.add.group();
   cursors = this.input.keyboard.createCursorKeys();
   self = this;
   startGame();
@@ -206,43 +210,65 @@ function create() {
         playersArray[self.socket.id].sprite = thisSprite;
         //global variable to save the self.socket.id
         myPlayerSocket = self.socket.id;
-        thisSprite = myCharacterChooser(self, playersArray[id]);
+        console.log(myPlatformChooser(self, playersArray[id]),"testing!");
+        thisSprite = myPlatformChooser(self, playersArray[id]);
+        thisAvatar = myAvatarChooser(self, playersArray[id]);
       } else {
-        let opponentGraphic = opponentGraphicChooser(self, playersArray[id]);
-        //updateSpriteGroup(self.opponentPlayers, opponentGraphic, playersArray[id]);
+        opponentPlatformChooser(self, playersArray[id]);
+        opponentAvatarChooser(self, playersArray[id]);
+
       }
     });
   });
 
+  this.opponentAvatars.children.iterate(function(child){
+    child.setBounceY(Phaser.Math.FloatBetween(0.4,0.8));
+  });
+
+  this.physics.add.collider(this.opponentAvatars, this.opponentPlatforms);
+  this.physics.add.collider(thisSprite, thisAvatar);
   ///A6 receives player object in a call back function and calls at other players. to show it.
   this.socket.on("newPlayer", function(newOpponentInfo) {
     playersArray[newOpponentInfo.playerId] = newOpponentInfo;
-    let graphic = opponentGraphicChooser(self, newOpponentInfo);
-    //  updateSpriteGroup(self.opponentPlayers, graphic, newOpponentInfo);
+    let graphic = opponentPlatformChooser(self, newOpponentInfo);
+
   });
 
   this.socket.on("disconnect", function(playerId) {
-    self.opponentPlayers.getChildren().forEach(function(opponent) {
+    self.opponentPlatforms.getChildren().forEach(function(opponent) {
       if (playerId === opponent.playerId) {
         playersArray[playerId].sprite.destroy();
         delete playersArray[playerId];
       }
     });
+    // self.opponentAvatars.getChildren().forEach(function(opponent) {
+    //   if (playerId === opponent.playerId) {
+    //     playersArray[playerId].sprite.destroy();
+    //     delete playersArray[playerId];
+    //   }
+    // });
   });
 
   this.socket.on("playerMoved", function(movementData) {
     //  console.log("inside plyaer moved");
-    self.opponentPlayers.getChildren().forEach(function(opponent) {
-      //console.log("inside plyaer moved");
-
+    self.opponentPlatforms.getChildren().forEach(function(opponent) {
       if (movementData.playerId === opponent.playerId) {
-        // otherPlayer.setRotation(playerInfo.rotation);
-        //     console.log("inside plyaer moved");
-        opponent.setPosition(movementData.x, movementData.y);
-        //console.log("inside plyaer moved");
+        opponent.setPosition(movementData.platformX, movementData.platformY);
+
       }
     });
+    self.opponentAvatars.getChildren().forEach(function(opponent) {
+      if (movementData.playerId === opponent.playerId) {
+        opponent.setPosition(movementData.avatarX, movementData.avatarY);
+
+      }
+    });
+
+
   });
+
+
+self.opponentAvatars.setVelocityX(50);
 
   globalFlashcard = createQuestionAnswer(this, questionList.getValue());
   globalTurnFinished = false;
@@ -298,11 +324,14 @@ function clickHandler(box) {
       // self.time.delayedCall(500, callbackEvent);
     }
     this.socket.emit("playerMovement", {
-      x: thisSprite.x,
-      y: thisSprite.y
+      platformX: thisSprite.x,
+      platformY: thisSprite.y,
+      avatarX: thisAvatar.x,
+      avatarY: thisAvatar.y
     });
   }
 }
+
 ///2
 // function callbackEvent()
 // {
@@ -313,6 +342,7 @@ function clickHandler(box) {
 ////////////////////////////////////////////////////////
 ///A12 it emits new X and Y coordinates
 function update() {
+
   if (thisSprite) {
     if (this.input.keyboard.checkDown(cursors.left, 250)) {
       thisSprite.x -= 32;
@@ -326,16 +356,13 @@ function update() {
       thisSprite.y += 32;
     }
     this.socket.emit("playerMovement", {
-      x: thisSprite.x,
-      y: thisSprite.y
+      platformX: thisSprite.x,
+      platformY: thisSprite.y,
+      avatarX: thisAvatar.x,
+      avatarY: thisAvatar.y
     });
   }
-  //console.log(playersArray[myPlayerSocket]);
 
-  // if (globalTurnFinished){
-  //
-  //    afterGlobalTurnFinished();
-  // }
 }
 function afterGlobalTurnFinished() {
   opponentPlayerAnswered = false;
@@ -348,61 +375,112 @@ function afterGlobalTurnFinished() {
   console.log("finished turn, uopdate to next val");
 }
 
-function opponentGraphicChooser(selff, opponentInfo) {
+function opponentPlatformChooser(selff, opponentInfo) {
   let playerVisual;
   switch (opponentInfo.playerNo) {
     case 1:
-      playerVisual = self.add
-        .sprite(opponentInfo.x, opponentInfo.y, "p2")
-        .setScale(0.25);
+      playerVisual = self.physics.add
+        .sprite(opponentInfo.platformX, opponentInfo.platformY, "platform2")
+        .setScale(0.35);
       break;
     case 2:
-      playerVisual = self.add
-        .sprite(opponentInfo.x, opponentInfo.y, "p3")
-        .setScale(0.25);
+      playerVisual = self.physics.add
+        .sprite(opponentInfo.platformX, opponentInfo.platformY, "platform3")
+        .setScale(0.35);
       break;
     case 3:
-      playerVisual = self.add
-        .sprite(opponentInfo.x, opponentInfo.y, "p4")
-        .setScale(0.25);
+      playerVisual = self.physics.add
+        .sprite(opponentInfo.platformX, opponentInfo.platformY, "platform4")
+        .setScale(0.35);
       break;
     default:
-      playerVisual = self.add
-        .sprite(opponentInfo.x, opponentInfo.y, "p1")
-        .setScale(0.25);
+      playerVisual = self.physics.add
+        .sprite(opponentInfo.platformX, opponentInfo.platformY, "platform1")
+        .setScale(0.35);
   }
   //add sprite attribute to access srpite in the array.
   opponentInfo.sprite = playerVisual;
   //adding attributes to the sprite.
   playerVisual.playerId = opponentInfo.playerId;
   playerVisual.playerNo = opponentInfo.playerNo;
-  // opponentPlayers.add(picture);
-  self.opponentPlayers.add(playerVisual);
+
+  self.opponentPlatforms.add(playerVisual);
   return playerVisual;
 }
 
-function myCharacterChooser(self, playerInfo) {
+function opponentAvatarChooser(selff, opponentInfo) {
+  let playerVisual;
+  switch (opponentInfo.playerNo) {
+    case 1:
+      playerVisual = self.physics.add
+        .sprite(opponentInfo.avatarX, opponentInfo.avatarY, "p2")
+        .setScale(0.35);
+      break;
+    case 2:
+      playerVisual = self.physics.add
+        .sprite(opponentInfo.avatarX, opponentInfo.avatarY, "p3")
+        .setScale(0.35);
+      break;
+    case 3:
+      playerVisual = self.physics.add
+        .sprite(opponentInfo.avatarX, opponentInfo.avatarY, "p4")
+        .setScale(0.35);
+      break;
+    default:
+      playerVisual = self.physics.add
+        .sprite(opponentInfo.avatarX, opponentInfo.avatarY, "p1")
+        .setScale(0.35);
+  }
+  //add sprite attribute to access srpite in the array.
+  opponentInfo.sprite = playerVisual;
+  //adding attributes to the sprite.
+  playerVisual.playerId = opponentInfo.playerId;
+  playerVisual.playerNo = opponentInfo.playerNo;
+
+  self.opponentAvatars.add(playerVisual);
+  return playerVisual;
+}
+
+function myPlatformChooser(self, playerInfo) {
+  let picture;
+  switch (playerInfo.playerNo) {
+    case 1:
+      picture = self.physics.add.sprite(playerInfo.platformX, playerInfo.platformY, "platform2").setScale(0.35);
+      break;
+    case 2:
+      picture =self.physics.add.sprite(playerInfo.platformX, playerInfo.platformY, "platform3").setScale(0.35);
+      break;
+    case 3:
+      picture = self.physics.add.sprite(playerInfo.platformX, playerInfo.platformY, "platform4").setScale(0.35);
+      break;
+    default:
+      picture = self.physics.add.sprite(playerInfo.platformX, playerInfo.platformY, "platform4").setScale(0.35);
+  }
+  return picture;
+}
+
+function myAvatarChooser(self, playerInfo) {
   let picture;
   switch (playerInfo.playerNo) {
     case 1:
       picture = self.physics.add
-        .image(playerInfo.x, playerInfo.y, "p2")
-        .setScale(0.25);
+        .sprite(playerInfo.avatarX, playerInfo.avatarY, "p2")
+        .setScale(0.35);
       break;
     case 2:
       picture = self.physics.add
-        .image(playerInfo.x, playerInfo.y, "p3")
-        .setScale(0.25);
+        .sprite(playerInfo.avatarX, playerInfo.avatarY, "p3")
+        .setScale(0.35);
       break;
     case 3:
       picture = self.physics.add
-        .image(playerInfo.x, playerInfo.y, "p4")
-        .setScale(0.25);
+        .sprite(playerInfo.avatarX, playerInfo.avatarY, "p4")
+        .setScale(0.35);
       break;
     default:
       picture = self.physics.add
-        .image(playerInfo.x, playerInfo.y, "p1")
-        .setScale(0.25);
+        .sprite(playerInfo.avatarX, playerInfo.avatarY, "p1")
+        .setScale(0.35);
   }
   return picture;
 }

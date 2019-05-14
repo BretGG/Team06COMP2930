@@ -12,26 +12,35 @@ const self = this;
 const numberOfPlayers = 4;
 const Game1_players = [
   {
-    x: 110,
-    y: 225,
+    platformX: 110,
+    platformY: 280,
+    avatarX:110,
+    avatarY:0,
     isTaken: false,
     answeredQuestion: false
   },
   {
-    x: 310,
-    y: 225,
+    platformX: 310,
+    platformY: 280,
+    avatarX:310,
+    avatarY:0,
+
     isTaken: false,
     answeredQuestion: false
   },
   {
-    x: 510,
-    y: 225,
+    platformX: 510,
+    platformY: 280,
+    avatarX:510,
+    avatarY:0,
     isTaken: false,
     answeredQuestion: false
   },
   {
-    x: 710,
-    y: 225,
+    platformX: 710,
+    platformY: 280,
+    avatarX:710,
+    avatarY:0,
     isTaken: false,
     answeredQuestion: false
   }
@@ -143,8 +152,11 @@ io.on("connection", function(socket) {
         players[socket.id] = {
           playerNo: self.playerNo,
           playerId: socket.id,
-          x: Game1_players[i].x,
-          y: Game1_players[i].y
+          platformX: Game1_players[i].platformX,
+          platformY: Game1_players[i].platformY,
+          avatarX: Game1_players[i].avatarX,
+          avatarY: Game1_players[i].avatarY
+
         };
         Game1_players[i].isTaken = true;
         console.log(
@@ -177,8 +189,10 @@ io.on("connection", function(socket) {
   //then sends it to the other players in socket.broadcast.emit*'playermoved'
   socket.on("playerMovement", function(movementData) {
     if (players[socket.id] != undefined) {
-      players[socket.id].x = movementData.x;
-      players[socket.id].y = movementData.y;
+      players[socket.id].platformX = movementData.platformX;
+      players[socket.id].platformY = movementData.platformY;
+      players[socket.id].avatarX = movementData.avatarX;
+      players[socket.id].avatarY = movementData.avatarY;
     }
     // emit a message to all players about the player that moved
     socket.broadcast.emit("playerMoved", players[socket.id]);
