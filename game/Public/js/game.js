@@ -64,9 +64,15 @@ function create() {
     .setOrigin(0)
     .setDisplaySize(800, 600);
 
+  setInterval(() => {
+    for (let id of players) {
+      console.log(JSON.stringify(id.playerId));
+    }
+  }, 5000);
+
   // ----------------------------------------Server Connection----------------------------------------------
   this.socket.on("newPlayer", createPlayer);
-  this.socket.on("disconnect", removePlayer);
+  this.socket.on("removePlayer", removePlayer);
 
   // Update all current players
   this.socket.on("currentPlayers", currentPlayers => {
@@ -81,8 +87,7 @@ function create() {
   // Set the main player
   this.socket.on(
     "me",
-    playerId =>
-      (mainPlayer = players.find(player => player.playerId === playerId))
+    me => (mainPlayer = players.find(player => player.playerId === me.playerId))
   );
 
   // Ask for info
@@ -150,7 +155,20 @@ function createPlatform(platformInfo) {
   return newPlatform;
 }
 
-function removePlayer(playerInfo) {}
+function removePlayer(playerInfo) {
+  console.log("looking to remove: " + JSON.stringify(playerInfo));
+  for (let i = 0; i < players.length; i++) {
+    if (playerInfo[0].playerId === players[i].playerId) {
+      let removing = players.splice(i, 1)[0];
+      console.log("removed: " + JSON.stringify(removing));
+      removing.supportingPlatform.destroy();
+      removing.destroy();
+      break;
+    }
+  }
+
+  updatePlayerPosition();
+}
 
 function wrongAnswer(player) {
   self.tweens.add({

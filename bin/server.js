@@ -85,47 +85,64 @@ function onListening() {
   debug("Listening on " + bind);
 }
 
+//--------------------------------------------------------Game code------------------------------------------------------------
 const self = this;
 const maxPlayers = 4;
 const players = [];
+
+setInterval(() => {
+  console.log(JSON.stringify(players));
+}, 5000);
 
 // Setting up the server to client connection
 io.on("connection", function(socket) {
   // cancel if at max capacity
   if (players.length >= maxPlayers) {
-    return socket.close();
+    return socket.disconnect();
   }
 
   console.log("A user connected: " + socket.id);
 
   players.push({
-    playerId: socket.id
+    playerId: socket.id,
+    wrongAnswers: 0,
+    correctAnswers: 0
   });
 
-  // send the players to requesting user
+  // send all players to requesting user
   socket.on("currentPlayers", () => {
     socket.emit("currentPlayers", players);
-    console.log("currentPlayers: " + JSON.stringify(players));
   });
 
   // update all other players of the new player
   socket.broadcast.emit(
     "newPlayer",
-    players.find(player => player.id === socket.id)
+    players.find(player => player.playerId === socket.id)
   );
 
   //user disconnected, broadcast to all other users and remove from list
   socket.on("disconnect", function() {
-    socket.broadcast.emit(
-      "removedPlayer",
-      players.find(player => player.id === socket.id)
-    );
-    delete players.find(player => player.id === socket.id);
-    socket.close();
+    // remove player from list
+    let removedPlayer;
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].playerId === socket.id) {
+        removedPlayer = players.splice(i, 1);
+        break;
+      }
+    }
+
+    console.log("removed player: " + JSON.stringify(removedPlayer));
+    // find and let all other players know
+    if (removedPlayer) {
+      socket.broadcast.emit("removePlayer", removedPlayer);
+      console.log("broadcast");
+    }
+
+    socket.disconnect();
   });
 
   socket.on("me", function() {
-    socket.emit("me", players.find(player => player.id === socket.id));
+    socket.emit("me", players.find(player => player.playerId === socket.id));
   });
 
   socket.on("playerAnswered", function(data) {
