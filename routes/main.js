@@ -27,7 +27,7 @@ router.get("/joinRoom", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/joinRoom.html"));
 });
 
-/* GET myCard page. */
+/* GET myCards page. */
 router.get("/mycard", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/myCards.html"));
 });
@@ -36,5 +36,11 @@ router.get("/mycard", function(req, res) {
 router.get("/login", function(req, res) {
   res.render(path.resolve(__dirname, "../login/BretsTest.html"));
 });
+
+/* GET shop page. */
+router.get("/shop", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/shop.html"));
+});
+
 
 module.exports = router;

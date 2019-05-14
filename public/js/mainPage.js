@@ -53,4 +53,14 @@ $(document).ready(() => {
     $("#logout").click(() => {
         window.location.href = "/";
     });
+
+    /** Takes user back to shop page */
+    $("#shop").click(() => {
+        window.location.href = "/shop";
+    });
+
+    /** Takes user back to mycard page */
+    $("#myCards").click(() => {
+        window.location.href = "/mycard";
+    });
 });

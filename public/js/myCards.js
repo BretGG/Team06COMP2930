@@ -29,6 +29,7 @@ $(document).ready(() => {
         $("#status").text("");
         $(".headerLeft").css("border-bottom", "none");
         $(".headerRight").css("border-bottom", "2px solid #42A164");
+        $("#back").css("padding-top:", "15px");
         $(".headerLeftCon").hide();
         $(".headerRightCon").show();
     });
