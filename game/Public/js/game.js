@@ -30,6 +30,15 @@ let mainPlayer;
 let players = [];
 let platforms = [];
 
+// Holds all the spawn points for when users join, could be done with math (should be)
+// index 0 is for 1 player, index 1 is for 2 players and so on
+const spawnPoints = [
+  [400],
+  [266.6, 533.3],
+  [200, 400, 600],
+  [160, 320, 480, 640]
+];
+
 function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
   this.load.image("cake", "../assets/character/cake.png");
@@ -56,7 +65,7 @@ function create() {
 
   setInterval(() => {
     createPlayer();
-  }, 3000);
+  }, 5000);
   createPlayer();
 
   // Physics.moveTo(object, x, y, speed, max_time) for changing platform height
@@ -64,51 +73,85 @@ function create() {
 }
 
 function update() {
+  // Jumping player
   if (cursor.space.isDown && mainPlayer.body.touching.down) {
-    console.log("here");
     mainPlayer.setVelocityY(-300);
   }
 }
 
 // Create to player object, could be another class but...
 function createPlayer(playerInfo) {
-  console.log("create player");
-  let startX;
-  if (players.length) {
-    startX = 800 / players.length + 2;
-  } else {
-    startX = 800 / 2;
-  }
-
-  let newPlayer = self.physics.add.sprite(startX, 0, "p1");
-  console.log(newPlayer);
-  players.push(newPlayer);
+  // Always adding in the last postition
+  let startingX = spawnPoints[players.length][players.length];
+  let newPlayer = self.physics.add.sprite(startingX, -50, "p1");
   newPlayer.setBounce(0.3);
   newPlayer.setDepth(5);
   newPlayer.body.height = newPlayer.body.height - newPlayer.body.height / 2.5;
 
-  // Set the current player if no already
+  // Set the current player if not already
   if (!mainPlayer) {
     mainPlayer = newPlayer;
   }
 
   // Create the platform for this player
-  createPlatform({ x: startX, supportingPlayer: newPlayer });
+  let newPlatform = createPlatform({
+    x: spawnPoints[players.length][players.length],
+    y: 1000,
+    supportingPlayer: newPlayer
+  });
+  newPlayer.supportingPlatform = newPlatform;
+  players.push(newPlayer);
+
+  // Update other players positions
+  updatePlayerPosition();
 }
 
 function createPlatform(platformInfo) {
-  let newPlatform = self.physics.add.sprite(platformInfo.x, 400, "platform1");
+  let newPlatform = self.physics.add.sprite(
+    platformInfo.x,
+    platformInfo.y,
+    "platform1"
+  );
   newPlatform.setImmovable(true);
   newPlatform.body.allowGravity = false;
+
+  self.tweens.add({
+    targets: newPlatform,
+    y: 400,
+    ease: "Linear",
+    duration: 1000,
+    repeat: 0
+  });
 
   newPlatform.supportingPlayer = platformInfo.supportingPlayer;
   self.physics.add.collider(platformInfo.supportingPlayer, newPlatform);
   platforms.push(newPlatform);
+
+  return newPlatform;
+}
+
+function wrongAnswer(player) {
+  self.tweens.add({
+    targets: player.supportingPlatform,
+    x: player.supportingPlatform.x,
+    y: player.supportingPlatform.y + 50,
+    ease: "Linear",
+    duration: 300,
+    repeat: 0
+  });
 }
 
 // Used for adding and removing players
-function updateDisplay() {
-  for (let plat of platforms) plat.setVelocityY(50);
+function updatePlayerPosition() {
+  for (let i = 0; i < players.length; i++) {
+    self.tweens.add({
+      targets: [players[i], players[i].supportingPlatform],
+      x: spawnPoints[players.length - 1][i],
+      ease: "Linear",
+      duration: 1000,
+      repeat: 0
+    });
+  }
 }
 
 // var question;
