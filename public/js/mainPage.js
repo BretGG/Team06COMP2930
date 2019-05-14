@@ -5,6 +5,9 @@
 // const router = express.Router();
 
 $(document).ready(() => {
+    window.onload = function() {     
+        $('#avatar').toggleClass('bounceIn');
+    };
 
     $.ajaxSetup({
         headers: {
@@ -41,12 +44,12 @@ $(document).ready(() => {
 
     $("#create").click(() => {
         window.location.href = "createRoom";
-    });
+    })
 
 
-        $("#join").click(() => {
-            window.location.href = "joinRoom";
-        });
+    $("#join").click(() => {
+        window.location.href = "joinRoom";
+    })
 
     $("#logout").click(() => {
         window.location.href = "/";

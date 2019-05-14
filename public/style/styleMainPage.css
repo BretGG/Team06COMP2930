@@ -1,35 +1,70 @@
-      #avatar{
-      margin: 0 auto;
-      background-image: url("../images/platform.png");
-      width: 176px;
-      height: 251px;
-      margin-bottom: 3%;
-      }
+@keyframes slideInUp {
+  from {
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
 
-      #welcomecon {
-        margin: 2%;
-      }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
 
-      #mainpagecon{
-        margin: 0 auto;
-        width: 450px;
-        padding-bottom: 4%;
-        font-size: 1em;
-        height:600px;
-        text-align: center;
-      }
+.slideInUp {
+  animation-name: slideInUp;
+}
 
-      #mainpagecon button{
-        width: 50%;
-        margin-bottom: 2%;
-        background-color: rgba(255,255,255, 0.75);
-        border: 4px solid #707070;
-        border-radius: 5px;
-      }
 
-      #mainpagecon label{
-        font-size: 1.2em;
-      }
+@keyframes zoomOutDown {
+  40% {
+    opacity: 1;
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
+    transform-origin: center bottom;
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+
+.zoomOutDown {
+  animation-name: zoomOutDown;
+}
+
+#avatar{
+  margin: 0 auto;
+  background-image: url("../images/platform.png");
+  width: 176px;
+  height: 251px;
+  margin-bottom: 3%;
+}
+
+#welcomecon {
+  margin: 2%;
+}
+
+#mainpagecon{
+  margin: 0 auto;
+  width: 450px;
+  padding-bottom: 4%;
+  font-size: 1em;
+  height:600px;
+  text-align: center;
+}
+
+#mainpagecon button{
+  width: 50%;
+  margin-bottom: 2%;
+  background-color: rgba(255,255,255, 0.75);
+  border: 4px solid #707070;
+  border-radius: 5px;
+}
+
+#mainpagecon label{
+  font-size: 1.2em;
+}
 
 
 @media screen and (min-width: 1501px){
