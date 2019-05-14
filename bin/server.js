@@ -90,12 +90,16 @@ const self = this;
 const maxPlayers = 4;
 const players = [];
 
-setInterval(() => {
-  console.log(JSON.stringify(players));
-}, 5000);
+// setInterval(() => {
+//   console.log(JSON.stringify(players));
+// }, 5000);
+const dummycards = [{question: "1 + 1 = ?", answer: "2"},{question: "9 + 1 = ?", answer: "10"},{question: "5 + 1 = ?",answer: "6"},{question: "8 x 3", answer: "24"}];
+
 
 // Setting up the server to client connection
 io.on("connection", function(socket) {
+
+  socket.emit("flashcards", dummycards);
   // cancel if at max capacity
   if (players.length >= maxPlayers) {
     return socket.disconnect();
