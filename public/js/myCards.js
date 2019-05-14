@@ -21,7 +21,7 @@ $(document).ready(() => {
 
       $('#cardsCon').append(card);
       card.appendChild(h5);
-      card.appendChild(p);     
+      card.appendChild(p);
     });
 
     /** Switches container from Create Cards to My Cards */
@@ -43,30 +43,32 @@ $(document).ready(() => {
 
     /** Dummy function that updates page to let user know, card was successfully created */
     $("#submitLeft").click(() => {
-        $("#status").text("Card successfully added. Check under My Cards");
 
-        //Did not route to myCards.html yet so idk if this ajax will work.
+        $.ajax({
+            type: "post",
+            url: "/cards",
+            dataType: 'json',
+            data: {
+                question: $("#question").val(),
+                format: "tf",
+                answer: $("#answer").val(),
+                deck: "test"
+            },
+            success: card => {
+                $("#status").text("Card successfully added. Check under My Cards");
+                console.log(JSON.stringify(card));
+                // window.location.href="";
+                $("#status").fadeOut().delay(3000).text("");
 
-        // $.ajax({
-        //         type: "post",
-        //         url: "/users",
-        //         dataType: 'json',
-        //         data: {
-        //             question: $("#question").val(),
-        //             correct_answer: $("#answer").val(),
-        //         },
-        //         success: user => {
-        //             $("#status").innerHTML("Card successfully added. Check under My Cards");
-        //             print($("#question").val() + "\n" + $("#answer").val())
-        //             window.location.href="/";
-        //             $("#status").fadeOut().delay(3000).innerHTML("");
-        //         },
-        //         error: err => {
-        //             // print(err.responseText)
-        //             $("#status").innerHTML("Unforunate circumstance. Card failed to be added.");
-        //             $("#status").fadeOut().delay(3000).innerHTML("");
-        //         }
-        // });
+            },
+            error: err => {
+                $("#status").text("Unforunate circumstance. Card failed to be added.");
+                console.log(err);
+                // $("#status").fadeOut().delay(3000).innerHTML("");
+            }
+        });
+
+
     });
 
 });
