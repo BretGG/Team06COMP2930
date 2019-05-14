@@ -14,16 +14,16 @@ const Game1_players = [
   {
     platformX: 110,
     platformY: 280,
-    avatarX:110,
-    avatarY:0,
+    avatarX: 110,
+    avatarY: 0,
     isTaken: false,
     answeredQuestion: false
   },
   {
     platformX: 310,
     platformY: 280,
-    avatarX:310,
-    avatarY:0,
+    avatarX: 310,
+    avatarY: 0,
 
     isTaken: false,
     answeredQuestion: false
@@ -31,16 +31,16 @@ const Game1_players = [
   {
     platformX: 510,
     platformY: 280,
-    avatarX:510,
-    avatarY:0,
+    avatarX: 510,
+    avatarY: 0,
     isTaken: false,
     answeredQuestion: false
   },
   {
     platformX: 710,
     platformY: 280,
-    avatarX:710,
-    avatarY:0,
+    avatarX: 710,
+    avatarY: 0,
     isTaken: false,
     answeredQuestion: false
   }
@@ -156,7 +156,6 @@ io.on("connection", function(socket) {
           platformY: Game1_players[i].platformY,
           avatarX: Game1_players[i].avatarX,
           avatarY: Game1_players[i].avatarY
-
         };
         Game1_players[i].isTaken = true;
         console.log(
@@ -176,13 +175,21 @@ io.on("connection", function(socket) {
     );
   }
   // send the players array object to the new player
-  socket.emit("currentPlayers", players);
+  socket.on("currentPlayers", () => {
+    socket.emit("currentPlayers", players);
+    console.log("currentPlayers: " + JSON.stringify(players));
+  });
+
   // update all other players of the new player
   socket.broadcast.emit("newPlayer", players[socket.id]);
 
   //user disconnect
   socket.on("disconnect", function() {
     disconnectPlayer(socket.id);
+  });
+
+  socket.on("me", function() {
+    socket.emit("me", players[socket.id]);
   });
 
   // when a player moves, update the player data

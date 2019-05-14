@@ -55,21 +55,40 @@ function preload() {
 }
 
 function create() {
+  self = this;
+  this.socket = io();
+  cursor = this.input.keyboard.createCursorKeys();
+
   background = this.add
     .image(000, 00, "sky")
     .setOrigin(0)
     .setDisplaySize(800, 600);
 
-  cursor = this.input.keyboard.createCursorKeys();
-  self = this;
+  // ----------------------------------------Server Connection----------------------------------------------
+  this.socket.on("newPlayer", createPlayer);
+  this.socket.on("disconnect", removePlayer);
 
-  setInterval(() => {
-    createPlayer();
-  }, 5000);
-  createPlayer();
+  // Update all current players
+  this.socket.on("currentPlayers", currentPlayers => {
+    players = [];
+    console.log(currentPlayers);
+    for (let player of currentPlayers) {
+      createPlayer(player);
+    }
+    this.socket.emit("me");
+  });
 
-  // Physics.moveTo(object, x, y, speed, max_time) for changing platform height
-  // body.checkWorldBounds() might be useful for checking if a player loses
+  // Set the main player
+  this.socket.on(
+    "me",
+    playerId =>
+      (mainPlayer = players.find(player => player.playerId === playerId))
+  );
+
+  // Ask for info
+  this.socket.emit("currentPlayers");
+
+  // -------------------------------------------------------------------------------------------------------
 }
 
 function update() {
@@ -87,6 +106,7 @@ function createPlayer(playerInfo) {
   newPlayer.setBounce(0.3);
   newPlayer.setDepth(5);
   newPlayer.body.height = newPlayer.body.height - newPlayer.body.height / 2.5;
+  newPlayer.playerId = playerInfo.playerId;
 
   // Set the current player if not already
   if (!mainPlayer) {
@@ -129,6 +149,8 @@ function createPlatform(platformInfo) {
 
   return newPlatform;
 }
+
+function removePlayer(playerInfo) {}
 
 function wrongAnswer(player) {
   self.tweens.add({
