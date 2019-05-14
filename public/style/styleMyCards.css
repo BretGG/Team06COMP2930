@@ -1,16 +1,18 @@
+/** Aligns text to center */
 #status {
   text-align: center;
 }
 
+/** Restricts size and color of card */
 .card {
   margin: 1rem;
   background: white;
   box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
   border-radius: 12px;
   overflow: hidden;
-  transition: all .2s linear;
 }
 
+/** Restricts size, border, and color of card(s) container*/
 #cardsCon{
 	height: 370px;
   overflow-y: scroll;
@@ -18,25 +20,33 @@
   border: 2px solid #A7BAB6;
 }
 
+/** WIDTH RANGE FROM 500px to 799px */
 @media screen and (min-width: 500px) and (max-width: 799px){
-  #cardsCon{
-  height: 360px;
-}
-}
-
-@media screen and (min-width: 1501px){
-  #cardsCon{
-    height: 355px;
-  }
-}
-
-@media screen and (min-width: 1080px) and (max-width: 1500px){
+  /**Changes size of div to match screen size*/
   #cardsCon{
     height: 360px;
   }
 }
 
+/** WIDTH RANGE FROM 1501px to infinity */
+@media screen and (min-width: 1501px){
+  /**Changes size of div to match screen size*/
+  #cardsCon{
+    height: 355px;
+  }
+}
+
+/** WIDTH RANGE FROM 1080px to 1500px */
+@media screen and (min-width: 1080px) and (max-width: 1500px){
+  /**Changes size of div to match screen size*/
+  #cardsCon{
+    height: 360px;
+  }
+}
+
+/** WIDTH RANGE FROM 800px to 1079px */
 @media screen and (min-width: 800px) and (max-width: 1079px) {  
+  /**Changes size of div to match screen size*/
   #cardsCon{
     height: 400px;
   }

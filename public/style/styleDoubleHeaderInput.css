@@ -66,6 +66,7 @@
         background-color: #7FC4B5;
       }
 
+/** WIDTH RANGE FROM 500px to 799px */
 @media screen and (min-width: 500px) and (max-width: 799px){
       #mainCon{
         margin: 0 auto;
@@ -78,6 +79,7 @@
       }
 }
 
+/** WIDTH RANGE FROM 1501px to infinity */
 @media screen and (min-width: 1501px){
       #mainCon{
         font-size: 1em;
@@ -86,6 +88,7 @@
       }
 }
 
+/** WIDTH RANGE FROM 1080px to 1500px */
 @media screen and (min-width: 1080px) and (max-width: 1500px){
       #mainCon{
         width: 400px;
@@ -94,6 +97,7 @@
       }
 }
 
+/** WIDTH RANGE FROM 800px to 1079px */
 @media screen and (min-width: 800px) and (max-width: 1079px) {
       #mainCon{
         width: 600px;

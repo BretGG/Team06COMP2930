@@ -2,40 +2,81 @@
 
 /* Imports font being used through application */
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-    /* Minimum width for application */
-    html {
-        min-width: 300px;
-    }
+/* Minimum width for application */
+html {
+    min-width: 300px;
+}
 
-    /* Centers elements, sets and stretches default background, and sets font. */
-    body {
-         margin: 0 auto;
-         background: url('../images/BG.png') no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        font-family: 'Segoe UI Regular';
-    }
+/* Centers elements, sets and stretches default background, and sets font. */
+body {
+     margin: 0 auto;
+     background: url('../images/BG.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Segoe UI Regular';
+}
 
-    .hoverPointer :hover{
-        cursor: pointer;
-    }
+/*On all clickable buttons, mouse takes to hand */
+.hoverPointer :hover{
+    cursor: pointer;
+}
 
-    /* Setting font properties */
-    @font-face {
-      font-family: 'Segoe UI Regular';
-      font-style: normal;
-      font-weight: normal;
-      src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
-    }
+/* Setting font properties */
+@font-face {
+  font-family: 'Segoe UI Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Segoe UI Regular'), url('Segoe UI.woff') format('woff');
+}
 
-    /* Removes all text decorations for links */
-    a {
-      text-decoration: none;
-    }
+/* Removes all text decorations for links */
+a {
+  text-decoration: none;
+}
+
+/** Settings avatar size, margins, and etc */
+#avatar{
+  margin: 0 auto;
+  background-image: url("../images/platform.png");
+  width: 176px;
+  height: 251px;
+  margin-bottom: 3%;
+}    
+
+/**Addes margin to container holding title */
+#titlecon {
+  margin: 2%;
+}
+
+/** Restricts size of the container holding all main content*/
+#mainpagecon{
+  margin: 0 auto;
+  width: 450px;
+  padding-bottom: 4%;
+  font-size: 1em;
+  height:600px;
+  text-align: center;
+}
+
+/** All buttons under #mainpagecon have the same CSS changes (width, color, border, etc) */
+#mainpagecon button{
+  width: 50%;
+  margin-bottom: 2%;
+  background-color: rgba(255,255,255, 0.75);
+  border: 4px solid #707070;
+  border-radius: 5px;
+}
+
+/** All labels under #mainpagecon have the same font size */
+#mainpagecon label{
+  font-size: 1.2em;
+}
 
 /* Animations */
+
+/*Animation on window load for avatar */
 @keyframes bounceIn {
   from,
   60%,
@@ -74,37 +115,42 @@
 }
 
 /* Media Queries */
-    /* Header to indicate Page */
-    #header{
-      padding: 2%;
-      text-align: center;
-      font-size: 1.6em;
-      margin-bottom: 1%;
-      border-bottom: 2px solid #42A164;
-    }
+/* Header to indicate Page */
+#header{
+  padding: 2%;
+  text-align: center;
+  font-size: 1.6em;
+  margin-bottom: 1%;
+  border-bottom: 2px solid #42A164;
+}
 
-    #logo{
-      margin: 0 auto;
-      text-align: center;
-      font: #013F17;
-      text-shadow:
-      font-size:2.5em;
-    }
+/** Aligns title to center and changes font size */
+#logo{
+  margin: 0 auto;
+  text-align: center;
+  font-size:2.5em;
+}
 
-    @media screen and (min-width: 1501px){
+/** WIDTH RANGE FROM 1501px to infinity */
+@media screen and (min-width: 1501px){
+  /**Changes font size to match screen size*/
+  #logo{
+      font-size:3em;
+  }
+}
+
+/** WIDTH RANGE FROM 1080px to 1500px */
+@media screen and (min-width: 1080px) and (max-width: 1500px){
+      /**Changes font size to match screen size*/
       #logo{
-          font-size:3em;
+          font-size:2em;
       }
-    }
+}
 
-    @media screen and (min-width: 1080px) and (max-width: 1500px){
-          #logo{
-              font-size:2em;
-          }
-    }
-
-    @media screen and (min-width: 800px) and (max-width: 1079px) {
-       #logo{
-          font-size:2.5em;
-      }
-    }
+/** WIDTH RANGE FROM 800px to 1079px */
+@media screen and (min-width: 800px) and (max-width: 1079px) {
+    /**Changes font size to match screen size*/
+   #logo{
+      font-size:2.5em;
+  }
+}

@@ -1,48 +1,9 @@
-@keyframes slideInUp {
-  from {
-    transform: translate3d(0, 100%, 0);
-    visibility: visible;
-  }
-
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.slideInUp {
-  animation-name: slideInUp;
-}
-
-
-@keyframes zoomOutDown {
-  40% {
-    opacity: 1;
-    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
-    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
-    transform-origin: center bottom;
-    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
-  }
-}
-
-.zoomOutDown {
-  animation-name: zoomOutDown;
-}
-
 #avatar{
   margin: 0 auto;
   background-image: url("../images/platform.png");
   width: 176px;
   height: 251px;
   margin-bottom: 3%;
-}
-
-#welcomecon {
-  margin: 2%;
 }
 
 #mainpagecon{
@@ -64,15 +25,4 @@
 
 #mainpagecon label{
   font-size: 1.2em;
-}
-
-
-@media screen and (min-width: 1501px){
-}
-
-@media screen and (min-width: 1080px) and (max-width: 1500px){
-}
-
-@media screen and (min-width: 800px) and (max-width: 1079px) {  
-
 }

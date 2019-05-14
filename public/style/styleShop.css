@@ -1,81 +1,14 @@
-@keyframes bounceIn {
-  from,
-  60%,
-  75%,
-  90%,
-  to {
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-
-  0% {
-    opacity: 0;
-    transform: translate3d(0, -3000px, 0);
-  }
-
-  60% {
-    opacity: 1;
-    transform: translate3d(0, 25px, 0);
-  }
-
-  75% {
-    transform: translate3d(0, -10px, 0);
-  }
-
-  90% {
-    transform: translate3d(0, 5px, 0);
-  }
-
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.bounceIn {
-  animation-duration: 1s;
-  animation-name: bounceIn;
-}
-
-
-#avatar{
-margin: 0 auto;
-background-image: url("../images/platform.png");
-width: 176px;
-height: 251px;
-margin-bottom: 3%;
-}
-
-#welcomecon {
+/** Adds margin to container holding title */
+#titlecon {
   margin: 2%;
 }
 
-#mainpagecon{
-  margin: 0 auto;
-  width: 450px;
-  padding-bottom: 4%;
-  font-size: 1em;
-  height:600px;
-  text-align: center;
-}
-
-#mainpagecon button{
-  width: 50%;
+/** Changes color, size, and border of all div under .category */
+.category div {
+  display: inline-block;
+  width: 30%;
   margin-bottom: 2%;
   background-color: rgba(255,255,255, 0.75);
   border: 4px solid #707070;
   border-radius: 5px;
-}
-
-#mainpagecon label{
-  font-size: 1.2em;
-}
-
-
-@media screen and (min-width: 1501px){
-}
-
-@media screen and (min-width: 1080px) and (max-width: 1500px){
-}
-
-@media screen and (min-width: 800px) and (max-width: 1079px) {  
-
 }

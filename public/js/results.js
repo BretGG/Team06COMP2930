@@ -1,9 +1,11 @@
 $(document).ready(() => {
+    /** Dummy data */
     var ranks = [1, 2, 3, 4];
     var player = ["Hannah", "Bret", "Rose", "Jessica"];
     var points = [800, 400, 300, 200];
     var i = 0;
 
+    /** Dummy function that adds players' ranking to page visually*/
     while(i < 4){
       var entry = document.createElement('div');
       entry.setAttribute('class', 'entry');
@@ -26,8 +28,6 @@ $(document).ready(() => {
       entry.appendChild(userName);
       entry.appendChild(score); 
       $('#roomCon').append(entry);
-  
-      
       i++;
     }
 

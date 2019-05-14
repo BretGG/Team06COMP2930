@@ -1,0 +1,39 @@
+.entry {
+  height: 51px;
+  background-color: #D9F2ED;
+  margin: 4.5%;
+  border: 2px solid #408976;
+  border-radius: 2px;
+}
+
+/** Ranking in game i.e. 1st,2nd,3rd, or 4th */
+.ranking{
+  padding-left: 13px;
+  padding-top: 5px;
+  width: 60px;
+  height: calc(50px - 3%);
+  float:left;
+  background-color: #8BD6C4;
+  border-right: 2px solid #74B2A2;
+  border-bottom: 2px solid #408976;
+}
+
+/** Changes placement of username */
+.name{
+  float: left; 
+}
+
+/** Changes placement of user score */
+.score{
+  float: right; 
+  padding-right: 10px;
+}
+
+/** Container wrapping both username and user score */
+.userInfo{
+  padding-top: 5px;
+  height: calc(50px - 3%);
+  margin-left: 10px;
+  font-size: 1.4em;
+  vertical-align: middle;
+}

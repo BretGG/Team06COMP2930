@@ -1,7 +1,10 @@
+/** Dummy data */
 var question = ["1", "2", "3", "54", "324"];
 var answer = ["sad", "dad", "da", "ba", "saa"];
 
 $(document).ready(() => {
+
+    /** Dummy function that will add dummy cards to screen */
     $('#cardsCon').click(()=>{
       const card = document.createElement('div');
       card.setAttribute('class', 'card');
@@ -21,6 +24,7 @@ $(document).ready(() => {
       card.appendChild(p);     
     });
 
+    /** Switches container from Create Cards to My Cards */
     $(".headerRight").click(() => {
         $("#status").text("");
         $(".headerLeft").css("border-bottom", "none");
@@ -29,6 +33,7 @@ $(document).ready(() => {
         $(".headerRightCon").show();
     });
 
+    /** Switches container from My Cards to Create Cards */
     $(".headerLeft").click(() => {
         $(".headerRight").css("border-bottom", "none");
         $(".headerLeft").css("border-bottom", "2px solid #42A164");
@@ -36,6 +41,7 @@ $(document).ready(() => {
         $(".headerLeftCon").show();
     });
 
+    /** Dummy function that updates page to let user know, card was successfully created */
     $("#submitLeft").click(() => {
         $("#status").text("Card successfully added. Check under My Cards");
 

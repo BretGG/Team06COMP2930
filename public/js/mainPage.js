@@ -1,23 +1,16 @@
-// var request = require('request-promise');
-// const jwt = require('jsonwebtoken');
-// const express = require('express');
-//
-// const router = express.Router();
-
 $(document).ready(() => {
+
+    /** On page load, plays avatar animation */
     window.onload = function() {     
         $('#avatar').toggleClass('bounceIn');
     };
 
+    /**Grabbing user's unique login token for later functions*/
     $.ajaxSetup({
         headers: {
             'auth-token': localStorage.getItem('auth-token')
         }
     });
-
-    let print = user => {
-        console.log(JSON.stringify(user));
-    };
 
     function getUserInfo(callback) {
         console.log('sign in');
@@ -35,22 +28,28 @@ $(document).ready(() => {
         });
     }
 
+
+    /** Grabs user's username and appends to it welcome text */
     function setProfileInfo(user) {
         let welcome = $('#welcome');
         welcome.text("Welcome, " + user.username + "!");
     }
 
+
+    /** Calling setProfileInfo function */
     getUserInfo(setProfileInfo);
 
+    /** Takes user to create room page */
     $("#create").click(() => {
         window.location.href = "createRoom";
     })
 
-
+    /** Takes user to join room page */
     $("#join").click(() => {
         window.location.href = "joinRoom";
     })
 
+    /** Takes user back to signup/signin page */
     $("#logout").click(() => {
         window.location.href = "/";
     });

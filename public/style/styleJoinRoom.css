@@ -1,18 +1,21 @@
-      #submit {
-        width: 30%;
-        clear:both;
-        display: block;
-        margin: 0 auto;
-        background-color: #7FC4B5;
-      }
+/** Submit button */
+#submit {
+  width: 30%;
+  clear:both;
+  display: block;
+  margin: 0 auto;
+  background-color: #7FC4B5;
+}
 
-      #back {
-        border-color: rgb(127,196,181, 0.99);
-        background-color: #D9F2ED;
-        margin-left: 2%;
-        margin-top: 22%;
-      }
+/*Back button */
+#back {
+  border-color: rgb(127,196,181, 0.99);
+  background-color: #D9F2ED;
+  margin-left: 2%;
+  margin-top: 22%;
+}
 
+/** WIDTH RANGE FROM 1501px to infinity */
 @media screen and (min-width: 1501px){
       #back{
         margin-left: 2%;
@@ -21,6 +24,7 @@
 
 }
 
+/** WIDTH RANGE FROM 1080px to 1500px */
 @media screen and (min-width: 1080px) and (max-width: 1500px){
       #back{
         margin-left: 2%;
@@ -28,6 +32,7 @@
       }
 }
 
+/** WIDTH RANGE FROM 800px to 1079px */
 @media screen and (min-width: 800px) and (max-width: 1079px) {  
       #back{
         margin-left: 2%;
