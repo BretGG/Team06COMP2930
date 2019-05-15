@@ -12,6 +12,9 @@ const config = {
     arcade: {
       gravity: { y: 450 },
       debug: "true"
+    },
+    matter: {
+      debug: true
     }
   },
   scene: {
@@ -29,11 +32,7 @@ let cursor;
 let mainPlayer;
 let players = [];
 let platforms = [];
-<<<<<<< HEAD
 let answerCards = [];
-=======
-let count=0;
->>>>>>> 3d9587866f47e025c648e0594312f9332002005c
 
 // Holds all the spawn points for when users join, could be done with math (should be)
 // index 0 is for 1 player, index 1 is for 2 players and so on
@@ -70,18 +69,17 @@ function create() {
   this.socket.on("removePlayer", removePlayer);
   this.socket.on("playerJump", playerJump);
 
-  this.socket.on("flashcards", displayFlashcards);
+  //   this.socket.on("flashcards", displayFlashcards);
 
-  function displayFlashcards(data){
-    if(data[count]!=undefined){
-      let string = self.add.text(300, 90, data[count].question, {
-        fontFamily: '"Roboto Condensed"',
-        fontSize: 36,
-        color: "#000000"
-      });
-    }
-
-  }
+  //   function displayFlashcards(data) {
+  //     if (data[count] != undefined) {
+  //       let string = self.add.text(300, 90, data[count].question, {
+  //         fontFamily: '"Roboto Condensed"',
+  //         fontSize: 36,
+  //         color: "#000000"
+  //       });
+  //     }
+  //   }
   // Update all current players
   this.socket.on("currentPlayers", currentPlayers => {
     players = [];
@@ -101,7 +99,12 @@ function create() {
   // Ask for info
   this.socket.emit("currentPlayers");
 
-  displayAnswers(["something", "yay"]);
+  displayAnswers([
+    "something is going on here",
+    "yay for another question of this length",
+    "wow",
+    "Another question, Amazing"
+  ]);
 
   // -------------------------------------------------------------------------------------------------------
 }
@@ -127,17 +130,17 @@ function createPlayer(playerInfo) {
   let newPlayer;
   switch (players.length) {
     case 0:
-    newPlayer = self.physics.add.sprite(startingX, -50, "p1");
-    break;
+      newPlayer = self.physics.add.sprite(startingX, -50, "p1");
+      break;
     case 1:
-    newPlayer = self.physics.add.sprite(startingX, -50, "p2");
-    break;
+      newPlayer = self.physics.add.sprite(startingX, -50, "p2");
+      break;
     case 2:
-    newPlayer = self.physics.add.sprite(startingX, -50, "p3");
-    break;
+      newPlayer = self.physics.add.sprite(startingX, -50, "p3");
+      break;
     case 3:
-    newPlayer = self.physics.add.sprite(startingX, -50, "p4");
-    break;
+      newPlayer = self.physics.add.sprite(startingX, -50, "p4");
+      break;
   }
   newPlayer.setBounce(0.3);
   newPlayer.setDepth(5);
@@ -174,7 +177,7 @@ function createPlatform(platformInfo) {
   self.tweens.add({
     targets: newPlatform,
     y: 400,
-    ease: "Linear",
+    ease: "Power4",
     duration: 1000,
     repeat: 0
   });
@@ -218,30 +221,76 @@ function updatePlayerPosition() {
     self.tweens.add({
       targets: [players[i], players[i].supportingPlatform],
       x: spawnPoints[players.length - 1][i],
-      ease: "Linear",
+      ease: "Power4",
       duration: 1000,
       repeat: 0
     });
   }
 }
 
+// Creates the the display for answers
 function displayAnswers(answers) {
   // Start off screen
   for (let answer of answers) {
-    let card = self.add.image(1200, 450, "cardFront");
-    card.text = self.add.text(1200, 450, "hello", {
+    // Creation of group and adding the car front
+    let group = self.physics.add.group();
+    group.create(-100, 550, "cardFront");
+    let cardFront = group.getChildren()[0];
+
+    // Creation of text and adding to group
+    text = self.add.text(0, 0, answer, {
       fontFamily: "Arial",
-      fontSize: 20,
+      fontSize: 18,
       color: "#000000",
       align: "center",
-      wordWrap: { width: card.width - 30 }
+      boundsAlignH: "center",
+      boundsAlignV: "middle",
+      wordWrap: { width: cardFront.width - 25 }
     });
-    answerCards.push(self.scene.add.group().add(cardFront, question));
+    group.add(text);
+    text.setDepth(2);
+
+    // Center text on card
+    text.setPosition(
+      cardFront.x - text.getBounds().width / 2,
+      cardFront.y - text.getBounds().height / 2
+    );
+
+    // Ignore gravity on all parts of card
+    for (let thing of group.getChildren()) {
+      thing.body.allowGravity = false;
+    }
+
+    // Add card to our master list
+    answerCards.push(group);
   }
 
-  for (let card of answerCards) {
-    card.setVelocityX(-50);
-    card.text.setVelocityX(-50);
+  // Sliding in the cards
+  for (let group of answerCards) {
+    // Slide in card front
+    self.tweens.add({
+      targets: group.getChildren()[0],
+      x:
+        spawnPoints[answerCards.length - 1][
+          answerCards.findIndex(holder => group === holder)
+        ],
+      ease: "Quint",
+      duration: 3000,
+      repeat: 0
+    });
+
+    // Slide in card text
+    self.tweens.add({
+      targets: group.getChildren()[1],
+      x:
+        spawnPoints[answerCards.length - 1][
+          answerCards.findIndex(holder => group === holder)
+        ] -
+        group.getChildren()[1].width / 2,
+      ease: "Quint",
+      duration: 3000,
+      repeat: 0
+    });
   }
 }
 
@@ -307,7 +356,7 @@ function displayAnswers(answers) {
 //     };
 //   }
 // }
-  /**
+/**
     Adds a dummy answer card to the original array.
     Goes through a while loop, and pushes a random index
     from the original array into the temp array,
@@ -317,19 +366,19 @@ function displayAnswers(answers) {
     pushed into the new array.
     Then the original Array is reassigned to temp array.
     **/
-  // addDummy(dummy) {
-  //
-  //
-  //   this.answersList.push(dummy);
-  //   let tempArray = [];
-  //   while (this.answersList.length != 0) {
-  //     let randIndex = Math.floor(Math.random() * this.answersList.length);
-  //     tempArray.push(this.answersList[randIndex]);
-  //     this.answersList.splice(randIndex, 1);
-  //   }
-  //   this.answersList = tempArray;
-  //   console.log(this.answersList);
-  // }
+// addDummy(dummy) {
+//
+//
+//   this.answersList.push(dummy);
+//   let tempArray = [];
+//   while (this.answersList.length != 0) {
+//     let randIndex = Math.floor(Math.random() * this.answersList.length);
+//     tempArray.push(this.answersList[randIndex]);
+//     this.answersList.splice(randIndex, 1);
+//   }
+//   this.answersList = tempArray;
+//   console.log(this.answersList);
+// }
 
 ////////////////////////////////////////////////
 // class answers {
@@ -388,25 +437,21 @@ function displayAnswers(answers) {
 
 ////////////////////////////////
 
+// globalFlashcard = createQuestionAnswer(this, questionList.getValue());
 
+// globalTurnFinished = false;
 
+//  If a Game Object is clicked on, this event is fired.
+//  We can use it to emit the 'clicked' event on the game object itself.
 
-
-  // globalFlashcard = createQuestionAnswer(this, questionList.getValue());
-
-  // globalTurnFinished = false;
-
-  //  If a Game Object is clicked on, this event is fired.
-  //  We can use it to emit the 'clicked' event on the game object itself.
-
-  // this.socket.on("allPlayerAnswered", function(msg) {
-  //   console.log("opponentPlayerAnswered=true ");
-  //   opponentPlayerAnswered = true;
-  //   if (currentPlayerAnswered && opponentPlayerAnswered) {
-  //     console.log("moving on to next question!!");
-  //     afterGlobalTurnFinished();
-  //   }
-  // });
+// this.socket.on("allPlayerAnswered", function(msg) {
+//   console.log("opponentPlayerAnswered=true ");
+//   opponentPlayerAnswered = true;
+//   if (currentPlayerAnswered && opponentPlayerAnswered) {
+//     console.log("moving on to next question!!");
+//     afterGlobalTurnFinished();
+//   }
+// });
 
 // } //create() ends here.
 
@@ -417,23 +462,19 @@ function scoreAndPlayer() {
   });
 }
 
-
 ////////////////////////click handler////////////////////
 function clickHandler(box) {
   console.log("card clicked");
   currentPlayerAnswered = true;
   this.socket.emit("playerAnswered", { data: true });
 
-    afterGlobalTurnFinished();
-    if (box.isItCorrect) {
-      box.setTint(0x00ff00);
-
-    } else {
-      box.setTint(0xff0000);
-    }
-
+  afterGlobalTurnFinished();
+  if (box.isItCorrect) {
+    box.setTint(0x00ff00);
+  } else {
+    box.setTint(0xff0000);
   }
-
+}
 
 ///2
 // function callbackEvent()
@@ -465,94 +506,87 @@ function clickHandler(box) {
 //     // });
 //   }
 // }
-function afterGlobalTurnFinished() {
-  opponentPlayerAnswered = false;
-  currentPlayerAnswered = false;
-  globalFlashCard = null;
-  removeQuestionAnswer();
-  questionList.updateToNextValue();
-  globalFlashcard = createQuestionAnswer(self, questionList.getValue());
+// function afterGlobalTurnFinished() {
+//   opponentPlayerAnswered = false;
+//   currentPlayerAnswered = false;
+//   globalFlashCard = null;
+//   removeQuestionAnswer();
+//   questionList.updateToNextValue();
+//   globalFlashcard = createQuestionAnswer(self, questionList.getValue());
 
-  console.log("finished turn, uopdate to next val");
-}
+//   console.log("finished turn, uopdate to next val");
+// }
 
+// function createQuestionAnswer(self, Node) {
+//   if (Node == -1) {
+//     let cardText = self.add.text(100, 100, "END OF FLASHCARDS", {
+//       fontFamily: '"Roboto Condensed"',
+//       fontSize: 55,
+//       color: "#000000"
+//     });
+//   } else {
+//     let scrollEmpty;
+//     let questionText;
+//     let emptyCardArray = [];
+//     let textArray = [];
+//     let scale =
+//       width / Node.value.answersList.length -
+//       width / Node.value.answersList.length / 2;
 
+//     let ehhh = self.input.on(
+//       "gameobjectup",
+//       function(pointer, gameObject) {
+//         gameObject.emit("clicked", gameObject);
+//       },
+//       self
+//     );
 
+//     for (let i = 0; i < 4; i++) {
+//       let card = self.add
+//         .image(scale + scale * i * 2 + 5, 550, "card")
+//         .setScale(0.35);
 
+//       card.setInteractive().on("clicked", clickHandler, self);
+//       // console.log(Node.value.answersList[i]);
 
-function createQuestionAnswer(self, Node) {
-  if (Node == -1) {
-    let cardText = self.add.text(100, 100, "END OF FLASHCARDS", {
-      fontFamily: '"Roboto Condensed"',
-      fontSize: 55,
-      color: "#000000"
-    });
-  } else {
-    let scrollEmpty;
-    let questionText;
-    let emptyCardArray = [];
-    let textArray = [];
-    let scale =
-      width / Node.value.answersList.length -
-      width / Node.value.answersList.length / 2;
+//       let cardText = self.add.text(
+//         scale + scale * i * 2 - 4,
+//         540,
+//         Node.value.answersList[i].answer,
+//         { fontFamily: '"Roboto Condensed"', fontSize: 24, color: "#000000" }
+//       );
+//       textArray.push(cardText);
+//     }
 
-    let ehhh = self.input.on(
-      "gameobjectup",
-      function(pointer, gameObject) {
-        gameObject.emit("clicked", gameObject);
-      },
-      self
-    );
+//     scrollEmpty = self.add.image(400, 100, "scroll").setScale(0.15); // p1 = this.add.image (300,300,'cake').setScale(0.25);
+//     questionText = self.add.text(300, 90, Node.value.getQuestion(), {
+//       fontFamily: '"Roboto Condensed"',
+//       fontSize: 36,
+//       color: "#000000"
+//     });
 
-    for (let i = 0; i < 4; i++) {
-      let card = self.add
-        .image(scale + scale * i * 2 + 5, 550, "card")
-        .setScale(0.35);
+//     return {
+//       eh: ehhh,
+//       questionCard: scrollEmpty,
+//       questionText: questionText,
+//       cardArray: emptyCardArray,
+//       answerArray: textArray
+//     };
+//   }
+// } /////
 
-      card.setInteractive().on("clicked", clickHandler, self);
-      // console.log(Node.value.answersList[i]);
+// function removeQuestionAnswer() {
+//   for (let i = 0; i < globalFlashcard.cardArray.length; i++) {
+//     // console.log(globalFlashcard.cardArray[i]);
+//     globalFlashcard.cardArray[i].destroy();
+//   }
 
-      let cardText = self.add.text(
-        scale + scale * i * 2 - 4,
-        540,
-        Node.value.answersList[i].answer,
-        { fontFamily: '"Roboto Condensed"', fontSize: 24, color: "#000000" }
-      );
-      textArray.push(cardText);
-    }
-
-    scrollEmpty = self.add.image(400, 100, "scroll").setScale(0.15); // p1 = this.add.image (300,300,'cake').setScale(0.25);
-    questionText = self.add.text(300, 90, Node.value.getQuestion(), {
-      fontFamily: '"Roboto Condensed"',
-      fontSize: 36,
-      color: "#000000"
-    });
-
-    return {
-      eh: ehhh,
-      questionCard: scrollEmpty,
-      questionText: questionText,
-      cardArray: emptyCardArray,
-      answerArray: textArray
-    };
-  }
-}/////
-
-
-
-
-function removeQuestionAnswer() {
-  for (let i = 0; i < globalFlashcard.cardArray.length; i++) {
-    // console.log(globalFlashcard.cardArray[i]);
-    globalFlashcard.cardArray[i].destroy();
-  }
-
-  for (let i = 0; i < globalFlashcard.answerArray.length; i++) {
-    globalFlashcard.answerArray[i].destroy();
-  }
-  globalFlashcard.questionText.destroy();
-  globalFlashcard.questionCard.destroy();
-  globalFlashcard.questionCard.destroy();
-  //   globalFlashcard.eh.destroy();
-  globalFlashcard = null;
-}
+//   for (let i = 0; i < globalFlashcard.answerArray.length; i++) {
+//     globalFlashcard.answerArray[i].destroy();
+//   }
+//   globalFlashcard.questionText.destroy();
+//   globalFlashcard.questionCard.destroy();
+//   globalFlashcard.questionCard.destroy();
+//   //   globalFlashcard.eh.destroy();
+//   globalFlashcard = null;
+// }
