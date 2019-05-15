@@ -30,7 +30,7 @@ $(document).ready(() => {
                     password: $("#pass1").val()
                 },
                 success: user => {
-                    print(user)
+                    // print(user)
                     window.location.href="/";
                 },
                 error: err => {

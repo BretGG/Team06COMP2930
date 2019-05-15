@@ -27,14 +27,19 @@ router.get("/joinRoom", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/joinRoom.html"));
 });
 
-/* GET myCards page. */
-router.get("/mycard", function(req, res) {
+/* GET myCard page. */
+router.get("/myCard", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/myCards.html"));
 });
 
-/* GET login page. */
+
+/* GET BretsTest page. */
 router.get("/login", function(req, res) {
   res.render(path.resolve(__dirname, "../login/BretsTest.html"));
+});
+/* GET hannahtest page. */
+router.get("/hannahtest", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/hannahtest.html"));
 });
 
 /* GET shop page. */

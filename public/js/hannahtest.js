@@ -9,19 +9,20 @@ $(document).ready(() => {
             'auth-token': localStorage.getItem('auth-token')
         }
     });
-    
+
     /** Dummy function that will add dummy cards to screen */
     $('#cardsCon').click(()=>{
-      var card = document.createElement('div');
+      const card = document.createElement('div');
       card.setAttribute('class', 'card');
 
-      var h5 = document.createElement('h5');
+      const h5 = document.createElement('h5');
       $(h5).css("padding-left", "8px");
       $(h5).css("padding-top", "3px");
       h5.textContent = question[0];
 
-      var p = document.createElement('p');
+      const p = document.createElement('p');
       $(p).css("padding-left", "8px");
+      // movie.description = movie.description.substring(0, 300);
       p.textContent = `${answer[0]}...`;
 
       $('#cardsCon').append(card);
@@ -34,7 +35,6 @@ $(document).ready(() => {
         $("#status").text("");
         $(".headerLeft").css("border-bottom", "none");
         $(".headerRight").css("border-bottom", "2px solid #42A164");
-        $("#back").css("padding-top:", "15px");
         $(".headerLeftCon").hide();
         $(".headerRightCon").show();
     });
@@ -48,28 +48,20 @@ $(document).ready(() => {
     });
 
     /** Dummy function that updates page to let user know, card was successfully created */
-    $("#submitLeft").click(() => {
+    $("#decksubmit").click(() => {
 
         $.ajax({
             type: "post",
-            url: "/cards",
+            url: "/decks",
             dataType: 'json',
             data: {
-            format: "tf",
-            category: "test",
-                question: $("#question").val(),
-                answer: $("#answer").val(),
-                deck: "test"
+                deckname: $("#deckname").val(),
             },
-            success: card => {
-                $("#status").text("Card successfully added. Check under My Cards");
-                console.log(JSON.stringify(card));
+            success: deck => {
+                console.log(JSON.stringify(deck));
                 // window.location.href="";
-                $("#status").fadeOut().delay(3000).text("");
-
             },
             error: err => {
-                $("#status").text("Unforunate circumstance. Card failed to be added.");
                 console.log(err);
                 // $("#status").fadeOut().delay(3000).innerHTML("");
             }
