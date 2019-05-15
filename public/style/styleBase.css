@@ -1,7 +1,9 @@
 /* CSS Stylesheet That All Pages Take From, Contains Base CSS Properties)
 
 /* Imports font being used through application */
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+/* @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro'); */
+@import url('https://fonts.googleapis.com/css?family=Dosis:400,800|Source+Sans+Pro');
+
 /* Minimum width for application */
 html {
     min-width: 300px;
@@ -43,15 +45,18 @@ a {
   width: 176px;
   height: 251px;
   margin-bottom: 3%;
-}  
+}
 
 #title{
-    text-shadow:
+    font-family: 'Dosis', sans-serif;
+    font-kerning: 10px;
+    padding-top: 0em;
+    /* text-shadow:
     -0.5px -0.5px 0 #FFF,
     0.5px -0.5px 0 #FFF,
     -0.5px 0.5px 0 #FFF,
-    0.5px 0.5px 0 #FFF;  
-}  
+    0.5px 0.5px 0 #FFF; */
+}
 
 /**Addes margin to container holding title */
 #titlecon {
@@ -134,21 +139,24 @@ a {
 
 /** Aligns title to center and changes font size */
 #logo{
-  margin: 0 auto;
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+  font-family: 'Dosis', sans-serif;
+  font-weight: 800;
   text-align: center;
   font-size:2.5em;
-  text-shadow:
+  /* text-shadow:
     -0.5px -0.5px 0 #FFF,
     0.5px -0.5px 0 #FFF,
     -0.5px 0.5px 0 #FFF,
-    0.5px 0.5px 0 #FFF;  
+    0.5px 0.5px 0 #FFF; */
 }
 
 /** WIDTH RANGE FROM 1501px to infinity */
 @media screen and (min-width: 1501px){
   /**Changes font size to match screen size*/
   #logo{
-      font-size:3em;
+      font-size:5.5em;
   }
 }
 
@@ -156,7 +164,7 @@ a {
 @media screen and (min-width: 1080px) and (max-width: 1500px){
       /**Changes font size to match screen size*/
       #logo{
-          font-size:2em;
+          font-size:4.5em;
       }
 }
 
@@ -164,6 +172,14 @@ a {
 @media screen and (min-width: 800px) and (max-width: 1079px) {
     /**Changes font size to match screen size*/
    #logo{
-      font-size:2.5em;
+      font-size:3.5em;
+  }
+}
+
+/** WIDTH RANGE TO 450px */
+@media screen and (max-width: 450px) {
+    /**Changes main page contat to match screen size*/
+   #mainpagecon{
+      width: auto;
   }
 }
