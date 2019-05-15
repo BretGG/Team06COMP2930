@@ -1,8 +1,3 @@
-/** Adds margin to container holding title */
-#titlecon {
-  margin: 2%;
-}
-
 /** Changes color, size, and border of all div under .category */
 .category div {
   display: inline-block;

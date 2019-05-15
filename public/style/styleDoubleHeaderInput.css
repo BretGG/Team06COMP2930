@@ -9,10 +9,9 @@
   height: 450px;
 }
 
-/* Header on left side */
+/*Header on left side */
 .headerLeftCon{
   display: none;
-
 }
 
 /** Container holding back button */
@@ -37,6 +36,11 @@
   color: #000000;
   font-size: 1.4em;
   margin-bottom: 2%;
+  text-shadow:
+  -0.5px -0.5px 0 #FFF,
+  0.5px -0.5px 0 #FFF,
+  -0.5px 0.5px 0 #FFF,
+  0.5px 0.5px 0 #FFF;  
 }
 
 /**Header on the right */

@@ -10,7 +10,7 @@ html {
 /* Centers elements, sets and stretches default background, and sets font. */
 body {
      margin: 0 auto;
-     background: url('../images/BG.png') no-repeat center center fixed;
+     background: url('../images/bg/default.png') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -39,11 +39,19 @@ a {
 /** Settings avatar size, margins, and etc */
 #avatar{
   margin: 0 auto;
-  background-image: url("../images/platform.png");
+  background-image: url("../images/platform/default.png");
   width: 176px;
   height: 251px;
   margin-bottom: 3%;
-}    
+}  
+
+#title{
+    text-shadow:
+    -0.5px -0.5px 0 #FFF,
+    0.5px -0.5px 0 #FFF,
+    -0.5px 0.5px 0 #FFF,
+    0.5px 0.5px 0 #FFF;  
+}  
 
 /**Addes margin to container holding title */
 #titlecon {
@@ -129,6 +137,11 @@ a {
   margin: 0 auto;
   text-align: center;
   font-size:2.5em;
+  text-shadow:
+    -0.5px -0.5px 0 #FFF,
+    0.5px -0.5px 0 #FFF,
+    -0.5px 0.5px 0 #FFF,
+    0.5px 0.5px 0 #FFF;  
 }
 
 /** WIDTH RANGE FROM 1501px to infinity */

@@ -11,6 +11,10 @@
     <title>EcoQuest</title>
     </head>
     <style>
+      .col-xs-6 {
+        margin: 0 auto;
+        margin-bottom: 2%;
+      }
     </style>
   <body>
     <div id='container'>
@@ -22,6 +26,27 @@
         </div>
         <div id='status'></div>
         <div id='inputcon'>
+          <div class="row">
+    <div class="col-xs-6 deck">
+              Deck: 
+              <select name="deck">
+                <option value="main" selected>Main</option>
+                <option value="special">Special</option>
+                <option value="funny">Funny</option>
+                <option value="random">Random</option>
+              </select>
+    </div>
+    <div class="col-xs-6">
+          Category: 
+              <select name="category">
+                <option value="all">All</option>
+                <option value="Math">Math</option>
+                <option value="Science" selected>Science</option>
+                <option value="Sports">Sport</option>
+              </select>
+    </div>
+</div>
+
           <div class='headerLeftCon' >
             <label for="question"><b>Question</b></label>
             <input

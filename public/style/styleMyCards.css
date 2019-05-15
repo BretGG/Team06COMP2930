@@ -14,7 +14,7 @@
 
 /** Restricts size, border, and color of card(s) container*/
 #cardsCon{
-	height: 340px;
+	height: 280px;
   overflow-y: scroll;
   background-color: #D9F2ED;
   border: 2px solid #A7BAB6;
@@ -32,7 +32,7 @@
 @media screen and (min-width: 500px) and (max-width: 799px){
   /**Changes size of div to match screen size*/
   #cardsCon{
-    height: 330px;
+    height: 300px;
   }
 }
 
@@ -40,7 +40,7 @@
 @media screen and (min-width: 1501px){
   /**Changes size of div to match screen size*/
   #cardsCon{
-    height: 330px;
+    height: 300px;
   }
 }
 
@@ -48,7 +48,7 @@
 @media screen and (min-width: 1080px) and (max-width: 1500px){
   /**Changes size of div to match screen size*/
   #cardsCon{
-    height: 340px;
+    height: 300px;
   }
 
 }
@@ -57,6 +57,6 @@
 @media screen and (min-width: 800px) and (max-width: 1079px) {  
   /**Changes size of div to match screen size*/
   #cardsCon{
-    height: 360px;
+    height: 340px;
   }
 }
