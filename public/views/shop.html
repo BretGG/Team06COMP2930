@@ -1,42 +1,54 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang='en' dir='ltr'>
   <head>
-    <meta charset="utf-8">
-    <link rel="icon" href="../images/icon.png" type="../images/icon.png"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta charset='utf-8'>
+    <link rel='icon' href='../images/icon.png' type='../images/icon.png'/>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
     <!-- Style sheets -->
-    <link rel="stylesheet" href="../style/styleBase.css" >
-    <link rel="stylesheet" href="../style/styleShop.css" >
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css"  media="screen,projection"/>
-    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link rel='stylesheet' href='../style/styleBase.css' >
+    <link rel='stylesheet' href='../style/styleShop.css' >
+    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
+    <link type='text/css' rel='stylesheet' href='../style/materialize.min.css'  media='screen,projection'/>
+    <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet'>
     <title>EcoQuest</title>
     <style>
         #mainpagecon {
 
-            height: 300px;
+            height:400px;
         }
         .singleGalleryTitle{
             font-family: 'Press Start 2P', cursive;
-            text-shadow: 0px 5px 0 #000, 7px 8px 0 #000, -3px -1px 0 #000, 5px 2px 0 #000, -3px 6px 0 #000;
+            text-shadow: -4px -3px 0 #000, 0px 3px 0 #000, 4px -3px 0 #000, 6px -1px 0 #000, -4px 3px 0 #000;
             color:white;
-            font-size:1.2em;
+            font-size:16px;
+            margin-left:15px;
         }
         .carousel-item{
-            border:1px;
+            border:4px;
             background:white;
+            border: 4px solid black;
+
         }
         .carousel .carousel-item>img {
             width: 64%;
-                border: 9px solid black;
+                border: 4px solid black;
             height:64%;
         }
         .carousel-item img{
-            margin:20px;
+            margin-left:35px;
+            align: middle;
+            margin-right:35px;
+
             width:180px;
             height:180px;
         
         }
+        .singleGalleryItemDescription{
+                        font-family: 'Press Start 2P', cursive;
+                        font-size:10px;
+
+        }
+
     </style>
     </head>
 
@@ -54,37 +66,100 @@
         <!-- All shop categories -->
         <div class='category'>
             <!-- Avatar skins --> 
-            <div>Avatar</div>
+                <div class='avatar' id='#avatarButton'>Avatar</div>
             <!-- Platform skins --> 
-            <div>Platform</div>
+            <div class='platform' id='#platformButton'>Platform</div>
             <!-- Backgrounds --> 
-            <div>Background</div>
+            <div class='background' id='#backgroundButton'>Background</div>
         </div>
             <!-- Holds all items --> 
         <div class='items'>
-            <div class='avatar'></div>
-            <div class='platform'></div>
-            <div class='background'></div>
         </div>
       </div>
 
     </div>
-  <div class="carousel">
-    <div class="carousel-item" href="#one!">
-        <div class="singleGalleryTitle">Team Logo</div>
-            <img src="../images/five_alive.jpg">
-        <div class="singleGalleryItemDescription"> Cost: $99 million </div>
+  <div class='carousel' id='avatarContainer' id='acCont'>
+    <div class='carousel-item' href='#one!' id='acCont'>
+        <div class='singleGalleryTitle' id='acCont'>Sky Blue</div>
+            <img src='../images/skyblueChar.png' id='acCont'>
+        <div class='singleGalleryItemDescription' id='acCont'> Cost: $99 mil </div>
     </div>
-    <div class="carousel-item" href="#two!"><img src="../images/five_alive.jpg"></div>
-    <div class="carousel-item" href="#three!"><img src="../images/five_alive.jpg"></div>
-    <div class="carousel-item" href="#four!"><img src="../images/five_alive.jpg"></div>
-    <div class="carousel-item" href="#five!"><img src="../images/five_alive.jpg"></div>
+   <div class='carousel-item' href='#two!' id='acCont'>
+        <div class='singleGalleryTitle' id='acCont'>Lime Green</div>
+            <img src='../images/limegreenChar.png' id='acCont'>
+        <div class='singleGalleryItemDescription' id='acCont'> Cost: $89 mil </div>
+    </div>
+    <div class='carousel-item' href='#three!' id='acCont'>
+        <div class='singleGalleryTitle' id='acCont'>Sky Blue</div>
+            <img src='../images/skyblueChar.png' id='acCont'>
+        <div class='singleGalleryItemDescription' id='acCont'> Cost: $99 mil </div>
+    </div>
+   <div class='carousel-item' href='#four!' id='acCont'>
+        <div class='singleGalleryTitle' id='acCont'>Lime Green</div>
+            <img src='../images/limegreenChar.png' id='acCont'>
+        <div class='singleGalleryItemDescription' id='acCont'> Cost: $89 mil </div>
+    </div>
   </div>
+  
+  
+  
+  
+  
+  
+   <div class='carousel' id='platformContainer'  id='platCont'>
+    <div class='carousel-item' href='#one!' id='platCont'>
+        <div class='singleGalleryTitle' id='platCont'>Purple splatform</div>
+            <img src='../images/purpleplatform.png' id='platCont'>
+        <div class='singleGalleryItemDescription' id='platCont'> Cost: $99 mil </div>
+    </div>
+   <div class='carousel-item' href='#two!' id='platCont'>
+        <div class='singleGalleryTitle' id='platCont'>Pink platform</div>
+            <img src='../images/pinkPlatform.png' id='platCont'>
+        <div class='singleGalleryItemDescription' id='platCont'> Cost: $89 mil </div>
+    </div>
+    <div class='carousel-item' href='#three!' id='platCont'>
+          <div class='singleGalleryTitle' id='platCont'>Purple splatform</div>
+            <img src='../images/purpleplatform.png' id='platCont'>
+        <div class='singleGalleryItemDescription' id='platCont'> Cost: $99 mil </div>
+    </div>
+   <div class='carousel-item' href='#four!' id='platCont'>
+        <div class='singleGalleryTitle' id='platCont'> Pink platform </div>
+            <img src='../images/pinkPlatform.png' id='platCont'>
+        <div class='singleGalleryItemDescription' id='platCont'> Cost: $89 mil </div>
+    </div>
+  </div>
+  
+  
+  
+<div class='carousel' id='backgroundContainer' id='backCont'>
+    <div class='carousel-item' href='#one!' id='backCont'>
+        <div class='singleGalleryTitle' id='backCont'>Romantic Sunset : )</div>
+            <img src='../images/sunset.png' id='backCont'>
+        <div class='singleGalleryItemDescription' id='backCont'> Cost: $99 mil </div>
+    </div>
+   <div class='carousel-item' href='#two!' id='backCont'>
+       <div class='singleGalleryTitle' id='backCont'>Romantic Sunset : )</div>
+            <img src='../images/sunset.png' id='backCont'>
+        <div class='singleGalleryItemDescription' id='backCont'> Cost: $99 mil </div>
+    </div>
+    <div class='carousel-item' href='#three!' id='backCont'>
+       <div class='singleGalleryTitle' id='backCont'>Romantic Sunset : )</div>
+            <img src='../images/sunset.png' id='backCont'>
+        <div class='singleGalleryItemDescription' id='backCont'> Cost: $99 mil </div>
+    </div>
+   <div class='carousel-item' href='#four!' id='backCont'>
+        <div class='singleGalleryTitle' id='backCont'>Romantic Sunset : )</div>
+            <img src='../images/sunset.png' id='backCont'>
+        <div class='singleGalleryItemDescription' id='backCont'> Cost: $99 mil </div>
+    </div>
+</div>
+  
+  
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="../js/shop.js"></script>
-    <script type="text/javascript" src="../js/materialize.min.js"></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js' integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy' crossorigin='anonymous'></script>
+    <script src='../js/shop.js'></script>
+    <script type='text/javascript' src='../js/materialize.min.js'></script>
 
           <script>
       
