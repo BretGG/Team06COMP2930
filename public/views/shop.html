@@ -13,9 +13,9 @@
     <title>EcoQuest</title>
     <style>
         #mainpagecon {
-
             height: 300px;
         }
+
         .singleGalleryTitle{
             font-family: 'Press Start 2P', cursive;
             text-shadow: 0px 5px 0 #000, 7px 8px 0 #000, -3px -1px 0 #000, 5px 2px 0 #000, -3px 6px 0 #000;
@@ -37,6 +37,12 @@
             height:180px;
         
         }
+
+        .category div {
+            z-index: 100;
+            position: relative;
+        }
+
     </style>
     </head>
 
@@ -50,15 +56,15 @@
         <!-- Title for page -->
         <h2 id='title'>Shop</h2></div>
         <!-- Player's avatar -->
-        <div id='avatar' class='zoomOutDown'><img id='char' src='../images/blackChar.png' alt='avatar' /></div>
+        <div id='avatar' class='zoomOutDown'><img id='char' src='../images/avatar/default.png' alt='avatar' /></div>
         <!-- All shop categories -->
         <div class='category'>
             <!-- Avatar skins --> 
-            <div>Avatar</div>
+            <div id='shopAvatar'>Avatar</div>
             <!-- Platform skins --> 
-            <div>Platform</div>
+            <div id='shopPlatform'>Platform</div>
             <!-- Backgrounds --> 
-            <div>Background</div>
+            <div id='shopBackground'>Background</div>
         </div>
             <!-- Holds all items --> 
         <div class='items'>
@@ -79,6 +85,7 @@
     <div class="carousel-item" href="#three!"><img src="../images/five_alive.jpg"></div>
     <div class="carousel-item" href="#four!"><img src="../images/five_alive.jpg"></div>
     <div class="carousel-item" href="#five!"><img src="../images/five_alive.jpg"></div>
+    <div class="carousel-item" href="#six!"><img src="../images/five_alive.jpg"></div>
   </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
