@@ -16,7 +16,6 @@ $(document).ready(() => {
 
       const p = document.createElement('p');
       $(p).css("padding-left", "8px");
-      // movie.description = movie.description.substring(0, 300);
       p.textContent = `${answer[0]}...`;
 
       $('#cardsCon').append(card);
