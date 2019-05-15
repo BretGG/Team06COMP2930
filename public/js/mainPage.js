@@ -1,16 +1,17 @@
 $(document).ready(() => {
 
-    /** On page load, plays avatar animation */
-    window.onload = function() {     
-        $('#avatar').toggleClass('bounceIn');
-    };
-
-    /**Grabbing user's unique login token for later functions*/
+    // setting encrypted and secure user token
     $.ajaxSetup({
         headers: {
             'auth-token': localStorage.getItem('auth-token')
         }
     });
+
+    /** On page load, plays avatar animation */
+    window.onload = function() {
+        $('#avatar').toggleClass('bounceIn');
+    };
+
 
     function getUserInfo(callback) {
         console.log('sign in');
@@ -31,7 +32,7 @@ $(document).ready(() => {
 
     /** Grabs user's username and appends to it welcome text */
     function setProfileInfo(user) {
-        let welcome = $('#welcome');
+        let welcome = $('#title');
         welcome.text("Welcome, " + user.username + "!");
     }
 
@@ -47,6 +48,11 @@ $(document).ready(() => {
     /** Takes user to join room page */
     $("#join").click(() => {
         window.location.href = "joinRoom";
+    })
+
+    /** Takes user to join room page */
+    $("#cards").click(() => {
+        window.location.href = "hannahtest";    //hannah is testing
     })
 
     /** Takes user back to signup/signin page */
