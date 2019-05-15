@@ -29,6 +29,7 @@ let cursor;
 let mainPlayer;
 let players = [];
 let platforms = [];
+let answerCards = [];
 
 // Holds all the spawn points for when users join, could be done with math (should be)
 // index 0 is for 1 player, index 1 is for 2 players and so on
@@ -41,17 +42,13 @@ const spawnPoints = [
 
 function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
-  this.load.image("cake", "../assets/character/cake.png");
   this.load.image("p1", "../assets/character/dratini_resize.png");
   this.load.image("p2", "../assets/character/eevee_resize.png");
   this.load.image("p3", "../assets/character/pikachu_resize.png");
   this.load.image("p4", "../assets/character/rapidash_resize.png");
   this.load.image("platform1", "../assets/backgrounds/platform3.png");
-  this.load.image("platform2", "../assets/backgrounds/platform3.png");
-  this.load.image("platform3", "../assets/backgrounds/platform3.png");
-  this.load.image("platform4", "../assets/backgrounds/platform3.png");
-  this.load.image("otherPlayer", "assets/character/cake.png");
   this.load.image("platform", "../assets/character/platform.png");
+  this.load.image("cardFront", "../assets/backgrounds/cardFront.png");
 }
 
 function create() {
@@ -87,6 +84,8 @@ function create() {
 
   // Ask for info
   this.socket.emit("currentPlayers");
+
+  displayAnswers(["something", "yay"]);
 
   // -------------------------------------------------------------------------------------------------------
 }
@@ -175,9 +174,9 @@ function wrongAnswer(player) {
   self.tweens.add({
     targets: player.supportingPlatform,
     x: player.supportingPlatform.x,
-    y: player.supportingPlatform.y + 50,
+    y: player.supportingPlatform.y + 50 * player.wrongAnswers,
     ease: "Linear",
-    duration: 300,
+    duration: 200,
     repeat: 0
   });
 }
@@ -192,6 +191,26 @@ function updatePlayerPosition() {
       duration: 1000,
       repeat: 0
     });
+  }
+}
+
+function displayAnswers(answers) {
+  // Start off screen
+  for (let answer of answers) {
+    let card = self.add.image(1200, 450, "cardFront");
+    card.text = self.add.text(1200, 450, "hello", {
+      fontFamily: "Arial",
+      fontSize: 20,
+      color: "#000000",
+      align: "center",
+      wordWrap: { width: card.width - 30 }
+    });
+    answerCards.push(self.scene.add.group().add(cardFront, question));
+  }
+
+  for (let card of answerCards) {
+    card.setVelocityX(-50);
+    card.text.setVelocityX(-50);
   }
 }
 

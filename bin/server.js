@@ -89,6 +89,7 @@ function onListening() {
 const self = this;
 const maxPlayers = 4;
 const players = [];
+let currentRoundCard;
 
 setInterval(() => {
   console.log(JSON.stringify(players));
@@ -106,7 +107,8 @@ io.on("connection", function(socket) {
   players.push({
     playerId: socket.id,
     wrongAnswers: 0,
-    correctAnswers: 0
+    correctAnswers: 0,
+    answeredRound: false
   });
 
   // send all players to requesting user
@@ -145,15 +147,21 @@ io.on("connection", function(socket) {
     socket.emit("me", players.find(player => player.playerId === socket.id));
   });
 
-  socket.on("playerAnswered", function(data) {
-    Game1_players[players[socket.id].playerNo].answeredQuestion = data.data;
-    if (allPlayerAnswered(self.EcoQuest_numberOfCurrentPlayers)) {
-      io.sockets.emit("allPlayerAnswered", { data: true });
-      for (let i = 0; i < numberOfPlayers; i++) {
-        Game1_players[i].answeredQuestion = false;
-      }
-      console.log("server.js allPlayerAnswered fired.");
+  socket.on("playerAnswered", function(info) {
+    // { playerId: something.plareId, answer: "some answer to a question"}
+
+    let player = (players.find(
+      player => info.playerId,
+      playerInfo.playerId
+    ).answeredRound = true);
+
+    if (info.answer === currentRoundCard.answer) {
+      player.correctAnswers++;
+    } else {
+      player.wrongAnswers++;
     }
+
+    socket.broadcast.emit("playerAnswered", player.playerId);
   });
 
   socket.on("playerJump", () => {
