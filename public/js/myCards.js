@@ -6,15 +6,15 @@ $(document).ready(() => {
 
     /** Dummy function that will add dummy cards to screen */
     $('#cardsCon').click(()=>{
-      const card = document.createElement('div');
+      var card = document.createElement('div');
       card.setAttribute('class', 'card');
 
-      const h5 = document.createElement('h5');
+      var h5 = document.createElement('h5');
       $(h5).css("padding-left", "8px");
       $(h5).css("padding-top", "3px");
       h5.textContent = question[0];
 
-      const p = document.createElement('p');
+      var p = document.createElement('p');
       $(p).css("padding-left", "8px");
       p.textContent = `${answer[0]}...`;
 
