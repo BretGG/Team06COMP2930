@@ -15,10 +15,8 @@
 
 /** Restict border, color, and placement of back button */
 #back {
-  border-color: rgb(127,196,181, 0.99);
-  background-color: #D9F2ED;
   margin-left: 2%;
-  margin-top: 0.5%;
+  margin-top: 10%;
 }
 
 /** Start Button :launch players into game */
@@ -29,27 +27,29 @@
   margin: 0 auto;
 }
 
+@media screen and (min-width: 500px) and (max-width: 799px){
+  #back{
+    margin-top: 6.5%;
+  }
+}
+
 /** WIDTH RANGE FROM 1501px to infinity */
 @media screen and (min-width: 1501px){
       #back{
-        margin-left: 2%;
-        margin-top: 3%;
+        margin-top: 7%;
       }
 }
 
 /** WIDTH RANGE FROM 1080px to 1500px */
 @media screen and (min-width: 1080px) and (max-width: 1500px){
       #back{
-        margin-left: 2%;
-        margin-top: 0.5%;
+        margin-top: 5%;
       }
 }
 
 /** WIDTH RANGE FROM 800px to 1079px */
 @media screen and (min-width: 800px) and (max-width: 1079px) {  
-
       #back{
-        margin-left: 2%;
-        margin-top: 3%;
+        margin-top: 8.5%;
       }
 }

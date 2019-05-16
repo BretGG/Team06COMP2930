@@ -1,8 +1,10 @@
+/** Container holding deck select and category select */
 #dC{ 
   width: 80%;
   margin: 0 auto;
 }
 
+/*deck select*/
 #l{
 
   width: 48%;
@@ -10,12 +12,14 @@
   margin-right: 4%;
 }
 
+/*category select*/
 #r{
   width: 48%;
   float: left;
   clear: right;
 }
 
+/*create button*/
 #submitLeft {
   display: block;
   margin: 0 auto;
@@ -24,9 +28,12 @@
 
 /** Aligns text to center */
 #status {
+  margin-top: 4%;
   text-align: center;
+  font-size: 1.2em;
 }
 
+/*back button*/
 .btn-small{
   margin-top: 2%;
 }

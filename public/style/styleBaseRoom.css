@@ -10,18 +10,14 @@
 }
 
 /** Changes appearance of submit button */
-.submit {
-  width: 30%;
-  clear:both;
-  display: block;
+#submit {
   margin: 0 auto;
-  background-color: #7FC4B5;
+  display: block;
+  width: 40%;
 }
 
 /** Changes appearance of back button */
 #back {
-  border-color: rgb(127,196,181, 0.99);
-  background-color: #D9F2ED;
   margin-left: 2%;
   position: relative;
   bottom: 3px;
@@ -38,9 +34,9 @@
   border-style: inset;
   box-sizing: border-box;
   display: inline-block;
-  height: 34px;
+  height: 40px;
   padding-left: 4px;
-  padding-top: 2px;
+  padding-top: 7px;
 }
 
 /** Makes all labels under #roomcon uniform */
