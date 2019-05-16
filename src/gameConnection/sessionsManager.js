@@ -2,7 +2,7 @@ const debug = require("debug")("comp2930-team2:server");
 const path = require("path");
 const _ = require("lodash");
 const { isFull, registerSession } = require("./sessionPool");
-const { Worker } = require("worker_threads");
+const { Worker, parentPort } = require("worker_threads");
 
 /*
 
@@ -17,9 +17,12 @@ A session is a running instance of a game
 
 */
 
-const sessionPools = new Map();
+// Pools running on worker threads
 const poolWorkers = new Map();
+
+// Total sessions running across all pools
 const sessions = new Map();
+
 let runningSessions = 0;
 
 // The runningPools count will be the same value as the runningWorkers
@@ -35,24 +38,29 @@ function endSession(sessionId) {
     }
   }
 }
+createPool(0, 5, 5);
 
 // Adds a session to the first free spot in a pool
 function addSession(sessionInfo) {
   debug("Registering new game session: " + JSON.stringify(sessionInfo));
 
-  for (var pool of sessionPools.values()) {
-    // Adds to the first pool with space, should add some better load balancing
-    debug(pool);
-    if (!pool.isFull()) {
-      debug(`Adding new session: ${session.sessionId} to pool: ${pool.poolId}`);
-      pool.registerSession(session);
-      runningSessions++;
-      return session;
-    }
-  }
+  //   updatePoolInfo().then(() => {
+  //     for (let pool in poolWorkers) {
+  //       // Add session to first open pool
+  //       pool.isFull;
+  //     }
+  //     debug(`Adding new session: ${session.sessionId} to pool: ${pool.poolId}`);
+  //     pool.registerSession(session);
+  //     runningSessions++;
+  //     return session;
+  //   });
 
   // No acceptable pool found, create a new pool with a worker to run it
   // Setting pool limit to 5 for testing, setting id to the current number of running sessions
+}
+
+// Create a new worker/pool and git it the new session info
+function createPool(poolId, poolLimit, sessionInfo) {
   debug(
     `Creating new session pool, id: ${runningSessions} session limit: ${5}`
   );
@@ -65,19 +73,8 @@ function addSession(sessionInfo) {
     }
   });
 
-  worker.on("message", sessionPool => {
-    // Once the worker creates the new session pool, add it to the master list
-
-    debug(
-      `Adding new session pool: ${runningPools} to pool: ${sessionPool.poolId}`
-    );
-
-    // Add new session to pool, master list, and increment counts
-    sessionPools.set(sessionPool.poolId, sessionPool);
-    // sessions.set(session.sessionId, session);
-    runningPools++;
-    runningSessions++;
-  });
+  runningPools++;
+  runningSessions++;
 
   worker.on("error", err => {
     // TODO: handle a failed pool creation
@@ -86,7 +83,9 @@ function addSession(sessionInfo) {
   });
 
   // Add worker to master list, number of workers == number of pools
-  poolWorkers.set(runningPools, worker);
+  poolWorkers.set(worker.threadId, worker);
+
+  updatePoolInfo();
 }
 
 // Returns object with data on current sessions
@@ -95,6 +94,21 @@ function getSessions() {
     count: runningSessions,
     sessions: sessions
   };
+}
+
+// Updates pool info in local variables, why not just reference the objects?
+// because... Tough times
+function updatePoolInfo() {
+  return new Promise(function(resolve, reject) {
+    for (let worker of poolWorkers.values()) {
+      console.log("Updating pool info");
+      worker.on("message", message => {
+        console.log("new info: " + JSON.stringify(message));
+        resolve();
+      });
+      worker.postMessage({ request: "poolInfo" });
+    }
+  });
 }
 
 // Merge pools is a manual call to compress pools

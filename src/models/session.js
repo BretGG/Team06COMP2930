@@ -1,4 +1,4 @@
-const { isMainThread } = require("worker_threads");
+const { isMainThrea } = require("worker_threads");
 /*
 
 session is the base class for a game object that will handle game interactions with clients and

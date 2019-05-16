@@ -14,14 +14,19 @@ class SessionPool {
     this.poolId = poolId;
     this.poolLimit = poolLimit;
     this.currentSessionsCount = 0;
+    this.full = false;
     this.sessions = [];
 
-    setInterval(() => {
-      console.log(isMainThread);
-    }, 1000);
+    // setInterval(() => {
+    //   console.log(isMainThread);
+    // }, 1000);
+
+    parentPort.on("message", message => this.handleParentRequest(message));
+    console.log("New pool: " + this.poolId);
   }
 
-  registerSession(session) {
+  // Add a new session to this pool;
+  registerSession(sessionInfo) {
     if (this.sessions.length === this.poolLimit) return null;
     else {
       // TODO: add session to pool
@@ -44,6 +49,7 @@ class SessionPool {
     return { added: false, reason: "NoSessionId" };
   }
 
+  // Return the info for a session running in this pool
   getSession(sessionId) {
     for (var session of this.sessions)
       if (session.sessionId === sessionId) return session;
@@ -66,6 +72,30 @@ class SessionPool {
     return removed;
   }
 
+  // Handle messages sent from the main thread, posting
+  // appropriate responses
+  handleParentRequest(message) {
+    console.log("parent req: " + message);
+    switch (message.request) {
+      case "isFull":
+        parentPort.postMessage({
+          responseTo: "isFull",
+          threadId: this,
+          full: this.isFull()
+        });
+        break;
+      case "addSession":
+        console.log("adding session");
+        break;
+      case "poolInfo":
+        parentPort.postMessage({
+          responseTo: "poolInfo",
+          ...this.returnPoolInfo()
+        });
+        break;
+    }
+  }
+
   // pool paramater will be merge its sessions into this pool and be handled by the
   // thread assigned to this pool
   mergePool(pool) {
@@ -73,7 +103,13 @@ class SessionPool {
   }
 
   isFull() {
-    return this.currentSessionsCount >= this.poolLimit;
+    // Checks to see if the pool is at its limits
+    return (this.full = this.currentSessionsCount >= this.poolLimit).full;
+  }
+
+  returnPoolInfo() {
+    // Add additional pool information here
+    return { isFull: this.isFull(), pool: this };
   }
 
   getPoolStrain() {
