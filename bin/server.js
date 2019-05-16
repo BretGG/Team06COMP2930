@@ -175,6 +175,11 @@ io.on("connection", function(socket) {
     socket.broadcast.emit("playerJump", socket.id);
   });
 
+  socket.on("answered", answerInfo => {
+    console.log(answerInfo);
+    console.log(socket.id);
+  });
+
   ////////////////////////////////////////// test code
   let roundInfo = {
     question: "What is Stella's first name",
@@ -184,7 +189,11 @@ io.on("connection", function(socket) {
 
   setInterval(() => {
     socket.broadcast.emit("startRound", roundInfo);
-  }, 5000);
+  }, 15000);
+
+  setInterval(() => {
+    socket.broadcast.emit("endRound", { answer: "Hannah" });
+  }, 10000);
 });
 
 function printPlayers(coordinates) {

@@ -74,6 +74,7 @@ function create() {
   this.socket.on("playerJump", playerJump);
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
+  this.socket.on("endRound", endRound);
   this.socket.on(
     "me",
     me => (mainPlayer = players.find(player => player.playerId === me.playerId))
@@ -140,6 +141,10 @@ function currentPlayers(currentPlayers) {
   for (let player of currentPlayers) {
     createPlayer(player);
   }
+}
+
+function endRound(roundInfo) {
+  console.log(roundInfo);
 }
 
 // Create to player object, could be another class but...
@@ -281,62 +286,62 @@ function displayQuestion(question) {
 // Creates the display for answers
 function displayAnswers(answers) {
   for (let card of answerCards) {
-    console.log(card);
-    Phaser.Actions.Call(card.getChildren(), function(child) {
-      child.destroy();
-    });
+    card.text.destroy();
     card.destroy();
   }
 
   answerCards = [];
+
   // Start off screen
   for (let answer of answers) {
     // Creation of group and adding the car front
-    let group = self.physics.add.group();
-    group.create(-100, 550, "cardFront");
-    let cardFront = group.getChildren()[0];
+    // let group = self.physics.add.group();
+    // group.create(-100, 550, "cardFront");
+    // let cardFront = group.getChildren()[0];
+
+    let card = self.add.image(-100, 550, "cardFront");
 
     // Creation of text and adding to group
-    let text = self.add.text(0, 0, answer, {
+    card.text = self.add.text(0, 0, answer, {
       fontFamily: "Arial",
       fontSize: 18,
       color: "#000000",
       align: "center",
       boundsAlignH: "center",
       boundsAlignV: "middle",
-      wordWrap: { width: cardFront.width - 25 }
+      wordWrap: { width: card.width - 25 }
     });
-    group.add(text);
-    text.setDepth(2);
+    card.text.setDepth(2);
 
     // Center text on card
-    text.setPosition(
-      cardFront.x - text.getBounds().width / 2,
-      cardFront.y - text.getBounds().height / 2
+    card.text.setPosition(
+      card.x - card.text.getBounds().width / 2,
+      card.y - card.text.getBounds().height / 2
     );
 
     // Ignore gravity on all parts of card
-    for (let thing of group.getChildren()) {
-      thing.body.allowGravity = false;
-    }
+    // for (let  of group.getChildren()) {
+    //   thing.body.allowGravity = false;
+    // }
 
     // Set the object to be interactive
-    cardFront.setInteractive().on("pointerdown", () => console.log(text.text));
+    card
+      .setInteractive()
+      .on("pointerdown", () => self.socket.emit("answered", text.text));
 
     // Add card to our master list
-    answerCards.push(group);
+    answerCards.push(card);
   }
 
   // Sliding in the cards
   if (answerCards.length > 0) {
-    console.log(answerCards.length);
-    for (let group of answerCards) {
+    for (let card of answerCards) {
       // Slide in card front
       self.tweens.add({
-        targets: group.getChildren()[0],
+        targets: card,
         x:
           spawnPoints[answerCards.length - 1][
-            answerCards.findIndex(holder => group === holder)
+            answerCards.findIndex(holder => card === holder)
           ],
         ease: "Quint",
         duration: 3000,
@@ -345,12 +350,12 @@ function displayAnswers(answers) {
 
       // Slide in card text
       self.tweens.add({
-        targets: group.getChildren()[1],
+        targets: card.text,
         x:
           spawnPoints[answerCards.length - 1][
-            answerCards.findIndex(holder => group === holder)
+            answerCards.findIndex(holder => card === holder)
           ] -
-          group.getChildren()[1].width / 2,
+          card.text.width / 2,
         ease: "Quint",
         duration: 3000,
         repeat: 0
