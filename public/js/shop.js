@@ -6,21 +6,26 @@ var active ="avatar";
 
 $(document).ready(() => {
 	/** On page load, plays avatar animation */
-	window.onload = function() {     
+	window.onload = function() {   
 		$('#avatar').toggleClass('bounceIn');
   }
 
-/** THIS CODE IS VERY BRUTE FORCE. WILL OPTIMIZE LATER (PROBABLY LOL DEPENDS ON TIME) <3 STELLA */
 $('#shopBackground').click(() => {
 	$('#shopPlatform').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopAvatar').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopBackground').css("background-color", "#48748E");
-	$('#item1').attr("src", "../images/bg/default.png");
-	$('#item2').attr("src", "../images/bg/city.png");
-	$('#item3').attr("src", "../images/bg/darkblue.png");
-	$('#item4').attr("src", "../images/bg/night.png");
-	$('#item5').attr("src", "../images/bg/pixelatedbg.png");
-	$('#item6').attr("src", "../images/bg/sunset.png");
+	$("#item1").css("background-image", "url(../images/shopIcons/bg/default.png)");
+	$("#item2").css("background-image", "url(../images/shopIcons/bg/city.png)");
+	$("#item3").css("background-image", "url(../images/shopIcons/bg/darkblue.png)");
+	$("#item4").css("background-image", "url(../images/shopIcons/bg/night.png)");
+	$("#item5").css("background-image", "url(../images/shopIcons/bg/pixelatedbg.png)");
+	$("#item6").css("background-image", "url(../images/shopIcons/bg/sunset.png)");
+	$("#ditem1").text("Forest View");
+	$("#ditem2").text("City Sunset");
+	$("#ditem3").text("Blue Skies");
+	$("#ditem4").text("Purple Night");
+	$("#ditem5").text("Pixelated Ocean");
+	$("#ditem6").text("Sunset");
 	active = "bg";
 })
 
@@ -28,12 +33,18 @@ $('#shopAvatar').click(() =>{
 	$('#shopPlatform').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopBackground').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopAvatar').css("background-color", "#48748E");
-	$('#item1').attr("src", "../images/avatar/default.png");
-	$('#item2').attr("src", "../images/avatar/greenChar.png");
-	$('#item3').attr("src", "../images/avatar/greyChar.png");
-	$('#item4').attr("src", "../images/avatar/redChar.png");
-	$('#item5').attr("src", "../images/avatar/yellowChar.png");
-	$('#item6').attr("src", "../images/avatar/blueChar.png");
+	$("#item1").css("background-image", "url(../images/shopIcons/avatar/default.png)");
+	$("#item2").css("background-image", "url(../images/shopIcons/avatar/greenChar.png)");
+	$("#item3").css("background-image", "url(../images/shopIcons/avatar/greyChar.png)");
+	$("#item4").css("background-image", "url(../images/shopIcons/avatar/redChar.png)");
+	$("#item5").css("background-image", "url(../images/shopIcons/avatar/yellowChar.png)");
+	$("#item6").css("background-image", "url(../images/shopIcons/avatar/blueChar.png)");
+	$("#ditem1").text("Black Sesame");
+	$("#ditem2").text("Green Apple");
+	$("#ditem3").text("Cloud");
+	$("#ditem4").text("Red Apple");
+	$("#ditem5").text("Mango");
+	$("#ditem6").text("Blueberry");
 	active ="avatar";
 })  
 
@@ -41,18 +52,22 @@ $('#shopPlatform').click(() => {
 	$('#shopAvatar').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopBackground').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopPlatform').css("background-color", "#48748E");
-	$('#item1').attr("src", "../images/platform/default.png");
-	$('#item2').attr("src", "../images/platform/pinkplatform.png");
-	$('#item3').attr("src", "../images/platform/purpleplatform.png");
-	$('#item4').attr("src", "../images/platform/rabbitpet.png");
-	$('#item5').attr("src", "../images/platform/duckpet.png");
-	$('#item6').attr("src", "../images/platform/birdpet.png");
+	$("#item1").css("background-image", "url(../images/shopIcons/platform/default.png)");
+	$("#item2").css("background-image", "url(../images/shopIcons/platform/pinkplatform.png)");
+	$("#item3").css("background-image", "url(../images/shopIcons/platform/purpleplatform.png)");
+	$("#item4").css("background-image", "url(../images/shopIcons/platform/rabbitpet.png)");
+	$("#item5").css("background-image", "url(../images/shopIcons/platform/duckpet.png)");
+	$("#item6").css("background-image", "url(../images/shopIcons/platform/birdpet.png)");
+	$("#ditem1").text("Flying Grass");
+	$("#ditem2").text("Modest Flowers");
+	$("#ditem3").text("Exquisite Flowers");
+	$("#ditem4").text("Pet Rabbit");
+	$("#ditem5").text("Pet Duck");
+	$("#ditem6").text("Pet Bird");
 	active ="platform";
 })
 
 $('#item1').click(() => {
-	clearSelect();
-	$('#item1').parent().css("background-color", "#48748E");
 	if(active == "avatar")
 		$("#char").prop("src", "../images/avatar/default.png");
 	else if (active == "platform")
@@ -62,8 +77,6 @@ $('#item1').click(() => {
 })
 
 $('#item2').click(() => {
-	clearSelect();
-	$('#item2').parent().css("background-color", "#48748E");
 	if(active == "avatar")
 		$("#char").prop("src", "../images/avatar/greenChar.png");
 	else if (active == "platform")
@@ -73,8 +86,6 @@ $('#item2').click(() => {
 })
 
 $('#item3').click(() => {
-	clearSelect();
-	$('#item3').parent().css("background-color", "#48748E");
 	if(active == "avatar")
 		$("#char").prop("src", "../images/avatar/greyChar.png");
 	else if (active == "platform")
@@ -84,8 +95,6 @@ $('#item3').click(() => {
 })
 
 $('#item4').click(() => {
-	clearSelect();
-	$('#item4').parent().css("background-color", "#48748E");
 	if(active == "avatar")
 		$("#char").prop("src", "../images/avatar/redChar.png");
 	else if (active == "platform")
@@ -95,8 +104,6 @@ $('#item4').click(() => {
 })
 
 $('#item5').click(() => {
-	clearSelect();
-	$('#item5').parent().css("background-color", "#48748E");
 	if(active == "avatar")
 		$("#char").prop("src", "../images/avatar/yellowChar.png");
 	else if (active == "platform")
@@ -106,8 +113,6 @@ $('#item5').click(() => {
 })
 
 $('#item6').click(() => {
-	clearSelect();
-	$('#item6').parent().css("background-color", "#48748E");
 	if(active == "avatar")
 		$("#char").prop("src", "../images/avatar/blueChar.png");
 	else if (active == "platform")
@@ -115,15 +120,5 @@ $('#item6').click(() => {
 	else if (active == "bg")
 		$("body").css("background-image", "url(../images/bg/sunset.png)");
 })
-
-function clearSelect(){
-	$('#item1').parent().css("background-color", "white");
-	$('#item2').parent().css("background-color", "white");
-	$('#item3').parent().css("background-color", "white");
-	$('#item4').parent().css("background-color", "white");
-	$('#item5').parent().css("background-color", "white");
-	$('#item6').parent().css("background-color", "white");
-}
-
 
 });
