@@ -53,6 +53,7 @@
 
 /** All labels under #inputcontainer */
 #inputcon label {
+  color: black;
   display: block;
   clear:right;
   font-size: 1em;
@@ -68,11 +69,8 @@
 
 /** All buttons under #inputcontainer */
 #inputcon button {
-  width: 60%;
-  clear:both;
   display: block;
   margin: 0 auto;
-  background-color: #7FC4B5;
 }
 
 /** WIDTH RANGE FROM 500px to 799px */
