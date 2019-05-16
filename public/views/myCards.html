@@ -6,15 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="../style/styleBase.css" >
     <link rel="stylesheet" href="../style/styleDoubleHeaderInput.css" >
-    <link rel="stylesheet" href="../style/styleMyCards.css" >
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="../style/materialize.min.css"  media="screen,projection"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../style/styleMyCards.css" >
     <title>EcoQuest</title>
     </head>
     <style>
-      .col-xs-6 {
+      #submitLeft{
         margin: 0 auto;
-        margin-bottom: 2%;
       }
     </style>
   <body>
@@ -25,26 +24,27 @@
           <div class='headerLeft'> Create Cards</div>
           <div class='headerRight'> My Cards</div>
         </div>
+        <div id='dC'>
+        <div id='l'>
+            <select id='deck'>
+              <option value="" disabled selected>Deck</option>
+              <option value="1">Main</option>
+              <option value="2">Random</option>
+              <option value="3">Deck3</option>
+              <label>Materialize Select</label>
+            </select>
+          </div>
+          <div id='r'>
+            <select id='category'>
+              <option value="" disabled selected>Category</option>
+              <option value="1">Science</option>
+              <option value="2">Misc.</option>
+              <option value="3">Eco</option>
+            </select>
+          </div> 
+        </div>
         <div id='inputcon'>
-          <div class="row">
-    <div class="col-xs-6 deck">
-              <select name="deck">
-                <option value="" selected>Deck</option>
-                <option value="special">Special</option>
-                <option value="funny">Funny</option>
-                <option value="random">Random</option>
-              </select>
-    </div>
-    <div class="col-xs-6">
-              <select name="category">
-                <option value="" selected>Category</option>
-                <option value="Math">Math</option>
-                <option value="Science">Science</option>
-                <option value="Sports">Sport</option>
-              </select>
-    </div>
-</div>
-
+            
           <div class='headerLeftCon' >
             <label for="question"><b>Question</b></label>
             <input
@@ -59,14 +59,14 @@
               type="text"
               required
             />
-            <div id='status'></div>
-          <button id="submitLeft" class='hoverPointer'><label>Create</label></button>
+          <a id='submitLeft' class="waves-effect waves-light btn"><i class="material-icons right">create</i>Create</a>
         </div>
         <div class='headerRightCon' >
           <div id='cardsCon'> </div>
 
         </div>
-         <div id='backcon'> <button id='back'>Back </button></div>
+         <a class="waves-effect waves-light btn-small">Back<i class="material-icons right">home</i></a>
+          <div id='status'></div>
       </div>
 
     </div>

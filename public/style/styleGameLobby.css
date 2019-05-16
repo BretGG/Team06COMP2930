@@ -6,7 +6,7 @@
 
 /** Player pool */
  #memberpool {
-  background-color: rgba(255,255,255, 0.53);
+  background-color: #D9F2ED;
   border: 1px solid #707070;
   border-radius: 8px;
   height: 120px;
@@ -27,7 +27,6 @@
   clear:both;
   display: block;
   margin: 0 auto;
-  background-color: #7FC4B5;
 }
 
 /** WIDTH RANGE FROM 1501px to infinity */

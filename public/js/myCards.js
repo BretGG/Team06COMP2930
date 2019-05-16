@@ -3,6 +3,8 @@ var question = ["1", "2", "3", "54", "324"];
 var answer = ["sad", "dad", "da", "ba", "saa"];
 
 $(document).ready(() => {
+    $('select').formSelect();
+    
     // setting encrypted and secure user token
     $.ajaxSetup({
         headers: {
@@ -15,17 +17,17 @@ $(document).ready(() => {
       var card = document.createElement('div');
       card.setAttribute('class', 'card');
 
-      var h5 = document.createElement('h5');
-      $(h5).css("padding-left", "8px");
-      $(h5).css("padding-top", "3px");
-      h5.textContent = question[0];
+      var h6 = document.createElement('h5');
+      $(h6).css("padding-left", "8px");
+      $(h6).css("padding-top", "0px");
+      h6.textContent = question[0];
 
       var p = document.createElement('p');
       $(p).css("padding-left", "8px");
       p.textContent = `${answer[0]}...`;
 
       $('#cardsCon').append(card);
-      card.appendChild(h5);
+      card.appendChild(h6);
       card.appendChild(p);
     });
 

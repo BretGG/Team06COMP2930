@@ -1,6 +1,39 @@
+#dC{ 
+  width: 80%;
+  margin: 0 auto;
+}
+
+#l{
+
+  width: 48%;
+  float: left;
+  margin-right: 4%;
+}
+
+#r{
+  width: 48%;
+  float: left;
+  clear: right;
+}
+
+#submitLeft {
+  display: block;
+  margin: 0 auto;
+  width: 40%;
+}
+
 /** Aligns text to center */
 #status {
   text-align: center;
+}
+
+.btn-small{
+  margin-top: 2%;
+}
+
+#inputcon > input {
+  background-color: rgb(217, 242, 237);
+  display: inline;
 }
 
 /** Restricts size and color of card */
@@ -18,6 +51,7 @@
   overflow-y: scroll;
   background-color: #D9F2ED;
   border: 2px solid #A7BAB6;
+  clear: both;
 }
 
 #backcon {
