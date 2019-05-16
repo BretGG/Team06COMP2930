@@ -94,12 +94,15 @@ let currentRoundCard;
 // setInterval(() => {
 //   console.log(JSON.stringify(players));
 // }, 5000);
-const dummycards = [{question: "1 + 1 = ?", answer: "2"},{question: "9 + 1 = ?", answer: "10"},{question: "5 + 1 = ?",answer: "6"},{question: "8 x 3", answer: "24"}];
-
+const dummycards = [
+  { question: "1 + 1 = ?", answer: "2" },
+  { question: "9 + 1 = ?", answer: "10" },
+  { question: "5 + 1 = ?", answer: "6" },
+  { question: "8 x 3", answer: "24" }
+];
 
 // Setting up the server to client connection
 io.on("connection", function(socket) {
-
   socket.emit("flashcards", dummycards);
   // cancel if at max capacity
   if (players.length >= maxPlayers) {
@@ -171,6 +174,17 @@ io.on("connection", function(socket) {
   socket.on("playerJump", () => {
     socket.broadcast.emit("playerJump", socket.id);
   });
+
+  ////////////////////////////////////////// test code
+  let roundInfo = {
+    question: "What is Stella's first name",
+    answers: ["Jessica", "Rose", "Stella", "Hannah"]
+  };
+  //////////////////////////////////////////////////////
+
+  setInterval(() => {
+    socket.broadcast.emit("startRound", roundInfo);
+  }, 5000);
 });
 
 function printPlayers(coordinates) {

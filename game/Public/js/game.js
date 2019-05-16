@@ -52,6 +52,10 @@ function preload() {
   this.load.image("platform1", "../assets/backgrounds/platform3.png");
   this.load.image("platform", "../assets/character/platform.png");
   this.load.image("cardFront", "../assets/backgrounds/cardFront.png");
+  this.load.image(
+    "questionBackground",
+    "../assets/backgrounds/uglyQuestionBackground.png"
+  );
 }
 
 function create() {
@@ -68,6 +72,12 @@ function create() {
   this.socket.on("newPlayer", createPlayer);
   this.socket.on("removePlayer", removePlayer);
   this.socket.on("playerJump", playerJump);
+  this.socket.on("currentPlayers", currentPlayers);
+  this.socket.on("startRound", startRound);
+  this.socket.on(
+    "me",
+    me => (mainPlayer = players.find(player => player.playerId === me.playerId))
+  );
 
   //   this.socket.on("flashcards", displayFlashcards);
 
@@ -81,32 +91,25 @@ function create() {
   //     }
   //   }
   // Update all current players
-  this.socket.on("currentPlayers", currentPlayers => {
-    players = [];
-    console.log(currentPlayers);
-    for (let player of currentPlayers) {
-      createPlayer(player);
-    }
-    this.socket.emit("me");
-  });
 
   // Set the main player
-  this.socket.on(
-    "me",
-    me => (mainPlayer = players.find(player => player.playerId === me.playerId))
-  );
 
   // Ask for info
   this.socket.emit("currentPlayers");
 
-  displayAnswers([
-    "something is going on here",
-    "yay for another question of this length",
-    "wow",
-    "Another question, Amazing"
-  ]);
+  //////////////// Test code
+  // displayAnswers([
+  //   "something is going on here",
+  //   "yay for another question of this length",
+  //   "wow",
+  //   "Another question, Amazing"
+  // ]);
+
+  // displayQuestion("somethingElse");
+  //////////////// Test code
 
   // -------------------------------------------------------------------------------------------------------
+  this.socket.emit("me");
 }
 
 function update() {
@@ -117,9 +120,26 @@ function update() {
   }
 }
 
+// Start new round (i.e create new cards)
+function startRound(roundInfo) {
+  displayAnswers(roundInfo.answers);
+  displayQuestion(roundInfo.question);
+  console.log("round started" + JSON.stringify(roundInfo));
+  // Other round start stuff
+}
+
 // Make the player with the given id jump
 function playerJump(playerId) {
   players.find(player => player.playerId === playerId).setVelocityY(-300);
+}
+
+// Add players to game
+function currentPlayers(currentPlayers) {
+  players = [];
+  console.log(currentPlayers);
+  for (let player of currentPlayers) {
+    createPlayer(player);
+  }
 }
 
 // Create to player object, could be another class but...
@@ -207,8 +227,7 @@ function removePlayer(playerInfo) {
 function wrongAnswer(player) {
   self.tweens.add({
     targets: player.supportingPlatform,
-    x: player.supportingPlatform.x,
-    y: player.supportingPlatform.y + 50 * player.wrongAnswers,
+    y: player.supportingPlatform.y + 50,
     ease: "Linear",
     duration: 200,
     repeat: 0
@@ -228,8 +247,46 @@ function updatePlayerPosition() {
   }
 }
 
-// Creates the the display for answers
+// Creates the display for the question
+function displayQuestion(question) {
+  let group = self.physics.add.group();
+  group.create(400, 100, "questionBackground");
+  let questionBackground = group.getChildren()[0];
+  questionBackground.setScale(0.5);
+
+  let text = self.add.text(0, 0, question, {
+    fontFamily: "Arial",
+    fontSize: 20,
+    color: "#000000",
+    align: "center",
+    boundsAlignH: "center",
+    boundsAlignV: "middle",
+    wordWrap: { width: questionBackground.width - 25 }
+  });
+  group.add(text);
+  text.setDepth(2);
+
+  // Center text on card
+  text.setPosition(
+    questionBackground.x - text.getBounds().width / 2,
+    questionBackground.y - text.getBounds().height / 2
+  );
+
+  // Ignore gravity on all parts of question
+  for (let thing of group.getChildren()) {
+    thing.body.allowGravity = false;
+  }
+}
+
+// Creates the display for answers
 function displayAnswers(answers) {
+  for (let card of answerCards) {
+    Phaser.Actions.Call(card.getChildren(), function(child) {
+      child.destroy();
+    });
+  }
+
+  answerCards = [];
   // Start off screen
   for (let answer of answers) {
     // Creation of group and adding the car front
@@ -238,7 +295,7 @@ function displayAnswers(answers) {
     let cardFront = group.getChildren()[0];
 
     // Creation of text and adding to group
-    text = self.add.text(0, 0, answer, {
+    let text = self.add.text(0, 0, answer, {
       fontFamily: "Arial",
       fontSize: 18,
       color: "#000000",
@@ -261,36 +318,42 @@ function displayAnswers(answers) {
       thing.body.allowGravity = false;
     }
 
+    // Set the object to be interactive
+    cardFront.setInteractive().on("pointerdown", () => console.log(text.text));
+
     // Add card to our master list
     answerCards.push(group);
   }
 
   // Sliding in the cards
-  for (let group of answerCards) {
-    // Slide in card front
-    self.tweens.add({
-      targets: group.getChildren()[0],
-      x:
-        spawnPoints[answerCards.length - 1][
-          answerCards.findIndex(holder => group === holder)
-        ],
-      ease: "Quint",
-      duration: 3000,
-      repeat: 0
-    });
+  if (answerCards.length > 0) {
+    console.log(answerCards.length);
+    for (let group of answerCards) {
+      // Slide in card front
+      self.tweens.add({
+        targets: group.getChildren()[0],
+        x:
+          spawnPoints[answerCards.length - 1][
+            answerCards.findIndex(holder => group === holder)
+          ],
+        ease: "Quint",
+        duration: 3000,
+        repeat: 0
+      });
 
-    // Slide in card text
-    self.tweens.add({
-      targets: group.getChildren()[1],
-      x:
-        spawnPoints[answerCards.length - 1][
-          answerCards.findIndex(holder => group === holder)
-        ] -
-        group.getChildren()[1].width / 2,
-      ease: "Quint",
-      duration: 3000,
-      repeat: 0
-    });
+      // Slide in card text
+      self.tweens.add({
+        targets: group.getChildren()[1],
+        x:
+          spawnPoints[answerCards.length - 1][
+            answerCards.findIndex(holder => group === holder)
+          ] -
+          group.getChildren()[1].width / 2,
+        ease: "Quint",
+        duration: 3000,
+        repeat: 0
+      });
+    }
   }
 }
 
