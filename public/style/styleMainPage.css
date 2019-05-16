@@ -13,8 +13,11 @@
   text-align: center;
 }
 
-.waves-effect{
-  
+#buttons a{
+  margin: 0 auto;
+  margin-bottom : 2%;
+  display: block;
+  width: 40%;
 }
 
 #mainpagecon label{
