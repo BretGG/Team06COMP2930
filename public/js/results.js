@@ -10,11 +10,11 @@ $(document).ready(() => {
       var entry = document.createElement('div');
       entry.setAttribute('class', 'entry');
 
-      var h3 = document.createElement('h3');
-      h3.setAttribute('class', 'ranking')
+      var h5 = document.createElement('h5');
+      h5.setAttribute('class', 'ranking')
       var rankNo = "#";
       rankNo += ranks[i];
-      h3.textContent = rankNo;
+      h5.textContent = rankNo;
 
       var userName = document.createElement('div');
       userName.setAttribute('class', 'userInfo name');
@@ -24,7 +24,7 @@ $(document).ready(() => {
       score.setAttribute('class', 'userInfo score');
       score.textContent = points[i];
 
-      entry.appendChild(h3);
+      entry.appendChild(h5);
       entry.appendChild(userName);
       entry.appendChild(score); 
       $('#roomCon').append(entry);
