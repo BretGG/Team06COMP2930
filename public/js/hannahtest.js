@@ -10,25 +10,54 @@ $(document).ready(() => {
         }
     });
 
-    /** Dummy function that will add dummy cards to screen */
-    $('#cardsCon').click(()=>{
-      const card = document.createElement('div');
-      card.setAttribute('class', 'card');
+    function getMyCard(callback) {
+        console.log('getting my card');
 
-      const h5 = document.createElement('h5');
-      $(h5).css("padding-left", "8px");
-      $(h5).css("padding-top", "3px");
-      h5.textContent = question[0];
+        $.ajax({
+            type: 'put',
+            url: '/cards',
+            dataType: 'json',
+            data: {
+                format: 'tf',
+                category: 'test'
+            },
+            success: function(data) {
+                console.log(data);
+                callback(data.cards)
+            },
+            error: function(e) {
+                console.log(e.responseText);
+                callback("no card ?");
+            }
+        });
+    }
 
-      const p = document.createElement('p');
-      $(p).css("padding-left", "8px");
-      // movie.description = movie.description.substring(0, 300);
-      p.textContent = `${answer[0]}...`;
+    /** Grabs user's username and appends to it welcome text */
+    function populateCards(cards) {
+        for (let mycard of cards) {
+            let card = document.createElement('div');
+            card.setAttribute('class', 'card');
 
-      $('#cardsCon').append(card);
-      card.appendChild(h5);
-      card.appendChild(p);
-    });
+            let h5 = document.createElement('h5');
+            $(h5).css("padding-left", "8px");
+            $(h5).css("padding-top", "3px");
+            h5.textContent = mycard.question;
+
+            let p = document.createElement('p');
+            $(p).css("padding-left", "8px");
+            // movie.description = movie.description.substring(0, 300);
+            p.textContent = `${mycard.answer}...`;
+
+            $('#cardsCon').append(card);
+            card.appendChild(h5);
+            card.appendChild(p);
+        }
+    }
+
+
+    /** Calling setProfileInfo function */
+    getMyCard(populateCards);
+
 
     /** Switches container from Create Cards to My Cards */
     $(".headerRight").click(() => {
@@ -49,7 +78,6 @@ $(document).ready(() => {
 
     /** Dummy function that updates page to let user know, card was successfully created */
     $("#decksubmit").click(() => {
-
         $.ajax({
             type: "post",
             url: "/decks",

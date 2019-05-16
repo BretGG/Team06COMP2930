@@ -52,7 +52,7 @@ $(document).ready(() => {
 
     /** Takes user to join room page */
     $("#cards").click(() => {
-        window.location.href = "hannahtest";    //hannah is testing
+        window.location.href = "mycard";    
     })
 
     /** Takes user back to signup/signin page */

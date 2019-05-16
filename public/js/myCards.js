@@ -1,17 +1,18 @@
-/** Dummy data */
+// TODO: Create button is gone when the screen width is smaller than 388px
+
 var question = ["1", "2", "3", "54", "324"];
 var answer = ["sad", "dad", "da", "ba", "saa"];
 
 $(document).ready(() => {
     $('select').formSelect();
-    
+
     // setting encrypted and secure user token
     $.ajaxSetup({
         headers: {
             'auth-token': localStorage.getItem('auth-token')
         }
     });
-    
+
     /** Dummy function that will add dummy cards to screen */
     $('#cardsCon').click(()=>{
       var card = document.createElement('div');

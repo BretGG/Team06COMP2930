@@ -36,4 +36,22 @@ router.post("/", async (req, res) => {
 // TODO: delete card
 
 
+// get the decks
+router.put('/', async (req, res) => {
+    console.log("am I in cards.js?")
+    console.log(req.body);
+    let cardtype = _.pick(req.body, ["format", "category"]);
+req.get('format');
+    console.log('what is my format? ' + JSON.stringify(cardtype));
+
+    console.log(`Get all cards from: ${req.connection.remoteAddress}`);
+
+    let cards = await Card.find( { format: cardtype.format, category: cardtype.category});
+    if (!cards || cards.length <= 0) return res.status(400).send("You have no cards!");
+
+    console.log(`Returning ${cards.length} cards at ${req.connection.remoteAddress}`);
+    res.send({ cards: cards });
+});
+
+
 module.exports = router;

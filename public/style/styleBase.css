@@ -3,7 +3,7 @@
 
 /* Imports font being used through application */
 /* @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro'); */
-@import url("https://fonts.googleapis.com/css?family=Dosis:400,800|Source+Sans+Pro");
+@import url("https://fonts.googleapis.com/css?family=Dosis:400,800|Ubuntu");
 
 /* Minimum width for application */
 html {
@@ -18,7 +18,7 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  font-family: "Segoe UI Regular";
+  font-family: 'Ubuntu', sans-serif;
 }
 
 /*On all clickable buttons, mouse takes to hand */
@@ -26,13 +26,6 @@ body {
   cursor: pointer;
 }
 
-/* Setting font properties */
-@font-face {
-  font-family: "Segoe UI Regular";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Segoe UI Regular"), url("Segoe UI.woff") format("woff");
-}
 
 /* Removes all text decorations for links */
 a {
