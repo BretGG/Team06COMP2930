@@ -1,30 +1,45 @@
+/** Dummy data */
 var question = ["1", "2", "3", "54", "324"];
 var answer = ["sad", "dad", "da", "ba", "saa"];
+
 $(document).ready(() => {
+    // setting encrypted and secure user token
+    $.ajaxSetup({
+        headers: {
+            'auth-token': localStorage.getItem('auth-token')
+        }
+    });
+    
+    /** Dummy function that will add dummy cards to screen */
     $('#cardsCon').click(()=>{
-      console.log("Hello");
-      const card = document.createElement('div');
+      var card = document.createElement('div');
       card.setAttribute('class', 'card');
 
-      const h1 = document.createElement('h1');
-      h1.textContent = question[0];
+      var h5 = document.createElement('h5');
+      $(h5).css("padding-left", "8px");
+      $(h5).css("padding-top", "3px");
+      h5.textContent = question[0];
 
-      const p = document.createElement('p');
-      // movie.description = movie.description.substring(0, 300);
+      var p = document.createElement('p');
+      $(p).css("padding-left", "8px");
       p.textContent = `${answer[0]}...`;
 
       $('#cardsCon').append(card);
-      card.appendChild(h1);
-      card.appendChild(p);     
+      card.appendChild(h5);
+      card.appendChild(p);
     });
 
+    /** Switches container from Create Cards to My Cards */
     $(".headerRight").click(() => {
+        $("#status").text("");
         $(".headerLeft").css("border-bottom", "none");
         $(".headerRight").css("border-bottom", "2px solid #42A164");
+        $("#back").css("padding-top:", "15px");
         $(".headerLeftCon").hide();
         $(".headerRightCon").show();
     });
 
+    /** Switches container from My Cards to Create Cards */
     $(".headerLeft").click(() => {
         $(".headerRight").css("border-bottom", "none");
         $(".headerLeft").css("border-bottom", "2px solid #42A164");
@@ -32,31 +47,35 @@ $(document).ready(() => {
         $(".headerLeftCon").show();
     });
 
+    /** Dummy function that updates page to let user know, card was successfully created */
     $("#submitLeft").click(() => {
-        $("#status").text("Card successfully added. Check under My Cards");
 
-        //Did not route to myCards.html yet so idk if this ajax will work.
+        $.ajax({
+            type: "post",
+            url: "/cards",
+            dataType: 'json',
+            data: {
+            format: "tf",
+            category: "test",
+                question: $("#question").val(),
+                answer: $("#answer").val(),
+                deck: "test"
+            },
+            success: card => {
+                $("#status").text("Card successfully added. Check under My Cards");
+                console.log(JSON.stringify(card));
+                // window.location.href="";
+                $("#status").fadeOut().delay(3000).text("");
 
-        // $.ajax({
-        //         type: "post",
-        //         url: "/users",
-        //         dataType: 'json',
-        //         data: {
-        //             question: $("#question").val(),
-        //             correct_answer: $("#answer").val(),
-        //         },
-        //         success: user => {
-        //             $("#status").innerHTML("Card successfully added. Check under My Cards");
-        //             print($("#question").val() + "\n" + $("#answer").val())
-        //             window.location.href="/";
-        //             $("#status").fadeOut().delay(3000).innerHTML("");
-        //         },
-        //         error: err => {
-        //             // print(err.responseText)
-        //             $("#status").innerHTML("Unforunate circumstance. Card failed to be added.");
-        //             $("#status").fadeOut().delay(3000).innerHTML("");
-        //         }
-        // });
+            },
+            error: err => {
+                $("#status").text("Unforunate circumstance. Card failed to be added.");
+                console.log(err);
+                // $("#status").fadeOut().delay(3000).innerHTML("");
+            }
+        });
+
+
     });
 
 });

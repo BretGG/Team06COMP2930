@@ -1,20 +1,17 @@
-// var request = require('request-promise');
-// const jwt = require('jsonwebtoken');
-// const express = require('express');
-//
-// const router = express.Router();
-
 $(document).ready(() => {
 
+    // setting encrypted and secure user token
     $.ajaxSetup({
         headers: {
             'auth-token': localStorage.getItem('auth-token')
         }
     });
 
-    let print = user => {
-        console.log(JSON.stringify(user));
+    /** On page load, plays avatar animation */
+    window.onload = function() {
+        $('#avatar').toggleClass('bounceIn');
     };
+
 
     function getUserInfo(callback) {
         console.log('sign in');
@@ -32,23 +29,44 @@ $(document).ready(() => {
         });
     }
 
+
+    /** Grabs user's username and appends to it welcome text */
     function setProfileInfo(user) {
-        let welcome = $('#welcome');
+        let welcome = $('#title');
         welcome.text("Welcome, " + user.username + "!");
     }
 
+
+    /** Calling setProfileInfo function */
     getUserInfo(setProfileInfo);
 
+    /** Takes user to create room page */
     $("#create").click(() => {
         window.location.href = "createRoom";
-    });
+    })
 
+    /** Takes user to join room page */
+    $("#join").click(() => {
+        window.location.href = "joinRoom";
+    })
 
-        $("#join").click(() => {
-            window.location.href = "joinRoom";
-        });
+    /** Takes user to join room page */
+    $("#cards").click(() => {
+        window.location.href = "hannahtest";    //hannah is testing
+    })
 
+    /** Takes user back to signup/signin page */
     $("#logout").click(() => {
         window.location.href = "/";
+    });
+
+    /** Takes user back to shop page */
+    $("#shop").click(() => {
+        window.location.href = "/shop";
+    });
+
+    /** Takes user back to mycard page */
+    $("#myCards").click(() => {
+        window.location.href = "/mycard";
     });
 });

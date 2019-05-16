@@ -1,7 +1,9 @@
 /* CSS Stylesheet That All Pages Take From, Contains Base CSS Properties)
 
 /* Imports font being used through application */
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+/* @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro'); */
+@import url("https://fonts.googleapis.com/css?family=Dosis:400,800|Source+Sans+Pro");
+
 /* Minimum width for application */
 html {
   min-width: 300px;
@@ -10,7 +12,7 @@ html {
 /* Centers elements, sets and stretches default background, and sets font. */
 body {
   margin: 0 auto;
-  background: url("../images/bg.png") no-repeat center center fixed;
+  background: url("../images/bg/default.png") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -18,6 +20,7 @@ body {
   font-family: "Segoe UI Regular";
 }
 
+/*On all clickable buttons, mouse takes to hand */
 .hoverPointer :hover {
   cursor: pointer;
 }
@@ -35,6 +38,84 @@ a {
   text-decoration: none;
 }
 
+/** Settings avatar size, margins, and etc */
+#avatar {
+  margin: 0 auto;
+  background-image: url("../images/platform/default.png");
+  width: 176px;
+  height: 251px;
+  margin-bottom: 3%;
+}
+
+#title {
+  font-family: "Dosis", sans-serif;
+  font-kerning: 10px;
+  padding-top: 0em;
+}
+
+/**Addes margin to container holding title */
+#titlecon {
+  margin: 2%;
+}
+
+/** Restricts size of the container holding all main content*/
+#mainpagecon {
+  margin: 0 auto;
+  width: 450px;
+  padding-bottom: 4%;
+  font-size: 1em;
+  height: 600px;
+  text-align: center;
+}
+
+/** All buttons under #mainpagecon have the same CSS changes (width, color, border, etc) */
+
+/** All labels under #mainpagecon have the same font size */
+#mainpagecon label {
+  font-size: 1.2em;
+}
+
+/* Animations */
+
+/*Animation on window load for avatar */
+@keyframes bounceIn {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3000px, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0);
+  }
+
+  75% {
+    transform: translate3d(0, -10px, 0);
+  }
+
+  90% {
+    transform: translate3d(0, 5px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.bounceIn {
+  animation-duration: 1s;
+  animation-name: bounceIn;
+}
+
+/* Media Queries */
 /* Header to indicate Page */
 #header {
   padding: 2%;
@@ -44,26 +125,52 @@ a {
   border-bottom: 2px solid #42a164;
 }
 
+/** Aligns title to center and changes font size */
 #logo {
+  margin-bottom: 0em;
+  font-family: "Dosis", sans-serif;
+  font-weight: 800;
   text-align: center;
-  font: #013f17;
   font-size: 2.5em;
 }
 
+/** WIDTH RANGE FROM 1501px to infinity */
 @media screen and (min-width: 1501px) {
+  /**Changes font size to match screen size*/
   #logo {
-    font-size: 3em;
+    font-size: 5.5em;
+  }
+  .about {
+    margin-top: 270px;
   }
 }
 
+/** WIDTH RANGE FROM 1080px to 1500px */
 @media screen and (min-width: 1080px) and (max-width: 1500px) {
+  /**Changes font size to match screen size*/
   #logo {
-    font-size: 2em;
+    font-size: 4.5em;
+  }
+  .about {
+    margin-top: 270px;
   }
 }
 
+/** WIDTH RANGE FROM 800px to 1079px */
 @media screen and (min-width: 800px) and (max-width: 1079px) {
+  /**Changes font size to match screen size*/
   #logo {
-    font-size: 2.5em;
+    font-size: 3.5em;
+  }
+  .about {
+    margin-top: 270px;
+  }
+}
+
+/** WIDTH RANGE TO 450px */
+@media screen and (max-width: 450px) {
+  /**Changes main page contat to match screen size*/
+  #mainpagecon {
+    width: auto;
   }
 }

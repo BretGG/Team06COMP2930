@@ -1,9 +1,6 @@
 $(document).ready(() => {
-    let print = user => {
-        console.log(JSON.stringify(user));
-        // $("#userInfo").html("User Info: " + JSON.stringify(user));
-    };
 
+    /** Switches container from Sign Up to Sign In */
     $(".headerRight").click(() => {
         $(".headerLeft").css("border-bottom", "none");
         $(".headerRight").css("border-bottom", "2px solid #42A164");
@@ -11,6 +8,7 @@ $(document).ready(() => {
         $(".headerRightCon").css("display", "inline");
     });
 
+    /** Switches container from Sign In to Sign Up */
     $(".headerLeft").click(() => {
         $(".headerRight").css("border-bottom", "none");
         $(".headerLeft").css("border-bottom", "2px solid #42A164");
@@ -19,6 +17,7 @@ $(document).ready(() => {
     });
 
 
+    /** User Sign-Up -- saves user info to server if signup requirements are met */
     $("#submitUP").click(() => {
         if ($("#pass1").val() == $("#cpass1").val())
             $.ajax({
@@ -31,7 +30,7 @@ $(document).ready(() => {
                     password: $("#pass1").val()
                 },
                 success: user => {
-                    print(user)
+                    // print(user)
                     window.location.href="/";
                 },
                 error: err => {
@@ -40,6 +39,7 @@ $(document).ready(() => {
             });
     });
 
+    /** User Sign-In -- Validates user info then takes them to next page*/
     $("#submitIN").click(() => {
         if($("#unameIN1").val()===("showmea")
             && $("#passIN1").val()===("sunset")){

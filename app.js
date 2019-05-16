@@ -11,6 +11,8 @@ const mainRouter = require("./routes/main");
 const gameRouter = require("./routes/game");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/login");
+const cardRouter = require("./routes/cards");
+const deckRouter = require("./routes/decks");
 
 var app = express();
 
@@ -50,6 +52,8 @@ app.use("/", mainRouter);
 app.use("/game", gameRouter);
 app.use("/users", usersRouter);
 app.use("/login", authRouter);
+app.use("/cards", cardRouter);
+app.use("/decks", deckRouter);
 
 // app.get('/mainPage', function(req, res) {
 //   res.render('public/views/mainPage.html');

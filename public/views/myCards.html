@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="../style/styleMyCards.css" >
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>EcoQuest</title>
+    </head>
     <style>
-      #status {
-        text-align: center;
+      .col-xs-6 {
+        margin: 0 auto;
+        margin-bottom: 2%;
       }
     </style>
-    </head>
-
   <body>
     <div id='container'>
       <h1 id='logo'> EcoQuest </h1>
@@ -24,8 +24,26 @@
           <div class='headerLeft'> Create Cards</div>
           <div class='headerRight'> My Cards</div>
         </div>
-        <div id='status'></div>
         <div id='inputcon'>
+          <div class="row">
+    <div class="col-xs-6 deck">
+              <select name="deck">
+                <option value="" selected>Deck</option>
+                <option value="special">Special</option>
+                <option value="funny">Funny</option>
+                <option value="random">Random</option>
+              </select>
+    </div>
+    <div class="col-xs-6">
+              <select name="category">
+                <option value="" selected>Category</option>
+                <option value="Math">Math</option>
+                <option value="Science">Science</option>
+                <option value="Sports">Sport</option>
+              </select>
+    </div>
+</div>
+
           <div class='headerLeftCon' >
             <label for="question"><b>Question</b></label>
             <input
@@ -40,12 +58,14 @@
               type="text"
               required
             />
+            <div id='status'></div>
           <button id="submitLeft" class='hoverPointer'><label>Create</label></button>
         </div>
         <div class='headerRightCon' >
           <div id='cardsCon'> </div>
-        </div>
 
+        </div>
+         <div id='backcon'> <button id='back'>Back </button></div>
       </div>
 
     </div>
