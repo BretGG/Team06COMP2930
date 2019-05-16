@@ -281,9 +281,11 @@ function displayQuestion(question) {
 // Creates the display for answers
 function displayAnswers(answers) {
   for (let card of answerCards) {
+    console.log(card);
     Phaser.Actions.Call(card.getChildren(), function(child) {
       child.destroy();
     });
+    card.destroy();
   }
 
   answerCards = [];
