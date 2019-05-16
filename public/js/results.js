@@ -1,4 +1,9 @@
 $(document).ready(() => {
+
+  $("#back").click(() => {
+    window.location.href="main";
+  });
+  
     /** Dummy data */
     var ranks = [1, 2, 3, 4];
     var player = ["Hannah", "Bret", "Rose", "Jessica"];

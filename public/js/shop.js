@@ -8,6 +8,10 @@ $(document).ready(() => {
 		$('#avatar').toggleClass('bounceIn');
   }
 
+   $("#back").click(() => {
+    window.location.href="main";
+  });
+
 $('#shopBackground').click(() => {
 	$('#shopPlatform').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopAvatar').css("background-color", "rgba(255,255,255, 0.75)");

@@ -6,6 +6,10 @@ var answer = ["sad", "dad", "da", "ba", "saa"];
 $(document).ready(() => {
     $('select').formSelect();
 
+  $("#back").click(() => {
+    window.location.href="main";
+  });
+
     // setting encrypted and secure user token
     $.ajaxSetup({
         headers: {
