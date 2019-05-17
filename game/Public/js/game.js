@@ -74,11 +74,13 @@ function create() {
   this.socket.on("playerJump", playerJump);
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
-  this.socket.on("endRound", endRound);
+  this.socket.on("playerAnswered", endRound);
+  // this.socket.on("endRound", endRound);
   this.socket.on(
     "me",
     me => (mainPlayer = players.find(player => player.playerId === me.playerId))
   );
+  // this.socket.on()
 
   //   this.socket.on("flashcards", displayFlashcards);
 
@@ -114,6 +116,7 @@ function create() {
 }
 
 function update() {
+  // console.log("mainplyaer: ", mainPlayer.playerId);
   // Jumping player
   if (cursor.space.isDown && mainPlayer.body.touching.down) {
     mainPlayer.setVelocityY(-300);
@@ -123,9 +126,10 @@ function update() {
 
 // Start new round (i.e create new cards)
 function startRound(roundInfo) {
-  displayAnswers(roundInfo.answers);
+  // console.log("start round from game.js called. ",  JSON.stringify(roundInfo));
+  displayAnswers(roundInfo.answer);
   displayQuestion(roundInfo.question);
-  console.log("round started" + JSON.stringify(roundInfo));
+  // console.log("round started" + JSON.stringify(roundInfo));
   // Other round start stuff
 }
 
@@ -182,6 +186,7 @@ function endRound(roundInfo) {
       });
     }
   }
+  console.log("inside endround", JSON.stringify(roundInfo));
 }
 
 // Create to player object, could be another class but...
@@ -298,7 +303,7 @@ function displayQuestion(question) {
 
   let text = self.add.text(0, 0, question, {
     fontFamily: "Arial",
-    fontSize: 20,
+    fontSize: 30,
     color: "#000000",
     align: "center",
     boundsAlignH: "center",
@@ -322,6 +327,7 @@ function displayQuestion(question) {
 
 // Creates the display for answers
 function displayAnswers(answers) {
+  let answerToSend;
   for (let card of answerCards) {
     card.text.destroy();
     card.destroy();
@@ -341,7 +347,7 @@ function displayAnswers(answers) {
     // Creation of text and adding to group
     card.text = self.add.text(0, 0, answer, {
       fontFamily: "Arial",
-      fontSize: 18,
+      fontSize: 28,
       color: "#000000",
       align: "center",
       boundsAlignH: "center",
@@ -362,10 +368,19 @@ function displayAnswers(answers) {
     // }
 
     // Set the object to be interactive
-    card.setInteractive().on("pointerdown", () => {
-      console.log(card.text.text);
-      self.socket.emit("answered", { answer: card.text.text });
-    });
+    //--------------------
+    // cardFront.setInteractive().on("pointerdown", () =>
+    // self.socket.emit ("playerAnswered",{answer:text.text, playerId:mainPlayer.playerId}));
+
+    card
+      .setInteractive()
+      // .on("pointerdown", () => self.socket.emit("answered", text.text));
+      .on("pointerdown", () =>
+        self.socket.emit("playerAnswered", {
+          answer: card.text.text,
+          playerId: mainPlayer.playerId
+        })
+      );
 
     // Add card to our master list
     answerCards.push(card);
@@ -373,6 +388,7 @@ function displayAnswers(answers) {
 
   // Sliding in the cards
   if (answerCards.length > 0) {
+    // console.log(answerCards.length);
     for (let card of answerCards) {
       // Slide in card front
       self.tweens.add({
@@ -574,7 +590,7 @@ function scoreAndPlayer() {
 function clickHandler(box) {
   console.log("card clicked");
   currentPlayerAnswered = true;
-  this.socket.emit("playerAnswered", { data: true });
+  // this.socket.emit("playerAnswered", { data: true });
 
   afterGlobalTurnFinished();
   if (box.isItCorrect) {

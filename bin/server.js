@@ -6,6 +6,15 @@
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
+const { Card } = require("../src/models/card.js");
+var glob = this;
+
+// async function something() {
+//   glob.cards = await Card.find( { format: "tf", category: "test"});
+//   console.log("from the DB...length:",cards.length);
+// }
+
+// something();
 
 /**
  * Get port from environment and store in Express.
@@ -95,19 +104,22 @@ let currentRoundCard;
 // setInterval(() => {
 //   console.log(JSON.stringify(players));
 // }, 5000);
-const dummycards = [
-  { question: "1 + 1 = ?", answer: "2" },
-  { question: "9 + 1 = ?", answer: "10" },
-  { question: "5 + 1 = ?", answer: "6" },
-  { question: "8 x 3", answer: "24" }
-];
+// const dummycards = [
+//   { question: "1 + 1 = ?", answer: "2" },
+//   { question: "9 + 1 = ?", answer: "10" },
+//   { question: "5 + 1 = ?", answer: "6" },
+//   { question: "8 x 3", answer: "24" }
+// ];
 
 // Setting up the server to client connection
+
+var round = 0;
 io.on("connection", function(socket) {
   socket.emit("flashcards", dummycards);
 
   // store socket for broadcasting
   self.socket = socket;
+  console.log("ROUND: ", round);
 
   // cancel if at max capacity
   if (players.length >= maxPlayers) {
@@ -163,19 +175,38 @@ io.on("connection", function(socket) {
 
   socket.on("playerAnswered", function(info) {
     // { playerId: something.plareId, answer: "some answer to a question"}
+    //
+    // let player = (players.find(
+    //   holder => info.playerId ===
+    //   holder.playerId
+    // ).answeredRound = true);
+    let playeri = info.playerId;
+    console.log("test!!", JSON.stringify(info));
 
-    let player = (players.find(
-      player => info.playerId,
-      playerInfo.playerId
-    ).answeredRound = true);
-
-    if (info.answer === currentRoundCard.answer) {
-      player.correctAnswers++;
+    console.log(playeri, "testing ! ");
+    let currentPlayer = players.find(m => m.playerId === playeri);
+    currentPlayer.answeredRound = true;
+    if (info.answer === glob.cards[round].answer) {
+      currentPlayer.correctAnswers++;
+      console.log("player.correctAnswers, ", currentPlayer.correctAnswers);
     } else {
-      player.wrongAnswers++;
+      currentPlayer.wrongAnswers++;
+      console.log("player.wrongAnswers, ", currentPlayer.correctAnswers);
     }
 
-    socket.broadcast.emit("playerAnswered", player.playerId);
+    if (allPlayerAnswered() && round < glob.cards.length) {
+      for (let p of players) {
+        p.answeredRound = false;
+      }
+
+      socket.broadcast.emit("playerAnswered", {
+        player: currentPlayer,
+        answer: glob.cards[round].answer
+      });
+      round++;
+      console.log("ROUND: ", round);
+    }
+    //emit updated player object. to be received in game.js
   });
 
   socket.on("playerJump", () => {
@@ -236,8 +267,69 @@ function printPlayers(coordinates) {
   for (let i = 0; i < coordinates.length; i++) {
     // ???????????????
     console.log(coordinates[i].isTaken);
+    // socket.on("answered", answerInfo => {
+    //   console.log(answerInfo);
+    //   console.log(socket.id);
+    // });
+
+    ////////////////////////////////////////// test code
+    // let roundInfo = {
+    //   question: "What is Stella's first name",
+    //   answers: ["Jessica", "Rose", "Stella", "Hannah"]
+    // };
+
+    //////////////////////////////////////////////////////
+
+    setInterval(() => {
+      roundInfo(round, socket);
+    }, 15000);
   }
 }
+
+async function roundInfo(s, socket) {
+  glob.cards = await Card.find({ format: "tf", category: "test" });
+  console.log("from the DB...length:", glob.cards.length);
+  // console.log("testing, ",glob.cards);
+  let question;
+  let answers = [];
+  question = glob.cards[s].question;
+  answers.push(glob.cards[s].answer);
+  for (let i = 0; i < 4; i++) {
+    if (glob.cards[i].answer != glob.cards[s].answer) {
+      answers.push(glob.cards[i].answer);
+    }
+  }
+  //shuffling the answers
+  answers.sort(() => Math.random() - 0.5);
+  // return {question: question, answer: answers};
+  socket.broadcast.emit("startRound", { question: question, answer: answers });
+  console.log("currently....", players);
+}
+
+function allPlayerAnswered() {
+  for (let o of players) {
+    console.log(
+      "Inside allPlayerAnswered : \n",
+      o.playerId + "\n",
+      "has answered?:",
+      o.answeredRound
+    );
+    if (!o.answeredRound) {
+      return false;
+    }
+    //   socket.broadcast.emit("startRound", roundInfo);
+    // }, 15000);
+  }
+
+  return true;
+}
+
+// function printPlayers(coordinates) {
+//   for (let i = 0; i < coordinates.length; i++) {
+//     // ???????????????
+//     console.log(coordinates[i].isTaken);
+//   }
+// }
 
 // hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 //   if (Object.keys(io.sockets.sockets).length <= numberOfPlayers) {
