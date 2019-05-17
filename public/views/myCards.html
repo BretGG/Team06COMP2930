@@ -16,7 +16,6 @@
     #submitLeft{
         margin: 0 auto;
       }
-
       #deckName{
         border-bottom: 0px;
         background-color: #A0A0A0 !important;
@@ -33,21 +32,21 @@
             </div>
 
             <div id='headerRightCon'>
-                <div class="row">
+                <div class="row optionCon">
                     <div class="input-field col s6">
-                        <select>
-                            <option value="" disabled selected>Choose your option</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
+                        <select id='myCate'>
+                            <option value="" disabled selected>Category</option>
+                            <option value="Eco">Eco</option>
+                            <option value="Science">Science</option>
+                            <option value="test">test</option>
+                            <option value="">All</option>
                         </select>
                     </div>
                     <div class="input-field col s6">
-                        <select>
-                            <option value="" disabled selected>Choose your option</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
+                        <select id='myDeck'>
+                            <option value="" disabled selected>Deck</option>
+                            <option value="Random">Random</option>
+                            <option value="">All</option>
                         </select>
                     </div>
                 </div>
@@ -55,34 +54,36 @@
             </div>
 
             <div id='headerLeftCon'>
-                <div class="row">
+                <div class="row optionCon">
                     <div class="input-field col s6">
-                        <select>
-                            <option value="" disabled selected>Choose your option</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
+                        <select id='creCate'>
+                            <option value="" disabled selected>Category</option>
+                            <option value="Eco">Eco</option>
+                            <option value="Science">Science</option>
+                            <option value="Math">Math</option>
+                            <option value="test">test</option>
                         </select>
                     </div>
                     <div class="input-field col s6">
-                        <select>
-                            <option value="" disabled selected>Choose your option</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
+                        <select id='creDeck'>
+                            <option value="" disabled selected>Deck</option>
+                            <option value="New">New</option>
+                            <option value="Random">Random</option>
                         </select>
                     </div>
 
                 </div>
-                <label for="deckName"><b>Deck Name</b></label>
-                <input disabled value="" id="deckName" type="text">
-                <label for="question"><b>Question</b></label>
-                <input id="question" type="text" required />
+                <div id='inputcon'>
+                    <label for="deckName"><b>Deck Name</b></label>
+                    <input disabled value="" id="deckName" type="text">
+                    <label for="question"><b>Question</b></label>
+                    <input id="question" type="text" required />
 
-                <label for="answer"><b>Answer</b></label>
-                <input id="answer" type="text" required />
-                <a id='submitLeft' class="waves-effect waves-light btn"><i class="material-icons right">create</i>Create</a>
+                    <label for="answer"><b>Answer</b></label>
+                    <input id="answer" type="text" required />
+                    <a id='submitLeft' class="waves-effect waves-light btn"><i class="material-icons right">create</i>Create</a>
 
+                </div>
             </div>
 
 
@@ -93,7 +94,7 @@
     </div>
     </div>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
     <script src="../js/myCards.js"></script>
 </body>

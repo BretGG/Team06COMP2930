@@ -21,19 +21,17 @@ $(document).ready(() => {
         $("#status").text("");
         $('#headerLeftCon').hide();
         $('#headerRightCon').show();
-        // $(".headerLeft").css("border-bottom", "none");
-        // $(".headerRight").css("border-bottom", "2px solid #42A164");
+        $(".headerLeft").css("border-bottom", "none");
+        $(".headerRight").css("border-bottom", "2px solid #42A164");
         // $("#back").css("padding-top:", "15px");
-        // $(".headerLeftCon").hide();
-        // $(".headerRightCon").show();
         // $("#newdeck").hide();
 
     });
 
     /** Switches container from My Cards to Create Cards */
     $(".headerLeft").click(() => {
-        // $(".headerRight").css("border-bottom", "none");
-        // $(".headerLeft").css("border-bottom", "2px solid #42A164");
+        $(".headerRight").css("border-bottom", "none");
+        $(".headerLeft").css("border-bottom", "2px solid #42A164");
         $("#headerRightCon").hide();
         $("#headerLeftCon").show();
     });
@@ -96,15 +94,15 @@ $(document).ready(() => {
     getMyCard(populateCards);
 
     //this gets only the cards that user want in the specific category
-    $("#category").change(function() {
-        getMyCard(populateCards, $('select#deck').val(), $('select#category').val());
-        console.log($('select#category').val());
+    $("#myCate").change(function() {
+        getMyCard(populateCards, $('select#deck').val(), $('select#myCate').val());
+        console.log($('select#myCate').val());
     });
 
     //this gets only the cards that user want in the specific category
-    $("#deck").change(function() {
-        getMyCard(populateCards, $('select#deck').val(), $('select#category').val());
-        console.log($('select#deck').val());
+    $("#myDeck").change(function() {
+        getMyCard(populateCards, $('select#myDeck').val(), $('select#myCate').val());
+        console.log($('select#myDeck').val());
     });
 
 
@@ -123,10 +121,10 @@ $(document).ready(() => {
             dataType: 'json',
             data: {
                 format: "tf",
-                category: $('select#category').val(),
+                category: $('select#creCate').val(),
                 question: $("#question").val(),
                 answer: $("#answer").val(),
-                deck: $('select#deck').val()
+                deck: $('select#creDeck').val()
             },
             success: card => {
                 $("#status").text("Card successfully added. Check under My Cards");

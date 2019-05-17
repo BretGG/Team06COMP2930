@@ -26,23 +26,35 @@
   width: 40%;
 } */
 
+.optionCon{
+    margin-bottom: 0em;
+}
+.optionCon > .input-field{
+    margin-top: 0.1rem;
+}
+.select-wrapper input.select-dropdown{
+    margin-bottom: 0em;
+}
 
+#headerLeftCon{
+    display: none;
+}
 
-/* #inputcon > input {
+#inputcon > input {
   background-color: rgb(217, 242, 237);
-  height: 1em;
+  /* height: 1em; */
   display: inline;
-} */
+}
 
 
 
 
 /** Restricts size and color of card */
 .card {
-  margin: 1rem;
+  margin: 0.8rem;
   background: white;
   box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
-  border-radius: 12px;
+  border-radius: 3%;
   overflow: hidden;
 }
 
@@ -52,6 +64,9 @@
   overflow-y: scroll;
   background-color: #D9F2ED;
   border: 2px solid #A7BAB6;
+  border-radius: 1.5%;
+  width: 90%;
+  margin: 0 auto;
   clear: both;
 }
 

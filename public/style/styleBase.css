@@ -121,7 +121,7 @@ a {
 
 /** Aligns title to center and changes font size */
 #logo {
-  margin-bottom: 0em;
+  margin-bottom: 0.2em;
   font-family: "Dosis", sans-serif;
   font-weight: 800;
   text-align: center;
