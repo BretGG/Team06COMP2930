@@ -8,6 +8,12 @@ $(document).ready(() => {
 		$('#avatar').toggleClass('bounceIn');
   }
 
+
+  $("#buy").click(() => {
+    window.location.href="main";
+  });
+
+
    $("#back").click(() => {
     window.location.href="main";
   });
@@ -44,8 +50,8 @@ $('#shopAvatar').click(() =>{
 	$("#ditem1").text("Black Sesame");
 	$("#ditem2").text("Green Apple");
 	$("#ditem3").text("Cloud");
-	$("#ditem4").text("Red Apple");
-	$("#ditem5").text("Mango");
+	$("#ditem4").text("Mango");
+	$("#ditem5").text("Red Apple");
 	$("#ditem6").text("Blueberry");
 	active ="avatar";
 })  
