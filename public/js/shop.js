@@ -75,7 +75,7 @@ $('#item1').click(() => {
 	else if (active == "platform")
 		$("#char").css("background-image", "url(../images/platform/default.png)");
 	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/default.png)");
+		$("html").css("background-image", "url(../images/bg/default.png)");
 })
 
 $('#item2').click(() => {
@@ -84,7 +84,7 @@ $('#item2').click(() => {
 	else if (active == "platform")
 		$("#char").css("background-image", "url(../images/platform/pinkplatform.png)");
 	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/city.png)");
+		$("html").css("background-image", "url(../images/bg/city.png)");
 })
 
 $('#item3').click(() => {
@@ -93,7 +93,7 @@ $('#item3').click(() => {
 	else if (active == "platform")
 		$("#char").css("background-image", "url(../images/platform/purpleplatform.png)");
 	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/darkblue.png)");
+		$("html").css("background-image", "url(../images/bg/darkblue.png)");
 })
 
 $('#item4').click(() => {
@@ -102,7 +102,7 @@ $('#item4').click(() => {
 	else if (active == "platform")
 		$("#char").css("background-image", "url(../images/platform/rabbitpet.png)");
 	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/night.png)");
+		$("html").css("background-image", "url(../images/bg/night.png)");
 })
 
 $('#item5').click(() => {
@@ -111,7 +111,7 @@ $('#item5').click(() => {
 	else if (active == "platform")
 		$("#char").css("background-image", "url(../images/platform/duckpet.png)");
 	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/pixelatedbg.png)");
+		$("html").css("background-image", "url(../images/bg/pixelatedbg.png)");
 })
 
 $('#item6').click(() => {
@@ -120,7 +120,7 @@ $('#item6').click(() => {
 	else if (active == "platform")
 		$("#char").css("background-image", "url(../images/platform/birdpet.png)");
 	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/sunset.png)");
+		$("html").css("background-image", "url(../images/bg/sunset.png)");
 })
 
 });

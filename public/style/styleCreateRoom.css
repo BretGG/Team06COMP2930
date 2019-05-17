@@ -1,3 +1,7 @@
+#roomNo{
+  font-size: 19px;
+  
+}
 /**Changes placement of div to match screen size*/
 #back {
   margin-left: 2%;
@@ -13,7 +17,6 @@
       }
 
 }
-
 
 /** WIDTH RANGE FROM 1080px to 1500px */
 @media screen and (min-width: 1080px) and (max-width: 1500px){
