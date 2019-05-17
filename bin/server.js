@@ -98,7 +98,6 @@ function onListening() {
 const self = this;
 const maxPlayers = 4;
 const players = new Map();
-let roundInfo;
 let currentRoundCard;
 
 // setInterval(() => {
@@ -115,7 +114,7 @@ let currentRoundCard;
 
 var round = 0;
 io.on("connection", function(socket) {
-  socket.emit("flashcards", dummycards);
+  // socket.emit("flashcards", dummycards);
 
   // store socket for broadcasting
   self.socket = socket;
@@ -246,10 +245,10 @@ io.on("connection", function(socket) {
 
   currentRoundCard = roundCard;
 
-  roundInfo = {
-    question: "What is Stella's first name",
-    answers: ["Jessica", "Rose", "Stella", "Hannah"]
-  };
+  // roundInfo = {
+  //   question: "What is Stella's first name",
+  //   answers: ["Jessica", "Rose", "Stella", "Hannah"]
+  // };
   //////////////////////////////////////////
 
   // setInterval(() => {
@@ -259,9 +258,9 @@ io.on("connection", function(socket) {
   // }, 15000);
 });
 
-setTimeout(function() {
-  io.emit("startRound", roundInfo);
-}, 15000);
+// setTimeout(function() {
+//   io.emit("startRound", roundInfo);
+// }, 15000);
 
 function printPlayers(coordinates) {
   for (let i = 0; i < coordinates.length; i++) {
