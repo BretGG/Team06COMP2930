@@ -9,37 +9,21 @@ $(document).ready(() => {
   }
 
 
-  $("#buy").click(() => {
-    window.location.href="main";
-  });
-
-
    $("#back").click(() => {
     window.location.href="main";
   });
 
-$('#shopBackground').click(() => {
-	$('#shopPlatform').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopAvatar').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopBackground').css("background-color", "#55B1C1");
-	$("#item1").css("background-image", "url(../images/shopIcons/bg/default.png)");
-	$("#item2").css("background-image", "url(../images/shopIcons/bg/city.png)");
-	$("#item3").css("background-image", "url(../images/shopIcons/bg/darkblue.png)");
-	$("#item4").css("background-image", "url(../images/shopIcons/bg/night.png)");
-	$("#item5").css("background-image", "url(../images/shopIcons/bg/pixelatedbg.png)");
-	$("#item6").css("background-image", "url(../images/shopIcons/bg/sunset.png)");
-	$("#ditem1").text("Forest View");
-	$("#ditem2").text("City Sunset");
-	$("#ditem3").text("Blue Skies");
-	$("#ditem4").text("Purple Night");
-	$("#ditem5").text("Pixelated Ocean");
-	$("#ditem6").text("Sunset");
-	active = "bg";
-})
-
 $('#shopAvatar').click(() =>{
-	$('#shopPlatform').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopBackground').css("background-color", "rgba(255,255,255, 0.75)");
+
+
+
+	    	$("#buy").removeClass("disabled");
+
+
+
+
+	$('#shopPlatform').css("background-color", "#26a69a");
+	$('#shopBackground').css("background-color", "#26a69a");
 	$('#shopAvatar').css("background-color", "#55B1C1");
 	$("#item1").css("background-image", "url(../images/shopIcons/avatar/default.png)");
 	$("#item2").css("background-image", "url(../images/shopIcons/avatar/greenChar.png)");
@@ -53,12 +37,24 @@ $('#shopAvatar').click(() =>{
 	$("#ditem4").text("Mango");
 	$("#ditem5").text("Red Apple");
 	$("#ditem6").text("Blueberry");
+	$("#cost1").text("0");
+	$("#cost2").text("200");
+	$("#cost3").text("100");
+	$("#cost4").text("250");
+	$("#cost5").text("200");
+	$("#cost6").text("300");
 	active ="avatar";
 })  
 
 $('#shopPlatform').click(() => {
-	$('#shopAvatar').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopBackground').css("background-color", "rgba(255,255,255, 0.75)");
+
+
+	    	$("#buy").addClass("disabled");
+
+
+
+	$('#shopAvatar').css("background-color", "#26a69a");
+	$('#shopBackground').css("background-color", "#26a69a");
 	$('#shopPlatform').css("background-color", "#55B1C1");
 	$("#item1").css("background-image", "url(../images/shopIcons/platform/default.png)");
 	$("#item2").css("background-image", "url(../images/shopIcons/platform/pinkplatform.png)");
@@ -72,8 +68,41 @@ $('#shopPlatform').click(() => {
 	$("#ditem4").text("Pet Rabbit");
 	$("#ditem5").text("Pet Duck");
 	$("#ditem6").text("Pet Bird");
+	$("#cost1").text("0");
+	$("#cost2").text("200");
+	$("#cost3").text("100");
+	$("#cost4").text("250");
+	$("#cost5").text("200");
+	$("#cost6").text("300");
 	active ="platform";
 })
+
+
+$('#shopBackground').click(() => {
+	$('#shopPlatform').css("background-color", "#26a69a");
+	$('#shopAvatar').css("background-color", "#26a69a");
+	$('#shopBackground').css("background-color", "#55B1C1");
+	$("#item1").css("background-image", "url(../images/shopIcons/bg/default.png)");
+	$("#item2").css("background-image", "url(../images/shopIcons/bg/city.png)");
+	$("#item3").css("background-image", "url(../images/shopIcons/bg/darkblue.png)");
+	$("#item4").css("background-image", "url(../images/shopIcons/bg/night.png)");
+	$("#item5").css("background-image", "url(../images/shopIcons/bg/pixelatedbg.png)");
+	$("#item6").css("background-image", "url(../images/shopIcons/bg/sunset.png)");
+	$("#ditem1").text("Forest View");
+	$("#ditem2").text("City Sunset");
+	$("#ditem3").text("Blue Skies");
+	$("#ditem4").text("Purple Night");
+	$("#ditem5").text("Pixelated Ocean");
+	$("#ditem6").text("Sunset");
+	$("#cost1").text("0");
+	$("#cost2").text("250");
+	$("#cost3").text("200");
+	$("#cost4").text("150");
+	$("#cost5").text("100");
+	$("#cost6").text("50");
+	active = "bg";
+})
+
 
 $('#item1').click(() => {
 	if(active == "avatar")
