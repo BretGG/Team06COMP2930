@@ -26,7 +26,7 @@ app.set("view engine", "html");
 
 // Starting database connection
 mongoose
-  .connect("mongodb://localhost/ecoQuest")
+  .connect("mongodb://ecoQuest:F1veAl1ve@ds155516.mlab.com:55516/heroku_nj2pbh4w")
   .then(() => console.log("Connected to mongo...\n"))
   .catch(err => console.log("Failed connection to mongo ", err));
 
