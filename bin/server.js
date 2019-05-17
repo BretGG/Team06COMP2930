@@ -216,6 +216,11 @@ io.on("connection", function(socket) {
     socket.broadcast.emit("playerJump", socket.id);
   });
 
+  socket.on("answered", answerInfo => {
+    console.log(answerInfo);
+    console.log(socket.id);
+  });
+
   ////////////////////////////////////////// test code
   // let roundInfo = {
   //   question: "What is Stella's first name",
@@ -230,7 +235,7 @@ io.on("connection", function(socket) {
 
 
     roundInfo(round, socket)
-  }, 6000);
+  }, 15000);
 
   // socket.on("playerAnswer", checkAnswer);
 });//io.on(connection) ends here
@@ -266,7 +271,8 @@ function allPlayerAnswered(){
     if (!o.answeredRound) {
       return false;
     }
-
+  //   socket.broadcast.emit("startRound", roundInfo);
+  // }, 15000);
   }
 
 
