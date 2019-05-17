@@ -216,10 +216,10 @@ io.on("connection", function(socket) {
     socket.broadcast.emit("playerJump", socket.id);
   });
 
-  socket.on("answered", answerInfo => {
-    console.log(answerInfo);
-    console.log(socket.id);
-  });
+  // socket.on("answered", answerInfo => {
+  //   console.log(answerInfo);
+  //   console.log(socket.id);
+  // });
 
   ////////////////////////////////////////// test code
   // let roundInfo = {

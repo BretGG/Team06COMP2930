@@ -337,7 +337,8 @@ function displayAnswers(answers) {
 
     card
       .setInteractive()
-      .on("pointerdown", () => self.socket.emit("answered", text.text));
+      // .on("pointerdown", () => self.socket.emit("answered", text.text));
+      .on("pointerdown", ()=> self.socket.emit ("playerAnswered",{answer:card.text.text, playerId:mainPlayer.playerId}));
 
     // Add card to our master list
     answerCards.push(card);
