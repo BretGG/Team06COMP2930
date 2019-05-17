@@ -7,16 +7,17 @@
 /* Minimum width for application */
 html {
   min-width: 300px;
-}
-
-/* Centers elements, sets and stretches default background, and sets font. */
-body {
-  margin: 0 auto;
   background: url("../images/bg/default.png") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  
+}
+
+/* Centers elements, sets and stretches default background, and sets font. */
+body {
+  margin: 0 auto;
   font-family: "Segoe UI Regular";
 }
 
