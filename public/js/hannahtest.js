@@ -32,7 +32,7 @@ $(document).ready(() => {
         });
     }
 
-    /** Grabs user's username and appends to it welcome text */
+    /** Populate cards from my list . . . Ta da */
     function populateCards(cards) {
         for (let mycard of cards) {
             let card = document.createElement('div');

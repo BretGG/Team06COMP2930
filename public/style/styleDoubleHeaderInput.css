@@ -1,5 +1,5 @@
 select{
-  
+
 }
 
 /* Main Content Container */
@@ -51,7 +51,7 @@ select{
 #inputcon{
   margin: 0 auto;
   text-align: left;
-  width: 80%;
+  width: 90%;
   margin-bottom: 4%;
 }
 
@@ -78,20 +78,12 @@ select{
   margin: 0 auto;
 }
 
-/** WIDTH RANGE FROM 500px to 799px */
-@media screen and (min-width: 500px) and (max-width: 799px){
-      #mainCon{
-        font-size: 1em;
-        width: 450px;
-        height: 460px;
-      }
-}
 
 /** WIDTH RANGE FROM 1501px to infinity */
 @media screen and (min-width: 1501px){
       #mainCon{
         font-size: 1em;
-        width:500px; 
+        width:500px;
         height:465px;
       }
 }
@@ -111,5 +103,15 @@ select{
         width: 600px;
         font-size: 1em;
         height:510px;
+      }
+}
+
+
+/** WIDTH RANGE FROM 500px to 799px */
+@media screen and (min-width: 500px) and (max-width: 799px){
+      #mainCon{
+        font-size: 1em;
+        width: 450px;
+        height: 460px;
       }
 }

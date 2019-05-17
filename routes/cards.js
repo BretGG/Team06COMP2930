@@ -1,26 +1,20 @@
 const router = require("express").Router();
 const debug = require("debug")("comp2930-team2:server");
-const { Card, validate } = require("../src/models/card");
+const {
+    Card,
+    validate
+} = require("../src/models/card");
 const _ = require("lodash");
 
 router.post("/", async (req, res) => {
-    var card = _.pick(req.body, ["format", "category", "question", "answer", "deck",]);
+    var card = _.pick(req.body, ["format", "category", "question", "answer", "deck", ]);
     debug("Request to create cards: " + JSON.stringify(card));
 
     // Check if valid card data
-    const { error } = validate(req.body);
+    const {
+        error
+    } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
-    // Check if question is already in the database
-    // I should talk about this if we need this
-    // cardQuestion = await Card.findOne({ question: card.question });
-    // if (cardQuestion) return res.status(400).send("Same Question already exists");
-
-    // let decks = await Deck.findAll({   owner: someId
-    // }); // Find decks by user
-    //
-    // for each await deck.getCards(); // Ask decks for cards
-
 
     // Create card
     card = new Card(card);
@@ -38,16 +32,38 @@ router.post("/", async (req, res) => {
 
 // get the decks
 router.put('/', async (req, res) => {
-    console.log("am I in cards.js?")
-    console.log(req.body);
-    let cardtype = _.pick(req.body, ["format", "category"]);
-req.get('format');
-    console.log('what is my format? ' + JSON.stringify(cardtype));
-
+    let cardtype = _.pick(req.body, ["format", "deck", "category"]);
     console.log(`Get all cards from: ${req.connection.remoteAddress}`);
+    console.log(cardtype);
+    let cards;
+    if ( !cardtype.deck && !cardtype.category ) {
+        console.log('case 1');
+        cards = await Card.find({
+            format: cardtype.format
+        });
+    } else if ( !cardtype.category ) {
+        console.log('case 2');
+        cards = await Card.find({
+            format: cardtype.format,
+            deck: cardtype.deck
+        });
+    } else if ( !cardtype.deck ) {
+        console.log('case 3');
+        cards = await Card.find({
+            format: cardtype.format,
+            category: cardtype.category
+        });
+    } else {
+        console.log('case 4');
+        cards = await Card.find({
+            format: cardtype.format,
+            deck: cardtype.deck,
+            category: cardtype.category
+        });
+    }
 
-    let cards = await Card.find( { format: cardtype.format, category: cardtype.category});
-    if (!cards || cards.length <= 0) return res.status(400).send("You have no cards!");
+    if ( !cards || cards.length <= 0 )
+        return res.status(400).send("You have no cards!");
 
     console.log(`Returning ${cards.length} cards at ${req.connection.remoteAddress}`);
     res.send({ cards: cards });

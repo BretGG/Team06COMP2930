@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <link rel="icon" href="../images/icon.png" type="../images/icon.png"/>
+    <link rel="icon" href="../images/icon.png" type="../images/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" href="../style/styleBase.css" >
-    <link rel="stylesheet" href="../style/styleDoubleHeaderInput.css" >
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css"  media="screen,projection"/>
-    <link rel="stylesheet" href="../style/styleMyCards.css" >
+    <link rel="stylesheet" href="../style/styleBase.css">
+    <link rel="stylesheet" href="../style/styleDoubleHeaderInput.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css" media="screen,projection" />
+    <link rel="stylesheet" href="../style/styleMyCards.css">
     <title>EcoQuest</title>
-    </head>
-    <style>
-      #submitLeft{
+</head>
+<style>
+    #submitLeft{
         margin: 0 auto;
       }
 
@@ -22,60 +23,73 @@
         border: 1px solid #D9F2ED;
       }
     </style>
-  <body>
+
+<body>
     <div id='container'>
-      <h1 id='logo'> EcoQuest </h1>
-      <div id='mainCon'>
-        <div id='headerCon' class='hoverPointer'>
-          <div class='headerLeft'> Create Cards</div>
-          <div class='headerRight'> My Cards</div>
-        </div>
-        <div id='dC'>
-        <div id='l'>
-            <select id='deck'>
-              <option value="" disabled selected>Deck</option>
-              <option value="0">New</option>
-              <option value="1">Main</option>
-              <option value="2">Random</option>
-              <option value="3">Deck3</option>
-              <label>Materialize Select</label>
-            </select>
-          </div>
-          <div id='r'>
-            <select id='category'>
-              <option value="" disabled selected>Category</option>
-              <option value="1">Science</option>
-              <option value="2">Misc.</option>
-              <option value="3">Eco</option>
-            </select>
-          </div> 
-        </div>
-        <div id='inputcon'> 
-          <div class='headerLeftCon' >
-            <label for="deckName"><b>Deck Name</b></label>
-            <input disabled value="" id="deckName" type="text">
-            <label for="question"><b>Question</b></label>
-            <input
-             id="question"
-              type="text"
-              required
-            />
+        <h1 id='logo'> EcoQuest </h1>
+        <div id='mainCon'>
+            <div id='headerCon' class='hoverPointer'>
+                <div class='headerLeft'> Create Cards</div>
+                <div class='headerRight'> My Cards</div>
+            </div>
 
-            <label for="answer"><b>Answer</b></label>
-            <input
-              id="answer"
-              type="text"
-              required
-            />
-          <a id='submitLeft' class="waves-effect waves-light btn"><i class="material-icons right">create</i>Create</a>
-        </div>
-        <div class='headerRightCon' >
-          <div id='cardsCon'> </div>
+            <div id='headerRightCon'>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select>
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                    </div>
+                    <div class="input-field col s6">
+                        <select>
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                    </div>
+                </div>
+                <div id='cardsCon'> </div>
+            </div>
 
+            <div id='headerLeftCon'>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select>
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                    </div>
+                    <div class="input-field col s6">
+                        <select>
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                    </div>
+
+                </div>
+                <label for="deckName"><b>Deck Name</b></label>
+                <input disabled value="" id="deckName" type="text">
+                <label for="question"><b>Question</b></label>
+                <input id="question" type="text" required />
+
+                <label for="answer"><b>Answer</b></label>
+                <input id="answer" type="text" required />
+                <a id='submitLeft' class="waves-effect waves-light btn"><i class="material-icons right">create</i>Create</a>
+                
+            </div>
+
+
+            <a id='back' class="waves-effect waves-light btn-small">Back<i class="material-icons right">home</i></a>
+            <div id='status'></div>
         </div>
-         <a id='back' class="waves-effect waves-light btn-small">Back<i class="material-icons right">home</i></a>
-          <div id='status'></div>
-      </div>
 
     </div>
     </div>
@@ -83,5 +97,6 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
     <script src="../js/myCards.js"></script>
-  </body>
+</body>
+
 </html>

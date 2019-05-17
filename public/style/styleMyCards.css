@@ -1,47 +1,38 @@
 /** Container holding deck select and category select */
-#dC{ 
+/* #dC{
   width: 80%;
   margin: 0 auto;
-}
+} */
 
 /*deck select*/
-#l{
+/* #l{
 
-  width: 48%;
+  width:49%;
   float: left;
-  margin-right: 4%;
-}
+  margin-right: 2%;
+} */
 
 /*category select*/
-#r{
-  width: 48%;
+/* #r{
+  width: 49%;
   float: left;
   clear: right;
-}
+} */
 
 /*create button*/
-#submitLeft {
+/* #submitLeft {
   display: block;
   margin: 0 auto;
   width: 40%;
-}
+} */
 
-/** Aligns text to center */
-#status {
-  margin-top: 4%;
-  text-align: center;
-  font-size: 1.2em;
-}
 
-/*back button*/
-.btn-small{
-  margin-top: 2%;
-}
 
-#inputcon > input {
+/* #inputcon > input {
   background-color: rgb(217, 242, 237);
+  height: 1em;
   display: inline;
-}
+} */
 
 /** Restricts size and color of card */
 .card {
@@ -61,12 +52,17 @@
   clear: both;
 }
 
-#backcon {
-  padding-top: 15px;
-  position: relative;
-  bottom: 5px;
-  width: 60%;
-  margin: 0 auto;
+/*back button*/
+.btn-small{
+  margin-top: 2%;
+}
+
+
+/** Aligns text to center */
+#status {
+  margin-top: 4%;
+  text-align: center;
+  font-size: 1.2em;
 }
 
 /** WIDTH RANGE FROM 500px to 799px */
@@ -95,7 +91,7 @@
 }
 
 /** WIDTH RANGE FROM 800px to 1079px */
-@media screen and (min-width: 800px) and (max-width: 1079px) {  
+@media screen and (min-width: 800px) and (max-width: 1079px) {
   /**Changes size of div to match screen size*/
   #cardsCon{
     height: 340px;
