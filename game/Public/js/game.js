@@ -144,7 +144,44 @@ function currentPlayers(currentPlayers) {
 }
 
 function endRound(roundInfo) {
-  console.log(roundInfo);
+  console.log("Round ending");
+  for (let card of answerCards) {
+    if (card.text.text === roundInfo.answer) {
+      self.tweens.add({
+        targets: card,
+        x: 400,
+        ease: "Quint",
+        duration: 3000,
+        repeat: 0
+      });
+
+      // Slide in card text
+      self.tweens.add({
+        targets: card.text,
+        x: 400 - card.text.width / 2,
+        ease: "Quint",
+        duration: 3000,
+        repeat: 0
+      });
+    } else {
+      self.tweens.add({
+        targets: card,
+        y: 1500,
+        ease: "Quint",
+        duration: 20000,
+        repeat: 0
+      });
+
+      // Slide in card text
+      self.tweens.add({
+        targets: card.text,
+        y: 1500,
+        ease: "Quint",
+        duration: 20000,
+        repeat: 0
+      });
+    }
+  }
 }
 
 // Create to player object, could be another class but...
@@ -325,9 +362,10 @@ function displayAnswers(answers) {
     // }
 
     // Set the object to be interactive
-    card
-      .setInteractive()
-      .on("pointerdown", () => self.socket.emit("answered", text.text));
+    card.setInteractive().on("pointerdown", () => {
+      console.log(card.text.text);
+      self.socket.emit("answered", { answer: card.text.text });
+    });
 
     // Add card to our master list
     answerCards.push(card);

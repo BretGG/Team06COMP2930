@@ -88,7 +88,8 @@ function onListening() {
 //--------------------------------------------------------Game code------------------------------------------------------------
 const self = this;
 const maxPlayers = 4;
-const players = [];
+const players = new Map();
+let roundInfo;
 let currentRoundCard;
 
 // setInterval(() => {
@@ -104,6 +105,10 @@ const dummycards = [
 // Setting up the server to client connection
 io.on("connection", function(socket) {
   socket.emit("flashcards", dummycards);
+
+  // store socket for broadcasting
+  self.socket = socket;
+
   // cancel if at max capacity
   if (players.length >= maxPlayers) {
     return socket.disconnect();
@@ -111,7 +116,7 @@ io.on("connection", function(socket) {
 
   console.log("A user connected: " + socket.id);
 
-  players.push({
+  players.set(socket.id, {
     playerId: socket.id,
     wrongAnswers: 0,
     correctAnswers: 0,
@@ -120,14 +125,16 @@ io.on("connection", function(socket) {
 
   // send all players to requesting user
   socket.on("currentPlayers", () => {
-    socket.emit("currentPlayers", players);
+    let playerHolder = [];
+    for (let player of players.values()) {
+      playerHolder.push(player);
+    }
+    console.log(playerHolder);
+    socket.emit("currentPlayers", playerHolder);
   });
 
   // update all other players of the new player
-  socket.broadcast.emit(
-    "newPlayer",
-    players.find(player => player.playerId === socket.id)
-  );
+  socket.broadcast.emit("newPlayer", players.get(socket.id));
 
   //user disconnected, broadcast to all other users and remove from list
   socket.on("disconnect", function() {
@@ -151,7 +158,7 @@ io.on("connection", function(socket) {
   });
 
   socket.on("me", function() {
-    socket.emit("me", players.find(player => player.playerId === socket.id));
+    socket.emit("me", players.get(socket.id));
   });
 
   socket.on("playerAnswered", function(info) {
@@ -176,25 +183,54 @@ io.on("connection", function(socket) {
   });
 
   socket.on("answered", answerInfo => {
+    let player = players.get(socket.id);
+
+    console.log("socketId: " + socket.id);
     console.log(answerInfo);
-    console.log(socket.id);
+    console.log("answering player: " + JSON.stringify(player));
+
+    // Don't let them answer again
+    if (player.answeredRound) return;
+    player.answeredRound = true;
+
+    if (answerInfo.answer === currentRoundCard.answer) {
+      player.correctAnswers++;
+    } else {
+      player.wrongAnswers++;
+    }
+
+    console.log("yay: " + JSON.stringify(player));
+
+    if (1 === 1) {
+      console.log("round end");
+      io.emit("endRound", { answer: "Hannah" });
+    }
   });
 
   ////////////////////////////////////////// test code
-  let roundInfo = {
+  let roundCard = {
+    question: "What is Stella's first name",
+    answer: "Hannah"
+  };
+
+  currentRoundCard = roundCard;
+
+  roundInfo = {
     question: "What is Stella's first name",
     answers: ["Jessica", "Rose", "Stella", "Hannah"]
   };
-  //////////////////////////////////////////////////////
+  //////////////////////////////////////////
 
-  setInterval(() => {
-    socket.broadcast.emit("startRound", roundInfo);
-  }, 15000);
-
-  setInterval(() => {
-    socket.broadcast.emit("endRound", { answer: "Hannah" });
-  }, 10000);
+  // setInterval(() => {
+  //   for (let player of players) {
+  //     player.answeredRound = false;
+  //   }
+  // }, 15000);
 });
+
+setTimeout(function() {
+  io.emit("startRound", roundInfo);
+}, 15000);
 
 function printPlayers(coordinates) {
   for (let i = 0; i < coordinates.length; i++) {
