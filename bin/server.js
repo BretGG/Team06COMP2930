@@ -205,11 +205,13 @@ io.on("connection", function(socket) {
       for( let p of players){
         p.answeredRound = false;
       }
-      round++;
+      
+        socket.broadcast.emit("playerAnswered", {player:currentPlayer,answer:glob.cards[round].answer});
+        round++;
       console.log("ROUND: ", round);
     }
         //emit updated player object. to be received in game.js
-    socket.broadcast.emit("playerAnswered", {player:currentPlayer,answer:glob.cards[round].answer});
+
   });
 
   socket.on("playerJump", () => {

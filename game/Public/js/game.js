@@ -149,7 +149,7 @@ function currentPlayers(currentPlayers) {
 }
 
 function endRound(roundInfo) {
-  console.log(JSON.stringify(roundInfo));
+  console.log("inside endround", JSON.stringify(roundInfo));
 }
 
 // Create to player object, could be another class but...
