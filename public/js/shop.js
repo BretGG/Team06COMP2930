@@ -1,6 +1,4 @@
 
-// var bg = ["city.png", "darkblue.png", "night.png", "pixelatedbg.png", "sunset.png"];
-
 var url = "../images/";
 var active ="avatar";
 
@@ -10,10 +8,14 @@ $(document).ready(() => {
 		$('#avatar').toggleClass('bounceIn');
   }
 
+   $("#back").click(() => {
+    window.location.href="main";
+  });
+
 $('#shopBackground').click(() => {
 	$('#shopPlatform').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopAvatar').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopBackground').css("background-color", "#48748E");
+	$('#shopBackground').css("background-color", "#55B1C1");
 	$("#item1").css("background-image", "url(../images/shopIcons/bg/default.png)");
 	$("#item2").css("background-image", "url(../images/shopIcons/bg/city.png)");
 	$("#item3").css("background-image", "url(../images/shopIcons/bg/darkblue.png)");
@@ -32,12 +34,12 @@ $('#shopBackground').click(() => {
 $('#shopAvatar').click(() =>{
 	$('#shopPlatform').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopBackground').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopAvatar').css("background-color", "#48748E");
+	$('#shopAvatar').css("background-color", "#55B1C1");
 	$("#item1").css("background-image", "url(../images/shopIcons/avatar/default.png)");
 	$("#item2").css("background-image", "url(../images/shopIcons/avatar/greenChar.png)");
 	$("#item3").css("background-image", "url(../images/shopIcons/avatar/greyChar.png)");
-	$("#item4").css("background-image", "url(../images/shopIcons/avatar/redChar.png)");
-	$("#item5").css("background-image", "url(../images/shopIcons/avatar/yellowChar.png)");
+	$("#item4").css("background-image", "url(../images/shopIcons/avatar/yellowChar.png)");
+	$("#item5").css("background-image", "url(../images/shopIcons/avatar/redChar.png)");
 	$("#item6").css("background-image", "url(../images/shopIcons/avatar/blueChar.png)");
 	$("#ditem1").text("Black Sesame");
 	$("#ditem2").text("Green Apple");
@@ -51,7 +53,7 @@ $('#shopAvatar').click(() =>{
 $('#shopPlatform').click(() => {
 	$('#shopAvatar').css("background-color", "rgba(255,255,255, 0.75)");
 	$('#shopBackground').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopPlatform').css("background-color", "#48748E");
+	$('#shopPlatform').css("background-color", "#55B1C1");
 	$("#item1").css("background-image", "url(../images/shopIcons/platform/default.png)");
 	$("#item2").css("background-image", "url(../images/shopIcons/platform/pinkplatform.png)");
 	$("#item3").css("background-image", "url(../images/shopIcons/platform/purpleplatform.png)");
@@ -96,7 +98,7 @@ $('#item3').click(() => {
 
 $('#item4').click(() => {
 	if(active == "avatar")
-		$("#char").prop("src", "../images/avatar/redChar.png");
+		$("#char").prop("src", "../images/avatar/yellowChar.png");
 	else if (active == "platform")
 		$("#char").css("background-image", "url(../images/platform/rabbitpet.png)");
 	else if (active == "bg")
@@ -105,7 +107,7 @@ $('#item4').click(() => {
 
 $('#item5').click(() => {
 	if(active == "avatar")
-		$("#char").prop("src", "../images/avatar/yellowChar.png");
+		$("#char").prop("src", "../images/avatar/redChar.png");
 	else if (active == "platform")
 		$("#char").css("background-image", "url(../images/platform/duckpet.png)");
 	else if (active == "bg")
