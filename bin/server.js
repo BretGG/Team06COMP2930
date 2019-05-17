@@ -163,12 +163,9 @@ function onDisconnect(socket) {
   }
 
   function onPlayerAnswered(info, socket) {
-    let playeri = info.playerId;
-    console.log("test!!", JSON.stringify(info));
-
-    console.log(playeri, "testing ! ");
-    let currentPlayer = players.find(m => m.playerId === playeri);
+    let currentPlayer = players.get(info.playerId);
     currentPlayer.answeredRound = true;
+
     if (info.answer === glob.cards[round].answer) {
       currentPlayer.correctAnswers++;
       console.log("player.correctAnswers, ", currentPlayer.correctAnswers);
