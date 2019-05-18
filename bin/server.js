@@ -46,15 +46,15 @@ function onError(error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case "EACCES":
-      console.error(bind + " requires elevated privileges");
-      process.exit(1);
-      break;
+    console.error(bind + " requires elevated privileges");
+    process.exit(1);
+    break;
     case "EADDRINUSE":
-      console.error(bind + " is already in use");
-      process.exit(1);
-      break;
+    console.error(bind + " is already in use");
+    process.exit(1);
+    break;
     default:
-      throw error;
+    throw error;
   }
 }
 
@@ -82,13 +82,15 @@ let currentRoundCard;
 var io = require("socket.io").listen(server);
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
-//   (async function() {
-//   await roundInfo(round);
-// })();
+  //   (async function() {
+  //   await roundInfo(round);
+  // })();
 
 
+  // if (allPlayerReady()) {
+  //   roundInfo(round,socket);
+  // }
 
-roundInfo(round,socket);
   // the connecion is made
   if (players.length >= maxPlayers) {
     return socket.disconnect();
@@ -101,7 +103,8 @@ roundInfo(round,socket);
     playerId: socket.id,
     wrongAnswers: 0,
     correctAnswers: 0,
-    answeredRound: false
+    answeredRound: false,
+    ready: false
   });
 
   socket.on("currentPlayers", () => {
@@ -173,44 +176,54 @@ function onDisconnect(socket) {
   socket.disconnect();
 }
 
-  function onPlayerAnswered(info, socket) {
-    let currentPlayer = players.get(info.playerId);
-    currentPlayer.answeredRound = true;
+function onPlayerAnswered(info, socket) {
+  let currentPlayer = players.get(info.playerId);
+  currentPlayer.answeredRound = true;
 
-    if (info.answer === glob.cards[round].answer) {
-      currentPlayer.correctAnswers++;
-      console.log("player.correctAnswers, ", currentPlayer.correctAnswers);
-    } else {
-      currentPlayer.wrongAnswers++;
-      console.log("player.wrongAnswers, ", currentPlayer.correctAnswers);
-    }
-
-    if (allPlayerAnswered() && round < glob.cards.length) {
-      for (let p of players) {
-        p.answeredRound = false;
-      }
-
-      socket.broadcast.emit("playerAnswered", {
-        player: currentPlayer,
-        answer: glob.cards[round].answer
-      });
-      round++;
-      console.log("ROUND: ", round);
-      roundInfo(round);
-    }
-    //emit updated player object. to be received in game.js
-
+  if (info.answer === glob.cards[round].answer) {
+    currentPlayer.correctAnswers++;
+    console.log("player.correctAnswers, ", currentPlayer.correctAnswers);
+  } else {
+    currentPlayer.wrongAnswers++;
+    console.log("player.wrongAnswers, ", currentPlayer.correctAnswers);
   }
+
+  if (allPlayerAnswered() && round < glob.cards.length) {
+    for (let p of players) {
+      p[1].answeredRound = false;
+    }
+
+    socket.broadcast.emit("playerAnswered", {
+      player: currentPlayer,
+      answer: glob.cards[round].answer
+    });
+    round++;
+    console.log("ROUND: ", round);
+    roundInfo(round);
+  }
+  //emit updated player object. to be received in game.js
+
+}
 
 
 function onPlayerJumped(socket) {
   socket.broadcast.emit("playerJump", socket.id);
 }
 
-function onPlayerStateChange(socket,state){
+function onPlayerStateChange(socket,data){
   // console.log("hihihi");
   // console.log("hihi ",state.state);
-  io.emit("playerStateChange", {playerId:socket.id, state:state.state});
+  let player = players.get(socket.id);
+  if(data.state==='ready'){
+    player.ready = true;
+    console.log("player.ready set to true");
+    console.log(players);
+    if (allPlayerReady()) {
+      roundInfo(round,socket);
+    }
+
+  }
+  io.emit("playerStateChange", {playerId:socket.id, state:data.state});
 }
 async function roundInfo(s, socket) {
   glob.cards = await Card.find({ format: "tf", category: "test" });
@@ -228,8 +241,11 @@ async function roundInfo(s, socket) {
   //shuffling the answers
   answers.sort(() => Math.random() - 0.5);
   // return {question: question, answer: answers};
-  io.emit("startRound", { question: question, answer: answers });
-  console.log("currently....", players);
+
+  // if(allPlayerReady()){
+    io.emit("startRound", { question: question, answer: answers });
+    // console.log("currently....", players);
+  // }
 }
 
 function allPlayerAnswered() {
@@ -245,6 +261,17 @@ function allPlayerAnswered() {
     }
   }
 
+  return true;
+}
+function allPlayerReady(){
+  for(let o of players){
+    if (o[1].ready !=true) {
+      console.log("players not ready yet");
+      return false;
+    }
+
+  }
+  console.log("players are ready");
   return true;
 }
 

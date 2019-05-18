@@ -131,6 +131,9 @@ function playerStateChange(data){
       if (data.playerId === players[i].playerId) {
         let update = players.splice(i, 1)[0];
         update.supportingState.setTexture('ready');
+        // self.physics.add.collider(update.supportingState, update);
+        // update.supportingState.setBounce(0.3);
+        // update.supportingState.setDepth(5);
 
         break;
       }
@@ -199,7 +202,7 @@ function endRound(roundInfo) {
 function createPlayer(playerInfo) {
   // Setting starting x to the next value of spawnPoints
   let startingX = spawnPoints[players.length][players.length];
-  let startingY = -50;
+  let startingY = -10;
   let newPlayer;
   switch (players.length) {
     case 0:
@@ -227,24 +230,29 @@ function createPlayer(playerInfo) {
     mainPlayer = newPlayer;
   }
 
+
   // Create the platform for this player
   let newPlatform = createPlatform({
     x: spawnPoints[players.length][players.length],
     y: 1000,
     supportingPlayer: newPlayer
   });
-
   let newState = createState({
     x: spawnPoints[players.length][players.length],
-    y: 230,
+    y: 230,   //was -200
     supportingPlayer: newPlayer
   });
 
 
+
   // Have the player object contain a reference to their platform
+  // newPlayer.supportingState.setBounce(0.3);
+  // newPlayer.supportingState.setDepth(5);
+  // self.physics.add.collider(newPlayer.supportingState, newPlayer);
   newPlayer.supportingPlatform = newPlatform;
   newPlayer.supportingState = newState;
   players.push(newPlayer);
+
 
   // Update other players positions, (i.e slide them over for the new player)
   updatePlayerPosition();
@@ -324,7 +332,9 @@ function removePlayer(playerInfo) {
 function updatePlayerPosition() {
   for (let i = 0; i < players.length; i++) {
     self.tweens.add({
-      targets: [players[i], players[i].supportingPlatform, players[i].supportingState],
+      targets: [players[i],players[i].supportingPlatform,
+      players[i].supportingState
+      ],
       x: spawnPoints[players.length - 1][i],
       ease: "Power4",
       duration: 1000,
