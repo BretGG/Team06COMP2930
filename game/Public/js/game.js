@@ -29,7 +29,9 @@ let cursor;
 let mainPlayer;
 let players = [];
 let platforms = [];
+let states = [];
 let answerCards = [];
+// var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
 
 // Holds all the spawn points for when users join, could be done with math (should be)
 // index 0 is for 1 player, index 1 is for 2 players and so on
@@ -42,6 +44,10 @@ const spawnPoints = [
 
 function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
+  this.load.image("exclamation", "../assets/character/exclamation.png");
+  this.load.image("questionMark", "../assets/character/question.png");
+  this.load.image("ready", "../assets/character/star.png");
+  this.load.image("none", "../assets/character/none.png");
   this.load.image("p1", "../assets/character/dratini_resize.png");
   this.load.image("p2", "../assets/character/eevee_resize.png");
   this.load.image("p3", "../assets/character/pikachu_resize.png");
@@ -59,6 +65,7 @@ function create() {
   self = this;
   this.socket = io();
   cursor = this.input.keyboard.createCursorKeys();
+  this.readyKey=this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
   background = this.add
     .image(000, 00, "sky")
@@ -70,6 +77,7 @@ function create() {
   this.socket.on("newPlayer", createPlayer);
   this.socket.on("removePlayer", removePlayer);
   this.socket.on("playerJump", playerJump);
+  this.socket.on("playerStateChange", playerStateChange);
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
   this.socket.on("playerAnswered", endRound);
@@ -92,11 +100,18 @@ function update() {
     mainPlayer.setVelocityY(-300);
     this.socket.emit("playerJump");
   }
+  //Ready button
+  if (this.readyKey.isDown) {
+    this.socket.emit("playerStateChange",{state: "ready"});
+    // console.log("heyhey");
+  }
+
 }
 
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
   // Other round start stuff, reset game objects
+  console.log("startRound() in game.js");
   displayAnswers(roundInfo.answer);
   displayQuestion(roundInfo.question);
 }
@@ -104,6 +119,31 @@ function startRound(roundInfo) {
 // Make the player with the given id jump
 function playerJump(playerId) {
   players.find(player => player.playerId === playerId).setVelocityY(-300);
+}
+
+function playerStateChange(data){
+  console.log(JSON.stringify(data)," heyhey");
+  let currentPlayer = players.find(player => player.playerId === data.playerId);
+  switch (data.state) {
+    case "ready":
+    console.log("changed state to ready");
+    for (let i = 0; i < players.length; i++) {
+      if (data.playerId === players[i].playerId) {
+        let update = players.splice(i, 1)[0];
+        update.supportingState.setTexture('ready');
+
+        break;
+      }
+    }
+    break;
+    case "waiting":
+
+    break;
+
+    default:
+    console.log("state undefined!!!");
+
+  }
 }
 
 // Add players to game, called at the start of a session
@@ -159,20 +199,20 @@ function endRound(roundInfo) {
 function createPlayer(playerInfo) {
   // Setting starting x to the next value of spawnPoints
   let startingX = spawnPoints[players.length][players.length];
-
+  let startingY = -50;
   let newPlayer;
   switch (players.length) {
     case 0:
-      newPlayer = self.physics.add.sprite(startingX, -50, "p1");
+      newPlayer = self.physics.add.sprite(startingX, startingY, "p1");
       break;
     case 1:
-      newPlayer = self.physics.add.sprite(startingX, -50, "p2");
+      newPlayer = self.physics.add.sprite(startingX, startingY, "p2");
       break;
     case 2:
-      newPlayer = self.physics.add.sprite(startingX, -50, "p3");
+      newPlayer = self.physics.add.sprite(startingX, startingY, "p3");
       break;
     case 3:
-      newPlayer = self.physics.add.sprite(startingX, -50, "p4");
+      newPlayer = self.physics.add.sprite(startingX, startingY, "p4");
       break;
   }
 
@@ -194,14 +234,42 @@ function createPlayer(playerInfo) {
     supportingPlayer: newPlayer
   });
 
+  let newState = createState({
+    x: spawnPoints[players.length][players.length],
+    y: 230,
+    supportingPlayer: newPlayer
+  });
+
+
   // Have the player object contain a reference to their platform
   newPlayer.supportingPlatform = newPlatform;
+  newPlayer.supportingState = newState;
   players.push(newPlayer);
 
   // Update other players positions, (i.e slide them over for the new player)
   updatePlayerPosition();
 }
 
+
+function createState(stateInfo) {
+  let newState = self.physics.add.sprite(
+    stateInfo.x,
+    stateInfo.y,
+    "none"
+  );
+
+
+  newState.setImmovable(true);
+  newState.body.allowGravity = false;
+
+  newState.supportingPlayer = stateInfo.supportingPlayer;
+  // self.physics.add.collider(stateInfo.supportingPlayer, newState);
+
+
+  states.push(newState);
+  return newState;
+
+}
 // Create platform under a character
 function createPlatform(platformInfo) {
   let newPlatform = self.physics.add.sprite(
@@ -213,6 +281,7 @@ function createPlatform(platformInfo) {
   // Set the platform to ignore collision and gravity
   newPlatform.setImmovable(true);
   newPlatform.body.allowGravity = false;
+
 
   // Slide platform onto the screen
   self.tweens.add({
@@ -229,6 +298,7 @@ function createPlatform(platformInfo) {
   self.physics.add.collider(platformInfo.supportingPlayer, newPlatform);
   platforms.push(newPlatform);
 
+
   return newPlatform;
 }
 
@@ -236,11 +306,13 @@ function createPlatform(platformInfo) {
 function removePlayer(playerInfo) {
   // Finiding the player and destroying them
   for (let i = 0; i < players.length; i++) {
-    if (playerInfo[0].playerId === players[i].playerId) {
+    if (playerInfo.playerId === players[i].playerId) {
       let removing = players.splice(i, 1)[0];
       console.log("removed: " + JSON.stringify(removing));
       removing.supportingPlatform.destroy();
+      removing.supportingState.destroy();
       removing.destroy();
+
       break;
     }
   }
@@ -252,7 +324,7 @@ function removePlayer(playerInfo) {
 function updatePlayerPosition() {
   for (let i = 0; i < players.length; i++) {
     self.tweens.add({
-      targets: [players[i], players[i].supportingPlatform],
+      targets: [players[i], players[i].supportingPlatform, players[i].supportingState],
       x: spawnPoints[players.length - 1][i],
       ease: "Power4",
       duration: 1000,
@@ -263,6 +335,7 @@ function updatePlayerPosition() {
 
 // Creates the display for the question text
 function displayQuestion(question) {
+
   // Using group but will probably change this design
   let group = self.physics.add.group();
   group.create(400, 100, "questionBackground");
@@ -272,7 +345,7 @@ function displayQuestion(question) {
   // Set the question text
   let text = self.add.text(0, 0, question, {
     fontFamily: "Arial",
-    fontSize: 30,
+    fontSize: 50,
     color: "#000000",
     align: "center",
     boundsAlignH: "center",
@@ -280,7 +353,7 @@ function displayQuestion(question) {
     wordWrap: { width: questionBackground.width - 25 }
   });
 
-  // Add to group and have text sit infront of the card
+
   group.add(text);
   text.setDepth(2);
 
@@ -294,6 +367,7 @@ function displayQuestion(question) {
   for (let thing of group.getChildren()) {
     thing.body.allowGravity = false;
   }
+
 }
 
 // Creates the display for all answers

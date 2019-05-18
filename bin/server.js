@@ -82,6 +82,13 @@ let currentRoundCard;
 var io = require("socket.io").listen(server);
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
+//   (async function() {
+//   await roundInfo(round);
+// })();
+
+
+
+roundInfo(round,socket);
   // the connecion is made
   if (players.length >= maxPlayers) {
     return socket.disconnect();
@@ -110,10 +117,11 @@ io.on("connection", function(socket) {
   socket.broadcast.emit("newPlayer", players.get(socket.id));
 
   //user disconnected, broadcast to all other users and remove from list
-  socket.on("disconnect", onDisconnect(socket));
-  socket.on("me", onMe(socket));
+  socket.on("disconnect", () => onDisconnect(socket));
+  socket.on("me", () => onMe(socket));
   socket.on("playerAnswered", info => onPlayerAnswered(info, socket));
-  socket.on("playerJump", onPlayerJumped(socket));
+  socket.on("playerJump", () => onPlayerJumped(socket));
+  socket.on("playerStateChange", state => onPlayerStateChange(socket,state));
   socket.on("answered", info => {
     let player = players.get(socket.id);
 
@@ -154,13 +162,16 @@ function onMe(socket) {
 // When the player leaves the game or dic
 function onDisconnect(socket) {
   // remove player from list
-  let removedPlayer;
-  for (let i = 0; i < players.length; i++) {
-    if (players[i].playerId === socket.id) {
-      removedPlayer = players.splice(i, 1);
-      break;
-    }
+  let removePlayer = players.get(socket.id);
+  if (removePlayer) {
+    players.delete(socket.id);
+    socket.broadcast.emit("removePlayer", removePlayer);
+  } else {
+    return;
   }
+  console.log("removed player: " + JSON.stringify(removePlayer));
+  socket.disconnect();
+}
 
   function onPlayerAnswered(info, socket) {
     let currentPlayer = players.get(info.playerId);
@@ -185,24 +196,22 @@ function onDisconnect(socket) {
       });
       round++;
       console.log("ROUND: ", round);
+      roundInfo(round);
     }
     //emit updated player object. to be received in game.js
 
-    console.log("removed player: " + JSON.stringify(removedPlayer));
-    // find and let all other players know
-    if (removedPlayer) {
-      socket.broadcast.emit("removePlayer", removedPlayer);
-      console.log("broadcast");
-    }
-
-    socket.disconnect();
   }
-}
+
 
 function onPlayerJumped(socket) {
   socket.broadcast.emit("playerJump", socket.id);
 }
 
+function onPlayerStateChange(socket,state){
+  // console.log("hihihi");
+  // console.log("hihi ",state.state);
+  io.emit("playerStateChange", {playerId:socket.id, state:state.state});
+}
 async function roundInfo(s, socket) {
   glob.cards = await Card.find({ format: "tf", category: "test" });
   console.log("from the DB...length:", glob.cards.length);
@@ -219,7 +228,7 @@ async function roundInfo(s, socket) {
   //shuffling the answers
   answers.sort(() => Math.random() - 0.5);
   // return {question: question, answer: answers};
-  socket.broadcast.emit("startRound", { question: question, answer: answers });
+  io.emit("startRound", { question: question, answer: answers });
   console.log("currently....", players);
 }
 
@@ -227,11 +236,11 @@ function allPlayerAnswered() {
   for (let o of players) {
     console.log(
       "Inside allPlayerAnswered : \n",
-      o.playerId + "\n",
+      o[1].playerId + "\n",
       "has answered?:",
-      o.answeredRound
+      o[1].answeredRound
     );
-    if (!o.answeredRound) {
+    if (!o[1].answeredRound) {
       return false;
     }
   }
