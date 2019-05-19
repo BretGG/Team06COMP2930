@@ -3,21 +3,75 @@ var url = "../images/";
 var active ="avatar";
 
 $(document).ready(() => {
+
+	$.ajaxSetup({
+        headers: {
+            'auth-token': localStorage.getItem('auth-token')
+        }
+    });
+
+  function getUserInfo(callback) {
+    console.log('sign in');
+    $.ajax({
+        type: 'get',
+        url: '/login/me',
+        success: function(data) {
+            callback(data.user)
+        },
+        error: function(e) {
+            console.log(e.responseText);
+            callback("Unknown");
+        }
+    });
+}
+
+
+	/** Grabs user's username and appends to it welcome text */
+	function setProfileInfo(user) {
+			// var points = '<i class="material-icons left">filter_vintage</i>';
+
+	    $('#points').text(user.points);
+	    // $('#points').appendChild(points);
+	}
+
+
+	/** Calling setProfileInfo function */
+	getUserInfo(setProfileInfo);
+
 	/** On page load, plays avatar animation */
 	window.onload = function() {   
 		$('#avatar').toggleClass('bounceIn');
   }
 
 
-   $("#back").click(() => {
-    window.location.href="main";
-  });
+ 	$("#back").click(() => {
+  	window.location.href="main";
+	});
+
+function getItems(){
+	$.ajax({
+    url: "/items",
+    dataType: "json",
+    type: "get",
+    success: function(data) {
+        console.log("status: success", data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+
+        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+    }
+});
+
+};
+
+
+
 
 $('#shopAvatar').click(() =>{
 
 
 
-	    	$("#buy").removeClass("disabled");
+$("#buy").removeClass("disabled");
 
 
 
@@ -79,6 +133,9 @@ $('#shopPlatform').click(() => {
 
 
 $('#shopBackground').click(() => {
+
+	getItems();
+
 	$('#shopPlatform').css("background-color", "#26a69a");
 	$('#shopAvatar').css("background-color", "#26a69a");
 	$('#shopBackground').css("background-color", "#55B1C1");
