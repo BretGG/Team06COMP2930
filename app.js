@@ -13,6 +13,7 @@ const usersRouter = require("./routes/users");
 const authRouter = require("./routes/login");
 const cardRouter = require("./routes/cards");
 const deckRouter = require("./routes/decks");
+const itemRouter = require("./routes/items");
 
 var app = express();
 
@@ -52,6 +53,7 @@ app.use("/users", usersRouter);
 app.use("/login", authRouter);
 app.use("/cards", cardRouter);
 app.use("/decks", deckRouter);
+app.use("/items", itemRouter);
 
 // app.get('/mainPage', function(req, res) {
 //   res.render('public/views/mainPage.html');
