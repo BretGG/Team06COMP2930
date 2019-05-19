@@ -71,6 +71,7 @@ const maxPlayers = 4;
 const players = new Map();
 let round = 0;
 let currentRoundCard;
+var gameStarted = false;
 
 // const dummycards = [
 //   { question: "1 + 1 = ?", answer: "2" },
@@ -117,6 +118,7 @@ io.on("connection", function(socket) {
   });
 
   // update all other players of the new player
+
   socket.broadcast.emit("newPlayer", players.get(socket.id));
 
   //user disconnected, broadcast to all other users and remove from list
@@ -125,28 +127,29 @@ io.on("connection", function(socket) {
   socket.on("playerAnswered", info => onPlayerAnswered(info, socket));
   socket.on("playerJump", () => onPlayerJumped(socket));
   socket.on("playerStateChange", state => onPlayerStateChange(socket,state));
-  socket.on("answered", info => {
-    let player = players.get(socket.id);
-
-    console.log(`Player: ${player.playerId} answered: ${info}`);
-
-    // Don't let them answer again
-    if (player.answeredRound) return;
-    player.answeredRound = true;
-
-    if (answerInfo.answer === currentRoundCard.answer) {
-      player.correctAnswers++;
-    } else {
-      player.wrongAnswers++;
-    }
-
-    console.log("yay: " + JSON.stringify(player));
-
-    if (1 === 1) {
-      console.log("round end");
-      io.emit("endRound", { answer: "Hannah" });
-    }
-  });
+  // socket.on("answered", info => {
+  //   console.log("hey player answered!!");
+  //   let player = players.get(socket.id);
+  //
+  //   console.log(`Player: ${player.playerId} answered: ${info}`);
+  //
+  //   // Don't let them answer again
+  //   if (player.answeredRound) return;
+  //   player.answeredRound = true;
+  //
+  //   if (answerInfo.answer === currentRoundCard.answer) {
+  //     player.correctAnswers++;
+  //   } else {
+  //     player.wrongAnswers++;
+  //   }
+  //
+  //   console.log("yay: " + JSON.stringify(player));
+  //
+  //   if (1 === 1) {
+  //     console.log("round end");
+  //     io.emit("endRound", { answer: "Hannah" });
+  //   }
+  // });
 
   ////////////////////////////////////////// test code
   let roundCard = {
@@ -193,13 +196,15 @@ function onPlayerAnswered(info, socket) {
       p[1].answeredRound = false;
     }
 
-    socket.broadcast.emit("playerAnswered", {
+    io.emit("playerAnswered", {
       player: currentPlayer,
       answer: glob.cards[round].answer
     });
+    io.emit("endRound",{answer: glob.cards[round].answer});
     round++;
     console.log("ROUND: ", round);
-    roundInfo(round);
+    roundInfo(round,socket);
+    io.emit("playerStateChange", {playerId:socket.id, state:"questionMark"});
   }
   //emit updated player object. to be received in game.js
 
@@ -214,16 +219,26 @@ function onPlayerStateChange(socket,data){
   // console.log("hihihi");
   // console.log("hihi ",state.state);
   let player = players.get(socket.id);
-  if(data.state==='ready'){
+  switch(data.state){
+    case "ready":
     player.ready = true;
     console.log("player.ready set to true");
     console.log(players);
-    if (allPlayerReady()) {
+    if (allPlayerReady()&& round == 0) {
+      console.log("hhhhhhhhhhhhhhhhhhhhhhh");
       roundInfo(round,socket);
+      io.emit("playerStateChange", {playerId:socket.id, state:"questionMark"});
     }
+    io.emit("playerStateChange", {playerId:socket.id, state:"ready"});
+    break;
+    case "questionMark":
+    io.emit("playerStateChange", {playerId:socket.id, state:"questionMark"});
+    break;
 
   }
-  io.emit("playerStateChange", {playerId:socket.id, state:data.state});
+
+
+
 }
 async function roundInfo(s, socket) {
   glob.cards = await Card.find({ format: "tf", category: "test" });
@@ -243,9 +258,13 @@ async function roundInfo(s, socket) {
   // return {question: question, answer: answers};
 
   // if(allPlayerReady()){
+    // io.emit("playerStateChange", {playerId:socket.id, state:"questionMark"});
     io.emit("startRound", { question: question, answer: answers });
+
+    // io.emit("playerStateChange", {playerId:socket.id, state:"questionMark"});
     // console.log("currently....", players);
   // }
+  gamestarted = true;
 }
 
 function allPlayerAnswered() {
