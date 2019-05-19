@@ -1,7 +1,4 @@
-
-var url = "../images/";
 var active ="avatar";
-
 $(document).ready(() => {
 
 	$.ajaxSetup({
@@ -64,17 +61,9 @@ function getItems(){
 
 };
 
-
-
-
 $('#shopAvatar').click(() =>{
 
-
-
 $("#buy").removeClass("disabled");
-
-
-
 
 	$('#shopPlatform').css("background-color", "#26a69a");
 	$('#shopBackground').css("background-color", "#26a69a");
@@ -104,9 +93,6 @@ $('#shopPlatform').click(() => {
 
 
 	    	$("#buy").addClass("disabled");
-
-
-
 	$('#shopAvatar').css("background-color", "#26a69a");
 	$('#shopBackground').css("background-color", "#26a69a");
 	$('#shopPlatform').css("background-color", "#55B1C1");
