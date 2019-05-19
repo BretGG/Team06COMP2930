@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <link rel="icon" href="../images/icon.png" type="../images/icon.png"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8" />
+    <link rel="icon" href="../images/icon.png" type="../images/icon.png" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
     <!-- Style sheets -->
-    <link rel="stylesheet" href="../style/styleBase.css" >
-    <link rel="stylesheet" href="../style/styleShop.css" >
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css"  media="screen,projection"/>
+    <link rel="stylesheet" href="../style/styleBase.css" />
+    <link rel="stylesheet" href="../style/styleShop.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../style/materialize.min.css"
+      media="screen,projection"
+    />
     <title>EcoQuest</title>
     <style>
-      .button{
+      .button {
         margin-right: 2%;
       }
 
-      .carousel{
+      .carousel {
         transform: translateY(30px);
       }
 
@@ -23,74 +34,79 @@
         positive: relative;
         bottom: 0;
         right: 0;
-        background-color: rgba(255, 255,255, 0.2);
+        background-color: rgba(255, 255, 255, 0.2);
         height: 25px;
       }
 
-      #points{
+      #points {
         display: inline;
       }
     </style>
-    </head>
+  </head>
 
   <body>
     <!-- Wraps all HTML content in one div -->
-    <div id='container'>
-      <h1 id='logo'> EcoQuest </h1>
+    <div id="container">
+      <h1 id="logo">EcoQuest</h1>
       <!-- Holds all main content -->
-      <div id='mainpagecon'>
-        <div id='titlecon'>
-        <!-- Title for page -->
-        <h2 id='title'>Shop</h2></div>
+      <div id="mainpagecon">
+        <div id="titlecon">
+          <!-- Title for page -->
+          <h2 id="title">Shop</h2>
+        </div>
         <!-- Player's avatar -->
-        <div id='avatar' class='zoomOutDown'><img id='char' src='../images/avatar/default.png' alt='avatar' /></div>
+        <div id="avatar" class="zoomOutDown">
+          <img id="char" src="../images/avatar/default.png" alt="avatar" />
+        </div>
         <!-- All shop categories -->
-        <div class='category'>
-            <!-- Avatar skins -->
-            <div id='shopAvatar' class="waves-effect waves-light btn-small">Avatar</div>
-            <!-- Platform skins -->
-            <div id='shopPlatform' class="waves-effect waves-light btn-small">Platform</div>
-            <!-- Backgrounds -->
-            <div id='shopBackground' class="waves-effect waves-light btn-small">Background</div>
+        <div class="category">
+          <!-- Avatar skins -->
+          <div id="shopAvatar" class="waves-effect waves-light btn-small">
+            Avatar
+          </div>
+          <!-- Platform skins -->
+          <div id="shopPlatform" class="waves-effect waves-light btn-small">
+            Platform
+          </div>
+          <!-- Backgrounds -->
+          <div id="shopBackground" class="waves-effect waves-light btn-small">
+            Background
+          </div>
         </div>
-        <div class='buttons'>
-          <a id='back' class="button waves-effect waves-light btn-small">Main Menu<i class="material-icons left">home</i></a>
-          <div class="button btn-small"><div id='points'></div> <i class="material-icons left">filter_vintage</i></div>
-          <a id='buy' class="button waves-effect waves-light btn-small">Buy<i class="material-icons left">attach_money</i></a>
+        <div class="buttons">
+          <a id="back" class="button waves-effect waves-light btn-small"
+            >Main Menu<i class="material-icons left">home</i></a
+          >
+          <div class="button btn-small">
+            <div id="points"></div>
+            <i class="material-icons left">filter_vintage</i>
+          </div>
+          <a id="buy" class="button waves-effect waves-light btn-small"
+            >Buy<i class="material-icons left">attach_money</i></a
+          >
         </div>
-            <!-- Holds all items -->
-        <div class='items'>
-            <div class='avatar'></div>
-            <div class='platform'></div>
-            <div class='background'></div>
+        <!-- Holds all items -->
+        <div class="items">
+          <div class="avatar"></div>
+          <div class="platform"></div>
+          <div class="background"></div>
         </div>
       </div>
-
     </div>
-  <div id='slideAvatar' class="carousel">
-    <div id='item1' class="carousel-item" href="#one!">
-        <div id='ditem1' class="singleGalleryTitle">Default</div>
-        <i class="material-icons left">filter_vintage</i><div id='cost1' class="itemCost">0</div>
-        </div>
-    <div id='item2' class="carousel-item" href="#two!"><div id='ditem2' class="singleGalleryTitle">Green Apple</div><i class="material-icons left">filter_vintage</i><div id='cost2' class="itemCost">200</div></div>
-    <div id='item3' class="carousel-item" href="#three!"><div id='ditem3' class="singleGalleryTitle">Cloud</div><i class="material-icons left">filter_vintage</i><div id='cost3' class="itemCost">100</div></div>
-    <div id='item4' class="carousel-item" href="#four!"><div id='ditem4' class="singleGalleryTitle">Mango</div><i class="material-icons left">filter_vintage</i><div id='cost4' class="itemCost">250</div></div>
-    <div id='item5' class="carousel-item" href="#five!"><div id='ditem5' class="singleGalleryTitle">Red Apple</div><i class="material-icons left">filter_vintage</i><div id='cost5' class="itemCost">200</div></div>
-    <div id='item6' class="carousel-item" href="#six!"><div id='ditem6' class="singleGalleryTitle">Blueberry</div><i class="material-icons left">filter_vintage</i><div id='cost6' class="itemCost">300</div></div>
-  </div>
+    <div id="slideAvatar" class="carousel"></div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../js/shop.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
 
-          <script>
-
-  document.addEventListener('DOMContentLoaded', function() {
-          let options = {
-              numVisible: 5 }
-            var elems = document.querySelectorAll('.carousel');
-            var instances = M.Carousel.init(elems, options);
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        let options = {
+          numVisible: 5
+        };
+        var elems = document.querySelectorAll(".carousel");
+        var instances = M.Carousel.init(elems, options);
       });
-      </script>
+    </script>
   </body>
 </html>

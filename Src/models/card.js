@@ -9,45 +9,41 @@ holds the information for a question card.
 */
 
 const cardSchema = new mongoose.Schema({
-
-    format: { //either multiple choice or t/f
-        type: String,
-        required: true
-    },
-    category: {
-        type: String,
-        required: true
-    },
-    question: {
-        type: String,
-        required: true
-    },
-    answer: {
-        type: String,
-        required: true
-    },
-    deck: {
-        type: String, // Hold deckId to deck
-        required: true
-    }
+  format: {
+    //either multiple choice or t/f
+    type: String,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true
+  },
+  question: {
+    type: String,
+    required: true
+  },
+  answer: {
+    type: String,
+    required: true
+  },
+  deck: {
+    type: String, // Hold deckId to deck
+    required: true
+  }
 });
 
-const Card = mongoose.model('Card', cardSchema);
-
 // Validates if the card object follows validation rules.
+// Not sure if we need too validate all parts of the card
 exports.validate = card => {
-    const schema = joi.object().keys({
-        format: joi.string().required(),
-        category: joi.string().required(),
-        question: joi.string().required(),
-        answer: joi.string().required(),
-        deck: joi.string().required()
-    });
+  const schema = joi.object().keys({
+    format: joi.string().required(),
+    category: joi.string().required(),
+    question: joi.string().required(),
+    answer: joi.string().required(),
+    deck: joi.string().required()
+  });
 
-    return joi.validate(card, schema);
+  return joi.validate(card, schema);
 };
 
-
-// cardSchema.methods.getCard = function() { //deck<-getCard and then retunrs whatever card it has
-
-exports.Card = mongoose.model('Card', cardSchema); //Card constructor
+exports.Card = mongoose.model("Card", cardSchema); //Card constructor
