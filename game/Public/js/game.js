@@ -10,7 +10,9 @@ const config = {
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { y: 450 },
+      gravity: {
+        y: 450
+      },
       debug: "true"
     }
   },
@@ -29,6 +31,7 @@ let self;
 let background;
 let cursor;
 let mainPlayer;
+let question;
 var players = [];
 let platforms = [];
 let states = [];
@@ -86,11 +89,11 @@ function create() {
   this.socket.on("playerStateChange", playerStateChange);
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
-  this.socket.on("playerAnswered", endRound);
-  this.socket.on("drop", id=>
-  dropPlayer(id.playerId)
-
-);
+  this.socket.on("endRound", endRound);
+  //   this.socket.on("drop", id=>
+  //   dropPlayer(id.playerId)
+  //
+  // );
 
   this.socket.on(
     "me",
@@ -111,7 +114,9 @@ function update() {
   }
   //Ready button
   if (this.readyKey.isDown && !gameStarted) {
-    this.socket.emit("playerStateChange", { state: "ready" });
+    this.socket.emit("playerStateChange", {
+      state: "ready"
+    });
   }
   // update each state position
   for (let player of players) {
@@ -131,21 +136,24 @@ function startRound(roundInfo) {
   // Other round start stuff, reset game objects
   console.log("startRound() in game.js");
   setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
-  self.socket.emit("playerStateChange", { state: "questionMark" });
+  self.socket.emit("playerStateChange", {
+    state: "questionMark"
+  });
   displayAnswers(roundInfo.answer);
   displayQuestion(roundInfo.question);
 }
 
 // Make the player with the given id jump
 function playerJump(playerId) {
-  players.find(player => player.playerId === playerId).setVelocityY(-300);
+  players.find(player => player.playerId === playerId)
+    .setVelocityY(-300);
 }
 
 function playerStateChange(stateInfo) {
   let player = players.find(holder => stateInfo.playerId === holder.playerId);
   switch (stateInfo.state) {
     case "ready":
-    console.log("HHHHHHHHEEEEEEEEEEEELLLLLLLLLLLLLLL");
+      console.log("HHHHHHHHEEEEEEEEEEEELLLLLLLLLLLLLLL");
       player.supportingState.setTexture("ready");
       break;
     case "questionMark":
@@ -155,14 +163,14 @@ function playerStateChange(stateInfo) {
       break;
 
     case "exclamation":
-    console.log("Exclamation !!");
+
 
       player.supportingState.setTexture("exclamation");
 
-    break;
+      break;
 
     case "answered":
-    // console.log(stateInfo.wrongAnswers.get(stateInfo.playerId), "EEEE");
+      // console.log(stateInfo.wrongAnswers.get(stateInfo.playerId), "EEEE");
     default:
       console.log("state undefined!!!");
       break;
@@ -183,12 +191,18 @@ function endRound(roundInfo) {
 
   console.log("Round ending");
   for (let card of answerCards) {
-    console.log("TEST, ",card.text.text);
+    console.log("RoundInfo: " + JSON.stringify(roundInfo));
+
+
+    // for (let o of roundInfo) {
+    //   dropPlayer(o.players.playerId, o.players.wrongAnswers)
+    // }
+
+
     // Slide correct answer card to center
     // if (card.text.text === roundInfo.answer) {
-    if(roundInfo.answer){
+    if (roundInfo.answer === card.text.text) {
       // playerAnswers.set(roundInfo.playerId, this.numberOfCorrect++);
-      console.log("CORRECT@@@@@@@@@@@@@@@@@@@@@@");
       self.tweens.add({
         targets: card,
         x: 400,
@@ -221,24 +235,23 @@ function endRound(roundInfo) {
       });
     }
   }
-  self.socket.emit("playerStateChange", { state: "ready" });
-
-
-// Create to player object, could be another class but...
 
   // Update the count of correct and incorract anwers for each player
-  for (let player of roundInfo.players) {
+  for (let player of players) {
     for (let playerUpdate of roundInfo.players)
       if (playerUpdate.playerId === player.playerId) {
         player.correctAnswers = playerUpdate.correctAnswers;
         player.wrongAnswers = playerUpdate.wrongAnswers;
       }
   }
+  console.log(roundInfo.players, " 2:55pm");
+
 
   updatePlayerScoreHeight();
 }
-function dropPlayer(id){
-  let player = players.find( (e)=> e.playerId===id);
+
+function dropPlayer(id) {
+  let player = players.find((e) => e.playerId === id);
   console.log("dropping this player: ", player.playerId);
   player.supportingPlatform.y -= -50;
 }
@@ -303,6 +316,7 @@ function createPlayer(playerInfo) {
 function createState(stateInfo) {
   let newState = self.physics.add.image(stateInfo.x, stateInfo.y, "none");
 
+  newState.setDepth(8);
   newState.body.allowGravity = false;
   newState.supportingPlayer = stateInfo.supportingPlayer;
 
@@ -359,12 +373,12 @@ function removePlayer(playerInfo) {
 
 // Update y position of platform based on incorrect answers and the game score
 function updatePlayerScoreHeight() {
-  console.log(players);
+  console.log("updating player heights: " + JSON.stringify(players));
   for (let i = 0; i < players.length; i++) {
+    console.log(players[i], ": player[i].wrongAnswers");
     self.tweens.add({
       targets: [players[i].supportingPlatform],
-      y: 400,
-      y: 400 - 50 * players[i].wrongAnswers,
+      y: 400 + 50 * players[i].wrongAnswers,
       ease: "Power4",
       duration: 1000,
       repeat: 0
@@ -374,6 +388,7 @@ function updatePlayerScoreHeight() {
 
 // Used for adding, removing, and setting player position
 function updatePlayerPosition() {
+
   for (let i = 0; i < players.length; i++) {
     self.tweens.add({
       targets: [
@@ -390,37 +405,42 @@ function updatePlayerPosition() {
 }
 
 // Creates the display for the question text
-function displayQuestion(question) {
+function displayQuestion(questionInfo) {
+  if (question) {
+    question.text.destroy();
+    question.destroy();
+  }
+
   // Using group but will probably change this design
-  let group = self.physics.add.group();
-  group.create(400, 100, "questionBackground");
-  let questionBackground = group.getChildren()[0];
-  questionBackground.setScale(0.5);
+  question = self.add.image(400, 100, "questionBackground");
+  question.setScale(0.5);
 
   // Set the question text
-  let text = self.add.text(0, 0, question, {
+  question.text = self.add.text(0, 0, questionInfo, {
     fontFamily: "Arial",
     fontSize: 50,
     color: "#000000",
     align: "center",
     boundsAlignH: "center",
     boundsAlignV: "middle",
-    wordWrap: { width: questionBackground.width - 25 }
+    wordWrap: {
+      width: question.width - 25
+    }
   });
-
-  group.add(text);
-  text.setDepth(2);
+  question.text.setDepth(2);
 
   // Center text on card
-  text.setPosition(
-    questionBackground.x - text.getBounds().width / 2,
-    questionBackground.y - text.getBounds().height / 2
+  question.text.setPosition(
+    question.x - question.text.getBounds()
+    .width / 2,
+    question.y - question.text.getBounds()
+    .height / 2
   );
 
   // Ignore gravity on all parts of question
-  for (let thing of group.getChildren()) {
-    thing.body.allowGravity = false;
-  }
+  // for (let thing of group.getChildren()) {
+  //   thing.body.allowGravity = false;
+  // }
 }
 
 // Creates the display for all answers
@@ -444,23 +464,28 @@ function displayAnswers(answers) {
       align: "center",
       boundsAlignH: "center",
       boundsAlignV: "middle",
-      wordWrap: { width: card.width - 25 }
+      wordWrap: {
+        width: card.width - 25
+      }
     });
     card.text.setDepth(2);
 
     // Center text on card
     card.text.setPosition(
-      card.x - card.text.getBounds().width / 2,
-      card.y - card.text.getBounds().height / 2
+      card.x - card.text.getBounds()
+      .width / 2,
+      card.y - card.text.getBounds()
+      .height / 2
     );
 
     // Set card to be interactive and fire answer on click
-    card.setInteractive().on("pointerdown", () =>
-      self.socket.emit("playerAnswered", {
-        answer: card.text.text,
-        playerId: mainPlayer.playerId
-      })
-    );
+    card.setInteractive()
+      .on("pointerdown", () =>
+        self.socket.emit("playerAnswered", {
+          answer: card.text.text,
+          playerId: mainPlayer.playerId
+        })
+      );
 
     // Add card to our master list
     answerCards.push(card);
@@ -472,10 +497,9 @@ function displayAnswers(answers) {
       // Slide in card front
       self.tweens.add({
         targets: card,
-        x:
-          spawnPoints[answerCards.length - 1][
-            answerCards.findIndex(holder => card === holder)
-          ],
+        x: spawnPoints[answerCards.length - 1][
+          answerCards.findIndex(holder => card === holder)
+        ],
         ease: "Quint",
         duration: 3000,
         repeat: 0
@@ -484,8 +508,7 @@ function displayAnswers(answers) {
       // Slide in card text
       self.tweens.add({
         targets: card.text,
-        x:
-          spawnPoints[answerCards.length - 1][
+        x: spawnPoints[answerCards.length - 1][
             answerCards.findIndex(holder => card === holder)
           ] -
           card.text.width / 2,

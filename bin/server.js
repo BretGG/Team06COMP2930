@@ -4,7 +4,9 @@ var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 const _ = require("lodash");
-const { Card } = require("../src/models/card.js");
+const {
+  Card
+} = require("../src/models/card.js");
 var glob = this;
 
 // Get port from environment and store in Express.
@@ -70,7 +72,8 @@ function onListening() {
 const self = this;
 const maxPlayers = 4;
 const players = new Map();
-let round = 0;
+let roundStarted
+var round = 0;
 let currentRoundCard;
 var gameStarted = false;
 
@@ -81,7 +84,8 @@ var gameStarted = false;
 //   { question: "8 x 3", answer: "24" }
 // ];
 
-var io = require("socket.io").listen(server);
+var io = require("socket.io")
+  .listen(server);
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
 
@@ -120,29 +124,6 @@ io.on("connection", function(socket) {
   socket.on("playerAnswered", info => onPlayerAnswered(info, socket));
   socket.on("playerJump", () => onPlayerJumped(socket));
   socket.on("playerStateChange", state => onPlayerStateChange(socket, state));
-  // socket.on("answered", info => {
-  //   console.log("hey player answered!!");
-  //   let player = players.get(socket.id);
-  //
-  //   console.log(`Player: ${player.playerId} answered: ${info}`);
-  //
-  //   // Don't let them answer again
-  //   if (player.answeredRound) return;
-  //   player.answeredRound = true;
-  //
-  //   if (answerInfo.answer === currentRoundCard.answer) {
-  //     player.correctAnswers++;
-  //   } else {
-  //     player.wrongAnswers++;
-  //   }
-  //
-  //   console.log("yay: " + JSON.stringify(player));
-  //
-  //   if (1 === 1) {
-  //     console.log("round end");
-  //     io.emit("endRound", { answer: "Hannah" });
-  //   }
-  // });
 
   ////////////////////////////////////////// test code
   let roundCard = {
@@ -176,7 +157,10 @@ function onPlayerAnswered(info, socket) {
 
   let currentPlayer = players.get(info.playerId);
   currentPlayer.answeredRound = true;
-
+  io.emit("playerStateChange", {
+    playerId: socket.id,
+    state: "exclamation"
+  });
   if (info.answer === glob.cards[round].answer) {
     this.answer = true;
     currentPlayer.correctAnswers++;
@@ -196,22 +180,23 @@ function onPlayerAnswered(info, socket) {
       currentPlayer.wrongAnswers
     );
   }
-  let holder = [];
-  const map = new Map();
-  map.set(info.playerId, currentPlayer.wrongAnswers);
 
-  holder.push(map);
-  // console.log(holder," TESTTESET");
-  if (allPlayerAnswered() && round < glob.cards.length) {
-  round++;
-  }
-  onPlayerStateChange(socket, { state: "answered" });
-  io.emit("playerStateChange", { playerId: socket.id, state: "answered", wrongAnswers:holder });
+  // let holder = [];
+  // const map = new Map();
+  // map.set(info.playerId, currentPlayer.wrongAnswers);
+  //
+  // holder.push(map);
+  // // console.log(holder," TESTTESET");
+  // if (allPlayerAnswered() && round < glob.cards.length) {
+  // round++;
+  // }
+  // onPlayerStateChange(socket, { state: "answered" });
+  // io.emit("playerStateChange", { playerId: socket.id, state: "answered", wrongAnswers:holder });
   if (allPlayerAnswered()) {
     endRound();
   }
 
-  onPlayerStateChange(socket, { state: "answered" });
+  // onPlayerStateChange(socket, { state: "answered" });
 }
 
 function onPlayerJumped(socket) {
@@ -219,17 +204,31 @@ function onPlayerJumped(socket) {
 }
 
 function endRound() {
+  round++;
+  roundStarted = false;
+
   let filteredPlayers = [...players.values()];
   filteredPlayers = filteredPlayers.map(player =>
     _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
   );
+
+  console.log("endRound: " + JSON.stringify(currentRoundCard));
 
   io.emit("endRound", {
     players: filteredPlayers,
     answer: currentRoundCard.answer
   });
 
-  console.log(filteredPlayers);
+
+
+  setTimeout(() => {
+    if (round < glob.cards.length && !roundStarted) {
+      roundStart(round);
+    } else {
+      clearTimeout();
+    }
+
+  }, 3000);
 }
 
 function onPlayerStateChange(socket, data) {
@@ -245,9 +244,14 @@ function onPlayerStateChange(socket, data) {
       // Start round if all players are ready
       if (allPlayerReady()) {
         console.log("Are you ready?: ", allPlayerReady());
-        console.log("round :",round);
-        roundInfo(round, socket);
-        onPlayerStateChange("doesn't matter", { state: "questionMark" });
+        console.log("round :", round);
+        if (!roundStarted) {
+          console.log("round has not started yet");
+          roundStart(round);
+        }
+        onPlayerStateChange("doesn't matter", {
+          state: "questionMark"
+        });
       }
       break;
     case "questionMark":
@@ -257,23 +261,33 @@ function onPlayerStateChange(socket, data) {
       });
       break;
     case "answered":
-      io.emit("playerStateChange", { playerId: socket.id, state: "answered" });
-      if(allPlayerAnswered()){
-
-        io.emit("playerAnswered",{playerId:socket.id, answer: this.answer });
-      }
+      io.emit("playerStateChange", {
+        playerId: socket.id,
+        state: "answered"
+      });
       // Check if all players have answered
       // if so, emit round finished
       break;
   }
 }
 
-async function roundInfo(s) {
-  glob.cards = await Card.find({ format: "tf", category: "test" });
-  console.log("from the DB...length:", glob.cards.length);
+async function roundStart(s) {
+  console.log("starting round: " + JSON.stringify(s));
+
+
+  for (let o of players.values()) {
+    o.answeredRound = false;
+  }
+  glob.cards = await Card.find({
+    format: "tf",
+    category: "test"
+  });
   // console.log("testing, ",glob.cards);
   let question;
   let answers = [];
+  currentRoundCard.question = glob.cards[s].question;
+  currentRoundCard.answer = glob.cards[s].answer;
+
   question = glob.cards[s].question;
   answers.push(glob.cards[s].answer);
   for (let i = 0; i < 4; i++) {
@@ -286,22 +300,25 @@ async function roundInfo(s) {
   console.log(answers);
   // return {question: question, answer: answers};
 
-  // if(allPlayerReady()){
   // io.emit("playerStateChange", {playerId:socket.id, state:"questionMark"});
-  io.emit("startRound", { question: question, answer: answers });
+  io.emit("startRound", {
+    question: question,
+    answer: answers
+  });
 
-  // io.emit("playerStateChange", {playerId:socket.id, state:"questionMark"});
-  // console.log("currently....", players);
-  // }
+  roundStarted = true;
   gamestarted = true;
 }
 
 function allPlayerAnswered() {
+  console.log("allplayeranswered called");
   for (let player of players.values()) {
     if (!player.answeredRound) {
+      console.log("return false");
       return false;
     }
   }
+  console.log("return true");
   return true;
 }
 
