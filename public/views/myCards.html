@@ -12,15 +12,6 @@
     <link rel="stylesheet" href="../style/styleMyCards.css">
     <title>EcoQuest</title>
 </head>
-<style>
-    #submitLeft{
-        margin: 0 auto;
-      }
-      #deckName{
-        border-bottom: 0px;
-        background-color: #A0A0A0 !important;
-      }
-    </style>
 
 <body>
     <div id='container'>
@@ -33,19 +24,18 @@
 
             <div id='headerRightCon'>
                 <div class="row optionCon">
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 category">
                         <select id='myCate'>
                             <option value="" disabled selected>Category</option>
                             <option value="Eco">Eco</option>
                             <option value="Science">Science</option>
-                            <option value="test">test</option>
+                            <option value="Math">Math</option>
                             <option value="">All</option>
                         </select>
                     </div>
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 deck">
                         <select id='myDeck'>
                             <option value="" disabled selected>Deck</option>
-                            <option value="Random">Random</option>
                             <option value="">All</option>
                         </select>
                     </div>
@@ -55,7 +45,7 @@
 
             <div id='headerLeftCon'>
                 <div class="row optionCon">
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 category">
                         <select id='creCate'>
                             <option value="" disabled selected>Category</option>
                             <option value="Eco">Eco</option>
@@ -64,11 +54,10 @@
                             <option value="test">test</option>
                         </select>
                     </div>
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 deck">
                         <select id='creDeck'>
                             <option value="" disabled selected>Deck</option>
-                            <option value="New">New</option>
-                            <option value="Random">Random</option>
+                            <option value="createnewdeck">New</option>
                         </select>
                     </div>
 

@@ -6,6 +6,7 @@ $(document).ready(() => {
         $(".headerRight").css("border-bottom", "2px solid #42A164");
         $(".headerLeftCon").css("display", "none");
         $(".headerRightCon").css("display", "inline");
+            $("#status").text("");
     });
 
     /** Switches container from Sign In to Sign Up */
@@ -14,12 +15,13 @@ $(document).ready(() => {
         $(".headerLeft").css("border-bottom", "2px solid #42A164");
         $(".headerRightCon").css("display", "none");
         $(".headerLeftCon").css("display", "inline");
+            $("#status").text("");
     });
 
 
     /** User Sign-Up -- saves user info to server if signup requirements are met */
     $("#submitUP").click(() => {
-        if ($("#pass1").val() == $("#cpass1").val())
+        if ($("#pass1").val() == $("#cpass1").val()){
             $.ajax({
                 type: "post",
                 url: "/users",
@@ -30,13 +32,17 @@ $(document).ready(() => {
                     password: $("#pass1").val()
                 },
                 success: user => {
-                    // print(user)
+                    console.log(JSON.stringify(user));
                     window.location.href="/";
                 },
                 error: err => {
                     $("#status").text(err.responseText);
                 }
-            });
+            });}
+            else{
+                $("#status").text("You need to have same password");
+            }
+
     });
 
     /** User Sign-In -- Validates user info then takes them to next page*/

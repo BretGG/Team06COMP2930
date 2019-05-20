@@ -20,31 +20,61 @@
 } */
 
 /*create button*/
-/* #submitLeft {
+#submitLeft {
   display: block;
   margin: 0 auto;
   width: 40%;
-} */
-
+}
 .optionCon{
     margin-bottom: 0em;
 }
 .optionCon > .input-field{
     margin-top: 0.1rem;
 }
+
+
+.row .category {
+    padding-left: 1.3rem !important;
+}
+
+.row .deck {
+    padding-right: 1.3rem !important;
+}
+
+/* These are for dropdown */
 .select-wrapper input.select-dropdown{
     margin-bottom: 0em;
+    height: 2.3rem;
+    padding-left: 1rem;
+    /* margin-left: 0.5rem; */
+    /* margin-right: 0.5rem; */
+    width: 90%;
 }
+.dropdown-content li {
+    min-height: 25px;
+}
+.dropdown-content li>a, .dropdown-content li>span{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
 
 #headerLeftCon{
     display: none;
 }
+
+
+/* #deckName{
+  border-bottom: 0px;
+  background-color: #A0A0A0  ;
+} */
 
 #inputcon > input {
   background-color: rgb(217, 242, 237);
   /* height: 1em; */
   display: inline;
 }
+
 
 
 
@@ -75,6 +105,9 @@
   margin-top: 2%;
 }
 
+input {
+    font-family: 'Ubuntu', sans-serif;
+}
 
 /** Aligns text to center */
 #status {
