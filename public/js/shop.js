@@ -1,5 +1,7 @@
 $(document).ready(() => {
 
+  var selectedItem;
+
   $.ajaxSetup({
     headers: {
       "auth-token": localStorage.getItem("auth-token")
@@ -11,7 +13,8 @@ $(document).ready(() => {
       type: "get",
       url: "/login/me",
       success: function(data) {
-        callback(data.user);
+        console.log(data);
+        callback(data);
       },
       error: function(e) {
         console.log(e.responseText);
@@ -20,19 +23,53 @@ $(document).ready(() => {
     });
   }
 
-  /** Grabs user's username and appends to it welcome text */
-  function setProfileInfo(user) {
-    $("#points").text = user.points;
+//localStorage.setItem("username", "user.username");
+
+  function setPointBalance(user) {
+    $("#points").text(user.points);
   }
 
+
   /** Calling setProfileInfo function */
-  getUserInfo(setProfileInfo);
+  getUserInfo(setPointBalance);
+
+  /** When user attempts to buy an item */
+  $("#buy").click(() => {
+    console.log("Attempting to buy an item");
+      $.ajax({
+        url: `/items/${selectedItem}`,
+        dataType: "json",
+        type: "put",
+        success: function(data) {
+          console.log(data);
+          $(`#${data._id}`).children("#cost4").text("0");
+          $("#buy").addClass("disabled");
+          getUserInfo(setPointBalance);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log("ERROR:", jqXHR, textStatus, errorThrown);
+        }
+      });
+  });
 
   /** On page load, plays avatar animation */
   window.onload = function() {
     $("#avatar").toggleClass("bounceIn");
     $("#shopAvatar").trigger("click");
   };
+
+  $(window).resize(function() {
+    if ($(window).width() < 400) {
+      $("#back").html("<i class='material-icons'>home</i>");
+      $("#shopBackground").html("BG");
+      $("#shopPlatform").css("padding-left", "10px");
+    } else {
+      $("#back i").addClass("left");
+      $("#back").html("Main Menu<i class='material-icons left'>home</i>");
+      $("#shopBackground").html("Background");
+      $("#shopPlatform").css("padding-left", "16px");
+    }
+  });
 
   $("#back").click(() => {
     window.location.href = "main";
@@ -44,7 +81,6 @@ $(document).ready(() => {
       dataType: "json",
       type: "get",
       success: function(data) {
-        console.log("status: success", data);
         cb(data);
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -68,6 +104,12 @@ $(document).ready(() => {
 
     for (let item of items) {
       $(`#${item._id}`).click(() => {
+        if(item.owned){
+          $("#buy").addClass("disabled");
+        } else {
+          $("#buy").removeClass("disabled");
+        }
+
         if (item.category === "avatar") {
           $("#char").prop("src", item.imageLink);
         }
@@ -77,8 +119,10 @@ $(document).ready(() => {
         else if (item.category === "background"){
           $("html").css("background-image", `url(${item.imageLink})`);
         }
-      });
 
+        selectedItem = item._id;
+      });
+      
       $(`#${item._id}`).css("background-image", `url(${item.shopIcon})`);
     }
 
@@ -90,13 +134,16 @@ $(document).ready(() => {
   }
 
   $("#shopAvatar").click(() => {
+    $("#buy").addClass("disabled");
     $("#shopPlatform").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#26a69a");
     $("#shopAvatar").css("background-color", "#55B1C1");
     getItems("avatar", populateCarousel);
+    $("#slideAvatar").toggleClass("")
   });
 
   $("#shopPlatform").click(() => {
+    $("#buy").addClass("disabled");
     $("#shopAvatar").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#26a69a");
     $("#shopPlatform").css("background-color", "#55B1C1");
@@ -104,6 +151,7 @@ $(document).ready(() => {
   });
 
   $("#shopBackground").click(() => {
+    $("#buy").addClass("disabled");
     $("#shopPlatform").css("background-color", "#26a69a");
     $("#shopAvatar").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#55B1C1");

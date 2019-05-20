@@ -17,7 +17,6 @@ $(document).ready(() => {
       type: "get",
       url: "/login/me",
       success: function(data) {
-        console.log(data);
         callback(data);
       },
       error: function(e) {
