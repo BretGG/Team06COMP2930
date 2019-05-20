@@ -172,10 +172,12 @@ function onDisconnect(socket) {
 }
 
 function onPlayerAnswered(info, socket) {
+
   let currentPlayer = players.get(info.playerId);
   currentPlayer.answeredRound = true;
 
   if (info.answer === glob.cards[round].answer) {
+    this.answer = true;
     currentPlayer.correctAnswers++;
     console.log(
       "player :",
@@ -184,6 +186,7 @@ function onPlayerAnswered(info, socket) {
       currentPlayer.correctAnswers
     );
   } else {
+    this.answer = false;
     currentPlayer.wrongAnswers++;
     console.log(
       "player :",
@@ -192,9 +195,17 @@ function onPlayerAnswered(info, socket) {
       currentPlayer.wrongAnswers
     );
   }
+  let holder = [];
+  const map = new Map();
+  map.set(info.playerId, currentPlayer.wrongAnswers);
 
+  holder.push(map);
+  // console.log(holder," TESTTESET");
+  if (allPlayerAnswered() && round < glob.cards.length) {
+  round++;
+  }
   onPlayerStateChange(socket, { state: "answered" });
-  io.emit("playerStateChange", { playerId: socket.id, state: "answered" });
+  io.emit("playerStateChange", { playerId: socket.id, state: "answered", wrongAnswers:holder });
 }
 
 function onPlayerJumped(socket) {
@@ -206,6 +217,7 @@ function onPlayerStateChange(socket, data) {
   switch (data.state) {
     case "ready":
       player.ready = true;
+      console.log("HERLLO");
       io.emit("playerStateChange", {
         playerId: socket.id,
         state: "ready"
@@ -213,6 +225,7 @@ function onPlayerStateChange(socket, data) {
       // Start round if all players are ready
       if (allPlayerReady()) {
         console.log("Are you ready?: ", allPlayerReady());
+        console.log("round :",round);
         roundInfo(round, socket);
         onPlayerStateChange("doesn't matter", { state: "questionMark" });
       }
@@ -225,6 +238,10 @@ function onPlayerStateChange(socket, data) {
       break;
     case "answered":
       io.emit("playerStateChange", { playerId: socket.id, state: "answered" });
+      if(allPlayerAnswered()){
+
+        io.emit("playerAnswered",{playerId:socket.id, answer: this.answer });
+      }
       // Check if all players have answered
       // if so, emit round finished
       break;
