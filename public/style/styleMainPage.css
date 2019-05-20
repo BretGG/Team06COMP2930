@@ -1,6 +1,6 @@
 #avatar{
   margin: 0 auto;
-  background-image: url("../images/platform.png");
+  background-image: url("../images/platform/default.png");
   width: 176px;
   height: 251px;
   margin-bottom: 3%;
@@ -14,12 +14,69 @@
 }
 
 #buttons a{
-  margin: 0 auto;
   margin-bottom : 2%;
-  display: block;
-  width: 40%;
+  
+  width: 135px;
 }
 
 #mainpagecon label{
   font-size: 1.2em;
+}
+
+
+#buttons{
+    display:flex;
+    width:300px;
+    flex-wrap:wrap;
+    justify-content: space-around;
+    margin: 0 auto; 
+}
+#avatar {
+    height: 133px;
+
+}
+img {
+    width:90px;
+}
+@media only screen and (max-width:410px) and (min-width: 375px) {
+    #avatar {
+        height: 190px;
+    }
+    img {
+        width:120px;
+    }
+}
+@media only screen and (max-width:700px) and (min-width: 414px) {
+    #avatar {
+        height: 230px;
+    }
+    img {
+        width:100px;
+    }
+    
+}
+    /* iphone 6, 6s, 7, 8 */
+
+
+
+ /* iphone X */
+@media only screen and (min-device-width: 375px) and (max-device-height: 812px) and (-webkit-device-pixel-ratio: 3) { 
+    #buttons{
+        flex-direction: column;
+        margin:0 auto;  
+        justify-content: center;
+       align-items: center;
+
+    }
+    
+        #avatar {
+        height: 200px;
+    }
+    img {
+        width:100px;
+    }
+    h2 {
+    font-size: 1.56rem;
+    }
+    
 }
