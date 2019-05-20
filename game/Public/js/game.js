@@ -27,11 +27,12 @@ let self;
 let background;
 let cursor;
 let mainPlayer;
-let players = [];
+var players = [];
 let platforms = [];
 let states = [];
 let answerCards = [];
 let gameStarted = false;
+
 // var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
 
 // Holds all the spawn points for when users join, could be done with math (should be)
@@ -89,6 +90,22 @@ function create() {
     "me",
     me => (mainPlayer = players.find(player => player.playerId === me.playerId))
   );
+  this.socket.on("drop",(data)=>{
+
+    console.log("DATA&&&&& ", players.length);
+    // for (let i = 0; i < players.length; i++) {
+    //   if (data.playerId === players[i].playerId) {
+        // let update = players.splice(i, 1)[0];
+ let update = players.find(player => player.playerId === data.playerId)
+        update.supportingPlatform.y += 90;
+
+
+        // break;
+    //   }
+    // }
+
+
+  });
 
   // ---------Asking for Information-------------
   this.socket.emit("currentPlayers");
@@ -108,6 +125,8 @@ function update() {
     this.socket.emit("playerStateChange",{state: "ready"});
     // console.log("heyhey");
   }
+
+
   // if(gameStarted){
   //   this.socket.emit("playerStateChange",{state: "questionMark"});
   //   gameStarted=false;
@@ -117,6 +136,7 @@ function update() {
 
 }
 
+
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
   gameStarted=true;
@@ -124,7 +144,7 @@ function startRound(roundInfo) {
   // Other round start stuff, reset game objects
   console.log("startRound() in game.js");
   setTimeout(()=>mainPlayer.supportingState.setTexture('questionMark'),1500);
-  self.socket.emit("playerStateChange",{playerId: mainPlayer.playerId,state: "questionMark"});
+  self.socket.emit("playerStateChange",{state: "questionMark"});
   displayAnswers(roundInfo.answer);
   displayQuestion(roundInfo.question);
 }
@@ -162,7 +182,7 @@ function playerStateChange(data){
 
         case "questionMark":
         for (let i = 0; i < players.length; i++) {
-          console.log("HHHHHHHHHHHHHHHHHHHHHHHHHH");
+          console.log("HHHHHHHHHHHHHHHHHHHHHHHHHH", players.length);
           if (data.playerId === players[i].playerId) {
             let update = players.splice(i, 1)[0];
             setTimeout(()=>update.supportingState.setTexture('questionMark'),1500);
@@ -228,6 +248,8 @@ function playerStateChange(data){
             repeat: 0
           });
         }
+
+
       }
     }
 

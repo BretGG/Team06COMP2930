@@ -186,9 +186,12 @@ function onPlayerAnswered(info, socket) {
   if (info.answer === glob.cards[round].answer) {
     currentPlayer.correctAnswers++;
     console.log("player.correctAnswers, ", currentPlayer.correctAnswers);
+
   } else {
     currentPlayer.wrongAnswers++;
     console.log("player.wrongAnswers, ", currentPlayer.correctAnswers);
+
+    io.emit("drop", {playerId: currentPlayer.playerId});
   }
 
   if (allPlayerAnswered() && round < glob.cards.length) {
@@ -199,8 +202,9 @@ function onPlayerAnswered(info, socket) {
     io.emit("playerAnswered", {
       player: currentPlayer,
       answer: glob.cards[round].answer
+
     });
-    io.emit("endRound",{answer: glob.cards[round].answer});
+    // io.emit("playerAnswered",{answer: glob.cards[round].answer});
     round++;
     console.log("ROUND: ", round);
     roundInfo(round,socket);
