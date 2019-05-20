@@ -207,7 +207,7 @@ function endRound(roundInfo) {
 function dropPlayer(id){
   let player = players.find( (e)=> e.playerId==id);
   console.log("dropping this player: ", player.playerId);
-  player.supportingPlatform.y -= -80;
+  player.supportingPlatform.y -= -50;
 }
 function createPlayer(playerInfo) {
   // Setting starting x to the next value of spawnPoints

@@ -178,10 +178,10 @@ function onPlayerAnswered(info, socket) {
 
   if (info.answer === glob.cards[round].answer) {
     currentPlayer.correctAnswers++;
-    console.log("player.correctAnswers, ", currentPlayer.correctAnswers);
+    console.log("player :",currentPlayer.playerId," / correctAnswers, ", currentPlayer.correctAnswers);
   } else {
     currentPlayer.wrongAnswers++;
-    console.log("player.wrongAnswers, ", currentPlayer.wrongAnswers);
+    console.log("player :", currentPlayer.playerId," / wrongAnswers, ", currentPlayer.wrongAnswers);
 
     // io.emit("drop", { playerId: currentPlayer.playerId });
   }
