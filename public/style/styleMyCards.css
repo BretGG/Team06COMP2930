@@ -1,23 +1,6 @@
-/** Container holding deck select and category select */
-/* #dC{
-  width: 80%;
-  margin: 0 auto;
-} */
-
-/*deck select*/
-/* #l{
-
-  width:49%;
-  float: left;
-  margin-right: 2%;
-} */
-
-/*category select*/
-/* #r{
-  width: 49%;
-  float: left;
-  clear: right;
-} */
+input {
+    font-family: 'Ubuntu', sans-serif;
+}
 
 /*create button*/
 #submitLeft {
@@ -105,15 +88,46 @@
   margin-top: 2%;
 }
 
-input {
-    font-family: 'Ubuntu', sans-serif;
-}
-
 /** Aligns text to center */
 #status {
   margin-top: 4%;
   text-align: center;
   font-size: 1.2em;
+}
+
+.toast{
+    background-color: #26a69a;
+}
+#toast-container {
+    display: block;
+    position: fixed;
+    z-index: 10000;
+}
+#toast-container {
+    display: block;
+    position: fixed;
+    z-index: 10000
+}
+
+@media only screen and (max-width: 600px) {
+    #toast-container {
+        min-width: 100%;
+        bottom: 0%
+    }
+}
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+    #toast-container {
+        left: 5%;
+        bottom: 7%;
+        max-width: 90%
+    }
+}
+@media only screen and (min-width: 993px) {
+    #toast-container {
+        top: 10%;
+        right: 7%;
+        max-width: 86%
+    }
 }
 
 /** WIDTH RANGE FROM 500px to 799px */

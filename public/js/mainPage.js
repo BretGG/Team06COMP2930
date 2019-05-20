@@ -8,18 +8,18 @@ $(document).ready(() => {
 
   /** On page load, plays avatar animation */
   window.onload = function() {
-    updateCosmetics();    
+    updateCosmetics();
     $("#avatar").toggleClass("bounceIn");
   };
 
   function updateCosmetics(){
-    if(localStorage.getItem("avatar") == undefined)
+    if(localStorage.getItem("avatar"))
       $("#avatar").children("img").prop("src", localStorage.getItem("avatar"));
     else $("#avatar").children("img").prop("src", "../images/avatar/default.png");
-    if(localStorage.getItem("platform") == undefined)
+    if(localStorage.getItem("platform"))
       $("#avatar").css("background-image", localStorage.getItem("platform"));
     else $("#avatar").css("background-image", "../images/platform/default.png");
-    if(localStorage.getItem("background") == undefined)
+    if(localStorage.getItem("background"))
       $("html").css("background-image", "url('" + localStorage.getItem("background") +"')");
     else $("html").css("background-image", "../images/background/default.png");
   }
