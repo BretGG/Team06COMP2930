@@ -39,6 +39,10 @@ $(document).ready(() => {
         window.location.href = "main";
     });
 
+    function updateMessage(message, color){
+        $('.toast').css('background-color', color);
+            M.toast({html: message});
+    }
 
     function getDeckList(callback) {
         $.ajax({
@@ -158,13 +162,12 @@ $(document).ready(() => {
         }
 
     });
+
     /** This is for storing new cards as user wants! */
-    $("#submitLeft").click(() => {
-        console.log("Category: " + $('select#creCate').val());
-        console.log("Deck: " + $('#deckName').val());
+    $("#submitLeft").click(function() {
 
         if (!$('select#creCate').val() || !$('#deckName').val()) {
-            $("#status").text("Category and Deck must be set!!");
+            updateMessage('Category and Deck must be set!!!', '#26a69a');
         } else {
             if ($('select#creDeck').val() == 'createnewdeck') {
                 //create a deck first
@@ -175,9 +178,8 @@ $(document).ready(() => {
                     data: {
                         name: $("#deckName").val(),
                     },
-                    success: deck => {
+                    success: function(deck) {
                         console.log(JSON.stringify(deck));
-
                         //and then store new card on the new deck
                         $.ajax({
                             type: "post",
@@ -190,9 +192,10 @@ $(document).ready(() => {
                                 answer: $("#answer").val(),
                                 deck: deck._id //store deckId
                             },
-                            success: card => {
-                                $("#status").text("Card successfully added. Check under My Cards");
-                                console.log(JSON.stringify(card));
+                            success: function(card) {
+                                // something.html("Card successfully added. Check under My Cards");
+                                M.toast({html: 'Card successfully added. Check under My Cards'});
+                                console.log("Card Created: " + JSON.stringify(card));
 
                                 $("#question").text("");
                                 document.getElementById("answer").setAttribute('value', "");
@@ -214,7 +217,6 @@ $(document).ready(() => {
                 $.ajax({
                     type: "post",
                     url: "/cards",
-                    dataType: 'json',
                     data: {
                         format: "tf",
                         category: $('select#creCate').val(),
@@ -222,8 +224,8 @@ $(document).ready(() => {
                         answer: $("#answer").val(),
                         deck: $('select#creDeck').val() //store deckId
                     },
-                    success: card => {
-                        $("#status").text("Card successfully added. Check under My Cards");
+                    success: function(card) {
+                        M.toast({html: 'Card successfully added. Check under My Cards'});
                         console.log(JSON.stringify(card));
                         document.getElementById("question").setAttribute('value', "");
                         document.getElementById("answer").setAttribute('value', "");
