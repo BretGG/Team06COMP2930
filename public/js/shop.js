@@ -7,11 +7,12 @@ $(document).ready(() => {
   });
 
   function getUserInfo(callback) {
+    console.log("sign in");
     $.ajax({
       type: "get",
       url: "/login/me",
       success: function(data) {
-        callback(data.user);
+        callback(data);
       },
       error: function(e) {
         console.log(e.responseText);
@@ -22,7 +23,7 @@ $(document).ready(() => {
 
   /** Grabs user's username and appends to it welcome text */
   function setProfileInfo(user) {
-    $("#points").text = user.points;
+    $("#points").text(user.points);
   }
 
   /** Calling setProfileInfo function */
@@ -44,7 +45,6 @@ $(document).ready(() => {
       dataType: "json",
       type: "get",
       success: function(data) {
-        console.log("status: success", data);
         cb(data);
       },
       error: function(jqXHR, textStatus, errorThrown) {
