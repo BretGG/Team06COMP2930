@@ -184,6 +184,7 @@ function endRound(roundInfo) {
       });
     } else {
       // Slide incorrect cards off the screen
+    dropPlayer(roundInfo.playerId);
       self.tweens.add({
         targets: card,
         y: 1500,
@@ -203,6 +204,11 @@ function endRound(roundInfo) {
 }
 
 // Create to player object, could be another class but...
+function dropPlayer(id){
+  let player = players.find( (e)=> e.playerId==id);
+  console.log("dropping this player: ", player.playerId);
+  player.supportingPlatform.y -= -80;
+}
 function createPlayer(playerInfo) {
   // Setting starting x to the next value of spawnPoints
   let startingX = spawnPoints[players.length][players.length];

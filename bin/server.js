@@ -83,13 +83,6 @@ var gameStarted = false;
 var io = require("socket.io").listen(server);
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
-  //   (async function() {
-  //   await roundInfo(round);
-  // })();
-
-  // if (allPlayerReady()) {
-  //   roundInfo(round,socket);
-  // }
 
   // the connecion is made
   if (players.length >= maxPlayers) {
@@ -179,6 +172,7 @@ function onDisconnect(socket) {
 }
 
 function onPlayerAnswered(info, socket) {
+
   let currentPlayer = players.get(info.playerId);
   currentPlayer.answeredRound = true;
 
@@ -187,9 +181,9 @@ function onPlayerAnswered(info, socket) {
     console.log("player.correctAnswers, ", currentPlayer.correctAnswers);
   } else {
     currentPlayer.wrongAnswers++;
-    console.log("player.wrongAnswers, ", currentPlayer.correctAnswers);
+    console.log("player.wrongAnswers, ", currentPlayer.wrongAnswers);
 
-    io.emit("drop", { playerId: currentPlayer.playerId });
+    // io.emit("drop", { playerId: currentPlayer.playerId });
   }
 
   if (allPlayerAnswered() && round < glob.cards.length) {
@@ -198,7 +192,7 @@ function onPlayerAnswered(info, socket) {
     }
 
     io.emit("playerAnswered", {
-      player: currentPlayer,
+      playerId: currentPlayer.playerId,
       answer: glob.cards[round].answer
     });
     // io.emit("playerAnswered",{answer: glob.cards[round].answer});
@@ -222,12 +216,15 @@ function onPlayerStateChange(socket, data) {
   switch (data.state) {
     case "ready":
       player.ready = true;
+
       io.emit("playerStateChange", {
         playerId: socket.id,
         state: "ready"
       });
       // Start round if all players are ready
       if (allPlayerReady()) {
+        console.log("Are you ready?: ",allPlayerReady());
+        roundInfo(round,socket);
         onPlayerStateChange("doesn't matter", { state: "questionMark" });
       }
       break;
