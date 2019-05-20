@@ -186,7 +186,6 @@ function endRound(roundInfo) {
       });
     } else {
       // Slide incorrect cards off the screen
-      dropPlayer(roundInfo.playerId);
       self.tweens.add({
         targets: card,
         y: 1500,
@@ -203,14 +202,20 @@ function endRound(roundInfo) {
       });
     }
   }
+
+  // Update the count of correct and incorract anwers for each player
+  for (let player of roundInfo.players) {
+    for (let playerUpdate of roundInfo.players)
+      if (playerUpdate.playerId === player.playerId) {
+        player.correctAnswers = playerUpdate.correctAnswers;
+        player.wrongAnswers = playerUpdate.wrongAnswers;
+      }
+  }
+
+  updatePlayerScoreHeight();
 }
 
 // Create to player object, could be another class but...
-function dropPlayer(id) {
-  let player = players.find(e => e.playerId == id);
-  console.log("dropping this player: ", player.playerId);
-  player.supportingPlatform.y -= -50;
-}
 function createPlayer(playerInfo) {
   // Setting starting x to the next value of spawnPoints
   let startingX = spawnPoints[players.length][players.length];
@@ -325,7 +330,22 @@ function removePlayer(playerInfo) {
   updatePlayerPosition();
 }
 
-// Used for adding, removing, and setting player position based on wrong answers
+// Update y position of platform based on incorrect answers and the game score
+function updatePlayerScoreHeight() {
+  console.log(players);
+  for (let i = 0; i < players.length; i++) {
+    self.tweens.add({
+      targets: [players[i].supportingPlatform],
+      y: 400,
+      y: 400 - 50 * players[i].wrongAnswers,
+      ease: "Power4",
+      duration: 1000,
+      repeat: 0
+    });
+  }
+}
+
+// Used for adding, removing, and setting player position
 function updatePlayerPosition() {
   for (let i = 0; i < players.length; i++) {
     self.tweens.add({

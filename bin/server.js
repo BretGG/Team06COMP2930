@@ -3,6 +3,7 @@
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
+const _ = require("lodash");
 const { Card } = require("../src/models/card.js");
 var glob = this;
 
@@ -193,12 +194,29 @@ function onPlayerAnswered(info, socket) {
     );
   }
 
+  if (allPlayerAnswered()) {
+    endRound();
+  }
+
   onPlayerStateChange(socket, { state: "answered" });
-  io.emit("playerStateChange", { playerId: socket.id, state: "answered" });
 }
 
 function onPlayerJumped(socket) {
   socket.broadcast.emit("playerJump", socket.id);
+}
+
+function endRound() {
+  let filteredPlayers = [...players.values()];
+  filteredPlayers = filteredPlayers.map(player =>
+    _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
+  );
+
+  io.emit("endRound", {
+    players: filteredPlayers,
+    answer: currentRoundCard.answer
+  });
+
+  console.log(filteredPlayers);
 }
 
 function onPlayerStateChange(socket, data) {
@@ -260,20 +278,14 @@ async function roundInfo(s) {
 }
 
 function allPlayerAnswered() {
-  for (let o of players) {
-    console.log(
-      "Inside allPlayerAnswered : \n",
-      o[1].playerId + "\n",
-      "has answered?:",
-      o[1].answeredRound
-    );
-    if (!o[1].answeredRound) {
+  for (let player of players.values()) {
+    if (!player.answeredRound) {
       return false;
     }
   }
-
   return true;
 }
+
 function allPlayerReady() {
   for (let player of players.values()) {
     if (player.ready != true) {
