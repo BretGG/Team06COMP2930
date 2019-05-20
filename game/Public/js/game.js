@@ -27,6 +27,7 @@ let self;
 let background;
 let cursor;
 let mainPlayer;
+let question;
 var players = [];
 let platforms = [];
 let states = [];
@@ -84,8 +85,7 @@ function create() {
   this.socket.on("playerStateChange", playerStateChange);
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
-  this.socket.on("playerAnswered", endRound);
-  // this.socket.on("endRound", endRound);
+  this.socket.on("endRound", endRound);
   this.socket.on(
     "me",
     me => (mainPlayer = players.find(player => player.playerId === me.playerId))
@@ -124,6 +124,7 @@ function startRound(roundInfo) {
 
   // Other round start stuff, reset game objects
   console.log("startRound() in game.js");
+  console.log(roundInfo);
   setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
   self.socket.emit("playerStateChange", { state: "questionMark" });
   displayAnswers(roundInfo.answer);
@@ -146,6 +147,8 @@ function playerStateChange(stateInfo) {
         player.supportingState.setTexture("questionMark");
       }
       break;
+    case "answered":
+      player.supportingState.setTexture("exclamation");
     default:
       console.log("state undefined!!!");
       break;
@@ -167,7 +170,6 @@ function endRound(roundInfo) {
   for (let card of answerCards) {
     // Slide correct answer card to center
     if (card.text.text === roundInfo.answer) {
-      console.log("CORRECT@@@@@@@@@@@@@@@@@@@@@@");
       self.tweens.add({
         targets: card,
         x: 400,
@@ -184,7 +186,7 @@ function endRound(roundInfo) {
       });
     } else {
       // Slide incorrect cards off the screen
-    dropPlayer(roundInfo.playerId);
+      dropPlayer(roundInfo.playerId);
       self.tweens.add({
         targets: card,
         y: 1500,
@@ -204,8 +206,8 @@ function endRound(roundInfo) {
 }
 
 // Create to player object, could be another class but...
-function dropPlayer(id){
-  let player = players.find( (e)=> e.playerId==id);
+function dropPlayer(id) {
+  let player = players.find(e => e.playerId == id);
   console.log("dropping this player: ", player.playerId);
   player.supportingPlatform.y -= -50;
 }
@@ -269,6 +271,7 @@ function createState(stateInfo) {
   let newState = self.physics.add.image(stateInfo.x, stateInfo.y, "none");
 
   newState.body.allowGravity = false;
+  newState.setDepth(5);
   newState.supportingPlayer = stateInfo.supportingPlayer;
 
   states.push(newState);
@@ -340,37 +343,31 @@ function updatePlayerPosition() {
 }
 
 // Creates the display for the question text
-function displayQuestion(question) {
+function displayQuestion(questionInfo) {
+  if (question) {
+    question.text.destroy();
+    question.destroy();
+  }
+
   // Using group but will probably change this design
-  let group = self.physics.add.group();
-  group.create(400, 100, "questionBackground");
-  let questionBackground = group.getChildren()[0];
-  questionBackground.setScale(0.5);
+  question = self.add.image(400, 100, "questionBackground").setScale(0.5);
 
   // Set the question text
-  let text = self.add.text(0, 0, question, {
+  question.text = self.add.text(0, 0, questionInfo, {
     fontFamily: "Arial",
     fontSize: 50,
     color: "#000000",
     align: "center",
     boundsAlignH: "center",
     boundsAlignV: "middle",
-    wordWrap: { width: questionBackground.width - 25 }
+    wordWrap: { width: question.width - 25 }
   });
 
-  group.add(text);
-  text.setDepth(2);
-
   // Center text on card
-  text.setPosition(
-    questionBackground.x - text.getBounds().width / 2,
-    questionBackground.y - text.getBounds().height / 2
+  question.text.setPosition(
+    question.x - question.text.getBounds().width / 2,
+    question.y - question.text.getBounds().height / 2
   );
-
-  // Ignore gravity on all parts of question
-  for (let thing of group.getChildren()) {
-    thing.body.allowGravity = false;
-  }
 }
 
 // Creates the display for all answers

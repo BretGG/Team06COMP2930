@@ -172,39 +172,29 @@ function onDisconnect(socket) {
 }
 
 function onPlayerAnswered(info, socket) {
-
   let currentPlayer = players.get(info.playerId);
   currentPlayer.answeredRound = true;
 
   if (info.answer === glob.cards[round].answer) {
     currentPlayer.correctAnswers++;
-    console.log("player :",currentPlayer.playerId," / correctAnswers, ", currentPlayer.correctAnswers);
+    console.log(
+      "player :",
+      currentPlayer.playerId,
+      " / correctAnswers, ",
+      currentPlayer.correctAnswers
+    );
   } else {
     currentPlayer.wrongAnswers++;
-    console.log("player :", currentPlayer.playerId," / wrongAnswers, ", currentPlayer.wrongAnswers);
-
-    // io.emit("drop", { playerId: currentPlayer.playerId });
+    console.log(
+      "player :",
+      currentPlayer.playerId,
+      " / wrongAnswers, ",
+      currentPlayer.wrongAnswers
+    );
   }
 
-  if (allPlayerAnswered() && round < glob.cards.length) {
-    for (let p of players) {
-      p[1].answeredRound = false;
-    }
-
-    io.emit("playerAnswered", {
-      playerId: currentPlayer.playerId,
-      answer: glob.cards[round].answer
-    });
-    // io.emit("playerAnswered",{answer: glob.cards[round].answer});
-    round++;
-    console.log("ROUND: ", round);
-    roundInfo(round, socket);
-    io.emit("playerStateChange", {
-      playerId: socket.id,
-      state: "questionMark"
-    });
-  }
-  //emit updated player object. to be received in game.js
+  onPlayerStateChange(socket, { state: "answered" });
+  io.emit("playerStateChange", { playerId: socket.id, state: "answered" });
 }
 
 function onPlayerJumped(socket) {
@@ -216,15 +206,14 @@ function onPlayerStateChange(socket, data) {
   switch (data.state) {
     case "ready":
       player.ready = true;
-
       io.emit("playerStateChange", {
         playerId: socket.id,
         state: "ready"
       });
       // Start round if all players are ready
       if (allPlayerReady()) {
-        console.log("Are you ready?: ",allPlayerReady());
-        roundInfo(round,socket);
+        console.log("Are you ready?: ", allPlayerReady());
+        roundInfo(round, socket);
         onPlayerStateChange("doesn't matter", { state: "questionMark" });
       }
       break;
@@ -234,10 +223,15 @@ function onPlayerStateChange(socket, data) {
         state: "questionMark"
       });
       break;
+    case "answered":
+      io.emit("playerStateChange", { playerId: socket.id, state: "answered" });
+      // Check if all players have answered
+      // if so, emit round finished
+      break;
   }
 }
 
-async function roundInfo(s, socket) {
+async function roundInfo(s) {
   glob.cards = await Card.find({ format: "tf", category: "test" });
   console.log("from the DB...length:", glob.cards.length);
   // console.log("testing, ",glob.cards);
@@ -252,6 +246,7 @@ async function roundInfo(s, socket) {
   }
   //shuffling the answers
   answers.sort(() => Math.random() - 0.5);
+  console.log(answers);
   // return {question: question, answer: answers};
 
   // if(allPlayerReady()){
