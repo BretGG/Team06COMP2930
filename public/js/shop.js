@@ -52,6 +52,9 @@ $(document).ready(() => {
 
   /** On page load, plays avatar animation */
   window.onload = function() {
+    $("#char").prop("src", localStorage.getItem("avatar"));
+    $("#char").css("background-image", localStorage.getItem("platform"));
+    $("html").css("background-image", localStorage.getItem("background"));
     $("#avatar").toggleClass("bounceIn");
     $("#shopAvatar").trigger("click");
   };
@@ -70,7 +73,6 @@ $(document).ready(() => {
   });
 
   $("#back").click(() => {
-    console.log(localStorage.getItem("background"));
     window.location.href = "main";
   });
 
