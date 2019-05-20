@@ -8,13 +8,21 @@ $(document).ready(() => {
 
   /** On page load, plays avatar animation */
   window.onload = function() {
-    $("#avatar").children("img").prop("src", localStorage.getItem("avatar"));
-    $("#avatar").css("background-image", "url('" + localStorage.getItem("platform") +"')");
-    $("html").css("background-image", "url('" + localStorage.getItem("background") +"')");
-
-    // $("html").css("background-image", localStorage.getItem("background"));
+    updateCosmetics();    
     $("#avatar").toggleClass("bounceIn");
   };
+
+  function updateCosmetics(){
+    if(localStorage.getItem("avatar") == undefined)
+      $("#avatar").children("img").prop("src", localStorage.getItem("avatar"));
+    else $("#avatar").children("img").prop("src", "../images/avatar/default.png");
+    if(localStorage.getItem("platform") == undefined)
+      $("#avatar").css("background-image", localStorage.getItem("platform"));
+    else $("#avatar").css("background-image", "../images/platform/default.png");
+    if(localStorage.getItem("background") == undefined)
+      $("html").css("background-image", "url('" + localStorage.getItem("background") +"')");
+    else $("html").css("background-image", "../images/background/default.png");
+  }
 
   function getUserInfo(callback) {
     console.log("sign in");
@@ -62,6 +70,9 @@ $(document).ready(() => {
 
   /** Takes user back to shop page */
   $("#shop").click(() => {
+    localStorage.setItem("avatar", $("#avatar").children("img").prop("src"));
+    localStorage.setItem("platform", $("#avatar").css("background-image"));
+    localStorage.setItem("background", $("html").css("background-image"));
     window.location.href = "/shop";
   });
 
