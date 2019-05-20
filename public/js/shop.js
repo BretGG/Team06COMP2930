@@ -1,5 +1,7 @@
 // var active = "avatar";
 $(document).ready(() => {
+  $(".carousel").carousel();
+
   $.ajaxSetup({
     headers: {
       "auth-token": localStorage.getItem("auth-token")
@@ -61,9 +63,11 @@ $(document).ready(() => {
     let innerHtml = "";
     for (let item of items) {
       innerHtml += `
-        <div id=${item._id} class="carousel-item" href="#four!">
+		<div id=${item._id} 
+     class="carousel-item" href="#four!" style="background-color= red;"
+		>
           <div class="singleGalleryTitle">
-            ${items.name}
+            ${item.name}
           </div>
           <i class="material-icons left">filter_vintage</i>
           <div id="cost4" class="itemCost">
@@ -73,18 +77,28 @@ $(document).ready(() => {
 		`;
     }
 
-    console.log(innerHtml);
     $("#slideAvatar").html(innerHtml);
 
     for (let item of items) {
-      $(`#${item.id}`).click(() => {
+      $(`#${item._id}`).click(() => {
+        console.log("click");
         if (item.category === "avatar") $("#char").prop("src", item.imageLink);
         else if (item.category === "platform")
           $("#char").css("background-image", item.imageLink);
         else if (items.category === "bg")
           $("html").css("background-image", item.imageLink);
       });
+
+      console.log(item);
+
+      $(`#${item._id}`).css("background-image", `url(${item.shopIcon})`);
     }
+
+    if ($(".carousel").hasClass("initialized")) {
+      $(".carousel").removeClass("initialized");
+    }
+
+    $(".carousel").carousel();
   }
 
   $("#shopAvatar").click(() => {
