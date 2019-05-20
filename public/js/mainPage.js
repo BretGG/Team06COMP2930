@@ -8,6 +8,11 @@ $(document).ready(() => {
 
   /** On page load, plays avatar animation */
   window.onload = function() {
+    $("#avatar").children("img").prop("src", localStorage.getItem("avatar"));
+    $("#avatar").css("background-image", "url('" + localStorage.getItem("platform") +"')");
+    $("html").css("background-image", "url('" + localStorage.getItem("background") +"')");
+
+    // $("html").css("background-image", localStorage.getItem("background"));
     $("#avatar").toggleClass("bounceIn");
   };
 

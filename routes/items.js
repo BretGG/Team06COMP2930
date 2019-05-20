@@ -30,13 +30,14 @@ router.put("/:selectedItem", async (req, res) => {
   const user = await User.findById(token._id).select("-password");
   console.log(user);
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
-  console.log(user.points);
 
-  console.log(item.cost);
   // Check if they have the points
   if(user.points > item.cost){
     user.points -= item.cost;
     await user.save();
+    item.owned = true;
+    item.cost = 0;
+    await item.save();
     res.send(item);
   } else {
     res.status(400).send();

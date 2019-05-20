@@ -23,8 +23,6 @@ $(document).ready(() => {
     });
   }
 
-//localStorage.setItem("username", "user.username");
-
   function setPointBalance(user) {
     $("#points").text(user.points);
   }
@@ -72,6 +70,7 @@ $(document).ready(() => {
   });
 
   $("#back").click(() => {
+    console.log(localStorage.getItem("background"));
     window.location.href = "main";
   });
 
@@ -106,6 +105,7 @@ $(document).ready(() => {
       $(`#${item._id}`).click(() => {
         if(item.owned){
           $("#buy").addClass("disabled");
+          localStorage.setItem(item.category, item.imageLink);
         } else {
           $("#buy").removeClass("disabled");
         }
