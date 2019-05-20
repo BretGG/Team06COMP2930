@@ -33,7 +33,24 @@ $(document).ready(() => {
   window.onload = function() {
     $("#avatar").toggleClass("bounceIn");
     $("#shopAvatar").trigger("click");
+    if ($(window).width() < 400) 
+      $("#back").html("<i class='material-icons'>home</i>");
+      $("#shopBackground").html("BG");
+      $("#shopPlatform").css("padding-left", "10px");
   };
+
+  $(window).resize(function() {
+    if ($(window).width() < 400) {
+      $("#back").html("<i class='material-icons'>home</i>");
+      $("#shopBackground").html("BG");
+      $("#shopPlatform").css("padding-left", "10px");
+    } else {
+      $("#back i").addClass("left");
+      $("#back").html("Main Menu<i class='material-icons left'>home</i>");
+      $("#shopBackground").html("Background");
+      $("#shopPlatform").css("padding-left", "16px");
+    }
+  });
 
   $("#back").click(() => {
     window.location.href = "main";
