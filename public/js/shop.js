@@ -68,6 +68,12 @@ $(document).ready(() => {
 
     for (let item of items) {
       $(`#${item._id}`).click(() => {
+        if(item.owned){
+          $("#buy").addClass("disabled");
+        } else {
+          $("#buy").removeClass("disabled");
+        }
+
         if (item.category === "avatar") {
           $("#char").prop("src", item.imageLink);
         }
@@ -90,6 +96,7 @@ $(document).ready(() => {
   }
 
   $("#shopAvatar").click(() => {
+    $("#buy").addClass("disabled");
     $("#shopPlatform").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#26a69a");
     $("#shopAvatar").css("background-color", "#55B1C1");
@@ -97,6 +104,7 @@ $(document).ready(() => {
   });
 
   $("#shopPlatform").click(() => {
+    $("#buy").addClass("disabled");
     $("#shopAvatar").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#26a69a");
     $("#shopPlatform").css("background-color", "#55B1C1");
@@ -104,6 +112,7 @@ $(document).ready(() => {
   });
 
   $("#shopBackground").click(() => {
+    $("#buy").addClass("disabled");
     $("#shopPlatform").css("background-color", "#26a69a");
     $("#shopAvatar").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#55B1C1");
