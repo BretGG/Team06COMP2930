@@ -1,5 +1,7 @@
 $(document).ready(() => {
 
+  var selectedItem;
+
   $.ajaxSetup({
     headers: {
       "auth-token": localStorage.getItem("auth-token")
@@ -7,11 +9,11 @@ $(document).ready(() => {
   });
 
   function getUserInfo(callback) {
-    console.log("sign in");
     $.ajax({
       type: "get",
       url: "/login/me",
       success: function(data) {
+        console.log(data);
         callback(data);
       },
       error: function(e) {
@@ -21,22 +23,39 @@ $(document).ready(() => {
     });
   }
 
-  /** Grabs user's username and appends to it welcome text */
-  function setProfileInfo(user) {
+//localStorage.setItem("username", "user.username");
+
+  function setPointBalance(user) {
     $("#points").text(user.points);
   }
 
+
   /** Calling setProfileInfo function */
-  getUserInfo(setProfileInfo);
+  getUserInfo(setPointBalance);
+
+  /** When user attempts to buy an item */
+  $("#buy").click(() => {
+    console.log("Attempting to buy an item");
+      $.ajax({
+        url: `/items/${selectedItem}`,
+        dataType: "json",
+        type: "put",
+        success: function(data) {
+          console.log(data);
+          $(`#${data._id}`).children("#cost4").text("0");
+          $("#buy").addClass("disabled");
+          getUserInfo(setPointBalance);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log("ERROR:", jqXHR, textStatus, errorThrown);
+        }
+      });
+  });
 
   /** On page load, plays avatar animation */
   window.onload = function() {
     $("#avatar").toggleClass("bounceIn");
     $("#shopAvatar").trigger("click");
-    if ($(window).width() < 400) 
-      $("#back").html("<i class='material-icons'>home</i>");
-      $("#shopBackground").html("BG");
-      $("#shopPlatform").css("padding-left", "10px");
   };
 
   $(window).resize(function() {
@@ -100,8 +119,10 @@ $(document).ready(() => {
         else if (item.category === "background"){
           $("html").css("background-image", `url(${item.imageLink})`);
         }
-      });
 
+        selectedItem = item._id;
+      });
+      
       $(`#${item._id}`).css("background-image", `url(${item.shopIcon})`);
     }
 
@@ -118,6 +139,7 @@ $(document).ready(() => {
     $("#shopBackground").css("background-color", "#26a69a");
     $("#shopAvatar").css("background-color", "#55B1C1");
     getItems("avatar", populateCarousel);
+    $("#slideAvatar").toggleClass("")
   });
 
   $("#shopPlatform").click(() => {
