@@ -7,7 +7,6 @@ $(document).ready(() => {
   });
 
   function getUserInfo(callback) {
-    console.log("sign in");
     $.ajax({
       type: "get",
       url: "/login/me",
@@ -23,7 +22,7 @@ $(document).ready(() => {
 
   /** Grabs user's username and appends to it welcome text */
   function setProfileInfo(user) {
-    $("#points").text(user.points);
+    $("#points").text = user.points;
   }
 
   /** Calling setProfileInfo function */
@@ -73,10 +72,10 @@ $(document).ready(() => {
           $("#char").prop("src", item.imageLink);
         }
         else if (item.category === "platform"){
-          $("#char").prop("background-image", item.imageLink);
+          $("#char").css("background-image", `url(${item.imageLink})`);
         }
-        else if (items.category === "background"){
-          $("html").prop("background-image", "../images/bg/sunset.png");
+        else if (item.category === "background"){
+          $("html").css("background-image", `url(${item.imageLink})`);
         }
       });
 
