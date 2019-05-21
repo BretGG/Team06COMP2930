@@ -13,7 +13,7 @@ const router = express.Router();
 
 Login is seperated from users so that we can use router.post.
 
-'post' is more secure than 'get' dues to post storing less information
+'post' is more secure than 'get' due to post storing less information
 
 */
 
@@ -33,9 +33,7 @@ router.post("/", async (req, res) => {
   user = await User.findOne({ username: user.username });
   if (!user) {
     // req.connection.remoteAddress will return ::1 if logging in from localhost
-    debug(
-      `Invalid login from: ${req.connection.remoteAddress} user: ${user.username}`
-    );
+    debug(`Invalid login from: ${req.connection.remoteAddress}`);
     return res.status(400).send("Invalid email or password.");
   }
 
@@ -52,9 +50,10 @@ router.post("/", async (req, res) => {
 
   // req.connection.remoteAddress will return ::1 if logging in from localhost
   console.log(
-    `Valid login from: ${req.connection.remoteAddress} user: ${req.body.username}`
+    `Valid login from: ${req.connection.remoteAddress} user: ${
+      req.body.username
+    }`
   );
-
 
   // Returning a json object containing success and the jwt token that needs to be stored
   const token = user.generateAuthToken();
@@ -66,21 +65,17 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.get('/me', async (req, res) => {
-    var token = req.get('auth-token');
-    if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
-    const decode = jwt.verify(token, "FiveAlive");
-    token = jwt.decode(token);
+router.get("/me", async (req, res) => {
+  var token = req.get("auth-token");
+  if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
+  const decode = jwt.verify(token, "FiveAlive");
+  token = jwt.decode(token);
 
-    console.log(`Request for me from user ${token._id} at ${req.connection.remoteAddress}`)
+  const user = await User.findById(token._id).select("-password");
 
-    const user = await User.findById(token._id).select('-password');
-    console.log(JSON.stringify(user));
-
-    if (!user) return res.status(400).send("Uh Oh! You dont exist!");
-    console.log(`Returning user ${user._id} to ${req.connection.remoteAddress}`)
-    res.send({user});
-
+  if (!user) return res.status(400).send("Uh Oh! You dont exist!");
+  console.log(`Returning user ${user._id} to ${req.connection.remoteAddress}`);
+  res.send(user);
 });
 
 //  Validates if the input is correct before authorizing function

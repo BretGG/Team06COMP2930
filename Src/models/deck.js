@@ -1,8 +1,6 @@
 const { Card } = require("./card");
 const mongoose = require("mongoose");
-const joi = require("joi");
-const _ = require('lodash');
-
+const _ = require("lodash");
 
 /*
 
@@ -12,38 +10,23 @@ holds the information for a card deck.
 */
 
 const deckSchema = new mongoose.Schema({
-//   category: {       //category for cards
-//     type: String,
-//     required: true
-// },
-    deckname: {         //deckName
-        type: String,
-        required: true
-    },
-    owner: {        //Do not validate for owner
-        type: String,
-        required: true
-    }
+  // category: {
+  //   //category for cards
+  //   type: String,
+  //   required: true
+  // },
+  name: {
+    type: String,
+    required: true
+  },
+  owner: {
+    type: String,
+    required: true
+  }
 });
 
-// easier way to get cards
-// deckSchema.methods.getCards = async function() {
-//     return await Card.findAll({ deck: this._id })
-// }
-
-const Deck = mongoose.model('Deck', deckSchema);
-
-
-
-// Validates if the card object follows validation rules.
-exports.validate = deck => {
-    console.log(deck);
-
-  const schema = joi.object().keys({
-    ndecknameame: joi.string().required()
-  });
-
-  return joi.validate(_.pick(deck, 'deckname'), schema);
+deckSchema.methods.getCards = async function() {
+  return await Card.find({ deck: this._id });
 };
 
 exports.Deck = mongoose.model("Deck", deckSchema);

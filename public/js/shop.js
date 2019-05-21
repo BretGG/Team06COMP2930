@@ -1,124 +1,216 @@
-
-// var bg = ["city.png", "darkblue.png", "night.png", "pixelatedbg.png", "sunset.png"];
-
-var url = "../images/";
-var active ="avatar";
-
 $(document).ready(() => {
-	/** On page load, plays avatar animation */
-	window.onload = function() {   
-		$('#avatar').toggleClass('bounceIn');
+  let selectedItem;
+  let currentUserInfo;
+
+  $.ajaxSetup({
+    headers: {
+      "auth-token": localStorage.getItem("auth-token")
+    }
+  });
+
+  function getUserInfo(callback) {
+    $.ajax({
+      type: "get",
+      url: "/login/me",
+      success: function(data) {
+        console.log(data);
+        callback(data);
+      },
+      error: function(e) {
+        console.log(e.responseText);
+        callback("Unknown");
+      }
+    });
   }
 
-$('#shopBackground').click(() => {
-	$('#shopPlatform').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopAvatar').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopBackground').css("background-color", "#48748E");
-	$("#item1").css("background-image", "url(../images/shopIcons/bg/default.png)");
-	$("#item2").css("background-image", "url(../images/shopIcons/bg/city.png)");
-	$("#item3").css("background-image", "url(../images/shopIcons/bg/darkblue.png)");
-	$("#item4").css("background-image", "url(../images/shopIcons/bg/night.png)");
-	$("#item5").css("background-image", "url(../images/shopIcons/bg/pixelatedbg.png)");
-	$("#item6").css("background-image", "url(../images/shopIcons/bg/sunset.png)");
-	$("#ditem1").text("Forest View");
-	$("#ditem2").text("City Sunset");
-	$("#ditem3").text("Blue Skies");
-	$("#ditem4").text("Purple Night");
-	$("#ditem5").text("Pixelated Ocean");
-	$("#ditem6").text("Sunset");
-	active = "bg";
-})
+  function setPointBalance(user) {
+    $("#points").text(user.points);
+  }
 
-$('#shopAvatar').click(() =>{
-	$('#shopPlatform').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopBackground').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopAvatar').css("background-color", "#48748E");
-	$("#item1").css("background-image", "url(../images/shopIcons/avatar/default.png)");
-	$("#item2").css("background-image", "url(../images/shopIcons/avatar/greenChar.png)");
-	$("#item3").css("background-image", "url(../images/shopIcons/avatar/greyChar.png)");
-	$("#item4").css("background-image", "url(../images/shopIcons/avatar/redChar.png)");
-	$("#item5").css("background-image", "url(../images/shopIcons/avatar/yellowChar.png)");
-	$("#item6").css("background-image", "url(../images/shopIcons/avatar/blueChar.png)");
-	$("#ditem1").text("Black Sesame");
-	$("#ditem2").text("Green Apple");
-	$("#ditem3").text("Cloud");
-	$("#ditem4").text("Red Apple");
-	$("#ditem5").text("Mango");
-	$("#ditem6").text("Blueberry");
-	active ="avatar";
-})  
+  function setUserActive(item) {
+    $.ajax({
+      type: "put",
+      url: `/users/${item.category}/${item._id}`,
+      success: function(data) {
+        M.toast({
+          html: `Equipped: ${data.name}`,
+          classes: "green"
+        });
+      },
+      err: function(err) {
+        console.log(err);
+      }
+    });
+  }
 
-$('#shopPlatform').click(() => {
-	$('#shopAvatar').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopBackground').css("background-color", "rgba(255,255,255, 0.75)");
-	$('#shopPlatform').css("background-color", "#48748E");
-	$("#item1").css("background-image", "url(../images/shopIcons/platform/default.png)");
-	$("#item2").css("background-image", "url(../images/shopIcons/platform/pinkplatform.png)");
-	$("#item3").css("background-image", "url(../images/shopIcons/platform/purpleplatform.png)");
-	$("#item4").css("background-image", "url(../images/shopIcons/platform/rabbitpet.png)");
-	$("#item5").css("background-image", "url(../images/shopIcons/platform/duckpet.png)");
-	$("#item6").css("background-image", "url(../images/shopIcons/platform/birdpet.png)");
-	$("#ditem1").text("Flying Grass");
-	$("#ditem2").text("Modest Flowers");
-	$("#ditem3").text("Exquisite Flowers");
-	$("#ditem4").text("Pet Rabbit");
-	$("#ditem5").text("Pet Duck");
-	$("#ditem6").text("Pet Bird");
-	active ="platform";
-})
+  function updateCosmetics() {
+    $.ajax({
+      type: "get",
+      url: "/users/updateCosmetics",
+      success: function(data) {
+        console.log("DATA: " + data.activeAvatar);
+        $("#char").prop("src", data.activeAvatar.imageLink);
+        $("#avatar").css(
+          "background-image",
+          `url(${data.activePlatform.imageLink})`
+        );
+        $("html").css(
+          "background-image",
+          `url(${data.activeBackground.imageLink})`
+        );
+      },
+      error: function(e) {
+        console.log(e.responseText);
+      }
+    });
+  }
 
-$('#item1').click(() => {
-	if(active == "avatar")
-		$("#char").prop("src", "../images/avatar/default.png");
-	else if (active == "platform")
-		$("#char").css("background-image", "url(../images/platform/default.png)");
-	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/default.png)");
-})
+  /** When user attempts to buy an item */
+  $("#buy").click(() => {
+    $.ajax({
+      url: `/items/${selectedItem}`,
+      dataType: "json",
+      type: "put",
+      success: function(data) {
+        $(`#${data._id}`)
+          .children("#cost4")
+          .text("Owned");
+        $("#buy").addClass("disabled");
+        getUserInfo(setPointBalance);
+        getUserInfo(userInfo => (currentUserInfo.items = userInfo.items));
+        M.toast({
+          html: `Purchased: ${data.name}`,
+          classes: "blue"
+        });
+        setUserActive(data);
+      },
+      error: function(err) {
+        console.log("ERROR: ", err.responseText);
+        M.toast({
+          html: err.responseText,
+          classes: "red"
+        });
+      }
+    });
+  });
 
-$('#item2').click(() => {
-	if(active == "avatar")
-		$("#char").prop("src", "../images/avatar/greenChar.png");
-	else if (active == "platform")
-		$("#char").css("background-image", "url(../images/platform/pinkplatform.png)");
-	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/city.png)");
-})
+  $(window).resize(function() {
+    if ($(window).width() < 400) {
+      $("#back").html("<i class='material-icons'>home</i>");
+      $("#shopBackground").html("BG");
+      $("#shopPlatform").css("padding-left", "10px");
+    } else {
+      $("#back i").addClass("left");
+      $("#back").html("Main Menu<i class='material-icons left'>home</i>");
+      $("#shopBackground").html("Background");
+      $("#shopPlatform").css("padding-left", "16px");
+    }
+  });
 
-$('#item3').click(() => {
-	if(active == "avatar")
-		$("#char").prop("src", "../images/avatar/greyChar.png");
-	else if (active == "platform")
-		$("#char").css("background-image", "url(../images/platform/purpleplatform.png)");
-	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/darkblue.png)");
-})
+  $("#back").click(() => {
+    window.location.href = "main";
+  });
 
-$('#item4').click(() => {
-	if(active == "avatar")
-		$("#char").prop("src", "../images/avatar/redChar.png");
-	else if (active == "platform")
-		$("#char").css("background-image", "url(../images/platform/rabbitpet.png)");
-	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/night.png)");
-})
+  function getItems(category, cb) {
+    $.ajax({
+      url: `/items/category/${category}`,
+      dataType: "json",
+      type: "get",
+      success: function(data) {
+        cb(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+      }
+    });
+  }
 
-$('#item5').click(() => {
-	if(active == "avatar")
-		$("#char").prop("src", "../images/avatar/yellowChar.png");
-	else if (active == "platform")
-		$("#char").css("background-image", "url(../images/platform/duckpet.png)");
-	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/pixelatedbg.png)");
-})
+  function populateCarousel(items) {
+    let innerHtml = "";
 
-$('#item6').click(() => {
-	if(active == "avatar")
-		$("#char").prop("src", "../images/avatar/blueChar.png");
-	else if (active == "platform")
-		$("#char").css("background-image", "url(../images/platform/birdpet.png)");
-	else if (active == "bg")
-		$("body").css("background-image", "url(../images/bg/sunset.png)");
-})
+    // Create display for each item
+    for (let item of items) {
+      innerHtml += `
+        <div id=${item._id} class="carousel-item">
+          <div class="singleGalleryTitle"> ${item.name}</div>
+          <i class="material-icons left">filter_vintage</i>
+          <div id="cost4" class="itemCost"> ${item.cost}</div>
+        </div>`;
+    }
 
+    $("#slideAvatar").html(innerHtml);
+
+    // Set click interaction for each item
+    for (let item of items) {
+      $(`#${item._id}`).click(() => {
+        if (currentUserInfo.items.find(userItem => userItem === item._id)) {
+          $("#buy").addClass("disabled");
+          localStorage.setItem(item.category, item.imageLink);
+          setUserActive(item);
+        } else {
+          $("#buy").removeClass("disabled");
+        }
+
+        if (item.category === "avatar") {
+          $("#char").prop("src", item.imageLink);
+        } else if (item.category === "platform") {
+          $("#avatar").css("background-image", `url(${item.imageLink})`);
+        } else if (item.category === "background") {
+          $("html").css("background-image", `url(${item.imageLink})`);
+        }
+
+        console.log(item);
+
+        selectedItem = item._id;
+      });
+
+      // Set image for each item and update price if they own it
+      $(`#${item._id}`).css("background-image", `url(${item.shopIcon})`);
+      if (currentUserInfo.items.find(userItem => userItem === item._id)) {
+        $(`#${item._id}`)
+          .children("#cost4")
+          .text("Owned");
+      }
+    }
+
+    if ($(".carousel").hasClass("initialized")) {
+      $(".carousel").removeClass("initialized");
+    }
+
+    $(".carousel").carousel();
+  }
+
+  $("#shopAvatar").click(() => {
+    console.log("CLICK!!!")
+    $("#buy").addClass("disabled");
+    $("#shopPlatform").css("background-color", "#26a69a");
+    $("#shopBackground").css("background-color", "#26a69a");
+    $("#shopAvatar").css("background-color", "#55B1C1");
+    getItems("avatar", populateCarousel);
+  });
+
+  $("#shopPlatform").click(() => {
+    $("#buy").addClass("disabled");
+    $("#shopAvatar").css("background-color", "#26a69a");
+    $("#shopBackground").css("background-color", "#26a69a");
+    $("#shopPlatform").css("background-color", "#55B1C1");
+    getItems("platform", populateCarousel);
+  });
+
+  $("#shopBackground").click(() => {
+    $("#buy").addClass("disabled");
+    $("#shopPlatform").css("background-color", "#26a69a");
+    $("#shopAvatar").css("background-color", "#26a69a");
+    $("#shopBackground").css("background-color", "#55B1C1");
+    getItems("background", populateCarousel);
+  });
+
+  // Calling all page setup functions
+  getUserInfo(user => {
+    currentUserInfo = user
+      setPointBalance(user);
+      updateCosmetics();
+      $("#avatar").toggleClass("bounceIn");
+      $("#shopAvatar").trigger("click");
+  });
 });

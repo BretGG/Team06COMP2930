@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="../images/icon.png" type="../images/icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css" media="screen,projection" />
+    <link rel="stylesheet" href="../style/styleBase.css">
+    <link rel="stylesheet" href="../style/styleMainPage.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis&display=swap" rel="stylesheet">
+    <title>EcoQuest</title>
+    <style>
+
+        body {
+            min-width: 600px;
+            max-width: 2000px;
+            margin: 0 auto;
+            background-color: #fff0;
+        }
+
+
+        #container {
+            width: 500px;
+            margin: 0 auto;
+            padding: 5%;
+            background-color: rgba(0, 0, 0, 0.5)
+        }
+
+        #mainpagecon {
+            height: 230px;
+        }
+
+        .descriptionBox {
+            font-family:"Dosis", sans-serif;
+            color: white;
+            font-weight:bolder;
+            font-size: 1em;
+         
+            border-radius: 25px;
+            border-width: 5px;
+            width: 100%;
+        }
+
+        .descriptionBox h1 {
+            text-align: center;
+            font-size:44px;
+        }
+
+        .descriptionBox p {
+            text-align: center;
+            font-size: .74em;
+        }
+
+        .descritionBox h1 {
+            text-align: center;
+        }
+
+        .wholeMemberContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .individualMemberContainer {
+            padding-left: 0%;
+            width: 560px;
+            border: 5px solid;
+            margin: 1%;
+            background-color: white;
+            height: 160px;
+        }
+
+        .member {}
+
+        .evenPicture {
+            width: 150px;
+            float: right;
+        }
+
+        .evenPicture img {
+            width: 150px;
+            height: 150px;
+            border-radius: 100%;
+        }
+
+        .imageContainer {
+            width: 30%;
+        }
+
+        .description {
+            float: left;
+            width: 358px;
+            font-size: 1.4em;
+            margin: 1%;
+            font-family: 'Crimson Text', serif;
+        }
+
+        .whoWeAreContainer {
+
+            text-align:center;
+            background: rgba(255, 255, 255, .53);
+        }
+
+        .whoWeAreContainer h1 {
+            text-decoration: underline;
+            font-family:"Dosis", sans-serif;
+            font-size:45px;
+            }
+        
+            @media only screen and (max-width:1499px) and (min-width: 900px) {
+                .description {
+                    width: calc(100% - 115px);
+                    float: left;
+                    padding-left: 0.1px %;
+                    padding: 1%;
+                    font-family: 'Crimson Text', serif;
+                    font-size: 14px;
+                }
+
+            .wholeMemberContainer {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+        #container {
+            width: 996px;
+            margin: 0 auto;
+            padding: 5%;
+            height:775px;
+            background-color: rgba(55, 255, 0, 0.5);
+        }
+        .descriptionBox p{
+            font-size:26px;
+        }
+                    .evenPicture img {
+                width: 100px;
+                height: 100px;
+                border-radius: 100%;
+            }
+            .evenPicture {
+                width: 100px;
+            }
+            .individualMemberContainer {
+                width: 430px;
+                margin: 1%;
+                background-color: white;
+                height: 110px;
+            }
+        }
+
+        @media only screen and (min-width: 1500px) {
+            .wholeMemberContainer {
+                margin: 0 auto;
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+            #container {
+                width: 1091px;
+                margin: 0 auto;
+                height: 835px;
+                background-color: rgba(55, 255, 220, 0.5);
+            }
+            .evenPicture img {
+                width: 250px;
+                height: 245px;
+                border-radius: 100%;
+            }
+            .individualMemberContainer {
+                width: 800px;
+                margin: 2%;
+                background-color: white;
+                height: 250px;
+                padding-left: 0%;
+            }
+            .whoWeAreContainer h1 {
+                font-size: 50px;
+            }
+            .description {
+                float: left;
+                font-size: 30px;
+                width: 514px;
+                font-family: 'Crimson Text', serif;
+            }
+            .evenPicture {
+                width: 250px;
+                height:245px;
+                float: right;
+            }
+        }
+.fixedButton{
+    position:fixed;
+    background-color:rgb(38, 166, 154);
+}
+a {
+    color: #ffffff;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+}
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Cedarville+Cursive" rel="stylesheet">
+</head>
+
+<body>
+<a class="fixedButton" id='back' class="waves-effect waves-light btn-small">Back<i class="material-icons right">home</i></a>
+
+    <div id='container'>
+        <div id='mainpagecon'>
+
+            <div id='avatar'><img src='../images/mainpageavatar.png' alt='main page avatar' /></div>
+
+        </div>
+        <div class="descriptionBox">
+
+            <h1> About EcoQuest
+                <h1>
+
+                    <p> The earth is full of passion, wonder, and fascination.
+                    Unfortunately, man-made pollution is making us lose the beauty
+                    of  our earth.  We decided to create EcoQuest on the basis of
+                    preserving mother nature and all its glory. Our mission is to
+                    create a better and healthier earth through educating users in 
+                    a fun and interactive way.  We hope that EcoQuest helps the lives 
+                    of many by raising awareness of global warming. This way, we can
+                    fix our mistakes and conquer global warming.
+             
+                        </p>
+
+
+        </div>
+
+    </div>
+    </br>
+    <div class="whoWeAreContainer">
+        <h1> Who We Are </h1>
+
+            <div class="wholeMemberContainer">
+
+                <div class="individualMemberContainer">
+                    <div class="description">
+                        "Ever since I was a child, I asked my mother to buy me a bike because gas is poison to our earth." -Bret Getz. 
+                        Bret is a software developer from Cranbook, BC. His favorite past times biking to Tim Hortons. 
+
+                    </div>
+                    <div class="evenPicture">
+                        <img src="../images/bret.jpg">
+
+                    </div>
+                </div>
+
+                <div class="individualMemberContainer">
+                    <div class="description">
+                        "I always buy degradable tooth brushes. I can't stand how much plastic we throw away."
+                        -Hannah Lee. Hannah is a software developer from South Korea who is passionate about reducing waste.
+                    </div>
+
+                    <div class="evenPicture">
+                        <img src="../images/hannah.jpg">
+
+                    </div>
+                </div>
+                <div class="individualMemberContainer">
+                    <div class="description">
+                        "It just makes sense. It only makes sense. Saving our eath just makes sense."
+                        -Stella Tran. Stella tran is a software developer from Vancouver who only drinks water out of reusable cups.
+                    </div>
+                    <div class="evenPicture">
+                        <img src="../images/stella.jpg">
+                    </div>
+
+                </div>
+                <div class="individualMemberContainer">
+                    <div class="description">
+
+                        "When I'm stressed, I go to the park or forest. It makes me calm. I hope the forest will be there when I get older."
+                        - Jessica Kim. Jessica is a software developer from Korea. She always makes sure to recycle.
+                    </div>
+
+                    <div class="evenPicture">
+                        <img src="../images/Jessica.jpg">
+
+                    </div>
+                </div>
+
+                <div class="individualMemberContainer">
+                    <div class="description">
+                       "Always reuse your bags at the grocery store, there's no need to waste plastic."
+                       -Rose Song. Rose Song is a software developer from Coquitlam. She uses reusable straws to reduce waste.
+
+                    </div>
+                    <div class="evenPicture">
+                        <img src="../images/rose.jpg">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <script src="../js/aboutUs.js"></script>
+</body>
+
+</html>

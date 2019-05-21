@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
 const jwt = require("jsonwebtoken");
+const Item = require("./item");
 
 /*
 
@@ -32,7 +33,19 @@ const schema = new mongoose.Schema({
   points: {
     type: Number,
     default: 0
-  }
+  },
+  cosmetics: {
+    activePlatform: {
+      type: Item
+    },
+    activeAvatar: {
+      type: Item
+    },
+    activeBackground: {
+      type: Item
+    }
+  },
+  items: Array
 });
 
 // Validates if the user object follows validation rules.
@@ -57,8 +70,6 @@ exports.validate = user => {
 
   return joi.validate(user, schema);
 };
-
-function somethng() {}
 
 schema.methods.generateAuthToken = function() {
   return jwt.sign({ _id: this._id, username: this.username }, "FiveAlive");

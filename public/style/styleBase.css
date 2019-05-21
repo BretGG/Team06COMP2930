@@ -2,7 +2,7 @@
 
 /* Imports font being used through application */
 /* @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro'); */
-@import url("https://fonts.googleapis.com/css?family=Dosis:400,800|Source+Sans+Pro");
+@import url("https://fonts.googleapis.com/css?family=Dosis:400,800|Ubuntu");
 
 /* Minimum width for application */
 html {
@@ -12,13 +12,12 @@ html {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  
 }
 
 /* Centers elements, sets and stretches default background, and sets font. */
 body {
   margin: 0 auto;
-  font-family: "Segoe UI Regular";
+  font-family: "Ubuntu", sans-serif;
 }
 
 /*On all clickable buttons, mouse takes to hand */
@@ -26,26 +25,9 @@ body {
   cursor: pointer;
 }
 
-/* Setting font properties */
-@font-face {
-  font-family: "Segoe UI Regular";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Segoe UI Regular"), url("Segoe UI.woff") format("woff");
-}
-
 /* Removes all text decorations for links */
 a {
   text-decoration: none;
-}
-
-/** Settings avatar size, margins, and etc */
-#avatar {
-  margin: 0 auto;
-  background-image: url("../images/platform/default.png");
-  width: 176px;
-  height: 251px;
-  margin-bottom: 3%;
 }
 
 #title {
@@ -128,18 +110,30 @@ a {
 
 /** Aligns title to center and changes font size */
 #logo {
-  margin-bottom: 0em;
   font-family: "Dosis", sans-serif;
   font-weight: 800;
   text-align: center;
   font-size: 2.5em;
+  margin-top: 1em;
 }
 
-/** WIDTH RANGE FROM 1501px to infinity */
-@media screen and (min-width: 1501px) {
+/** WIDTH RANGE TO 450px */
+@media screen and (max-width: 450px) {
+  /**Changes main page contat to match screen size*/
+  #mainpagecon {
+    width: auto;
+  }
+}
+
+/** WIDTH RANGE FROM 373px to 499px */
+@media screen and (min-width: 373px) and (max-width: 499px) {
+}
+
+/** WIDTH RANGE FROM 800px to 1079px */
+@media screen and (min-width: 800px) and (max-width: 1079px) {
   /**Changes font size to match screen size*/
   #logo {
-    font-size: 5.5em;
+    font-size: 3.5em;
   }
   .about {
     margin-top: 270px;
@@ -156,22 +150,13 @@ a {
     margin-top: 270px;
   }
 }
-
-/** WIDTH RANGE FROM 800px to 1079px */
-@media screen and (min-width: 800px) and (max-width: 1079px) {
+/** WIDTH RANGE FROM 1501px to infinity */
+@media screen and (min-width: 1501px) {
   /**Changes font size to match screen size*/
   #logo {
-    font-size: 3.5em;
+    font-size: 5.5em;
   }
   .about {
     margin-top: 270px;
-  }
-}
-
-/** WIDTH RANGE TO 450px */
-@media screen and (max-width: 450px) {
-  /**Changes main page contat to match screen size*/
-  #mainpagecon {
-    width: auto;
   }
 }

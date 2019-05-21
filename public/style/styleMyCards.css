@@ -1,14 +1,71 @@
-/** Aligns text to center */
-#status {
-  text-align: center;
+input {
+    font-family: 'Ubuntu', sans-serif;
 }
+
+/*create button*/
+#submitLeft {
+  display: block;
+  margin: 0 auto;
+  width: 40%;
+}
+.optionCon{
+    margin-bottom: 0em;
+}
+.optionCon > .input-field{
+    margin-top: 0.1rem;
+}
+
+
+.row .category {
+    padding-left: 1.3rem !important;
+}
+
+.row .deck {
+    padding-right: 1.3rem !important;
+}
+
+/* These are for dropdown */
+.select-wrapper input.select-dropdown{
+    margin-bottom: 0em;
+    height: 2.3rem;
+    padding-left: 1rem;
+    /* margin-left: 0.5rem; */
+    /* margin-right: 0.5rem; */
+    width: 90%;
+}
+.dropdown-content li {
+    min-height: 25px;
+}
+.dropdown-content li>a, .dropdown-content li>span{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+
+#headerLeftCon{
+    display: none;
+}
+
+
+/* #deckName{
+  border-bottom: 0px;
+  background-color: #A0A0A0  ;
+} */
+
+#inputcon > input {
+  background-color: rgb(217, 242, 237);
+  /* height: 1em; */
+  display: inline;
+}
+
+
 
 /** Restricts size and color of card */
 .card {
-  margin: 1rem;
+  margin: 0.8rem;
   background: white;
   box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
-  border-radius: 12px;
+  border-radius: 3%;
   overflow: hidden;
 }
 
@@ -18,14 +75,70 @@
   overflow-y: scroll;
   background-color: #D9F2ED;
   border: 2px solid #A7BAB6;
+  border-radius: 1.5%;
+  width: 90%;
+  margin: 0 auto;
+  clear: both;
 }
 
-#backcon {
-  padding-top: 15px;
-  position: relative;
-  bottom: 5px;
-  width: 60%;
-  margin: 0 auto;
+/*back button*/
+.btn-small{
+  margin-top: 2%;
+}
+
+/** Aligns text to center */
+#status {
+  margin-top: 4%;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.toast{
+    text-align: center !important;
+}
+#toast-container {
+    display: block;
+    position: fixed;
+    z-index: 10000;
+    height: 55px;}
+
+@media only screen and (max-width: 600px) {
+    #toast-container {
+        width: 100%;
+        bottom: 0%;
+    }
+}
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+    #toast-container {
+        position:absolute;
+        top:30%;
+        left:27.5%;
+        width: 45%;
+    }
+}
+@media only screen and (min-width: 993px) and (max-width: 1079px) {
+    #toast-container {
+        position: absolute;
+        top:40%;
+        left:35%;
+        width: 30%;
+    }
+}
+@media only screen and (min-width: 1080px) and (max-width: 1500px) {
+    #toast-container {
+        position: absolute;
+        top:40%;
+        left:38%;
+        width: 24%;
+    }
+}
+@media screen and (min-width: 1501px){
+    #toast-container {
+        position: absolute;
+        top:20%;
+        left:44%;
+        width: 18%;
+    }
 }
 
 /** WIDTH RANGE FROM 500px to 799px */
@@ -54,9 +167,19 @@
 }
 
 /** WIDTH RANGE FROM 800px to 1079px */
-@media screen and (min-width: 800px) and (max-width: 1079px) {  
+@media screen and (min-width: 800px) and (max-width: 1079px) {
   /**Changes size of div to match screen size*/
   #cardsCon{
     height: 340px;
   }
+}
+
+
+/** .redcolor and .greencolor are for toast in javascript **/
+.redcolor{
+    background-color: #f3989b !important;
+}
+
+.greencolor{
+    background-color: #26a69a !important;
 }

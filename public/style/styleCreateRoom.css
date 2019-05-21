@@ -1,7 +1,9 @@
+#roomNo{
+  font-size: 19px;
+  
+}
 /**Changes placement of div to match screen size*/
 #back {
-  border-color: rgb(127,196,181, 0.99);
-  background-color: #D9F2ED;
   margin-left: 2%;
   margin-top: 22%;
 }
@@ -15,7 +17,6 @@
       }
 
 }
-
 
 /** WIDTH RANGE FROM 1080px to 1500px */
 @media screen and (min-width: 1080px) and (max-width: 1500px){

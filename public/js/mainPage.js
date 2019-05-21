@@ -1,72 +1,95 @@
 $(document).ready(() => {
-
-    // setting encrypted and secure user token
-    $.ajaxSetup({
-        headers: {
-            'auth-token': localStorage.getItem('auth-token')
-        }
-    });
-
-    /** On page load, plays avatar animation */
-    window.onload = function() {
-        $('#avatar').toggleClass('bounceIn');
-    };
-
-
-    function getUserInfo(callback) {
-        console.log('sign in');
-        $.ajax({
-            type: 'get',
-            url: '/login/me',
-            success: function(data) {
-                console.log(data);
-                callback(data.user)
-            },
-            error: function(e) {
-                console.log(e.responseText);
-                callback("Unknown");
-            }
-        });
+  // setting encrypted and secure user token
+  $.ajaxSetup({
+    headers: {
+      "auth-token": localStorage.getItem("auth-token")
     }
+  });
 
-
-    /** Grabs user's username and appends to it welcome text */
-    function setProfileInfo(user) {
-        let welcome = $('#title');
-        welcome.text("Welcome, " + user.username + "!");
-    }
-
-
-    /** Calling setProfileInfo function */
-    getUserInfo(setProfileInfo);
-
-    /** Takes user to create room page */
-    $("#create").click(() => {
-        window.location.href = "createRoom";
-    })
-
-    /** Takes user to join room page */
-    $("#join").click(() => {
-        window.location.href = "joinRoom";
-    })
-
-    /** Takes user to join room page */
-    $("#cards").click(() => {
-        window.location.href = "hannahtest";    //hannah is testing
-    })
-
-    /** Takes user back to signup/signin page */
-    $("#logout").click(() => {
-        window.location.href = "/";
+  function updateCosmetics() {
+    $.ajax({
+      type: "get",
+      url: "/users/updateCosmetics",
+      success: function(data) {
+        console.log("DATA: " + data.activeAvatar);
+        $("#char").prop("src", data.activeAvatar.imageLink);
+        $("#avatar").css(
+          "background-image",
+          `url(${data.activePlatform.imageLink})`
+        );
+        $("html").css(
+          "background-image",
+          `url(${data.activeBackground.imageLink})`
+        );
+      },
+      error: function(e) {
+        console.log(e.responseText);
+      }
     });
+  }
 
-    /** Takes user back to shop page */
-    $("#shop").click(() => {
-        window.location.href = "/shop";
+  function getItem(itemId, cb) {
+    $.ajax({
+      type: "get",
+      url: `/items/${itemId}`,
+      success: cb,
+      error: function(e) {
+        console.log(e.responseText);
+      }
     });
+  }
 
-    /** Takes user back to mycard page */
-    $("#myCards").click(() => {
-        window.location.href = "/mycard";
+  function getUserInfo(callback) {
+    $.ajax({
+      type: "get",
+      url: "/login/me",
+      success: function(data) {
+        callback(data);
+      },
+      error: function(e) {
+        console.log(e.responseText);
+        callback("Unknown");
+      }
     });
+  }
+
+  /** Grabs user's username and appends to it welcome text */
+  function setProfileInfo(user) {
+    let welcome = $("#title");
+    welcome.text("Welcome, " + user.username + "!");
+  }
+
+  /** Takes user to create room page */
+  $("#create").click(() => {
+    window.location.href = "createRoom";
+  });
+
+  /** Takes user to join room page */
+  $("#join").click(() => {
+    window.location.href = "joinRoom";
+  });
+
+  /** Takes user to join room page */
+  $("#cards").click(() => {
+    window.location.href = "mycard";
+  });
+
+  /** Takes user back to signup/signin page */
+  $("#logout").click(() => {
+    window.location.href = "/";
+  });
+
+  /** Takes user back to shop page */
+  $("#shop").click(() => {
+    window.location.href = "/shop";
+  });
+
+  /** Takes user back to mycard page */
+  $("#myCards").click(() => {
+    window.location.href = "/mycard";
+  });
+
+  getUserInfo(setProfileInfo);
+  updateCosmetics();
+  $("#avatar").toggleClass("bounceIn");
 });

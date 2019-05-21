@@ -4,9 +4,7 @@ var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 const _ = require("lodash");
-const {
-  Card
-} = require("../src/models/card.js");
+const { Card } = require("../src/models/card.js");
 var glob = this;
 
 // Get port from environment and store in Express.
@@ -22,8 +20,8 @@ var server = http.Server(app);
 
 // Listen on provided port, on all network interfaces.
 // server.listen(port);
-server.listen(3000, '0.0.0.0', function() {
-  console.log('Listening toooooooooo port:  ' + 3000);
+server.listen(3000, "0.0.0.0", function() {
+  console.log("Listening toooooooooo port:  " + 3000);
 });
 
 server.on("error", onError);
@@ -80,12 +78,10 @@ function onListening() {
 const self = this;
 const maxPlayers = 4;
 const players = new Map();
-let roundStarted
+let roundStarted;
 var round = 0;
 let currentRoundCard;
 var gameStarted = false;
-
-
 
 // const dummycards = [
 //   { question: "1 + 1 = ?", answer: "2" },
@@ -94,8 +90,7 @@ var gameStarted = false;
 //   { question: "8 x 3", answer: "24" }
 // ];
 
-var io = require("socket.io")
-  .listen(server);
+var io = require("socket.io").listen(server);
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
 
@@ -164,7 +159,6 @@ function onDisconnect(socket) {
 }
 
 function onPlayerAnswered(info, socket) {
-
   if (info) {
     let currentPlayer = players.get(info.playerId);
     currentPlayer.answeredRound = true;
@@ -220,29 +214,21 @@ function endRound() {
     answer: currentRoundCard.answer
   });
 
-
-
   setTimeout(() => {
     if (round < glob.cards.length && !roundStarted) {
       roundStart(round);
     } else {
       clearTimeout();
     }
-
   }, 3000);
   for (let player of filteredPlayers) {
     console.log("player.wrongAnswers ", player.wrongAnswers, "round: ", round);
 
-    if ((player.wrongAnswers === 2) && (round < glob.cards.length + 1)) {
+    if (player.wrongAnswers === 2 && round < glob.cards.length + 1) {
       console.log("game over");
       gameOver(player.playerId);
-
-
     }
   }
-
-
-
 }
 
 function gameOver(id) {
@@ -310,7 +296,6 @@ function onPlayerStateChange(socket, data) {
 
 async function roundStart(s) {
   console.log("starting round: " + JSON.stringify(s));
-
 
   for (let o of players.values()) {
     o.answeredRound = false;

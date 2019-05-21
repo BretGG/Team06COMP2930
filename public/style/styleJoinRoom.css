@@ -1,16 +1,7 @@
 /** Submit button */
-#submit {
-  width: 30%;
-  clear:both;
-  display: block;
-  margin: 0 auto;
-  background-color: #7FC4B5;
-}
 
 /*Back button */
 #back {
-  border-color: rgb(127,196,181, 0.99);
-  background-color: #D9F2ED;
   margin-left: 2%;
   margin-top: 22%;
 }

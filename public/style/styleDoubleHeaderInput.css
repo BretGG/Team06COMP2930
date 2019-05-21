@@ -1,17 +1,23 @@
+select{
+
+}
+
 /* Main Content Container */
 #mainCon{
+    /* border-radius: 5%; */
   margin: 0 auto;
   background-color: rgba(255,255,255, 0.53);
-  border: 4px solid #707070;
+  /* border: 4px solid #707070; */
   padding-bottom: 4%;
   font-size: 1em;
   width: 100%;
-  height: 450px;
+  height: 430px;
 }
 
 /*Header on left side */
 .headerLeftCon{
   display: none;
+  color: black;
 }
 
 /** Container holding back button */
@@ -35,7 +41,6 @@
   text-align: center;
   color: #000000;
   font-size: 1.4em;
-  margin-bottom: 2%;
 }
 
 /**Header on the right */
@@ -47,7 +52,7 @@
 #inputcon{
   margin: 0 auto;
   text-align: left;
-  width: 80%;
+  width: 90%;
   margin-bottom: 4%;
 }
 
@@ -61,10 +66,11 @@
 
 /** All input under #inputcontainer */
 #inputcon input {
+  background-color: rgb(217, 242, 237);
   width: 100%;
   margin-bottom: 3%;
   border-radius: 8px;
-  background-color: #D9F2ED;
+  color: black;
 }
 
 /** All buttons under #inputcontainer */
@@ -73,21 +79,13 @@
   margin: 0 auto;
 }
 
-/** WIDTH RANGE FROM 500px to 799px */
-@media screen and (min-width: 500px) and (max-width: 799px){
-      #mainCon{
-        font-size: 1em;
-        width: 450px;
-        height: 450px;
-      }
-}
 
 /** WIDTH RANGE FROM 1501px to infinity */
 @media screen and (min-width: 1501px){
       #mainCon{
         font-size: 1em;
-        width:500px; 
-        height:450px;
+        width:500px;
+        height:465px;
       }
 }
 
@@ -95,7 +93,7 @@
 @media screen and (min-width: 1080px) and (max-width: 1500px){
       #mainCon{
         width: 400px;
-        height:450px;
+        height:460px;
         font-size: 1em;
       }
 }
@@ -105,6 +103,16 @@
       #mainCon{
         width: 600px;
         font-size: 1em;
-        height:500px;
+        height:510px;
+      }
+}
+
+
+/** WIDTH RANGE FROM 500px to 799px */
+@media screen and (min-width: 500px) and (max-width: 799px){
+      #mainCon{
+        font-size: 1em;
+        width: 450px;
+        height: 460px;
       }
 }
