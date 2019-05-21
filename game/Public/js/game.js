@@ -50,15 +50,16 @@ const spawnPoints = [
   [160, 320, 480, 640]
 ];
 
-
-screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-
-if (screen.lockOrientationUniversal("landscape-primary")) {
-  // Orientation was locked
-} else {
-  // Orientation lock failed
-  console.log("failed");
+if (window.innerHeight > window.innerWidth) {
+  alert("Please use Landscape!");
 }
+// if (screen.lockOrientationUniversal("landscape-primary")) {
+// if (screen.lockOrientation('landscape')) {
+//   // Orientation was locked
+// } else {
+//   // Orientation lock failed
+//   console.log("failed");
+// }
 
 function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
@@ -122,8 +123,10 @@ function create() {
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
   this.socket.on("gameOver", updatePlayerScoreHeight);
-  this.socket.on("gameOver", () => {
-    mainPlayer.gameOver = true;
+  this.socket.on("gameOver", data => {
+    // mainPlayer.gameOver = true;
+    let me = players.find(player => data.playerId === player.playerId);
+    me.gameOver = true;
     console.log("game over. disable the player");
   });
   this.socket.on(
@@ -150,6 +153,7 @@ function update() {
   // });
 
   this.input.on('pointerup', (pointer) => {
+
     if (mainPlayer.body.touching.down && gameStarted) {
       mainPlayer.setVelocityY(-300);
       this.socket.emit("playerJump");
@@ -184,7 +188,9 @@ function updateStatePosition(player) {
 
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
+
   if (!mainPlayer.gameOver) {
+    // if (!mainPlayer.gameOver) {
     gameStarted = true;
     scoreAndPlayer();
     // Other round start stuff, reset game objects
@@ -195,6 +201,7 @@ function startRound(roundInfo) {
     });
     displayAnswers(roundInfo.answer);
     displayQuestion(roundInfo.question);
+    // }
   }
 }
 
@@ -208,7 +215,7 @@ function playerStateChange(stateInfo) {
   let player = players.find(holder => stateInfo.playerId === holder.playerId);
   switch (stateInfo.state) {
     case "ready":
-      console.log("HHHHHHHHEEEEEEEEEEEELLLLLLLLLLLLLLL");
+      // console.log("HHHHHHHHEEEEEEEEEEEELLLLLLLLLLLLLLL");
       player.supportingState.setTexture("ready");
       break;
     case "questionMark":
@@ -357,7 +364,9 @@ function createPlayer(playerInfo) {
   // self.physics.add.collider(newPlayer.supportingState, newPlayer);
   newPlayer.supportingPlatform = newPlatform;
   newPlayer.supportingState = newState;
+  newPlayer.gameOver = false;
   players.push(newPlayer);
+
 
   // Update other players positions, (i.e slide them over for the new player)
   updatePlayerPosition();

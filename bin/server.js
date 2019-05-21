@@ -263,6 +263,7 @@ function gameOver(id) {
   );
 
   io.emit("gameOver", {
+    playerId: id,
     players: filteredPlayers
   });
 }
