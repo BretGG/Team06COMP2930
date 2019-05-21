@@ -54,6 +54,14 @@ router.post("/", (req, res) => {
 
 // Join a lobby
 router.put("/", (req, res) => {
+  var token = req.get("auth-token");
+  if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
+  const decode = jwt.verify(token, "FiveAlive");
+  token = jwt.decode(token);
+
+  const user = await User.findById(token._id).select("-password");
+  if (!user) return res.status(400).send("Uh Oh! You dont exist!");
+
   const lobbyInfo = _.pick(req.body, ["sessionId", "sessionPass"]);
   const lobby = lobbies.get(lobbyInfo.sessionId);
 
@@ -68,7 +76,8 @@ router.put("/", (req, res) => {
     res.status(400).send("Invalid session password");
 
   // Add user to the lobby and return lobby info
-  lobby.players.push();
+  lobby.players.push( { playerId: user._id, username: user.username } );
+  return res.send(lobby.players);
 });
 
 module.exports = router;
