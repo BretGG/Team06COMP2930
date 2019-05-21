@@ -27,8 +27,6 @@ $(document).ready(() => {
     $("#points").text(user.points);
   }
 
-  function setPurchasedItems() {}
-
   function updateCosmetics() {
     $.ajax({
       type: "get",
@@ -36,9 +34,9 @@ $(document).ready(() => {
       success: function(data) {
         $("#avatar")
           .children("img")
-          .prop("src", data.activeAvatar);
-        $("#avatar").css("background-image", data.activePlatform);
-        $("html").css("background-image", data.activeBackground);
+          .prop("src", data.activeAvatar.imageLink);
+        $("#avatar").css("background-image", data.activePlatform.imageLink);
+        $("html").css("background-image", data.activeBackground.imageLink);
       },
       error: function(e) {
         console.log(e.responseText);

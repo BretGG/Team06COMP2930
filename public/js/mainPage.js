@@ -11,17 +11,11 @@ $(document).ready(() => {
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        getItem(data.activeAvatar, item => {
-          $("#avatar")
-            .children("img")
-            .prop("src", item.imageLink);
-        });
-        getItem(data.activeAvatar, item => {
-          $("html").css("background-image", item.imageLink);
-        });
-        getItem(data.activeAvatar, item => {
-          $("#avatar").css("background-image", item.imageLink);
-        });
+        $("#avatar")
+          .children("img")
+          .prop("src", data.activeAvatar.imageLink);
+        $("#avatar").css("background-image", data.activeBackground.imageLink);
+        $("html").css("background-image", data.activeBackground.imageLink);
       },
       error: function(e) {
         console.log(e.responseText);
