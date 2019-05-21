@@ -16,16 +16,17 @@ $(document).ready(() => {
     if(localStorage.getItem("avatar"))
       $("#avatar").children("img").prop("src", localStorage.getItem("avatar"));
     else $("#avatar").children("img").prop("src", "../images/avatar/default.png");
+
     if(localStorage.getItem("platform"))
       $("#avatar").css("background-image", localStorage.getItem("platform"));
     else $("#avatar").css("background-image", "../images/platform/default.png");
+
     if(localStorage.getItem("background"))
-      $("html").css("background-image", "url('" + localStorage.getItem("background") +"')");
-    else $("html").css("background-image", "../images/background/default.png");
+      $("html").css("background-image", "url(" + localStorage.getItem("background") +")");
+    else $("html").css("background-image", "../images/bg/default.png");
   }
 
   function getUserInfo(callback) {
-    console.log("sign in");
     $.ajax({
       type: "get",
       url: "/login/me",

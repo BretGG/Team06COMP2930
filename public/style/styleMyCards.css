@@ -58,8 +58,13 @@ input {
   display: inline;
 }
 
+.redcolor{
+    background-color: #f3989b !important;
+}
 
-
+.greencolor{
+    background-color: #26a69a !important;
+}
 
 
 /** Restricts size and color of card */
@@ -95,9 +100,6 @@ input {
   font-size: 1.2em;
 }
 
-.toast{
-    background-color: #26a69a;
-}
 #toast-container {
     display: block;
     position: fixed;
