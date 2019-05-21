@@ -4,15 +4,16 @@
 <head>
     <meta charset="utf-8">
     <link rel="icon" href="../images/icon.png" type="../images/icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css" media="screen,projection" />
     <link rel="stylesheet" href="../style/styleBase.css">
     <link rel="stylesheet" href="../style/styleMainPage.css">
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Dosis&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>EcoQuest</title>
     <style>
+
         body {
             min-width: 600px;
             max-width: 2000px;
@@ -29,29 +30,28 @@
         }
         
         #mainpagecon {
-            height: 250px;
+            height: 230px;
         }
         
         .descriptionBox {
             font-family:"Dosis", sans-serif;
             color: white;
             font-weight:bolder;
-            font-size: 3em;
-            margin-left: 5%;
-            margin-right: 5%;
+            font-size: 1em;
+         
             border-radius: 25px;
             border-width: 5px;
-            width: 90%;
+            width: 100%;
         }
         
         .descriptionBox h1 {
             text-align: center;
+            font-size:44px;
         }
         
         .descriptionBox p {
             text-align: center;
-            font-size: .6em;
-            margin-left: 10%;
+            font-size: .74em;
         }
         
         .descritionBox h1 {
@@ -66,7 +66,7 @@
         
         .individualMemberContainer {
             padding-left: 0%;
-            width: 500px;
+            width: 560px;
             border: 5px solid;
             margin: 1%;
             background-color: white;
@@ -89,11 +89,12 @@
         .imageContainer {
             width: 30%;
         }
-        
+                
         .description {
             float: left;
-            width: 320px;
-            font-size: 1.1em;
+            width: 358px;
+            font-size: 1.4em;
+            margin: 1%;
             font-family: 'Crimson Text', serif;
         }
         
@@ -106,16 +107,18 @@
         .whoWeAreContainer h1 {
             text-decoration: underline;
             font-family:"Dosis", sans-serif;
+            font-size:45px;
             }
         
-        @media only screen and (max-width:1499px) and (min-width: 850px) {
-            .description {
-                width: calc(100% - 100px);
-                float: left;
-                padding-left: 0 %;
-                font-family: 'Crimson Text', serif;
-                font-size: 0.8em;
-            }
+            @media only screen and (max-width:1499px) and (min-width: 900px) {
+                .description {
+                    width: calc(100% - 115px);
+                    float: left;
+                    padding-left: 0.1px %;
+                    padding: 1%;
+                    font-family: 'Crimson Text', serif;
+                    font-size: 14px;
+                }
             .wholeMemberContainer {
                 display: flex;
                 flex-wrap: wrap;
@@ -123,13 +126,17 @@
                 align-items: center;
                 justify-content: center;
             }
-            #container {
-                width: 700px;
-                margin: 0 auto;
-                padding: 5%;
-                background-color: rgba(55, 255, 0, 0.5)
-            }
-            .evenPicture img {
+        #container {
+            width: 996px;
+            margin: 0 auto;
+            padding: 5%;
+            height:775px;
+            background-color: rgba(55, 255, 0, 0.5);
+        }
+        .descriptionBox p{
+            font-size:26px;
+        }
+                    .evenPicture img {
                 width: 100px;
                 height: 100px;
                 border-radius: 100%;
@@ -138,7 +145,7 @@
                 width: 100px;
             }
             .individualMemberContainer {
-                width: 400px;
+                width: 430px;
                 margin: 1%;
                 background-color: white;
                 height: 110px;
@@ -148,7 +155,7 @@
         @media only screen and (min-width: 1500px) {
             .wholeMemberContainer {
                 margin: 0 auto;
-                width: 1500px;
+                width: 100%;
                 display: flex;
                 flex-wrap: wrap;
                 flex-direction: row;
@@ -156,18 +163,19 @@
                 justify-content: center;
             }
             #container {
-                width: 700px;
+                width: 1091px;
                 margin: 0 auto;
-                background-color: rgba(55, 255, 220, 0.5)
+                height: 835px;
+                background-color: rgba(55, 255, 220, 0.5);
             }
             .evenPicture img {
                 width: 250px;
-                height: 250px;
+                height: 245px;
                 border-radius: 100%;
             }
             .individualMemberContainer {
-                width: 600px;
-                margin: 1%;
+                width: 800px;
+                margin: 2%;
                 background-color: white;
                 height: 250px;
                 padding-left: 0%;
@@ -177,12 +185,13 @@
             }
             .description {
                 float: left;
-                width: calc(100%-300px);
-                font-size: 1.4em;
+                font-size: 1.8em;
+                width: 500px;
                 font-family: 'Crimson Text', serif;
             }
             .evenPicture {
                 width: 250px;
+                height:245px;
                 float: right;
             }
         }
@@ -207,8 +216,8 @@
                     preserving mother nature and all its glory. Our mission is to
                     create a better and healthier earth through educating users in 
                     a fun and interactive way.  We hope that EcoQuest helps the lives 
-                    of many by raising awareness of global warming. This way, we ca
-                    n fix our mistakes and conquer global warming.
+                    of many by raising awareness of global warming. This way, we can
+                    fix our mistakes and conquer global warming.
                     
                         </p>
                     
@@ -225,7 +234,7 @@
                 <div class="individualMemberContainer">
                     <div class="description">
                         "Ever since I was a child, I asked my mother to buy me a bike because gas is poison to our earth." -Bret Getz. 
-                        Bret is a software developer from Cranbook, BC. His favorite past times biking to Tim Hortons for a double double large coffee. 
+                        Bret is a software developer from Cranbook, BC. His favorite past times biking to Tim Hortons. 
                     </div>
                     <div class="evenPicture">
                         <img src="../images/bret.jpg">
@@ -255,7 +264,7 @@
                 <div class="individualMemberContainer">
                     <div class="description">
 
-                        "When I'm stressed, I go to the park or forest. It makes me calm. I hope the forest will be there when I get older." - Jessica Kim. Jessica Kim is a software developer from Korea. She always makes sure to recycle.
+                        "When I'm stressed, I go to the park or forest. It makes me calm. I hope the forest will be there when I get older." - Jessica Kim. Jessica is a software developer from Korea. She always makes sure to recycle.
                     </div>
 
                     <div class="evenPicture">
@@ -280,7 +289,8 @@
         </div>
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
     <script src="../js/aboutUs.js"></script>
 </body>
 
