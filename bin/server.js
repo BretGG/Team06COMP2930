@@ -10,14 +10,22 @@ const {
 var glob = this;
 
 // Get port from environment and store in Express.
-var port = normalizePort(process.env.PORT || "3000");
-app.set("port", port);
+// var port = normalizePort(process.env.PORT || "3000");
+// app.set("port", port);
+//
+// app.listen(3000, '0.0.0.0', function() {
+//     console.log('Listening to port:  ' + 3000);
+// });
 
 // Create HTTP server.
 var server = http.Server(app);
 
 // Listen on provided port, on all network interfaces.
-server.listen(port);
+// server.listen(port);
+server.listen(3000, '0.0.0.0', function() {
+  console.log('Listening toooooooooo port:  ' + 3000);
+});
+
 server.on("error", onError);
 server.on("listening", onListening);
 

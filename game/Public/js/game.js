@@ -1,7 +1,8 @@
 const config = {
   type: Phaser.AUTO,
   scale: {
-    mode: Phaser.Scale,
+    // mode: Phaser.Scale,
+    mode: Phaser.Scale.SHOW_ALL,
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
   width: 800,
@@ -66,6 +67,26 @@ function preload() {
     "questionBackground",
     "../assets/backgrounds/uglyQuestionBackground.png"
   );
+
+  // this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  this.scale.forceOrientation(false, true);
+  this.scale.enterIncorrectOrientation.add(handleIncorrect);
+  this.scale.leaveIncorrectOrientation.add(handleCorrect);
+
+}
+
+function handleIncorrect() {
+  if (!this.device.desktop) {
+    document.getElementById("gameDiv")
+      .style.display = "block";
+  }
+}
+
+function handleCorrect() {
+  if (!this.device.desktop) {
+    document.getElementById("gameDiv")
+      .style.display = "none";
+  }
 }
 
 function create() {
@@ -105,12 +126,34 @@ function create() {
 // One of the three main Phaser functions, this one gets called continuously
 function update() {
   // Jumping player
-  if (cursor.space.isDown && mainPlayer.body.touching.down) {
+  if (cursor.space.isDown && mainPlayer.body.touching.down && gameStarted) {
     mainPlayer.setVelocityY(-300);
     this.socket.emit("playerJump");
   }
+
+  //  scene.input.on('pointerdown', function(pointer){
+  //    var touchX = pointer.x;
+  //    var touchY = pointer.y;
+  // });
+
+  this.input.on('pointerup', (pointer) => {
+    if (mainPlayer.body.touching.down && gameStarted) {
+      mainPlayer.setVelocityY(-300);
+      this.socket.emit("playerJump");
+    } else if (!gameStarted) {
+      this.socket.emit("playerStateChange", {
+        state: "ready"
+      });
+    }
+  });
+
+  // this.input.on('pointerdown', function(){
+  //               player.setVelocityX(-160);
+  //               player.anims.play('left', true);
+  //           }, this);
   //Ready button
-  if (this.readyKey.isDown && !gameStarted) {
+  // if (this.readyKey.isDown && !gameStarted) {
+  if ((cursor.space.isDown || this.readyKey.isDown) && !gameStarted) {
     this.socket.emit("playerStateChange", {
       state: "ready"
     });
