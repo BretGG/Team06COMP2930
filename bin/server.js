@@ -157,48 +157,39 @@ function onDisconnect(socket) {
 
 function onPlayerAnswered(info, socket) {
 
-  let currentPlayer = players.get(info.playerId);
-  currentPlayer.answeredRound = true;
-  io.emit("playerStateChange", {
-    playerId: socket.id,
-    state: "exclamation"
-  });
-  if (info.answer === glob.cards[round].answer) {
-    this.answer = true;
-    currentPlayer.correctAnswers++;
-    console.log(
-      "player :",
-      currentPlayer.playerId,
-      " / correctAnswers, ",
-      currentPlayer.correctAnswers
-    );
-  } else {
-    this.answer = false;
-    currentPlayer.wrongAnswers++;
-    console.log(
-      "player :",
-      currentPlayer.playerId,
-      " / wrongAnswers, ",
-      currentPlayer.wrongAnswers
-    );
-  }
+  if (info) {
+    let currentPlayer = players.get(info.playerId);
+    currentPlayer.answeredRound = true;
+    io.emit("playerStateChange", {
+      playerId: socket.id,
+      state: "exclamation"
+    });
+    if (info.answer === glob.cards[round].answer) {
+      this.answer = true;
+      currentPlayer.correctAnswers++;
+      console.log(
+        "player :",
+        currentPlayer.playerId,
+        " / correctAnswers, ",
+        currentPlayer.correctAnswers
+      );
+    } else {
+      this.answer = false;
+      currentPlayer.wrongAnswers++;
+      console.log(
+        "player :",
+        currentPlayer.playerId,
+        " / wrongAnswers, ",
+        currentPlayer.wrongAnswers
+      );
+    }
 
-  // let holder = [];
-  // const map = new Map();
-  // map.set(info.playerId, currentPlayer.wrongAnswers);
-  //
-  // holder.push(map);
-  // // console.log(holder," TESTTESET");
-  // if (allPlayerAnswered() && round < glob.cards.length) {
-  // round++;
-  // }
-  // onPlayerStateChange(socket, { state: "answered" });
-  // io.emit("playerStateChange", { playerId: socket.id, state: "answered", wrongAnswers:holder });
-  if (allPlayerAnswered()) {
-    endRound();
-  }
+    if (allPlayerAnswered()) {
+      endRound();
+    }
 
-  // onPlayerStateChange(socket, { state: "answered" });
+    // onPlayerStateChange(socket, { state: "answered" });
+  }
 }
 
 function onPlayerJumped(socket) {
@@ -231,12 +222,14 @@ function endRound() {
     }
 
   }, 3000);
-  // glob.cards.length + 1
   for (let player of filteredPlayers) {
     console.log("player.wrongAnswers ", player.wrongAnswers, "round: ", round);
-    if ((player.wrongAnswers === 2) && (round === 2)) {
+
+    if ((player.wrongAnswers === 2) && (round < glob.cards.length + 1)) {
       console.log("game over");
       gameOver(player.playerId);
+
+
     }
   }
 
@@ -245,10 +238,25 @@ function endRound() {
 }
 
 function gameOver(id) {
-  io.emit("gameOver", {
-    playerId: id
-  })
+  // let player = players.get(id);
+  // player.wrongAnswers = 100;
+  // this.socket.emit("gameOver", {
+  //   playerId: id,
+  //   wrongAnswers: player.wrongAnswers
+  // });
   console.log(id, " Game Over");
+
+  let currentPlayer = players.get(id);
+  currentPlayer.wrongAnswers = 100;
+
+  let filteredPlayers = [...players.values()];
+  filteredPlayers = filteredPlayers.map(player =>
+    _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
+  );
+
+  io.emit("gameOver", {
+    players: filteredPlayers
+  });
 }
 
 function onPlayerStateChange(socket, data) {

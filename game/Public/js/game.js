@@ -90,7 +90,7 @@ function create() {
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
-  this.socket.on("gameOver", gameOver)
+  this.socket.on("gameOver", updatePlayerScoreHeight);
   //   this.socket.on("drop", id=>
   //   dropPlayer(id.playerId)
   //
@@ -130,18 +130,22 @@ function updateStatePosition(player) {
   playerState.setY(player.y - playerState.height - 30);
 }
 
-function gameOver() {
-  for (let i = 0; i < players.length; i++) {
-    console.log(players[i], ": player[i].wrongAnswers");
-    self.tweens.add({
-      targets: [players[i].supportingPlatform],
-      y: 800,
-      ease: "Power4",
-      duration: 1000,
-      repeat: 0
-    });
-  }
-}
+// function gameOver(data) {
+//
+//   for (let i = 0; i < players.length; i++) {
+//     console.log(players[i], ": player[i].wrongAnswers");
+//     self.tweens.add({
+//       targets: [players[i].supportingPlatform],
+//       y: 400 + 50 * players[i].wrongAnswers,
+//       ease: "Power4",
+//       duration: 1000,
+//       repeat: 0
+//     });
+//   }
+//
+//
+//
+// }
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
   gameStarted = true;
@@ -249,16 +253,9 @@ function endRound(roundInfo) {
     }
   }
 
-  // Update the count of correct and incorract anwers for each player
-  for (let player of players) {
-    for (let playerUpdate of roundInfo.players)
-      if (playerUpdate.playerId === player.playerId) {
-        player.correctAnswers = playerUpdate.correctAnswers;
-        player.wrongAnswers = playerUpdate.wrongAnswers;
-      }
-  }
 
 
+  updatePlayerValues(roundInfo);
 
   updatePlayerScoreHeight();
 }
@@ -267,6 +264,18 @@ function dropPlayer(id) {
   let player = players.find((e) => e.playerId === id);
   console.log("dropping this player: ", player.playerId);
   player.supportingPlatform.y -= -50;
+}
+
+function updatePlayerValues(data) {
+  // Update the count of correct and incorract anwers for each player
+  for (let player of players) {
+    for (let playerUpdate of data.players)
+      if (playerUpdate.playerId === player.playerId) {
+        player.correctAnswers = playerUpdate.correctAnswers;
+        player.wrongAnswers = playerUpdate.wrongAnswers;
+      }
+  }
+
 }
 
 // Create to player object, could be another class but...
@@ -387,6 +396,8 @@ function removePlayer(playerInfo) {
 // Update y position of platform based on incorrect answers and the game score
 function updatePlayerScoreHeight() {
   console.log("updating player heights: " + JSON.stringify(players));
+
+
   for (let i = 0; i < players.length; i++) {
     console.log(players[i], ": player[i].wrongAnswers");
     self.tweens.add({
@@ -397,6 +408,8 @@ function updatePlayerScoreHeight() {
       repeat: 0
     });
   }
+
+
 }
 
 // Used for adding, removing, and setting player position
