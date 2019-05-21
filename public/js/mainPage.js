@@ -28,7 +28,6 @@ $(document).ready(() => {
   }
 
   function getUserInfo(callback) {
-    console.log("sign in");
     $.ajax({
       type: "get",
       url: "/login/me",

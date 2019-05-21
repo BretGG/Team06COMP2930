@@ -26,7 +26,7 @@ const deckSchema = new mongoose.Schema({
 });
 
 deckSchema.methods.getCards = async function() {
-  return await Card.findAll({ deck: this._id });
+  return await Card.find({ deck: this._id });
 };
 
 exports.Deck = mongoose.model("Deck", deckSchema);

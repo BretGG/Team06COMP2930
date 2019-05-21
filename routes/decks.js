@@ -48,22 +48,42 @@ router.get('/', async (req, res) => {
     if (!decks) return res.status(400).send("You have no deck! Get your own deck first!");
 
     console.log(`Returning ${decks.length} decks to ${token._id} at ${req.connection.remoteAddress}`);
-    res.send({ decks: decks });
+    res.send(decks);
 });
 
 //get the cards from this decks with the deck ID
 router.get('/card', async (req, res) => {
-    let deckId = _.pick(req.body, ["deckId"]);
-    let mydeck = await Deck.findById(deckId);
+    let mydeck = await Deck.findById(_.pick(req.body, ["deckId"]));
     let cards = mydeck.getCards();
 
-    console.log(`Get all decks from: ${req.connection.remoteAddress} user: ${mydeck.name}`);
+    console.log(`Get all cards from: ${req.connection.remoteAddress} user: ${mydeck.name}`);
 
-    let decks = await Deck.find( { owner: token._id });
+    // let decks = await Deck.find( { owner: token._id });
     if (!cards) return res.status(400).send("You have no card here! Get your card first!");
 
     console.log(`Returning ${cards.length} cards on ${mydeck._id} at ${req.connection.remoteAddress}`);
-    res.send({ cards: card });
+    res.send(cards);
+});
+
+router.get('/allcards', async (req, res) => {
+    let token = req.get('auth-token');
+    if (!token) return res.status(401).send("Invalid token! No deck for you!");
+    token = jwt.decode(token);
+
+    let user = await User.findById(token._id);
+
+    console.log(`Get all decks from: ${req.connection.remoteAddress} user: ${user.username}`);
+
+    let decks = await Deck.find({owner: token._id});
+
+    // Check if we found deckSchema
+    let cards = [];
+    for (let deck of decks){
+            cards = cards.concat(await deck.getCards());
+    }
+console.log(cards);
+    console.log(`Returning ${cards.length} cards of user: ${user.username} at ${req.connection.remoteAddress}`);
+    res.send(cards);
 });
 
 module.exports = router;

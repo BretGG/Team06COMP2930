@@ -67,7 +67,7 @@ router.delete("/", async (req, res) => {
     res.status(200).send(card);
 });
 
-// get the decks
+// get the cards
 router.put("/get", async (req, res) => {
     let cardtype = _.pick(req.body, ["format", "deck", "category"]);
     console.log(`Get all cards from: ${req.connection.remoteAddress}`);

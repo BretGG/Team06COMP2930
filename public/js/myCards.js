@@ -1,4 +1,6 @@
 // TODO: Create button is gone when the screen width is smaller than 388px
+let myDecks;
+let allMyCards;
 
 $(document).ready(() => {
     // setting encrypted and secure user token
@@ -7,6 +9,7 @@ $(document).ready(() => {
             'auth-token': localStorage.getItem('auth-token')
         }
     });
+
 
     $('select').formSelect();
     $('#headerLeftCon').hide();
@@ -36,49 +39,109 @@ $(document).ready(() => {
         window.location.href = "main";
     });
 
-    // function updateMessage(message, color){
-    //     $('.toast').css('background-color', color);
-    //     M.toast({html: message});
-    // }
+    function createCard(cardData) {
+        let card = document.createElement('div');
+        card.setAttribute('class', 'card');
+
+        let h5 = document.createElement('h5');
+        $(h5).css("padding-left", "8px");
+        $(h5).css("padding-top", "3px");
+        h5.textContent = cardData.question;
+
+        let p = document.createElement('p');
+        $(p).css("padding-left", "8px");
+        p.textContent = `${cardData.answer}`;
+
+        $('#cardsCon').append(card);
+        card.appendChild(h5);
+        card.appendChild(p);
+    }
 
     function getDeckList(callback) {
         $.ajax({
             type: "get",
             url: "/decks",
             success: function(data) {
-                callback(data.decks)
+                callback(data);
             },
             error: function(e) {
                 console.log(e.responseText);
-                callback("");
             }
         });
     }
 
+
+    function getAllMyCards(callback){
+        $.ajax({
+            type: 'get',
+            url: '/decks/allcards',
+            success: function(data) {
+                allMyCards = data;
+                callback(data);
+            },
+            error: function(e) {
+                console.log(e.responseText);
+            }
+        });
+
+    }
+    //set up the  initial setting including cards.
     function setDeckList(decks) {
         if (decks.length == 0) {
             console.log("You have no deck!");
         } else {
-            for (let mydeck of decks) {
-                // deck.material_select();
-                $('#myDeck').append($("<option></option>").attr("value", mydeck._id).text(mydeck.name));
-                $('#creDeck').append($("<option></option>").attr("value", mydeck._id).text(mydeck.name));
+            for (let deck of decks) {
+                $('#myDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
+                $('#creDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
             }
             $('#myDeck').formSelect();
             $('#creDeck').formSelect();
         }
     }
-    /** Calling setDeckList function */
-    getDeckList(setDeckList);
+
+    function setCardList(cards) {
+        myCards = cards;
+
+    }
+
 
 
     /*******************************************************************/
     /**           Down here, it is for displaying my cards!            */
     /*******************************************************************/
 
-    function getMyCard(callback, currentDeck, currentCate) {
-        console.log("Function getMyCard in myCards.js is working now");
-        // if (currentCate) {
+
+    // function getMyCard(callback, currentDeck, currentCate) {
+        // console.log("Function getMyCard in myCards.js is working now");
+        // $.ajax({
+        //     type: "get",
+        //     url: "/decks",
+        //     success: function(data) {
+        //         for (let eachdeck of data.decks) {
+        //             console.log(eachdeck);
+        //             $.ajax({
+        //                 type: 'get',
+        //                 url: '/decks/card',
+        //                 dataType: 'json',
+        //                 data: {
+        //                     deckId: eachdeck._id
+        //                 },
+        //                 success: function(data) {
+        //                     callback(data.cards)
+        //                 },
+        //                 error: function(e) {
+        //                     console.log(e.responseText);
+        //                     callback("");
+        //                 }
+        //             });
+        //         }
+        //     },
+        //     error: function(e) {
+        //         console.log(e.responseText);
+        //         callback("");
+        //     }
+        // });
+
         $.ajax({
             type: 'put',
             url: '/cards/get',
@@ -96,43 +159,27 @@ $(document).ready(() => {
                 callback("");
             }
         });
-        // }
     }
 
     /** Populate cards from my list . . . Ta da */
     function populateCards(cards) {
         $(".card").remove();
-        if (cards.length == 0) {
+        console.log(cards);
+        if (!cards) {
             console.log("I told you no card!");
         } else {
             for (let mycard of cards) {
-                let card = document.createElement('div');
-                card.setAttribute('class', 'card');
-
-                let h5 = document.createElement('h5');
-                $(h5).css("padding-left", "8px");
-                $(h5).css("padding-top", "3px");
-                h5.textContent = mycard.question;
-
-                let p = document.createElement('p');
-                $(p).css("padding-left", "8px");
-                // movie.description = movie.description.substring(0, 300);
-                p.textContent = `${mycard.answer}`;
-
-                $('#cardsCon').append(card);
-                card.appendChild(h5);
-                card.appendChild(p);
+                createCard(mycard);
             }
         }
     }
 
-    // initialize my card from the list
-    getMyCard(populateCards);
 
     //this gets only the cards that user want in the specific category
     $("#myCate").change(function() {
         getMyCard(populateCards, $('select#deck').val(), $('select#myCate').val());
         console.log($('select#myCate').val());
+        console.log(allMyCards);
     });
 
     //this gets only the cards that user want in the specific category
@@ -164,7 +211,10 @@ $(document).ready(() => {
     $("#submitLeft").click(function() {
 
         if (!$('select#creCate').val() || !$('#deckName').val()) {
-                M.toast({html: 'Category and Deck must be set!!!', classes: 'redcolor'});
+            M.toast({
+                html: 'Category and Deck must be set!',
+                classes: 'redcolor'
+            });
         } else {
             if ($('select#creDeck').val() == 'createnewdeck') {
                 //create a deck first
@@ -175,7 +225,7 @@ $(document).ready(() => {
                     data: {
                         name: $("#deckName").val(),
                     },
-                    success: function(deck) {
+                    success: deck => {
                         console.log(JSON.stringify(deck));
                         //and then store new card on the new deck
                         $.ajax({
@@ -189,22 +239,32 @@ $(document).ready(() => {
                                 answer: $("#answer").val(),
                                 deck: deck._id //store deckId
                             },
-                            success: function(card) {
-                                updateMessage('Card successfully added. Check under My Cards', '#26a69a');
+                            success: card => {
+                                M.toast({
+                                    html: 'Card successfully added.<br>Check under My Cards',
+                                    classes: 'greencolor'
+                                });
                                 console.log("Card Created: " + JSON.stringify(card));
 
-                                $("#question").text("");
+                                document.getElementById("question").setAttribute('value', "");
                                 document.getElementById("answer").setAttribute('value', "");
 
                             },
                             error: err => {
-                                $("#status").text("Unforunate circumstance. Card failed to be added.");
+                                M.toast({
+                                    html: "Unforunate circumstance. Card failed to be added.",
+                                    classes: "redclor"
+                                });
                                 console.log(err);
                                 // $("#status").fadeOut().delay(3000).innerHTML("");
                             }
                         });
                     },
                     error: err => {
+                        M.toast({
+                            html: "Unforunate circumstance. Deck failed to be added.",
+                            classes: "redclor"
+                        });
                         console.log(err);
                     }
                 });
@@ -219,16 +279,20 @@ $(document).ready(() => {
                         answer: $("#answer").val(),
                         deck: $('select#creDeck').val() //store deckId
                     },
-                    success: function(card) {
-                        updateMessage('Card successfully added. Check under My Cards', '#26a69a');
+                    success: card => {
+                        M.toast({
+                            html: 'Card successfully added. Check under My Cards',
+                            classes: 'greencolor'
+                        });
                         console.log(JSON.stringify(card));
                         document.getElementById("question").setAttribute('value', "");
                         document.getElementById("answer").setAttribute('value', "");
-                        $("#status").fadeOut().delay(3000).text("");
-
                     },
                     error: err => {
-                        $("#status").text("Unforunate circumstance. Card failed to be added.");
+                        M.toast({
+                            html: "Unforunate circumstance. Card failed to be added.",
+                            classes: "redclor"
+                        });
                         console.log(err);
                         // $("#status").fadeOut().delay(3000).innerHTML("");
                     }
@@ -238,12 +302,12 @@ $(document).ready(() => {
         }
     });
 
+    console.log(allMyCards);
+    /** Calling setDeckList function */
+    getDeckList(setDeckList);
+        // initialize my card from the list
+        getAllMyCards(populateCards);
 
-
-
-
-
-
-
+        // let scienceCards = allMyCards.filter(card => card.category === "science");
 
 });
