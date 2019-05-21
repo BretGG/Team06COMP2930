@@ -5,7 +5,7 @@
 }
 
 body {
-    min-width: 600px;
+    min-width: 300px;
     max-width: 2000px;
     margin: 0 auto;
     background-color: #fff0;
@@ -98,6 +98,7 @@ body {
     text-decoration: underline;
     font-family:"Dosis", sans-serif;
     font-size:45px;
+    padding-top:30px;
     }
 
     @media only screen and (max-width:1499px) and (min-width: 900px) {
