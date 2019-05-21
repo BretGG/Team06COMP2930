@@ -43,6 +43,9 @@ const schema = new mongoose.Schema({
     activeBackground: {
       type: String
     }
+  },
+  items : {
+    
   }
 });
 

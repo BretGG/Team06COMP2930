@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { User, validate } = require("../src/models/user");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
+const { Item } = require("../src/models/item");
 
 /*
 
@@ -34,11 +35,12 @@ router.post("/", async (req, res) => {
 
   // Saving the user to the database
 
-
   user.cosmetics.activeAvatar = "../images/avatar/default.png";
   user.cosmetics.activePlatform = "../images/platform/default.png";
   user.cosmetics.activeBackground = "../images/background/default.png";
-  var cosmetic = user.cosmetics;
+
+  //WHY WONT THIS LINE WORK?!?!?
+  // await Item.find().forEach( function(e){User.items.insert(e)} );
   await user.save();
   debug("Creating user: " + JSON.stringify(user));
   res.send(_.pick(user, ["username", "email"]));
