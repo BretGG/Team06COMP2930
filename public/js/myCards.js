@@ -57,6 +57,20 @@ $(document).ready(() => {
         card.appendChild(p);
     }
 
+    function filterCard(cards, catefilter, deckfilter) {
+        let filteredCards = cards;
+        if (deckfilter) {
+            console.log("filtering by deck");
+            filteredCards = filteredCards.filter(card => card.deck == deckfilter);
+        }
+        if (catefilter) {
+            console.log("filtering by category");
+            filteredCards = filteredCards.filter(card => card.category == catefilter);
+        }
+        console.log(filteredCards);
+        return filteredCards;
+    }
+
     function getDeckList(callback) {
         $.ajax({
             type: "get",
@@ -70,8 +84,7 @@ $(document).ready(() => {
         });
     }
 
-
-    function getAllMyCards(callback){
+    function getAllMyCards(callback) {
         $.ajax({
             type: 'get',
             url: '/decks/allcards',
@@ -83,8 +96,14 @@ $(document).ready(() => {
                 console.log(e.responseText);
             }
         });
-
     }
+
+
+    /*******************************************************************/
+    /**           Down here, it is for displaying my cards!            */
+    /*******************************************************************/
+
+
     //set up the  initial setting including cards.
     function setDeckList(decks) {
         if (decks.length == 0) {
@@ -99,67 +118,6 @@ $(document).ready(() => {
         }
     }
 
-    function setCardList(cards) {
-        myCards = cards;
-
-    }
-
-
-
-    /*******************************************************************/
-    /**           Down here, it is for displaying my cards!            */
-    /*******************************************************************/
-
-
-    // function getMyCard(callback, currentDeck, currentCate) {
-        // console.log("Function getMyCard in myCards.js is working now");
-        // $.ajax({
-        //     type: "get",
-        //     url: "/decks",
-        //     success: function(data) {
-        //         for (let eachdeck of data.decks) {
-        //             console.log(eachdeck);
-        //             $.ajax({
-        //                 type: 'get',
-        //                 url: '/decks/card',
-        //                 dataType: 'json',
-        //                 data: {
-        //                     deckId: eachdeck._id
-        //                 },
-        //                 success: function(data) {
-        //                     callback(data.cards)
-        //                 },
-        //                 error: function(e) {
-        //                     console.log(e.responseText);
-        //                     callback("");
-        //                 }
-        //             });
-        //         }
-        //     },
-        //     error: function(e) {
-        //         console.log(e.responseText);
-        //         callback("");
-        //     }
-        // });
-
-        $.ajax({
-            type: 'put',
-            url: '/cards/get',
-            dataType: 'json',
-            data: {
-                format: 'tf',
-                deck: currentDeck,
-                category: currentCate
-            },
-            success: function(data) {
-                callback(data.cards)
-            },
-            error: function(e) {
-                console.log(e.responseText);
-                callback("");
-            }
-        });
-    }
 
     /** Populate cards from my list . . . Ta da */
     function populateCards(cards) {
@@ -177,15 +135,15 @@ $(document).ready(() => {
 
     //this gets only the cards that user want in the specific category
     $("#myCate").change(function() {
-        getMyCard(populateCards, $('select#deck').val(), $('select#myCate').val());
-        console.log($('select#myCate').val());
-        console.log(allMyCards);
+        populateCards(filterCard(allMyCards, $('select#myCate').val(), $('select#myDeck').val()));
+        console.log($('select#myCate').val() + ' and ' + $('select#myDeck').val());
+        // console.log(allMyCards);
     });
 
     //this gets only the cards that user want in the specific category
     $("#myDeck").change(function() {
-        getMyCard(populateCards, $('select#myDeck').val(), $('select#myCate').val());
-        console.log($('select#myDeck').val());
+        populateCards(filterCard(allMyCards, $('select#myCate').val(), $('select#myDeck').val()));
+        console.log($('select#myCate').val() + ' and ' + $('select#myDeck').val());
     });
 
 
@@ -305,9 +263,10 @@ $(document).ready(() => {
     console.log(allMyCards);
     /** Calling setDeckList function */
     getDeckList(setDeckList);
-        // initialize my card from the list
-        getAllMyCards(populateCards);
 
-        // let scienceCards = allMyCards.filter(card => card.category === "science");
+    // initialize my card from the list
+    getAllMyCards(populateCards);
+
+
 
 });
