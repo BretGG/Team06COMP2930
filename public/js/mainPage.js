@@ -6,25 +6,28 @@ $(document).ready(() => {
     }
   });
 
-  /** On page load, plays avatar animation */
-  window.onload = function() {
-    // updateCosmetics();
-    $("#avatar").toggleClass("bounceIn");
-  };
-
-  function updateCosmetics(){
-    console.log("CLICK");
+  function updateCosmetics() {
     $.ajax({
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        console.log(data.activePlatform);
-        $("#avatar").children("img").prop("src", data.activeAvatar);
-        console.log(data.activePlatform)
-        console.log(data.activeBackground)
-        $("#avatar").css("background-image", data.activePlatform);
-        $("html").css("background-image", data.activeBackground);
+        $("#avatar")
+          .children("img")
+          .prop("src", data.activeAvatar.imageLink);
+        $("#avatar").css("background-image", data.activeBackground.imageLink);
+        $("html").css("background-image", data.activeBackground.imageLink);
       },
+      error: function(e) {
+        console.log(e.responseText);
+      }
+    });
+  }
+
+  function getItem(itemId, cb) {
+    $.ajax({
+      type: "get",
+      url: `/items/${itemId}`,
+      success: cb,
       error: function(e) {
         console.log(e.responseText);
       }
@@ -72,15 +75,11 @@ $(document).ready(() => {
 
   /** Takes user back to signup/signin page */
   $("#logout").click(() => {
-    updateCosmetics();
-    // window.location.href = "/";
+    window.location.href = "/";
   });
 
   /** Takes user back to shop page */
   $("#shop").click(() => {
-    localStorage.setItem("avatar", $("#avatar").children("img").prop("src"));
-    localStorage.setItem("platform", $("#avatar").css("background-image"));
-    localStorage.setItem("background", $("html").css("background-image"));
     window.location.href = "/shop";
   });
 
@@ -88,4 +87,8 @@ $(document).ready(() => {
   $("#myCards").click(() => {
     window.location.href = "/mycard";
   });
+
+  /** On page load, plays avatar animation */
+  updateCosmetics();
+  $("#avatar").toggleClass("bounceIn");
 });

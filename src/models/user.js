@@ -43,7 +43,8 @@ const schema = new mongoose.Schema({
     activeBackground: {
       type: String
     }
-  }
+  },
+  items: Array
 });
 
 // Validates if the user object follows validation rules.

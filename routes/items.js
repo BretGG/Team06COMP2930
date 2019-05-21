@@ -5,24 +5,35 @@ const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const { User } = require("../src/models/user");
 
-router.get("/:category", async (req, res) => {
+// Get all items of category
+router.get("/category/:category", async (req, res) => {
   let items = await Item.find({ category: req.params.category });
   res.send(items);
 });
 
+// Get item at given id
+router.get("/:itemId", async (req, res) => {
+  if (!req.params.itemId) return res.status(400).send("Invalid item id");
+
+  let items = await Item.findById(req.params.itemId);
+  if (!items) return res.status(404).send("No item with that Id");
+  res.send(items);
+});
+
+// Request to buy item
 router.put("/:selectedItem", async (req, res) => {
   // Finding the item
   console.log("Request to buy item: " + JSON.stringify(req.params));
   let item = await Item.findById(req.params.selectedItem);
   if (!item) return res.status(404).send("Could not find item");
 
-// Checking token
+  // Checking token
   var token = req.get("auth-token");
   if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
   const decode = jwt.verify(token, "FiveAlive");
   token = jwt.decode(token);
 
-    console.log(
+  console.log(
     `Request for me from user ${token._id} at ${req.connection.remoteAddress}`
   );
 
@@ -31,26 +42,22 @@ router.put("/:selectedItem", async (req, res) => {
   console.log(user);
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
 
-  // Check if they have the points
-  if(user.points > item.cost){
+  // Check if they already own it
+  if (user.items.indexOf(item._id) != -1) {
+    return res.status(400).send("Already Purchased");
+  }
+  if (user.points >= item.cost) {
+    // Check if they have the points
     user.points -= item.cost;
+    user.items.push(item._id);
     await user.save();
-    item.owned = true;
-    item.cost = 0;
-    await item.save();
     res.send(item);
   } else {
-    res.status(400).send();
+    return res.status(400).send("Insufficient Funds");
   }
-
-  // buy it and respond yay + info
-
-  // OR YOU BROKE, GET GOOD
-
-  // or else 
-
 });
 
+// Create an item
 router.post("/", async (req, res) => {
   let item = _.pick(req.body, [
     "cost",

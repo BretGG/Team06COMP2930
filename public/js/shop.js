@@ -1,6 +1,6 @@
 $(document).ready(() => {
-
-  var selectedItem;
+  let selectedItem;
+  let currentUserInfo;
 
   $.ajaxSetup({
     headers: {
@@ -27,37 +27,50 @@ $(document).ready(() => {
     $("#points").text(user.points);
   }
 
-
-  /** Calling setProfileInfo function */
-  getUserInfo(setPointBalance);
+  function updateCosmetics() {
+    $.ajax({
+      type: "get",
+      url: "/users/updateCosmetics",
+      success: function(data) {
+        $("#avatar")
+          .children("img")
+          .prop("src", data.activeAvatar.imageLink);
+        $("#avatar").css("background-image", data.activePlatform.imageLink);
+        $("html").css("background-image", data.activeBackground.imageLink);
+      },
+      error: function(e) {
+        console.log(e.responseText);
+      }
+    });
+  }
 
   /** When user attempts to buy an item */
   $("#buy").click(() => {
-    console.log("Attempting to buy an item");
-      $.ajax({
-        url: `/items/${selectedItem}`,
-        dataType: "json",
-        type: "put",
-        success: function(data) {
-          console.log(data);
-          $(`#${data._id}`).children("#cost4").text("0");
-          $("#buy").addClass("disabled");
-          getUserInfo(setPointBalance);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.log("ERROR:", jqXHR, textStatus, errorThrown);
-        }
-      });
+    $.ajax({
+      url: `/items/${selectedItem}`,
+      dataType: "json",
+      type: "put",
+      success: function(data) {
+        $(`#${data._id}`)
+          .children("#cost4")
+          .text("Owned");
+        $("#buy").addClass("disabled");
+        getUserInfo(setPointBalance);
+        getUserInfo(userInfo => (currentUserInfo.items = userInfo.items));
+        M.toast({
+          html: `Purchased: ${data.name}`,
+          classes: "blue"
+        });
+      },
+      error: function(err) {
+        console.log("ERROR: ", err.responseText);
+        M.toast({
+          html: err.responseText,
+          classes: "red"
+        });
+      }
+    });
   });
-
-  /** On page load, plays avatar animation */
-  window.onload = function() {
-    $("#char").prop("src", localStorage.getItem("avatar"));
-    $("#char").css("background-image", localStorage.getItem("platform"));
-    $("html").css("background-image", localStorage.getItem("background"));
-    $("#avatar").toggleClass("bounceIn");
-    $("#shopAvatar").trigger("click");
-  };
 
   $(window).resize(function() {
     if ($(window).width() < 400) {
@@ -78,7 +91,7 @@ $(document).ready(() => {
 
   function getItems(category, cb) {
     $.ajax({
-      url: `/items/${category}`,
+      url: `/items/category/${category}`,
       dataType: "json",
       type: "get",
       success: function(data) {
@@ -92,6 +105,8 @@ $(document).ready(() => {
 
   function populateCarousel(items) {
     let innerHtml = "";
+
+    // Create display for each item
     for (let item of items) {
       innerHtml += `
         <div id=${item._id} class="carousel-item">
@@ -103,9 +118,10 @@ $(document).ready(() => {
 
     $("#slideAvatar").html(innerHtml);
 
+    // Set click interaction for each item
     for (let item of items) {
       $(`#${item._id}`).click(() => {
-        if(item.owned){
+        if (currentUserInfo.items.find(userItem => userItem === item._id)) {
           $("#buy").addClass("disabled");
           localStorage.setItem(item.category, item.imageLink);
         } else {
@@ -114,18 +130,22 @@ $(document).ready(() => {
 
         if (item.category === "avatar") {
           $("#char").prop("src", item.imageLink);
-        }
-        else if (item.category === "platform"){
+        } else if (item.category === "platform") {
           $("#char").css("background-image", `url(${item.imageLink})`);
-        }
-        else if (item.category === "background"){
+        } else if (item.category === "background") {
           $("html").css("background-image", `url(${item.imageLink})`);
         }
 
         selectedItem = item._id;
       });
-      
+
+      // Set image for each item and update price if they own it
       $(`#${item._id}`).css("background-image", `url(${item.shopIcon})`);
+      if (currentUserInfo.items.find(userItem => userItem === item._id)) {
+        $(`#${item._id}`)
+          .children("#cost4")
+          .text("Owned");
+      }
     }
 
     if ($(".carousel").hasClass("initialized")) {
@@ -141,7 +161,7 @@ $(document).ready(() => {
     $("#shopBackground").css("background-color", "#26a69a");
     $("#shopAvatar").css("background-color", "#55B1C1");
     getItems("avatar", populateCarousel);
-    $("#slideAvatar").toggleClass("")
+    $("#slideAvatar").toggleClass("");
   });
 
   $("#shopPlatform").click(() => {
@@ -160,4 +180,10 @@ $(document).ready(() => {
     getItems("background", populateCarousel);
   });
 
+  // Calling all page setup functions
+  updateCosmetics();
+  getUserInfo(setPointBalance);
+  getUserInfo(user => (currentUserInfo = user));
+  $("#avatar").toggleClass("bounceIn");
+  $("#shopAvatar").trigger("click");
 });
