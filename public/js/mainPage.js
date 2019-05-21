@@ -89,6 +89,11 @@ $(document).ready(() => {
     window.location.href = "/mycard";
   });
 
+  /** Takes user back to mycard page */
+  $("#aboutUs").click(() => {
+    window.location.href = "/aboutUs";
+  });
+
   getUserInfo(user => {
     setProfileInfo(user);
     updateCosmetics();
