@@ -91,5 +91,8 @@ $(document).ready(() => {
 
   getUserInfo(setProfileInfo);
   updateCosmetics();
-  $("#avatar").toggleClass("bounceIn");
+
+  window.onload(function(){
+    console.log("HELLO!");
+  })
 });

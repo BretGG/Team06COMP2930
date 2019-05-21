@@ -23,11 +23,6 @@ body{user-select: none;
     background-color: rgb(85, 177, 193);
 }
 
-.carousel-item{
-    border:1.5px solid black;
-    background:white;
-}
-
 .carousel-item>img {
     display: block;
     margin: 0 auto;

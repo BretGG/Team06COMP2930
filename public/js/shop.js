@@ -48,7 +48,6 @@ $(document).ready(() => {
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        console.log("DATA: " + data.activeAvatar);
         $("#char").prop("src", data.activeAvatar.imageLink);
         $("#avatar").css(
           "background-image",
