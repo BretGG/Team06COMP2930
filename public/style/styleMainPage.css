@@ -10,9 +10,12 @@
   padding-bottom: 4%;
   font-size: 1em;
   height:600px;
+  width:90%;    
   text-align: center;
 }
-
+#title{
+    font-size:2em;
+}
 #buttons a{
   margin-bottom : 2%;
   
@@ -31,28 +34,12 @@
     justify-content: space-around;
     margin: 0 auto; 
 }
-#avatar {
-    height: 133px;
 
-}
-img {
-    width:90px;
-}
-@media only screen and (max-width:410px) and (min-width: 375px) {
+
+@media only screen and (max-width:800px) and (min-width: 651px) {
     #avatar {
-        height: 190px;
     }
-    img {
-        width:120px;
-    }
-}
-@media only screen and (max-width:700px) and (min-width: 414px) {
-    #avatar {
-        height: 230px;
-    }
-    img {
-        width:100px;
-    }
+    
     
 }
     /* iphone 6, 6s, 7, 8 */
@@ -60,23 +47,75 @@ img {
 
 
  /* iphone X */
+ 
 @media only screen and (min-device-width: 375px) and (max-device-height: 812px) and (-webkit-device-pixel-ratio: 3) { 
-    #buttons{
-        flex-direction: column;
-        margin:0 auto;  
-        justify-content: center;
-       align-items: center;
 
-    }
-    
-        #avatar {
-        height: 200px;
-    }
-    img {
-        width:100px;
-    }
+
     h2 {
     font-size: 1.56rem;
     }
+    #title {
+        font-size: 3.5em;
+    }
+    #logo{
+        font-size:4.5em;
+    }
+}
+@media only screen and (min-device-width: 410px) and (max-device-width: 650px) { 
+    #logo{
+        font-size:4.5em;
+    }
+    #title{
+        font-size:3em;
+    }
+}
+@media only screen and (max-width:900px) and (min-width: 600px) {
+    #buttons{
+        flex-direction: column;
+
+        display:flex;
+        width:300px;
+        flex-wrap:wrap;
+        margin: 0 auto;
+        align-items:center;
+    }
+    #logo{
+        font-size:5.5em;
+    }
+    #mainpageCon{
+        width:70%;
+    }
+    #title {
+        font-size: 4.5em;
+    }
+    #buttons a {
+        margin-bottom: 6%;
+        width: 166px;
+        height: 63px;
+        font-size: 21px;
+       
+    }
     
+}
+@media only screen and (min-width: 901px) {
+    #logo {
+        font-size: 7.5em;
+    }
+    #buttons a {
+        margin-bottom: 6%;
+        width: 248px;
+        height: 83px;
+        font-size: 31px;
+        padding-top: 12px;
+    }
+    #logo{
+        font-size:5.5em;
+    }
+    #mainpageCon{
+        width:70%;
+    }
+    #title {
+        font-size: 4.5em;
+    }
+
 }
