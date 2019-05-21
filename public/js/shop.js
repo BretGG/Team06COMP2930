@@ -93,7 +93,7 @@ $(document).ready(() => {
 
   function getItems(category, cb) {
     $.ajax({
-      url: `/items/${category}`,
+      url: `/items/category/${category}`,
       dataType: "json",
       type: "get",
       success: function(data) {

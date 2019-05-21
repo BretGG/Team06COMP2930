@@ -33,14 +33,26 @@ router.post("/", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
 
+  // Setting default items
+  let defaultAvatar = await Item.findOne({
+    name: "Black Sesame",
+    category: "avatar"
+  });
+  let defaultPlatform = await Item.findOne({
+    name: "Flying Grass",
+    category: "platform"
+  });
+  let defaultBackground = await Item.findOne({
+    name: "Forest View",
+    category: "background"
+  });
+  // Should include error handling (i.e. can't find the default items)
+
+  user.cosmetics.activeAvatar = defaultAvatar._id;
+  user.cosmetics.activePlatform = defaultPlatform._id;
+  user.cosmetics.activeBackground = defaultBackground._id;
+
   // Saving the user to the database
-
-  user.cosmetics.activeAvatar = "../images/avatar/default.png";
-  user.cosmetics.activePlatform = "../images/platform/default.png";
-  user.cosmetics.activeBackground = "../images/background/default.png";
-
-  //WHY WONT THIS LINE WORK?!?!?
-  // await Item.find().forEach( function(e){User.items.insert(e)} );
   await user.save();
   debug("Creating user: " + JSON.stringify(user));
   res.send(_.pick(user, ["username", "email"]));
@@ -54,15 +66,13 @@ router.get("/updateCosmetics", async (req, res) => {
 
   console.log(
     `Request for me from user ${token._id} at ${req.connection.remoteAddress}`
-    );
+  );
 
   const user = await User.findById(token._id).select("-password");
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
 
   var cosmetic = user.cosmetics;
   res.send(cosmetic);
-
-
 });
 
 // TODO: update user

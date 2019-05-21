@@ -5,8 +5,16 @@ const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const { User } = require("../src/models/user");
 
-router.get("/:category", async (req, res) => {
+// Get all items of category
+router.get("/category/:category", async (req, res) => {
   let items = await Item.find({ category: req.params.category });
+  res.send(items);
+});
+
+// Get item at given id
+router.get("/:itemId", async (req, res) => {
+  let items = await Item.findById(req.params.itemId);
+  if (!items) return res.status(404).send("No item with that Id");
   res.send(items);
 });
 
@@ -47,6 +55,7 @@ router.put("/:selectedItem", async (req, res) => {
   }
 });
 
+// Create an item
 router.post("/", async (req, res) => {
   let item = _.pick(req.body, [
     "cost",
