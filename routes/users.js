@@ -3,6 +3,7 @@ const debug = require("debug")("comp2930-team2:server");
 const bcrypt = require("bcrypt");
 const { User, validate } = require("../src/models/user");
 const _ = require("lodash");
+const jwt = require("jsonwebtoken");
 
 /*
 
@@ -32,10 +33,35 @@ router.post("/", async (req, res) => {
   user.password = await bcrypt.hash(user.password, salt);
 
   // Saving the user to the database
-  await user.save();
 
+
+  user.cosmetics.activeAvatar = "../images/avatar/default.png";
+  user.cosmetics.activePlatform = "../images/platform/default.png";
+  user.cosmetics.activeBackground = "../images/background/default.png";
+  var cosmetic = user.cosmetics;
+  console.log("cosmetic");
+  await user.save();
   debug("Creating user: " + JSON.stringify(user));
   res.send(_.pick(user, ["username", "email"]));
+});
+
+router.get("/updateCosmetics", async (req, res) => {
+  var token = req.get("auth-token");
+  if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
+  const decode = jwt.verify(token, "FiveAlive");
+  token = jwt.decode(token);
+
+  console.log(
+    `Request for me from user ${token._id} at ${req.connection.remoteAddress}`
+    );
+
+  const user = await User.findById(token._id).select("-password");
+  if (!user) return res.status(400).send("Uh Oh! You dont exist!");
+
+  var cosmetic = user.cosmetics;
+  res.send(cosmetic);
+
+
 });
 
 // TODO: update user

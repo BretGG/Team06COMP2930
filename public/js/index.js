@@ -6,7 +6,9 @@ $(document).ready(() => {
         $(".headerRight").css("border-bottom", "2px solid #42A164");
         $(".headerLeftCon").css("display", "none");
         $(".headerRightCon").css("display", "inline");
-            $("#status").text("");
+        $("#status").text("");
+        $("#unameIN1").val("");
+        $("#passIN1").val("");
     });
 
     /** Switches container from Sign In to Sign Up */
@@ -15,7 +17,11 @@ $(document).ready(() => {
         $(".headerLeft").css("border-bottom", "2px solid #42A164");
         $(".headerRightCon").css("display", "none");
         $(".headerLeftCon").css("display", "inline");
-            $("#status").text("");
+        $("#status").text("");
+        $("#uname1").val("");
+        $("#email1").val("");
+        $("#pass1").val("");
+        $("#cpass1").val("");
     });
 
 

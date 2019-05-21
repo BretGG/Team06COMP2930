@@ -8,25 +8,31 @@ $(document).ready(() => {
 
   /** On page load, plays avatar animation */
   window.onload = function() {
-    updateCosmetics();
+    // updateCosmetics();
     $("#avatar").toggleClass("bounceIn");
   };
 
   function updateCosmetics(){
-    if(localStorage.getItem("avatar"))
-      $("#avatar").children("img").prop("src", localStorage.getItem("avatar"));
-    else $("#avatar").children("img").prop("src", "../images/avatar/default.png");
-
-    if(localStorage.getItem("platform"))
-      $("#avatar").css("background-image", localStorage.getItem("platform"));
-    else $("#avatar").css("background-image", "../images/platform/default.png");
-
-    if(localStorage.getItem("background"))
-      $("html").css("background-image", "url(" + localStorage.getItem("background") +")");
-    else $("html").css("background-image", "../images/bg/default.png");
+    console.log("CLICK");
+    $.ajax({
+      type: "get",
+      url: "/users/updateCosmetics",
+      success: function(data) {
+        console.log(data.activePlatform);
+        $("#avatar").children("img").prop("src", data.activeAvatar);
+        console.log(data.activePlatform)
+        console.log(data.activeBackground)
+        $("#avatar").css("background-image", data.activePlatform);
+        $("html").css("background-image", data.activeBackground);
+      },
+      error: function(e) {
+        console.log(e.responseText);
+      }
+    });
   }
 
   function getUserInfo(callback) {
+    console.log("sign in");
     $.ajax({
       type: "get",
       url: "/login/me",
@@ -66,7 +72,8 @@ $(document).ready(() => {
 
   /** Takes user back to signup/signin page */
   $("#logout").click(() => {
-    window.location.href = "/";
+    updateCosmetics();
+    // window.location.href = "/";
   });
 
   /** Takes user back to shop page */

@@ -33,9 +33,17 @@ const schema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  activePlatform: String,
-  activeCharacter: String,
-  activeBackground: String
+  cosmetics: {
+    activePlatform: {
+      type: String
+    },
+    activeAvatar: {
+      type: String
+    },
+    activeBackground: {
+      type: String
+    }
+  }
 });
 
 // Validates if the user object follows validation rules.
