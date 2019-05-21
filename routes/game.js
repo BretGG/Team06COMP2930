@@ -54,7 +54,21 @@ router.post("/", (req, res) => {
 
 // Join a lobby
 router.put("/", (req, res) => {
-  const lobbyInfo = _.pick(req.body);
+  const lobbyInfo = _.pick(req.body, ["sessionId", "sessionPass"]);
+  const lobby = lobbies.get(lobbyInfo.sessionId);
+
+  // Didn't find a lobby
+  if (!lobby)
+    return res
+      .status(404)
+      .send("Failed to find room at : " + lobbyInfo.sessionId);
+
+  // Invalid password
+  if (lobby.sessionPass !== lobbyInfo.sessionPass)
+    res.status(400).send("Invalid session password");
+
+  // Add user to the lobby and return lobby info
+  lobby.players.push();
 });
 
 module.exports = router;
