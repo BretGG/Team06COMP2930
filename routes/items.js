@@ -16,13 +16,13 @@ router.put("/:selectedItem", async (req, res) => {
   let item = await Item.findById(req.params.selectedItem);
   if (!item) return res.status(404).send("Could not find item");
 
-// Checking token
+  // Checking token
   var token = req.get("auth-token");
   if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
   const decode = jwt.verify(token, "FiveAlive");
   token = jwt.decode(token);
 
-    console.log(
+  console.log(
     `Request for me from user ${token._id} at ${req.connection.remoteAddress}`
   );
 
@@ -32,17 +32,14 @@ router.put("/:selectedItem", async (req, res) => {
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
 
   // Check if they have the points
-  if(user.points > item.cost){
+  if (user.points >= item.cost) {
     user.points -= item.cost;
-    item.owned = true;
-    item.cost = 0;
-    await item.save();
+    user.items.add(item._id);
     await user.save();
     res.send(item);
   } else {
-    res.status(400).send();
+    res.status(400).send("Insufficient Funds");
   }
-
 });
 
 router.post("/", async (req, res) => {

@@ -50,26 +50,21 @@ $(document).ready(() => {
       dataType: "json",
       type: "put",
       success: function(data) {
-        console.log(data);
         $(`#${data._id}`)
           .children("#cost4")
-          .text("0");
+          .text("Owned");
         $("#buy").addClass("disabled");
         getUserInfo(setPointBalance);
       },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+      error: function(err) {
+        console.log("ERROR: ", err.responseText);
+        M.toast({
+          html: err.responseText,
+          classes: "redcolor"
+        });
       }
     });
   });
-
-  /** On page load, plays avatar animation */
-  window.onload = function() {
-    updateCosmetics();
-    getUserInfo(setPointBalance);
-    $("#avatar").toggleClass("bounceIn");
-    $("#shopAvatar").trigger("click");
-  };
 
   $(window).resize(function() {
     if ($(window).width() < 400) {
@@ -170,5 +165,9 @@ $(document).ready(() => {
     getItems("background", populateCarousel);
   });
 
+  // Calling all page setup functions
+  updateCosmetics();
+  getUserInfo(setPointBalance);
+  $("#avatar").toggleClass("bounceIn");
   $("#shopAvatar").trigger("click");
 });

@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const joi = require("joi");
-const _ = require("lodash");
 
 /*
 

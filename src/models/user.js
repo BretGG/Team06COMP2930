@@ -44,9 +44,7 @@ const schema = new mongoose.Schema({
       type: String
     }
   },
-  items : {
-    
-  }
+  items: Array
 });
 
 // Validates if the user object follows validation rules.
