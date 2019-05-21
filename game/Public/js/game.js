@@ -244,7 +244,7 @@ function endRound(roundInfo) {
         player.wrongAnswers = playerUpdate.wrongAnswers;
       }
   }
-  console.log(roundInfo.players, " 2:55pm");
+
 
 
   updatePlayerScoreHeight();
