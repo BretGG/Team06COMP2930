@@ -1,9 +1,11 @@
 #avatar{
-  margin: 0 auto;
-  background-image: url("../images/platform/default.png");
-  width: 176px;
-  height: 251px;
-  margin-bottom: 3%;
+    margin: 0 auto;
+    background-image: url(../images/platform/default.png);
+    width: 176px;
+    height: 251px;
+    margin-bottom: 3%;
+    background-repeat: no-repeat;
+    background-position: bottom 0px right 50%;
 }
 
 #mainpagecon{
