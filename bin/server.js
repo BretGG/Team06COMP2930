@@ -4,7 +4,9 @@ var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 const _ = require("lodash");
-const { Card } = require("../src/models/card.js");
+const {
+  Card
+} = require("../src/models/card.js");
 var glob = this;
 
 // Get port from environment and store in Express.
@@ -90,7 +92,8 @@ var gameStarted = false;
 //   { question: "8 x 3", answer: "24" }
 // ];
 
-var io = require("socket.io").listen(server);
+var io = require("socket.io")
+  .listen(server);
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
 
@@ -225,7 +228,7 @@ function endRound() {
     console.log("player.wrongAnswers ", player.wrongAnswers, "round: ", round);
 
     if (player.wrongAnswers === 2 && round < glob.cards.length + 1) {
-      console.log("game over");
+
       gameOver(player.playerId);
     }
   }
@@ -252,6 +255,7 @@ function gameOver(id) {
     playerId: id,
     players: filteredPlayers
   });
+  console.log("game over");
 }
 
 function onPlayerStateChange(socket, data) {
