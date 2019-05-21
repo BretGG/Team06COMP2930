@@ -55,6 +55,10 @@ $(document).ready(() => {
           .text("Owned");
         $("#buy").addClass("disabled");
         getUserInfo(setPointBalance);
+        M.toast({
+          html: `Purchased: ${data.name}`,
+          classes: "bluecolor"
+        });
       },
       error: function(err) {
         console.log("ERROR: ", err.responseText);
