@@ -90,6 +90,7 @@ function create() {
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
+  this.socket.on("gameOver", gameOver)
   //   this.socket.on("drop", id=>
   //   dropPlayer(id.playerId)
   //
@@ -129,6 +130,18 @@ function updateStatePosition(player) {
   playerState.setY(player.y - playerState.height - 30);
 }
 
+function gameOver() {
+  for (let i = 0; i < players.length; i++) {
+    console.log(players[i], ": player[i].wrongAnswers");
+    self.tweens.add({
+      targets: [players[i].supportingPlatform],
+      y: 800,
+      ease: "Power4",
+      duration: 1000,
+      repeat: 0
+    });
+  }
+}
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
   gameStarted = true;

@@ -77,6 +77,8 @@ var round = 0;
 let currentRoundCard;
 var gameStarted = false;
 
+
+
 // const dummycards = [
 //   { question: "1 + 1 = ?", answer: "2" },
 //   { question: "9 + 1 = ?", answer: "10" },
@@ -229,6 +231,24 @@ function endRound() {
     }
 
   }, 3000);
+  // glob.cards.length + 1
+  for (let player of filteredPlayers) {
+    console.log("player.wrongAnswers ", player.wrongAnswers, "round: ", round);
+    if ((player.wrongAnswers === 2) && (round === 2)) {
+      console.log("game over");
+      gameOver(player.playerId);
+    }
+  }
+
+
+
+}
+
+function gameOver(id) {
+  io.emit("gameOver", {
+    playerId: id
+  })
+  console.log(id, " Game Over");
 }
 
 function onPlayerStateChange(socket, data) {
