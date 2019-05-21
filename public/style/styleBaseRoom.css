@@ -66,9 +66,10 @@
 @media screen and (min-width: 373px) and (max-width: 499px){
     /**Changes size of div to match screen size*/
     .mainCon{
-        width:92%;
+        width:100%;
     }
 }
+
 
 
 /** WIDTH RANGE FROM 500px to 799px */
