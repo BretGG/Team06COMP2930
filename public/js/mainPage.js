@@ -60,9 +60,6 @@ $(document).ready(() => {
     welcome.text("Welcome, " + user.username + "!");
   }
 
-  /** Calling setProfileInfo function */
-  getUserInfo(setProfileInfo);
-
   /** Takes user to create room page */
   $("#create").click(() => {
     window.location.href = "createRoom";
@@ -93,7 +90,7 @@ $(document).ready(() => {
     window.location.href = "/mycard";
   });
 
-  /** On page load, plays avatar animation */
+  getUserInfo(setProfileInfo);
   updateCosmetics();
   $("#avatar").toggleClass("bounceIn");
 });

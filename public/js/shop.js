@@ -48,11 +48,16 @@ $(document).ready(() => {
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        $("#avatar")
-          .children("img")
-          .prop("src", data.activeAvatar.imageLink);
-        $("#avatar").css("background-image", data.activePlatform.imageLink);
-        $("html").css("background-image", data.activeBackground.imageLink);
+        console.log("DATA: " + data.activeAvatar);
+        $("#char").prop("src", data.activeAvatar.imageLink);
+        $("#avatar").css(
+          "background-image",
+          `url(${data.activePlatform.imageLink})`
+        );
+        $("html").css(
+          "background-image",
+          `url(${data.activeBackground.imageLink})`
+        );
       },
       error: function(e) {
         console.log(e.responseText);
@@ -176,12 +181,12 @@ $(document).ready(() => {
   }
 
   $("#shopAvatar").click(() => {
+    console.log("CLICK!!!")
     $("#buy").addClass("disabled");
     $("#shopPlatform").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#26a69a");
     $("#shopAvatar").css("background-color", "#55B1C1");
     getItems("avatar", populateCarousel);
-    $("#slideAvatar").toggleClass("");
   });
 
   $("#shopPlatform").click(() => {
@@ -201,9 +206,11 @@ $(document).ready(() => {
   });
 
   // Calling all page setup functions
-  getUserInfo(user => (currentUserInfo = user));
-  updateCosmetics();
-  getUserInfo(setPointBalance);
-  $("#avatar").toggleClass("bounceIn");
-  $("#shopAvatar").trigger("click");
+  getUserInfo(user => {
+    currentUserInfo = user
+      setPointBalance(user);
+      updateCosmetics();
+      $("#avatar").toggleClass("bounceIn");
+      $("#shopAvatar").trigger("click");
+  });
 });
