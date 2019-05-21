@@ -6,21 +6,33 @@ $(document).ready(() => {
     }
   });
 
-  /** On page load, plays avatar animation */
-  window.onload = function() {
-    updateCosmetics();
-    $("#avatar").toggleClass("bounceIn");
-  };
-
-  function updateCosmetics(){
+  function updateCosmetics() {
     $.ajax({
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        $("#avatar").children("img").prop("src", data.activeAvatar);
-        $("#avatar").css("background-image", data.activePlatform);
-        $("html").css("background-image", data.activeBackground);
+        console.log("DATA: " + data.activeAvatar);
+        $("#char").prop("src", data.activeAvatar.imageLink);
+        $("#avatar").css(
+          "background-image",
+          `url(${data.activePlatform.imageLink})`
+        );
+        $("html").css(
+          "background-image",
+          `url(${data.activeBackground.imageLink})`
+        );
       },
+      error: function(e) {
+        console.log(e.responseText);
+      }
+    });
+  }
+
+  function getItem(itemId, cb) {
+    $.ajax({
+      type: "get",
+      url: `/items/${itemId}`,
+      success: cb,
       error: function(e) {
         console.log(e.responseText);
       }
@@ -46,9 +58,6 @@ $(document).ready(() => {
     let welcome = $("#title");
     welcome.text("Welcome, " + user.username + "!");
   }
-
-  /** Calling setProfileInfo function */
-  getUserInfo(setProfileInfo);
 
   /** Takes user to create room page */
   $("#create").click(() => {
@@ -79,4 +88,8 @@ $(document).ready(() => {
   $("#myCards").click(() => {
     window.location.href = "/mycard";
   });
+
+  getUserInfo(setProfileInfo);
+  updateCosmetics();
+  $("#avatar").toggleClass("bounceIn");
 });

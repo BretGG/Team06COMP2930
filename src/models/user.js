@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
 const jwt = require("jsonwebtoken");
+const Item = require("./item");
 
 /*
 
@@ -35,18 +36,16 @@ const schema = new mongoose.Schema({
   },
   cosmetics: {
     activePlatform: {
-      type: String
+      type: Item
     },
     activeAvatar: {
-      type: String
+      type: Item
     },
     activeBackground: {
-      type: String
+      type: Item
     }
   },
-  items : {
-    
-  }
+  items: Array
 });
 
 // Validates if the user object follows validation rules.

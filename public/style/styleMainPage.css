@@ -1,9 +1,10 @@
 #avatar{
-  margin: 0 auto;
-  background-image: url("../images/platform/default.png");
-  width: 176px;
-  height: 251px;
-  margin-bottom: 3%;
+    margin: 0 auto;
+    width: 176px;
+    height: 251px;
+    margin-bottom: 3%;
+    background-repeat: no-repeat;
+    background-position: bottom 0px right 50%;
 }
 
 #mainpagecon{
@@ -88,34 +89,64 @@
     #title {
         font-size: 4.5em;
     }
-    #buttons a {
-        margin-bottom: 6%;
-        width: 166px;
-        height: 63px;
-        font-size: 21px;
-       
-    }
+#buttons a {
+    margin-bottom: 5%;
+    width: 156px;
+    height: 48px;
+    padding-top: 0px;
+    font-size: 16px;
+}
     
 }
-@media only screen and (min-width: 901px) {
-    #logo {
-        font-size: 7.5em;
-    }
-    #buttons a {
-        margin-bottom: 6%;
-        width: 248px;
-        height: 83px;
-        font-size: 31px;
-        padding-top: 12px;
-    }
+@media only screen and (min-width: 1025px) {
+
     #logo{
-        font-size:5.5em;
+        font-size:3em;
     }
     #mainpageCon{
-        width:70%;
+        width:200px;
     }
     #title {
-        font-size: 4.5em;
+    font-size: 2em;
+    margin: -9px;
+    }
+    #buttons{
+        width:200px;
+    }
+    #buttons a{
+        width: 153px;
+        height: 50px;
+        font-size: 12px;
+    }
+    #avatar{
+        height:230px;
+        margin-bottom:22px;
+    }
+    img{
+        width:150px;
+    }
+}
+/**for ipad and table view*/
+@media only screen and (max-width:1024px) and (min-width: 901px) {
+    #logo {
+        font-size: 5.5em;
     }
 
+   
+    #mainpageCon{
+        width:200px;
+    }
+    #title {
+        font-size: 3.5em;
+    }
+    #buttons{
+        width:200px;
+       
+    }
+    #buttons a {
+        height: 56px;
+        font-size: 17px;
+        margin-bottom:20px;
+        width:162px;
+        }
 }
