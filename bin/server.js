@@ -86,113 +86,113 @@ function onListening() {
 }
 
 //--------------------------------------------------------Game code------------------------------------------------------------
-const self = this;
-const maxPlayers = 4;
-const players = [];
-let currentRoundCard;
+// const self = this;
+// const maxPlayers = 4;
+// const players = [];
+// let currentRoundCard;
 
-// setInterval(() => {
-//   console.log(JSON.stringify(players));
-// }, 5000);
-const dummycards = [
-  { question: "1 + 1 = ?", answer: "2" },
-  { question: "9 + 1 = ?", answer: "10" },
-  { question: "5 + 1 = ?", answer: "6" },
-  { question: "8 x 3", answer: "24" }
-];
+// // setInterval(() => {
+// //   console.log(JSON.stringify(players));
+// // }, 5000);
+// const dummycards = [
+//   { question: "1 + 1 = ?", answer: "2" },
+//   { question: "9 + 1 = ?", answer: "10" },
+//   { question: "5 + 1 = ?", answer: "6" },
+//   { question: "8 x 3", answer: "24" }
+// ];
 
-// Setting up the server to client connection
-io.on("connection", function(socket) {
-  socket.emit("flashcards", dummycards);
-  // cancel if at max capacity
-  if (players.length >= maxPlayers) {
-    return socket.disconnect();
-  }
+// // Setting up the server to client connection
+// io.on("connection", function(socket) {
+//   socket.emit("flashcards", dummycards);
+//   // cancel if at max capacity
+//   if (players.length >= maxPlayers) {
+//     return socket.disconnect();
+//   }
 
-  console.log("A user connected: " + socket.id);
+//   console.log("A user connected: " + socket.id);
 
-  players.push({
-    playerId: socket.id,
-    wrongAnswers: 0,
-    correctAnswers: 0,
-    answeredRound: false
-  });
+//   players.push({
+//     playerId: socket.id,
+//     wrongAnswers: 0,
+//     correctAnswers: 0,
+//     answeredRound: false
+//   });
 
-  // send all players to requesting user
-  socket.on("currentPlayers", () => {
-    socket.emit("currentPlayers", players);
-  });
+//   // send all players to requesting user
+//   socket.on("currentPlayers", () => {
+//     socket.emit("currentPlayers", players);
+//   });
 
-  // update all other players of the new player
-  socket.broadcast.emit(
-    "newPlayer",
-    players.find(player => player.playerId === socket.id)
-  );
+//   // update all other players of the new player
+//   socket.broadcast.emit(
+//     "newPlayer",
+//     players.find(player => player.playerId === socket.id)
+//   );
 
-  //user disconnected, broadcast to all other users and remove from list
-  socket.on("disconnect", function() {
-    // remove player from list
-    let removedPlayer;
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].playerId === socket.id) {
-        removedPlayer = players.splice(i, 1);
-        break;
-      }
-    }
+//   //user disconnected, broadcast to all other users and remove from list
+//   socket.on("disconnect", function() {
+//     // remove player from list
+//     let removedPlayer;
+//     for (let i = 0; i < players.length; i++) {
+//       if (players[i].playerId === socket.id) {
+//         removedPlayer = players.splice(i, 1);
+//         break;
+//       }
+//     }
 
-    console.log("removed player: " + JSON.stringify(removedPlayer));
-    // find and let all other players know
-    if (removedPlayer) {
-      socket.broadcast.emit("removePlayer", removedPlayer);
-      console.log("broadcast");
-    }
+//     console.log("removed player: " + JSON.stringify(removedPlayer));
+//     // find and let all other players know
+//     if (removedPlayer) {
+//       socket.broadcast.emit("removePlayer", removedPlayer);
+//       console.log("broadcast");
+//     }
 
-    socket.disconnect();
-  });
+//     socket.disconnect();
+//   });
 
-  socket.on("me", function() {
-    socket.emit("me", players.find(player => player.playerId === socket.id));
-  });
+//   socket.on("me", function() {
+//     socket.emit("me", players.find(player => player.playerId === socket.id));
+//   });
 
-  socket.on("playerAnswered", function(info) {
-    // { playerId: something.plareId, answer: "some answer to a question"}
+//   socket.on("playerAnswered", function(info) {
+//     // { playerId: something.plareId, answer: "some answer to a question"}
 
-    let player = (players.find(
-      player => info.playerId,
-      playerInfo.playerId
-    ).answeredRound = true);
+//     let player = (players.find(
+//       player => info.playerId,
+//       playerInfo.playerId
+//     ).answeredRound = true);
 
-    if (info.answer === currentRoundCard.answer) {
-      player.correctAnswers++;
-    } else {
-      player.wrongAnswers++;
-    }
+//     if (info.answer === currentRoundCard.answer) {
+//       player.correctAnswers++;
+//     } else {
+//       player.wrongAnswers++;
+//     }
 
-    socket.broadcast.emit("playerAnswered", player.playerId);
-  });
+//     socket.broadcast.emit("playerAnswered", player.playerId);
+//   });
 
-  socket.on("playerJump", () => {
-    socket.broadcast.emit("playerJump", socket.id);
-  });
+//   socket.on("playerJump", () => {
+//     socket.broadcast.emit("playerJump", socket.id);
+//   });
 
-  ////////////////////////////////////////// test code
-  let roundInfo = {
-    question: "What is Stella's first name",
-    answers: ["Jessica", "Rose", "Stella", "Hannah"]
-  };
-  //////////////////////////////////////////////////////
+//   ////////////////////////////////////////// test code
+//   let roundInfo = {
+//     question: "What is Stella's first name",
+//     answers: ["Jessica", "Rose", "Stella", "Hannah"]
+//   };
+//   //////////////////////////////////////////////////////
 
-  setInterval(() => {
-    socket.broadcast.emit("startRound", roundInfo);
-  }, 5000);
-});
+//   setInterval(() => {
+//     socket.broadcast.emit("startRound", roundInfo);
+//   }, 5000);
+// });
 
-function printPlayers(coordinates) {
-  for (let i = 0; i < coordinates.length; i++) {
-    // ???????????????
-    console.log(coordinates[i].isTaken);
-  }
-}
+// function printPlayers(coordinates) {
+//   for (let i = 0; i < coordinates.length; i++) {
+//     // ???????????????
+//     console.log(coordinates[i].isTaken);
+//   }
+// }
 
 // hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 //   if (Object.keys(io.sockets.sockets).length <= numberOfPlayers) {
