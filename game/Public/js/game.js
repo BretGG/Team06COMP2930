@@ -91,10 +91,6 @@ function create() {
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
   this.socket.on("gameOver", updatePlayerScoreHeight);
-  //   this.socket.on("drop", id=>
-  //   dropPlayer(id.playerId)
-  //
-  // );
 
   this.socket.on(
     "me",
@@ -130,26 +126,10 @@ function updateStatePosition(player) {
   playerState.setY(player.y - playerState.height - 30);
 }
 
-// function gameOver(data) {
-//
-//   for (let i = 0; i < players.length; i++) {
-//     console.log(players[i], ": player[i].wrongAnswers");
-//     self.tweens.add({
-//       targets: [players[i].supportingPlatform],
-//       y: 400 + 50 * players[i].wrongAnswers,
-//       ease: "Power4",
-//       duration: 1000,
-//       repeat: 0
-//     });
-//   }
-//
-//
-//
-// }
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
   gameStarted = true;
-
+  scoreAndPlayer();
   // Other round start stuff, reset game objects
   console.log("startRound() in game.js");
   setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
@@ -211,10 +191,6 @@ function endRound(roundInfo) {
     console.log("RoundInfo: " + JSON.stringify(roundInfo));
 
 
-    // for (let o of roundInfo) {
-    //   dropPlayer(o.players.playerId, o.players.wrongAnswers)
-    // }
-
 
     // Slide correct answer card to center
     // if (card.text.text === roundInfo.answer) {
@@ -258,12 +234,6 @@ function endRound(roundInfo) {
   updatePlayerValues(roundInfo);
 
   updatePlayerScoreHeight();
-}
-
-function dropPlayer(id) {
-  let player = players.find((e) => e.playerId === id);
-  console.log("dropping this player: ", player.playerId);
-  player.supportingPlatform.y -= -50;
 }
 
 function updatePlayerValues(data) {
@@ -548,7 +518,20 @@ function displayAnswers(answers) {
 
 // Add text to the screen for player score
 function scoreAndPlayer() {
-  scoreText = this.add.text(16, 16, "score: 0", {
+
+  //
+  // if (scoreText) {
+  //   scoreText.destroy();
+  // }
+
+  let me = players.find(player => player.playerId === mainPlayer.playerId);
+  console.log("Me, players.correctAnswers ", me.correctAnswers);
+
+  let score = me.correctAnswers * 90;
+
+  let scoreBoard = "Score: " + score;
+
+  let scoreText = self.add.text(16, 16, scoreBoard, {
     fontSize: "32px",
     fill: "#000"
   });
