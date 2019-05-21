@@ -34,20 +34,14 @@ router.put("/:selectedItem", async (req, res) => {
   // Check if they have the points
   if(user.points > item.cost){
     user.points -= item.cost;
-    await user.save();
     item.owned = true;
     item.cost = 0;
     await item.save();
+    await user.save();
     res.send(item);
   } else {
     res.status(400).send();
   }
-
-  // buy it and respond yay + info
-
-  // OR YOU BROKE, GET GOOD
-
-  // or else 
 
 });
 

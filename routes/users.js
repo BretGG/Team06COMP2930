@@ -39,7 +39,6 @@ router.post("/", async (req, res) => {
   user.cosmetics.activePlatform = "../images/platform/default.png";
   user.cosmetics.activeBackground = "../images/background/default.png";
   var cosmetic = user.cosmetics;
-  console.log("cosmetic");
   await user.save();
   debug("Creating user: " + JSON.stringify(user));
   res.send(_.pick(user, ["username", "email"]));

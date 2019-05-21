@@ -27,13 +27,23 @@ $(document).ready(() => {
     $("#points").text(user.points);
   }
 
-
-  /** Calling setProfileInfo function */
-  getUserInfo(setPointBalance);
+  function updateCosmetics(){
+    $.ajax({
+      type: "get",
+      url: "/users/updateCosmetics",
+      success: function(data) {
+        $("#avatar").children("img").prop("src", data.activeAvatar);
+        $("#avatar").css("background-image", data.activePlatform);
+        $("html").css("background-image", data.activeBackground);
+      },
+      error: function(e) {
+        console.log(e.responseText);
+      }
+    });
+  }
 
   /** When user attempts to buy an item */
   $("#buy").click(() => {
-    console.log("Attempting to buy an item");
       $.ajax({
         url: `/items/${selectedItem}`,
         dataType: "json",
@@ -52,9 +62,8 @@ $(document).ready(() => {
 
   /** On page load, plays avatar animation */
   window.onload = function() {
-    $("#char").prop("src", localStorage.getItem("avatar"));
-    $("#char").css("background-image", localStorage.getItem("platform"));
-    $("html").css("background-image", localStorage.getItem("background"));
+    updateCosmetics();
+    getUserInfo(setPointBalance);
     $("#avatar").toggleClass("bounceIn");
     $("#shopAvatar").trigger("click");
   };

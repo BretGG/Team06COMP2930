@@ -8,20 +8,16 @@ $(document).ready(() => {
 
   /** On page load, plays avatar animation */
   window.onload = function() {
-    // updateCosmetics();
+    updateCosmetics();
     $("#avatar").toggleClass("bounceIn");
   };
 
   function updateCosmetics(){
-    console.log("CLICK");
     $.ajax({
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        console.log(data.activePlatform);
         $("#avatar").children("img").prop("src", data.activeAvatar);
-        console.log(data.activePlatform)
-        console.log(data.activeBackground)
         $("#avatar").css("background-image", data.activePlatform);
         $("html").css("background-image", data.activeBackground);
       },
@@ -72,15 +68,11 @@ $(document).ready(() => {
 
   /** Takes user back to signup/signin page */
   $("#logout").click(() => {
-    updateCosmetics();
-    // window.location.href = "/";
+    window.location.href = "/";
   });
 
   /** Takes user back to shop page */
   $("#shop").click(() => {
-    localStorage.setItem("avatar", $("#avatar").children("img").prop("src"));
-    localStorage.setItem("platform", $("#avatar").css("background-image"));
-    localStorage.setItem("background", $("html").css("background-image"));
     window.location.href = "/shop";
   });
 
