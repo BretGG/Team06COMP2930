@@ -3,10 +3,10 @@ const router = express.Router();
 const path = require("path");
 const debug = require("debug")("comp2930-team2:server");
 const _ = require("lodash");
-const {
-  addSession,
-  getSession
-} = require("../src/gameConnection/sessionsManager");
+const jwt = require("jsonwebtoken");
+const { User } = require("../src/models/user");
+const app = require("../app");
+const io = require("socket.io")(app);
 
 /* Example session/game object:
 
@@ -31,13 +31,16 @@ router.get("/", (req, res) => {
 });
 
 /* POST to create new game session */
-router.post("/", (req, res) => {
-  const lobby = _.pick(req.body, [
-    "gameType",
-    "owner",
-    "sessionId",
-    "sessionPass"
-  ]);
+router.post("/", async (req, res) => {
+  var token = req.get("auth-token");
+  if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
+  const decode = jwt.verify(token, "FiveAlive");
+  token = jwt.decode(token);
+
+  const user = await User.findById(token._id).select("-password");
+  if (!user) return res.status(400).send("Uh Oh! You dont exist!");
+
+  const lobby = _.pick(req.body, ["gameType", "sessionId", "sessionPass"]);
 
   // Check if session id is taken
   if (lobbies.get(lobby.sessionId)) {
@@ -45,15 +48,24 @@ router.post("/", (req, res) => {
   }
 
   // Create the players array and add the owner to that array
+  lobby.owner = user._id;
   lobby.players = [];
   lobby.players.push(lobby.owner);
-  lobbies.set(gameSessionInfo.sessionId, gameSessionInfo);
+  lobbies.set(lobby.sessionId, lobby);
 
-  res.send(gameSessionInfo);
+  console.log("Creating a new session: " + lobby);
+
+  // Create socket namespace
+  let socket = io.of("/" + lobby.sessionId);
+  socket.on("connection", socket => {
+    console.log("new user");
+  });
+
+  res.send(lobby);
 });
 
 // Join a lobby
-router.put("/", (req, res) => {
+router.put("/", async (req, res) => {
   var token = req.get("auth-token");
   if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
   const decode = jwt.verify(token, "FiveAlive");
@@ -76,7 +88,7 @@ router.put("/", (req, res) => {
     res.status(400).send("Invalid session password");
 
   // Add user to the lobby and return lobby info
-  lobby.players.push( { playerId: user._id, username: user.username } );
+  lobby.players.push({ playerId: user._id, username: user.username });
   return res.send(lobby.players);
 });
 

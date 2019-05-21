@@ -1,7 +1,32 @@
 $(document).ready(() => {
-	/**Takes you back to the main page */
-    $("#back").click(() => {
-    window.location.href="main";
-	});
+  $.ajaxSetup({
+    headers: {
+      "auth-token": localStorage.getItem("auth-token")
+    }
+  });
 
+  /**Takes you back to the main page */
+  $("#back").click(() => {
+    window.location.href = "main";
+  });
+
+  /** Create the new game lobby */
+  $("#submit").click(() => {
+    $.ajax({
+      type: "post",
+      url: "/game",
+      data: {
+        sessionId: $("#roomNo").val(),
+        sessionPass: $("#roomPass").val(),
+        gameType: "no yet implemented"
+      },
+      success: function(data) {},
+      error: function(err) {
+        M.toast({
+          html: `${err.responseText}`,
+          classes: "red"
+        });
+      }
+    });
+  });
 });

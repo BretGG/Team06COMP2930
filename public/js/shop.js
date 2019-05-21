@@ -181,7 +181,7 @@ $(document).ready(() => {
   }
 
   $("#shopAvatar").click(() => {
-    console.log("CLICK!!!")
+    console.log("CLICK!!!");
     $("#buy").addClass("disabled");
     $("#shopPlatform").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#26a69a");
@@ -207,10 +207,10 @@ $(document).ready(() => {
 
   // Calling all page setup functions
   getUserInfo(user => {
-    currentUserInfo = user
-      setPointBalance(user);
-      updateCosmetics();
-      $("#avatar").toggleClass("bounceIn");
-      $("#shopAvatar").trigger("click");
+    currentUserInfo = user;
+    setPointBalance(user);
+    updateCosmetics();
+    $("#avatar").toggleClass("bounceIn");
+    $("#shopAvatar").trigger("click");
   });
 });
