@@ -1,8 +1,5 @@
 // TODO: Create button is gone when the screen width is smaller than 388px
 
-var question = ["1", "2", "3", "54", "324"];
-var answer = ["sad", "dad", "da", "ba", "saa"];
-
 $(document).ready(() => {
     // setting encrypted and secure user token
     $.ajaxSetup({
@@ -39,10 +36,10 @@ $(document).ready(() => {
         window.location.href = "main";
     });
 
-    function updateMessage(message, color){
-        $('.toast').css('background-color', color);
-            M.toast({html: message});
-    }
+    // function updateMessage(message, color){
+    //     $('.toast').css('background-color', color);
+    //     M.toast({html: message});
+    // }
 
     function getDeckList(callback) {
         $.ajax({
@@ -167,7 +164,7 @@ $(document).ready(() => {
     $("#submitLeft").click(function() {
 
         if (!$('select#creCate').val() || !$('#deckName').val()) {
-            updateMessage('Category and Deck must be set!!!', '#26a69a');
+                M.toast({html: 'Category and Deck must be set!!!', classes: 'redcolor'});
         } else {
             if ($('select#creDeck').val() == 'createnewdeck') {
                 //create a deck first
@@ -193,13 +190,11 @@ $(document).ready(() => {
                                 deck: deck._id //store deckId
                             },
                             success: function(card) {
-                                // something.html("Card successfully added. Check under My Cards");
-                                M.toast({html: 'Card successfully added. Check under My Cards'});
+                                updateMessage('Card successfully added. Check under My Cards', '#26a69a');
                                 console.log("Card Created: " + JSON.stringify(card));
 
                                 $("#question").text("");
                                 document.getElementById("answer").setAttribute('value', "");
-                                $("#status").fadeOut().delay(3000).text("");
 
                             },
                             error: err => {
@@ -225,7 +220,7 @@ $(document).ready(() => {
                         deck: $('select#creDeck').val() //store deckId
                     },
                     success: function(card) {
-                        M.toast({html: 'Card successfully added. Check under My Cards'});
+                        updateMessage('Card successfully added. Check under My Cards', '#26a69a');
                         console.log(JSON.stringify(card));
                         document.getElementById("question").setAttribute('value', "");
                         document.getElementById("answer").setAttribute('value', "");
