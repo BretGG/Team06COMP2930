@@ -5,7 +5,6 @@ const { User, validate } = require("../src/models/user");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const { Item } = require("../src/models/item");
-
 /*
 
 This file is the router for handling user connections (creating, updating, removing)
@@ -39,8 +38,9 @@ router.post("/", async (req, res) => {
   user.cosmetics.activePlatform = "../images/platform/default.png";
   user.cosmetics.activeBackground = "../images/background/default.png";
 
-  //WHY WONT THIS LINE WORK?!?!?
-  // await Item.find().forEach( function(e){User.items.insert(e)} );
+  let items = await Item.find({});
+  user.items = items;
+
   await user.save();
   debug("Creating user: " + JSON.stringify(user));
   res.send(_.pick(user, ["username", "email"]));

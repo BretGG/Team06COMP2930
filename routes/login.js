@@ -75,13 +75,8 @@ router.get("/me", async (req, res) => {
   const decode = jwt.verify(token, "FiveAlive");
   token = jwt.decode(token);
 
-  console.log(
-    `Request for me from user ${token._id} at ${req.connection.remoteAddress}`
-  );
-
   const user = await User.findById(token._id).select("-password");
-  console.log(JSON.stringify(user));
-
+  
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
   console.log(`Returning user ${user._id} to ${req.connection.remoteAddress}`);
   res.send(user);
