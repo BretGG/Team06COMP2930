@@ -38,6 +38,8 @@ let platforms = [];
 let states = [];
 let answerCards = [];
 let gameStarted = false;
+let score = 0;
+let scoreText;
 
 // var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
 
@@ -100,6 +102,7 @@ function preload() {
   //   }
 }
 
+
 function create() {
   this.socket = io();
   self = this;
@@ -122,12 +125,13 @@ function create() {
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
-  this.socket.on("gameOver", updatePlayerScoreHeight);
+  // this.socket.on("gameOver", updatePlayerScoreHeight);
   this.socket.on("gameOver", data => {
-    // mainPlayer.gameOver = true;
+
     let me = players.find(player => data.playerId === player.playerId);
     me.gameOver = true;
     console.log("game over. disable the player");
+    updatePlayerScoreHeight();
   });
   this.socket.on(
     "me",
@@ -137,23 +141,8 @@ function create() {
   this.socket.emit("currentPlayers");
   this.socket.emit("me");
   // -------------------------------------------------------------------------------------------------------
-}
-
-// One of the three main Phaser functions, this one gets called continuously
-function update() {
-  // Jumping player
-  if (cursor.space.isDown && mainPlayer.body.touching.down && gameStarted) {
-    mainPlayer.setVelocityY(-300);
-    this.socket.emit("playerJump");
-  }
-
-  //  scene.input.on('pointerdown', function(pointer){
-  //    var touchX = pointer.x;
-  //    var touchY = pointer.y;
-  // });
-
+  //Detects touch on mobile devices
   this.input.on('pointerup', (pointer) => {
-
     if (mainPlayer.body.touching.down && gameStarted) {
       mainPlayer.setVelocityY(-300);
       this.socket.emit("playerJump");
@@ -164,17 +153,29 @@ function update() {
     }
   });
 
-  // this.input.on('pointerdown', function(){
-  //               player.setVelocityX(-160);
-  //               player.anims.play('left', true);
-  //           }, this);
-  //Ready button
-  // if (this.readyKey.isDown && !gameStarted) {
+
+
+}
+
+
+
+// One of the three main Phaser functions, this one gets called continuously
+
+
+function update() {
+
+  // Jumping player
+  if (cursor.space.isDown && mainPlayer.body.touching.down && gameStarted) {
+    mainPlayer.setVelocityY(-300);
+    this.socket.emit("playerJump");
+  }
+
   if ((cursor.space.isDown || this.readyKey.isDown) && !gameStarted) {
     this.socket.emit("playerStateChange", {
       state: "ready"
     });
   }
+
   // update each state position
   for (let player of players) {
     updateStatePosition(player);
@@ -189,21 +190,29 @@ function updateStatePosition(player) {
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
 
-  if (!mainPlayer.gameOver) {
-    // if (!mainPlayer.gameOver) {
-    gameStarted = true;
-    scoreAndPlayer();
-    // Other round start stuff, reset game objects
-    console.log("startRound() in game.js");
-    setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
-    self.socket.emit("playerStateChange", {
-      state: "questionMark"
-    });
-    displayAnswers(roundInfo.answer);
-    displayQuestion(roundInfo.question);
-    // }
-  }
+  // if (!mainPlayer.gameOver) {
+  // if (!mainPlayer.gameOver) {
+  gameStarted = true;
+  scoreAndPlayer();
+  // Other round start stuff, reset game objects
+  console.log("startRound() in game.js");
+  setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
+  self.socket.emit("playerStateChange", {
+    state: "questionMark"
+  });
+  displayAnswers(roundInfo.answer);
+  displayQuestion(roundInfo.question);
+  // }
+  // } else {
+
+  // updatePlayerScoreHeight();
+
+  // setInterval(() => alert("GAME OVER "), 1000);
+  // }
+
+
 }
+
 
 // Make the player with the given id jump
 function playerJump(playerId) {
@@ -264,6 +273,7 @@ function endRound(roundInfo) {
       self.tweens.add({
         targets: card,
         x: 400,
+        y: 480 + 70,
         ease: "Quint",
         duration: 3000,
         repeat: 0
@@ -271,6 +281,7 @@ function endRound(roundInfo) {
       self.tweens.add({
         targets: card.text,
         x: 400 - card.text.width / 2,
+        y: 480 + 70 - 18,
         ease: "Quint",
         duration: 3000,
         repeat: 0
@@ -504,6 +515,9 @@ function displayQuestion(questionInfo) {
 
 // Creates the display for all answers
 function displayAnswers(answers) {
+
+  let cardX = [400 - 135, 400 + 135, 400 - 135, 400 + 135];
+  let cardY = [480, 480, 480 + 70, 480 + 70];
   // Remove all old answer cards
   for (let card of answerCards) {
     card.text.destroy();
@@ -514,7 +528,6 @@ function displayAnswers(answers) {
   // Start off screen
   for (let answer of answers) {
     let card = self.add.image(-100, 550, "cardFront");
-
     // Creation of text and adding to group
     card.text = self.add.text(0, 0, answer, {
       fontFamily: "Arial",
@@ -552,13 +565,15 @@ function displayAnswers(answers) {
 
   // Cards sliding in animation
   if (answerCards.length > 0) {
-    for (let card of answerCards) {
+
+    // for (let card of answerCards) {
+    for (let i = 0; i < 4; i++) {
+
       // Slide in card front
       self.tweens.add({
-        targets: card,
-        x: spawnPoints[answerCards.length - 1][
-          answerCards.findIndex(holder => card === holder)
-        ],
+        targets: answerCards[i],
+        x: cardX[i],
+        y: cardY[i],
         ease: "Quint",
         duration: 3000,
         repeat: 0
@@ -566,36 +581,38 @@ function displayAnswers(answers) {
 
       // Slide in card text
       self.tweens.add({
-        targets: card.text,
-        x: spawnPoints[answerCards.length - 1][
-            answerCards.findIndex(holder => card === holder)
-          ] -
-          card.text.width / 2,
+        targets: answerCards[i].text,
+        x: cardX[i],
+        y: cardY[i] - 18,
         ease: "Quint",
         duration: 3000,
         repeat: 0
       });
+
     }
   }
+
+
 }
 
 // Add text to the screen for player score
 function scoreAndPlayer() {
 
-  //
-  // if (scoreText) {
-  //   scoreText.destroy();
-  // }
+
+  if (scoreText) {
+    scoreText.destroy();
+  }
 
   let me = players.find(player => player.playerId === mainPlayer.playerId);
   console.log("Me, players.correctAnswers ", me.correctAnswers);
 
-  let score = me.correctAnswers * 90;
+  score = me.correctAnswers * 90;
 
   let scoreBoard = "Score: " + score;
 
-  let scoreText = self.add.text(16, 16, scoreBoard, {
-    fontSize: "32px",
+  scoreText = self.add.text(16, 16, scoreBoard, {
+    fontFamily: "Macondo Swash Caps",
+    fontSize: "40px",
     fill: "#000"
   });
 }
