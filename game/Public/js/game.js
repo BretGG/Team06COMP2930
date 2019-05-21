@@ -50,6 +50,16 @@ const spawnPoints = [
   [160, 320, 480, 640]
 ];
 
+
+screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+
+if (screen.lockOrientationUniversal("landscape-primary")) {
+  // Orientation was locked
+} else {
+  // Orientation lock failed
+  console.log("failed");
+}
+
 function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
   this.load.image("exclamation", "../assets/character/exclamation.png");
@@ -68,25 +78,25 @@ function preload() {
     "../assets/backgrounds/uglyQuestionBackground.png"
   );
 
-  // this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-  this.scale.forceOrientation(false, true);
-  this.scale.enterIncorrectOrientation.add(handleIncorrect);
-  this.scale.leaveIncorrectOrientation.add(handleCorrect);
-
-}
-
-function handleIncorrect() {
-  if (!this.device.desktop) {
-    document.getElementById("gameDiv")
-      .style.display = "block";
-  }
-}
-
-function handleCorrect() {
-  if (!this.device.desktop) {
-    document.getElementById("gameDiv")
-      .style.display = "none";
-  }
+  //   // this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  //   this.scale.forceOrientation(false, true);
+  //   this.scale.enterIncorrectOrientation.add(handleIncorrect);
+  //   this.scale.leaveIncorrectOrientation.add(handleCorrect);
+  //
+  // }
+  //
+  // function handleIncorrect() {
+  //   if (!this.device.desktop) {
+  //     document.getElementById("gameDiv")
+  //       .style.display = "block";
+  //   }
+  // }
+  //
+  // function handleCorrect() {
+  //   if (!this.device.desktop) {
+  //     document.getElementById("gameDiv")
+  //       .style.display = "none";
+  //   }
 }
 
 function create() {
@@ -112,7 +122,10 @@ function create() {
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
   this.socket.on("gameOver", updatePlayerScoreHeight);
-
+  this.socket.on("gameOver", () => {
+    mainPlayer.gameOver = true;
+    console.log("game over. disable the player");
+  });
   this.socket.on(
     "me",
     me => (mainPlayer = players.find(player => player.playerId === me.playerId))
@@ -171,16 +184,18 @@ function updateStatePosition(player) {
 
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
-  gameStarted = true;
-  scoreAndPlayer();
-  // Other round start stuff, reset game objects
-  console.log("startRound() in game.js");
-  setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
-  self.socket.emit("playerStateChange", {
-    state: "questionMark"
-  });
-  displayAnswers(roundInfo.answer);
-  displayQuestion(roundInfo.question);
+  if (!mainPlayer.gameOver) {
+    gameStarted = true;
+    scoreAndPlayer();
+    // Other round start stuff, reset game objects
+    console.log("startRound() in game.js");
+    setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
+    self.socket.emit("playerStateChange", {
+      state: "questionMark"
+    });
+    displayAnswers(roundInfo.answer);
+    displayQuestion(roundInfo.question);
+  }
 }
 
 // Make the player with the given id jump
@@ -476,10 +491,6 @@ function displayQuestion(questionInfo) {
     .height / 2
   );
 
-  // Ignore gravity on all parts of question
-  // for (let thing of group.getChildren()) {
-  //   thing.body.allowGravity = false;
-  // }
 }
 
 // Creates the display for all answers
