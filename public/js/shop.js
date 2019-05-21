@@ -27,6 +27,22 @@ $(document).ready(() => {
     $("#points").text(user.points);
   }
 
+  function setUserActive(item) {
+    $.ajax({
+      type: "put",
+      url: `/users/${item.category}/${item._id}`,
+      success: function(data) {
+        M.toast({
+          html: `Equipped: ${data.name}`,
+          classes: "green"
+        });
+      },
+      err: function(err) {
+        console.log(err);
+      }
+    });
+  }
+
   function updateCosmetics() {
     $.ajax({
       type: "get",
@@ -61,6 +77,7 @@ $(document).ready(() => {
           html: `Purchased: ${data.name}`,
           classes: "blue"
         });
+        setUserActive(data);
       },
       error: function(err) {
         console.log("ERROR: ", err.responseText);
@@ -124,6 +141,7 @@ $(document).ready(() => {
         if (currentUserInfo.items.find(userItem => userItem === item._id)) {
           $("#buy").addClass("disabled");
           localStorage.setItem(item.category, item.imageLink);
+          setUserActive(item);
         } else {
           $("#buy").removeClass("disabled");
         }
@@ -135,6 +153,8 @@ $(document).ready(() => {
         } else if (item.category === "background") {
           $("html").css("background-image", `url(${item.imageLink})`);
         }
+
+        console.log(item);
 
         selectedItem = item._id;
       });
