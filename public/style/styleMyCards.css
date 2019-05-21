@@ -105,7 +105,7 @@ input {
 @media only screen and (max-width: 600px) {
     #toast-container {
         width: 100%;
-        bottom: 0%;
+        bottom: 3%;
     }
 }
 @media only screen and (min-width: 601px) and (max-width: 992px) {
@@ -124,23 +124,6 @@ input {
         width: 30%;
     }
 }
-@media only screen and (min-width: 1080px) and (max-width: 1500px) {
-    #toast-container {
-        position: absolute;
-        top:40%;
-        left:38%;
-        width: 24%;
-    }
-}
-@media screen and (min-width: 1501px){
-    #toast-container {
-        position: absolute;
-        top:20%;
-        left:44%;
-        width: 18%;
-    }
-}
-
 /** WIDTH RANGE FROM 500px to 799px */
 @media screen and (min-width: 500px) and (max-width: 799px){
   /**Changes size of div to match screen size*/
@@ -155,6 +138,12 @@ input {
   #cardsCon{
     height: 300px;
   }
+      #toast-container {
+          position: absolute;
+          top:20%;
+          left:44%;
+          width: 18%;
+      }
 }
 
 /** WIDTH RANGE FROM 1080px to 1500px */
@@ -163,6 +152,12 @@ input {
   #cardsCon{
     height: 300px;
   }
+      #toast-container {
+          position: absolute;
+          top:40%;
+          left:38%;
+          width: 24%;
+      }
 
 }
 

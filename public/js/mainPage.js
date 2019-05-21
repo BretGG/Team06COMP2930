@@ -11,7 +11,6 @@ $(document).ready(() => {
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        console.log("DATA: " + data.activeAvatar);
         $("#char").prop("src", data.activeAvatar.imageLink);
         $("#avatar").css(
           "background-image",
@@ -21,6 +20,7 @@ $(document).ready(() => {
           "background-image",
           `url(${data.activeBackground.imageLink})`
         );
+        $("#avatar").toggleClass("bounceIn");
       },
       error: function(e) {
         console.log(e.responseText);
@@ -89,7 +89,8 @@ $(document).ready(() => {
     window.location.href = "/mycard";
   });
 
-  getUserInfo(setProfileInfo);
-  updateCosmetics();
-  $("#avatar").toggleClass("bounceIn");
+  getUserInfo(user => {
+    setProfileInfo(user);
+    updateCosmetics();
+  });
 });

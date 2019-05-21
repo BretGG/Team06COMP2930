@@ -14,6 +14,7 @@
   width:90%;    
   text-align: center;
 }
+
 #title{
     font-size:2em;
 }
@@ -72,10 +73,9 @@
 }
 @media only screen and (max-width:900px) and (min-width: 600px) {
     #buttons{
-        flex-direction: column;
-
+        flex-direction: row;
+    width: 345px;
         display:flex;
-        width:300px;
         flex-wrap:wrap;
         margin: 0 auto;
         align-items:center;
@@ -111,13 +111,16 @@
     margin: -9px;
     }
     #buttons{
-        width:200px;
+    flex-direction: row;
+    width: 522px;
+
     }
     #buttons a{
         width: 153px;
         height: 50px;
         font-size: 12px;
     }
+
     #avatar{
         height:230px;
         margin-bottom:22px;
