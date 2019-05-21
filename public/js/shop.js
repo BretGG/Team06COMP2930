@@ -107,6 +107,8 @@ $(document).ready(() => {
 
   function populateCarousel(items) {
     let innerHtml = "";
+
+    // Create display for each item
     for (let item of items) {
       innerHtml += `
         <div id=${item._id} class="carousel-item">
@@ -118,6 +120,7 @@ $(document).ready(() => {
 
     $("#slideAvatar").html(innerHtml);
 
+    // Set click interaction for each item
     for (let item of items) {
       $(`#${item._id}`).click(() => {
         if (currentUserInfo.items.find(userItem => userItem === item._id)) {
@@ -138,7 +141,13 @@ $(document).ready(() => {
         selectedItem = item._id;
       });
 
+      // Set image for each item and update price if they own it
       $(`#${item._id}`).css("background-image", `url(${item.shopIcon})`);
+      if (currentUserInfo.items.find(userItem => userItem === item._id)) {
+        $(`#${item._id}`)
+          .children("#cost4")
+          .text("Owned");
+      }
     }
 
     if ($(".carousel").hasClass("initialized")) {
