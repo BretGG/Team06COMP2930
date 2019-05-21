@@ -20,7 +20,7 @@ $(document).ready(() => {
           "background-image",
           `url(${data.activeBackground.imageLink})`
         );
-        $("#char").toggleClass("bounceIn");
+        $("#avatar").toggleClass("bounceIn");
       },
       error: function(e) {
         console.log(e.responseText);

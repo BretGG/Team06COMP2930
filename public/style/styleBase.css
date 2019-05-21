@@ -30,6 +30,43 @@ a {
   text-decoration: none;
 }
 
+.bounceIn {
+  animation-name: bounceIn;
+  animation-duration: 1s;
+}
+
+@keyframes bounceIn {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -1000px, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0);
+  }
+
+  75% {
+    transform: translate3d(0, -10px, 0);
+  }
+
+  90% {
+    transform: translate3d(0, 5px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 #title {
   font-family: "Dosis", sans-serif;
   font-kerning: 10px;
