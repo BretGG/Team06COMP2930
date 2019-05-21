@@ -19,6 +19,8 @@ const {
 
 */
 
+let lobbies = new Map();
+
 /* GET game home page. */
 // Probably  remove this because the game files will be served based on the post (create game)
 // and put (join game)
@@ -30,17 +32,29 @@ router.get("/", (req, res) => {
 
 /* POST to create new game session */
 router.post("/", (req, res) => {
-  debug("Request to make new game session");
-
-  const gameSessionInfo = _.pick(req.body, [
+  const lobby = _.pick(req.body, [
     "gameType",
     "owner",
     "sessionId",
     "sessionPass"
   ]);
 
-  // Pass game session Info to session manager to be created
-  addSession(gameSessionInfo);
+  // Check if session id is taken
+  if (lobbies.get(lobby.sessionId)) {
+    res.status(400).send("GameId taken");
+  }
+
+  // Create the players array and add the owner to that array
+  lobby.players = [];
+  lobby.players.push(lobby.owner);
+  lobbies.set(gameSessionInfo.sessionId, gameSessionInfo);
+
+  res.send(gameSessionInfo);
+});
+
+// Join a lobby
+router.put("/", (req, res) => {
+  const lobbyInfo = _.pick(req.body);
 });
 
 module.exports = router;
