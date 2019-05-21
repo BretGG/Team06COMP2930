@@ -128,11 +128,25 @@ a {
   font-size: 2.5em;
 }
 
-/** WIDTH RANGE FROM 1501px to infinity */
-@media screen and (min-width: 1501px) {
+/** WIDTH RANGE TO 450px */
+@media screen and (max-width: 450px) {
+  /**Changes main page contat to match screen size*/
+  #mainpagecon {
+    width: auto;
+  }
+}
+
+/** WIDTH RANGE FROM 373px to 499px */
+@media screen and (min-width: 373px) and (max-width: 499px){
+
+}
+
+
+/** WIDTH RANGE FROM 800px to 1079px */
+@media screen and (min-width: 800px) and (max-width: 1079px) {
   /**Changes font size to match screen size*/
   #logo {
-    font-size: 5.5em;
+    font-size: 3.5em;
   }
   .about {
     margin-top: 270px;
@@ -149,22 +163,13 @@ a {
     margin-top: 270px;
   }
 }
-
-/** WIDTH RANGE FROM 800px to 1079px */
-@media screen and (min-width: 800px) and (max-width: 1079px) {
+/** WIDTH RANGE FROM 1501px to infinity */
+@media screen and (min-width: 1501px) {
   /**Changes font size to match screen size*/
   #logo {
-    font-size: 3.5em;
+    font-size: 5.5em;
   }
   .about {
     margin-top: 270px;
-  }
-}
-
-/** WIDTH RANGE TO 450px */
-@media screen and (max-width: 450px) {
-  /**Changes main page contat to match screen size*/
-  #mainpagecon {
-    width: auto;
   }
 }
