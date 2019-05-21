@@ -57,6 +57,7 @@ $(document).ready(() => {
           "background-image",
           `url(${data.activeBackground.imageLink})`
         );
+        $("#avatar").toggleClass("bounceIn");
       },
       error: function(e) {
         console.log(e.responseText);
@@ -209,7 +210,6 @@ $(document).ready(() => {
     currentUserInfo = user
       setPointBalance(user);
       updateCosmetics();
-      $("#avatar").toggleClass("bounceIn");
       $("#shopAvatar").trigger("click");
   });
 });
