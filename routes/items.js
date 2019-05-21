@@ -10,6 +10,7 @@ router.get("/:category", async (req, res) => {
   res.send(items);
 });
 
+// Request to buy item
 router.put("/:selectedItem", async (req, res) => {
   // Finding the item
   console.log("Request to buy item: " + JSON.stringify(req.params));
@@ -31,14 +32,18 @@ router.put("/:selectedItem", async (req, res) => {
   console.log(user);
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
 
-  // Check if they have the points
+  // Check if they already own it
+  if (user.items.indexOf(item._id) != -1) {
+    return res.status(400).send("Already Purchased");
+  }
   if (user.points >= item.cost) {
+    // Check if they have the points
     user.points -= item.cost;
-    user.items.add(item._id);
+    user.items.push(item._id);
     await user.save();
     res.send(item);
   } else {
-    res.status(400).send("Insufficient Funds");
+    returnres.status(400).send("Insufficient Funds");
   }
 });
 
