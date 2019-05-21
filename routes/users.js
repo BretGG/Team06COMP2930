@@ -45,11 +45,17 @@ router.post("/", async (req, res) => {
     name: "Forest View",
     category: "background"
   });
+
+  console.log(defaultAvatar);
   // Should include error handling (i.e. can't find the default items)
 
   user.cosmetics.activeAvatar = defaultAvatar;
   user.cosmetics.activePlatform = defaultPlatform;
   user.cosmetics.activeBackground = defaultBackground;
+
+  user.items.push(defaultAvatar._id, defaultPlatform._id, defaultBackground._id);
+
+  console.log(user);
 
   await user.save();
   debug("Creating user: " + JSON.stringify(user));

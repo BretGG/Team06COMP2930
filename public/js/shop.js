@@ -149,7 +149,7 @@ $(document).ready(() => {
         if (item.category === "avatar") {
           $("#char").prop("src", item.imageLink);
         } else if (item.category === "platform") {
-          $("#char").css("background-image", `url(${item.imageLink})`);
+          $("#avatar").css("background-image", `url(${item.imageLink})`);
         } else if (item.category === "background") {
           $("html").css("background-image", `url(${item.imageLink})`);
         }
@@ -201,9 +201,9 @@ $(document).ready(() => {
   });
 
   // Calling all page setup functions
+  getUserInfo(user => (currentUserInfo = user));
   updateCosmetics();
   getUserInfo(setPointBalance);
-  getUserInfo(user => (currentUserInfo = user));
   $("#avatar").toggleClass("bounceIn");
   $("#shopAvatar").trigger("click");
 });

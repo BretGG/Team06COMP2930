@@ -11,17 +11,16 @@ $(document).ready(() => {
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        console.log(data.activeAvatar);
-        $(".char").prop("src", data.activeAvatar.imageLink);
-        $(".char").css(
+        console.log("DATA: " + data.activeAvatar);
+        $("#char").prop("src", data.activeAvatar.imageLink);
+        $("#avatar").css(
           "background-image",
-          `url(${data.activeBackground.imageLink})`
+          `url(${data.activePlatform.imageLink})`
         );
         $("html").css(
           "background-image",
           `url(${data.activeBackground.imageLink})`
         );
-        console.log(data.activeAvatar.imageLink);
       },
       error: function(e) {
         console.log(e.responseText);
