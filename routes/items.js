@@ -13,6 +13,8 @@ router.get("/category/:category", async (req, res) => {
 
 // Get item at given id
 router.get("/:itemId", async (req, res) => {
+  if (!req.params.itemId) return res.status(400).send("Invalid item id");
+
   let items = await Item.findById(req.params.itemId);
   if (!items) return res.status(404).send("No item with that Id");
   res.send(items);
@@ -51,7 +53,7 @@ router.put("/:selectedItem", async (req, res) => {
     await user.save();
     res.send(item);
   } else {
-    returnres.status(400).send("Insufficient Funds");
+    return res.status(400).send("Insufficient Funds");
   }
 });
 

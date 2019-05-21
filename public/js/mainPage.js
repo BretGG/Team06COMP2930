@@ -6,21 +6,34 @@ $(document).ready(() => {
     }
   });
 
-  /** On page load, plays avatar animation */
-  window.onload = function() {
-    updateCosmetics();
-    $("#avatar").toggleClass("bounceIn");
-  };
-
-  function updateCosmetics(){
+  function updateCosmetics() {
     $.ajax({
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        $("#avatar").children("img").prop("src", data.activeAvatar);
-        $("#avatar").css("background-image", data.activePlatform);
-        $("html").css("background-image", data.activeBackground);
+        getItem(data.activeAvatar, item => {
+          $("#avatar")
+            .children("img")
+            .prop("src", item.imageLink);
+        });
+        getItem(data.activeAvatar, item => {
+          $("html").css("background-image", item.imageLink);
+        });
+        getItem(data.activeAvatar, item => {
+          $("#avatar").css("background-image", item.imageLink);
+        });
       },
+      error: function(e) {
+        console.log(e.responseText);
+      }
+    });
+  }
+
+  function getItem(itemId, cb) {
+    $.ajax({
+      type: "get",
+      url: `/items/${itemId}`,
+      success: cb,
       error: function(e) {
         console.log(e.responseText);
       }
@@ -80,4 +93,8 @@ $(document).ready(() => {
   $("#myCards").click(() => {
     window.location.href = "/mycard";
   });
+
+  /** On page load, plays avatar animation */
+  updateCosmetics();
+  $("#avatar").toggleClass("bounceIn");
 });

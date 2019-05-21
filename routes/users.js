@@ -58,15 +58,13 @@ router.post("/", async (req, res) => {
   res.send(_.pick(user, ["username", "email"]));
 });
 
+// Set user skin for specified category
+
 router.get("/updateCosmetics", async (req, res) => {
   var token = req.get("auth-token");
   if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
   const decode = jwt.verify(token, "FiveAlive");
   token = jwt.decode(token);
-
-  console.log(
-    `Request for me from user ${token._id} at ${req.connection.remoteAddress}`
-  );
 
   const user = await User.findById(token._id).select("-password");
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
