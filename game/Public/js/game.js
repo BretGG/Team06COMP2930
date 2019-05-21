@@ -100,6 +100,7 @@ function preload() {
   //   }
 }
 
+
 function create() {
   this.socket = io();
   self = this;
@@ -137,23 +138,8 @@ function create() {
   this.socket.emit("currentPlayers");
   this.socket.emit("me");
   // -------------------------------------------------------------------------------------------------------
-}
-
-// One of the three main Phaser functions, this one gets called continuously
-function update() {
-  // Jumping player
-  if (cursor.space.isDown && mainPlayer.body.touching.down && gameStarted) {
-    mainPlayer.setVelocityY(-300);
-    this.socket.emit("playerJump");
-  }
-
-  //  scene.input.on('pointerdown', function(pointer){
-  //    var touchX = pointer.x;
-  //    var touchY = pointer.y;
-  // });
-
+  //Detects mouse click
   this.input.on('pointerup', (pointer) => {
-
     if (mainPlayer.body.touching.down && gameStarted) {
       mainPlayer.setVelocityY(-300);
       this.socket.emit("playerJump");
@@ -164,17 +150,29 @@ function update() {
     }
   });
 
-  // this.input.on('pointerdown', function(){
-  //               player.setVelocityX(-160);
-  //               player.anims.play('left', true);
-  //           }, this);
-  //Ready button
-  // if (this.readyKey.isDown && !gameStarted) {
+
+
+}
+
+
+
+// One of the three main Phaser functions, this one gets called continuously
+
+
+function update() {
+
+  // Jumping player
+  if (cursor.space.isDown && mainPlayer.body.touching.down && gameStarted) {
+    mainPlayer.setVelocityY(-300);
+    this.socket.emit("playerJump");
+  }
+
   if ((cursor.space.isDown || this.readyKey.isDown) && !gameStarted) {
     this.socket.emit("playerStateChange", {
       state: "ready"
     });
   }
+
   // update each state position
   for (let player of players) {
     updateStatePosition(player);
@@ -202,9 +200,14 @@ function startRound(roundInfo) {
     displayAnswers(roundInfo.answer);
     displayQuestion(roundInfo.question);
     // }
+  } else {
+    cleanup();
   }
 }
 
+function cleanup() {
+
+}
 // Make the player with the given id jump
 function playerJump(playerId) {
   players.find(player => player.playerId === playerId)
