@@ -13,7 +13,7 @@ const router = express.Router();
 
 Login is seperated from users so that we can use router.post.
 
-'post' is more secure than 'get' dues to post storing less information
+'post' is more secure than 'get' due to post storing less information
 
 */
 
@@ -33,11 +33,7 @@ router.post("/", async (req, res) => {
   user = await User.findOne({ username: user.username });
   if (!user) {
     // req.connection.remoteAddress will return ::1 if logging in from localhost
-    debug(
-      `Invalid login from: ${req.connection.remoteAddress} user: ${
-        user.username
-      }`
-    );
+    debug(`Invalid login from: ${req.connection.remoteAddress}`);
     return res.status(400).send("Invalid email or password.");
   }
 

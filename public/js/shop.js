@@ -1,5 +1,4 @@
 $(document).ready(() => {
-
   var selectedItem;
 
   $.ajaxSetup({
@@ -27,12 +26,14 @@ $(document).ready(() => {
     $("#points").text(user.points);
   }
 
-  function updateCosmetics(){
+  function updateCosmetics() {
     $.ajax({
       type: "get",
       url: "/users/updateCosmetics",
       success: function(data) {
-        $("#avatar").children("img").prop("src", data.activeAvatar);
+        $("#avatar")
+          .children("img")
+          .prop("src", data.activeAvatar);
         $("#avatar").css("background-image", data.activePlatform);
         $("html").css("background-image", data.activeBackground);
       },
@@ -44,20 +45,22 @@ $(document).ready(() => {
 
   /** When user attempts to buy an item */
   $("#buy").click(() => {
-      $.ajax({
-        url: `/items/${selectedItem}`,
-        dataType: "json",
-        type: "put",
-        success: function(data) {
-          console.log(data);
-          $(`#${data._id}`).children("#cost4").text("0");
-          $("#buy").addClass("disabled");
-          getUserInfo(setPointBalance);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.log("ERROR:", jqXHR, textStatus, errorThrown);
-        }
-      });
+    $.ajax({
+      url: `/items/${selectedItem}`,
+      dataType: "json",
+      type: "put",
+      success: function(data) {
+        console.log(data);
+        $(`#${data._id}`)
+          .children("#cost4")
+          .text("0");
+        $("#buy").addClass("disabled");
+        getUserInfo(setPointBalance);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log("ERROR:", jqXHR, textStatus, errorThrown);
+      }
+    });
   });
 
   /** On page load, plays avatar animation */
@@ -114,7 +117,7 @@ $(document).ready(() => {
 
     for (let item of items) {
       $(`#${item._id}`).click(() => {
-        if(item.owned){
+        if (item.owned) {
           $("#buy").addClass("disabled");
           localStorage.setItem(item.category, item.imageLink);
         } else {
@@ -123,17 +126,15 @@ $(document).ready(() => {
 
         if (item.category === "avatar") {
           $("#char").prop("src", item.imageLink);
-        }
-        else if (item.category === "platform"){
+        } else if (item.category === "platform") {
           $("#char").css("background-image", `url(${item.imageLink})`);
-        }
-        else if (item.category === "background"){
+        } else if (item.category === "background") {
           $("html").css("background-image", `url(${item.imageLink})`);
         }
 
         selectedItem = item._id;
       });
-      
+
       $(`#${item._id}`).css("background-image", `url(${item.shopIcon})`);
     }
 
@@ -150,7 +151,7 @@ $(document).ready(() => {
     $("#shopBackground").css("background-color", "#26a69a");
     $("#shopAvatar").css("background-color", "#55B1C1");
     getItems("avatar", populateCarousel);
-    $("#slideAvatar").toggleClass("")
+    $("#slideAvatar").toggleClass("");
   });
 
   $("#shopPlatform").click(() => {
@@ -169,4 +170,5 @@ $(document).ready(() => {
     getItems("background", populateCarousel);
   });
 
+  $("#shopAvatar").trigger("click");
 });
