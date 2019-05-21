@@ -5,7 +5,6 @@ const { User, validate } = require("../src/models/user");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const { Item } = require("../src/models/item");
-
 /*
 
 This file is the router for handling user connections (creating, updating, removing)
@@ -52,7 +51,6 @@ router.post("/", async (req, res) => {
   user.cosmetics.activePlatform = defaultPlatform;
   user.cosmetics.activeBackground = defaultBackground;
 
-  // Saving the user to the database
   await user.save();
   debug("Creating user: " + JSON.stringify(user));
   res.send(_.pick(user, ["username", "email"]));
