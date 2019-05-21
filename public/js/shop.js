@@ -1,5 +1,6 @@
 $(document).ready(() => {
-  var selectedItem;
+  let selectedItem;
+  let currentUserInfo;
 
   $.ajaxSetup({
     headers: {
@@ -25,6 +26,8 @@ $(document).ready(() => {
   function setPointBalance(user) {
     $("#points").text(user.points);
   }
+
+  function setPurchasedItems() {}
 
   function updateCosmetics() {
     $.ajax({
@@ -55,16 +58,17 @@ $(document).ready(() => {
           .text("Owned");
         $("#buy").addClass("disabled");
         getUserInfo(setPointBalance);
+        getUserInfo(userInfo => (currentUserInfo.items = userInfo.items));
         M.toast({
           html: `Purchased: ${data.name}`,
-          classes: "bluecolor"
+          classes: "blue"
         });
       },
       error: function(err) {
         console.log("ERROR: ", err.responseText);
         M.toast({
           html: err.responseText,
-          classes: "redcolor"
+          classes: "red"
         });
       }
     });
@@ -116,7 +120,7 @@ $(document).ready(() => {
 
     for (let item of items) {
       $(`#${item._id}`).click(() => {
-        if (item.owned) {
+        if (currentUserInfo.items.find(userItem => userItem === item._id)) {
           $("#buy").addClass("disabled");
           localStorage.setItem(item.category, item.imageLink);
         } else {
@@ -172,6 +176,7 @@ $(document).ready(() => {
   // Calling all page setup functions
   updateCosmetics();
   getUserInfo(setPointBalance);
+  getUserInfo(user => (currentUserInfo = user));
   $("#avatar").toggleClass("bounceIn");
   $("#shopAvatar").trigger("click");
 });

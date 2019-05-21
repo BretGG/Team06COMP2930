@@ -12,8 +12,7 @@ const itemSchema = new mongoose.Schema({
   name: String,
   category: String,
   imageLink: String,
-  shopIcon: String,
-  owned: Boolean
+  shopIcon: String
 });
 
 exports.Item = mongoose.model("Item", itemSchema);
