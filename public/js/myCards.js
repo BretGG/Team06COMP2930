@@ -17,10 +17,11 @@ $(document).ready(() => {
 
     /** Switches container from Create Cards to My Cards */
     $(".headerRight").click(() => {
-        $('#headerLeftCon').hide();
-        $('#headerRightCon').show();
-        $(".headerLeft").css("border-bottom", "none");
-        $(".headerRight").css("border-bottom", "2px solid #42A164");
+        window.location.href = "mycard";
+        // $('#headerLeftCon').hide();
+        // $('#headerRightCon').show();
+        // $(".headerLeft").css("border-bottom", "none");
+        // $(".headerRight").css("border-bottom", "2px solid #42A164");
     });
 
     /** Switches container from My Cards to Create Cards */
@@ -38,6 +39,7 @@ $(document).ready(() => {
     function createCard(cardData) {
         let card = $('<div class="card"></div>');
         let cardcategory = $('<span class="cardC">Category: ' + cardData.category + '</span>');
+        // let editCardDeck = allMyDecks.filter(deck => deck._id == editCard[0].deck);
 
         let cardquestion = $('<p class="cardQ">' + cardData.question + '</p>');
 
@@ -58,9 +60,40 @@ $(document).ready(() => {
     }
 
     $(document).on("click", ".editting", function() {
-        let editdId = $(this).get(0).getAttribute('value');
-        $('#editcard').text($(this).get(0).getAttribute('value'));
-        // var editCon =
+        let editCard = allMyCards.filter(card => card._id == $(this).get(0).getAttribute('value'));
+
+        $('#editCate').val(editCard[0].category);
+        $('#editCate').formSelect();
+
+        $('#editDeck').val(editCard[0].deck);
+        $('#editDeck').formSelect();
+
+        $("#editQuestion").attr('value', editCard[0].question);
+        $("#editAnswer").attr('value', editCard[0].answer);
+        $("#edityes").click(function() {
+            console.log('edityes is clicekd');
+            $.ajax({
+                type: "put",
+                url: "/cards",
+                dataType: "json",
+                data: {
+                    cardId: editCard[0]._id,
+                    format: "tf",
+                    category: $('select#editCate').val(),
+                    question: $("#editQuestion").val(),
+                    answer: $("#editAnswer").val(),
+                    deck: $('select#editDeck').val() //store deckId
+                },
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(e) {
+                    console.log(e.responseText);
+                }
+            });
+            console.log('after ajax');
+
+        });
     });
 
     //DELETE THE CARD
@@ -138,9 +171,11 @@ $(document).ready(() => {
             for (let deck of decks) {
                 $('#myDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
                 $('#creDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
+                $('#editDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
             }
             $('#myDeck').formSelect();
             $('#creDeck').formSelect();
+            $('#editDeck').formSelect();
         }
     }
 

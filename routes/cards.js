@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 
 // To update card
 router.put("/", async (req, res) => {
-  let cardInfo = _.pick(req.body, [
+  let cardInfo = _.pick(req.params, [
     "cardId",
     "format",
     "category",
@@ -35,7 +35,7 @@ router.put("/", async (req, res) => {
     "answer",
     "deck"
   ]);
-
+  console.log('putting starts with '+cardInfo);
   let card = Card.findById(cardInfo.cardId);
   if (!card) if (error) return res.status(400).send("No card by that id");
 
@@ -46,6 +46,7 @@ router.put("/", async (req, res) => {
     answer: cardInfo.answer ? cardInfo.answer : card.answer,
     deck: cardInfo.deck ? cardInfo.deck : card.deck
   });
+  console.log(card);
 });
 
 
