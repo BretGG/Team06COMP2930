@@ -35,7 +35,7 @@ $(document).ready(() => {
         M.Toast.dismissAll();
         M.toast({
           html: `Equipped: ${data.name}`,
-          classes: "green",
+          classes: "greencolor",
           displayLength: 2500
         });
       },
@@ -94,7 +94,7 @@ $(document).ready(() => {
         M.Toast.dismissAll();
         M.toast({
           html: err.responseText,
-          classes: "red",
+          classes: "redcolor",
           displayLength: 2500
         });
       }
