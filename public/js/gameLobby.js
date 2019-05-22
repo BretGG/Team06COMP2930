@@ -70,9 +70,12 @@ $(document).ready(() => {
     $("#roomNo").html(lobby.sessionId);
     socket = io("http://localhost:3001");
     socket.emit("register", localStorage.getItem("auth-token"));
-    socket.on("registered", user => {
-      lobbyMembers.push(user);
+    socket.on("users", users => {
+      lobbyMembers = [];
+      lobbyMembers.push(...users);
       displayMembers(lobbyMembers);
+      console.log(users);
+      console.log(lobbyMembers);
     });
     socket.on("noavailablelobby", () => console.log("un-yay"));
   }

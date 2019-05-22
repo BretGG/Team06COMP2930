@@ -41,14 +41,21 @@ $(document).ready(() => {
                     console.log(JSON.stringify(user));
                     window.location.href="/";
                 },
-                error: err => {
-                    $("#status").text(err.responseText);
-                }
-            });}
-            else{
-                $("#status").text("You need to have same password");
+                error: function(err) {
+                    M.Toast.dismissAll();
+                    M.toast({ 
+                        html: err.responseText, 
+                        classes: "red",
+                        displayLength: 2500 });
+                    }
+            });
+        } else{
+            M.Toast.dismissAll();
+            M.toast({ 
+                html: "Passwords must match!", 
+                classes: "red",
+                displayLength: 2500 });
             }
-
     });
 
     /** User Sign-In -- Validates user info then takes them to next page*/
@@ -73,9 +80,13 @@ $(document).ready(() => {
                 localStorage.setItem('auth-token', user.token);
                     window.location.href="main";
             },
-            error: err => {
-                $("#status").text(err.responseText);
-            }
+            error: function(err) {
+                M.Toast.dismissAll();
+                M.toast({ 
+                    html: err.responseText, 
+                    classes: "red",
+                    displayLength: 2500 });
+                }
         });
     });
 

@@ -33,7 +33,6 @@ $(document).ready(() => {
       url: `/users/${item.category}/${item._id}`,
       success: function(data) {
         M.Toast.dismissAll();
-        console.log("TOAST!!");
         M.toast({
           html: `Equipped: ${data.name}`,
           classes: "green",
