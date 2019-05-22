@@ -26,12 +26,14 @@ const io = require("socket.io")(gameServer);
 // Create new connection and register the user
 io.on("connection", socket => {
   console.log("New game connection");
-  // Should have better error checking here
+
+  // ------------------------------------------------Add User to list
   socket.on("register", async playerInfo => {
     const decode = jwt.verify(playerInfo, "FiveAlive");
     token = jwt.decode(playerInfo);
-    console.log(playerInfo);
     const user = await User.findById(token._id).select("-password");
+
+    // Register to the correct lobby
     let lobbyHolder;
     for (let lobby of [...lobbies.values()]) {
       for (let player of lobby.players) {
@@ -40,16 +42,41 @@ io.on("connection", socket => {
         }
       }
     }
+
+    // Disconnect or join namespace
     if (!lobbyHolder) {
       socket.emit("noavailablelobby");
       socket.disconnect();
     } else {
-      players.set(socket.id, { user: user, lobby: lobbyHolder });
+      players.set(socket.id, user);
       socket.join(lobbyHolder.sessionId);
-      socket.emit("registered", user);
+      let something = usersInLobby(lobbyHolder.sessionId);
+      console.log(something);
+      io.to(lobbyHolder.sessionId).emit("users", something);
     }
   });
+
+  // Handling a user leaving the lobby
+  socket.on("disconnect", () => {
+    removePlayer(players.get(socket.id)._id);
+    players.delete(socket.id);
+    io.to(disconnectPlayer.lobby.sessionId).emit(
+      "users",
+      usersInLobby(disconnectPlayer.lobby.sessionId)
+    );
+    console.log(usersInLobby(disconnectPlayer.lobby.sessionId));
+    console.log("disconnect");
+  });
 });
+
+function usersInLobby(sessionId) {
+  return [...lobbies.values()]
+    .filter(lobby => lobby.sessionId === sessionId)
+    .map(lobby => lobby.players)[0];
+}
+
+// Update both lobbies and players
+function removePlayer(userId) {}
 
 let lobbies = new Map();
 
