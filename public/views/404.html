@@ -3,15 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="../images/icon.png" type="../images/icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" href="../images/icon.png" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="../style/styleBase.css">
     <link rel="stylesheet" href="../style/style404.css">
-    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css"   media="screen,projection" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css" media="screen,projection" />
     <title>EcoQuest</title>
-    <!-- <meta http-equiv="refresh" content="3;url=/" /> -->
+    <meta http-equiv="refresh" content="3;url=/" />
 </head>
 
 <body>
@@ -35,7 +33,9 @@
     </a>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-
+        $('body').click(() => {
+            window.location.href = "/";
+        });
     </script>
 
 </body>
