@@ -93,8 +93,6 @@
 </head>
 
 <body>
-<a class="fixedButton" id='back' class="waves-effect waves-light btn-small">Back<i class="material-icons right">home</i></a>
-
     <a href="mainPage.html">
     <div id='container'>
         <div id='mainpagecon'>
@@ -120,6 +118,11 @@
     </div>
     </a>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $('body').click(() => {
+            window.location.href="/";
+        });
+    </script>
 
 </body>
 
