@@ -1,5 +1,6 @@
 $(document).ready(() => {
   let socket;
+  let lobbyInfo;
 
   $.ajaxSetup({
     headers: {
@@ -23,12 +24,18 @@ $(document).ready(() => {
     });
   }
 
+  // Sets lobbyInfo and calls the cb with returned data
   function getLobbyInfo(cb) {
     $.ajax({
       type: "get",
-      url: "/game/lobby",
-      success: data => {},
-      error: err => {}
+      url: "/game/lobbyinfo",
+      success: data => {
+        lobbyInfo = data;
+        cd(lobbyInfo);
+      },
+      error: err => {
+        // Let the user know that they have no lobby and send back to main page
+      }
     });
   }
 
@@ -63,7 +70,9 @@ $(document).ready(() => {
     }
   });
 
-  function connectSocket(namespace) {
-    socket = io(namespace);
+  function connectSocket(lobby) {
+    socket = io("/" + lobby.sessionId);
   }
+
+  getLobbyInfo(connectSocket);
 });
