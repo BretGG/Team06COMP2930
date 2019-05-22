@@ -104,7 +104,8 @@ io.on("connection", function(socket) {
     wrongAnswers: 0,
     correctAnswers: 0,
     answeredRound: false,
-    ready: false
+    ready: false,
+    gameOver: false
   });
 
   socket.on("currentPlayers", () => {
@@ -112,7 +113,6 @@ io.on("connection", function(socket) {
     for (let player of players.values()) {
       playerHolder.push(player);
     }
-    console.log(playerHolder);
     socket.emit("currentPlayers", playerHolder);
   });
 
@@ -182,7 +182,6 @@ function onPlayerAnswered(info, socket) {
         currentPlayer.wrongAnswers
       );
     }
-
     if (allPlayerAnswered()) {
       endRound();
     }
@@ -204,7 +203,6 @@ function endRound() {
     _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
   );
 
-  console.log("endRound: " + JSON.stringify(currentRoundCard));
 
   io.emit("endRound", {
     players: filteredPlayers,
@@ -219,7 +217,7 @@ function endRound() {
     }
   }, 3000);
   for (let player of filteredPlayers) {
-    console.log("player.wrongAnswers ", player.wrongAnswers, "round: ", round);
+    // console.log("player.wrongAnswers ", player.wrongAnswers, "round: ", round);
 
     if (player.wrongAnswers === 2 && round < glob.cards.length + 1) {
 
@@ -238,7 +236,7 @@ function gameOver(id) {
   }
 
   let currentPlayer = players.get(id);
-
+  currentPlayer.gameOver = true;
   let filteredPlayers = [...players.values()];
   filteredPlayers = filteredPlayers.map(player =>
     _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
@@ -257,15 +255,13 @@ function onPlayerStateChange(socket, data) {
   switch (data.state) {
     case "ready":
       player.ready = true;
-      console.log("HERLLO");
+
       io.emit("playerStateChange", {
         playerId: socket.id,
         state: "ready"
       });
       // Start round if all players are ready
       if (allPlayerReady()) {
-        console.log("Are you ready?: ", allPlayerReady());
-        console.log("round :", round);
         if (!roundStarted) {
           console.log("round has not started yet");
           roundStart(round);
@@ -275,6 +271,9 @@ function onPlayerStateChange(socket, data) {
         });
       }
       break;
+
+
+
     case "questionMark":
       io.emit("playerStateChange", {
         playerId: "Not needed",
@@ -317,28 +316,25 @@ async function roundStart(s) {
   }
   //shuffling the answers
   answers.sort(() => Math.random() - 0.5);
-  console.log(answers);
-  // return {question: question, answer: answers};
-
-  // io.emit("playerStateChange", {playerId:socket.id, state:"questionMark"});
+  //**************************
   io.emit("startRound", {
+
     question: question,
     answer: answers
   });
-
+  //************************
   roundStarted = true;
   gamestarted = true;
 }
 
 function allPlayerAnswered() {
-  console.log("allplayeranswered called");
+
   for (let player of players.values()) {
-    if (!player.answeredRound) {
-      console.log("return false");
+    if (!player.answeredRound && !player.gameOver) {
       return false;
     }
   }
-  console.log("return true");
+
   return true;
 }
 
