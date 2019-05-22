@@ -86,8 +86,13 @@ $(document).ready(() => {
             },
             error: function(err) {
                 M.Toast.dismissAll();
+<<<<<<< HEAD
                 M.toast({
                     html: err.responseText,
+=======
+                M.toast({
+                    html: err.responseText,
+>>>>>>> 6da7312c1175ea90f9a074fce6c44a4f1d50a6e7
                     classes: "redcolor",
                     displayLength: 2500 });
                 }
