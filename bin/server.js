@@ -1,16 +1,13 @@
 #!/usr/bin/env node
 
-var io = require("socket.io")
-  .listen(server);
+var io = require("socket.io").listen(server);
 module.exports = io;
 
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 const _ = require("lodash");
-const {
-  Card
-} = require("../src/models/card.js");
+const { Card } = require("../src/models/card.js");
 var glob = this;
 
 // Get port from environment and store in Express.
@@ -27,7 +24,7 @@ var server = http.Server(app);
 // Listen on provided port, on all network interfaces.
 // server.listen(port);
 server.listen(3000, "0.0.0.0", function() {
-  console.log("Listening toooooooooo port:  " + 3000);
+  console.log("Listening to port:  " + 3000);
 });
 
 server.on("error", onError);
@@ -90,8 +87,7 @@ let currentRoundCard;
 var gameStarted = false;
 const losers = [];
 
-var io = require("socket.io")
-  .listen(server);
+var io = require("socket.io").listen(server);
 app.io = io;
 
 io.on("connection", function(socket) {
@@ -218,7 +214,6 @@ function endRound() {
     if (round < glob.cards.length && !roundStarted) {
       roundStart(round);
     } else {
-
       console.log("The end----------------------------");
       io.emit("gameEnd", {
         playerId: self.id,
@@ -228,10 +223,8 @@ function endRound() {
     }
   }, 3000);
   for (let player of filteredPlayers) {
-
     //If the player get 3 wrong answers, turn it into a ghost.
     if (player.wrongAnswers === 3 && round < glob.cards.length + 1) {
-
       gameOver(player.playerId);
     }
   }
@@ -326,13 +319,10 @@ async function roundStart(s) {
       }
     }
   } else {
-
     for (let i = 0; i < glob.cards.length; i++) {
-
       if (glob.cards[i].answer != glob.cards[s].answer) {
         answers.push(glob.cards[i].answer);
       }
-
     }
     let temp = 4 - glob.cards.length;
     switch (temp) {
@@ -349,13 +339,9 @@ async function roundStart(s) {
         answers.push("Ocean");
         answers.push("Carbonated water");
 
-
-
         break;
       default:
-
     }
-
   }
   //shuffling the answers
   answers.sort(() => Math.random() - 0.5);
@@ -367,8 +353,6 @@ async function roundStart(s) {
   //************************
   roundStarted = true;
   gamestarted = true;
-
-
 }
 
 function allPlayerAnswered() {

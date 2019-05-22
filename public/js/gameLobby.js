@@ -41,14 +41,20 @@ $(document).ready(() => {
     });
   }
 
+  function displayMembers(players) {
+    $("#memberpool").html("");
+    for (let player of players) {
+      const member = document.createElement("div");
+      member.setAttribute("class", "member");
+      member.textContent = player.username;
+      $("#memberpool").append(member);
+    }
+  }
+
   updateCosmetics();
 
-  /** Max number of players in a game lobby */
-  var max = 4;
-  /** Dummy counter */
-  var count = 0;
-  /** Dummy players info */
-  var username = ["Stella", "Jessica", "Rose", "Hannah", "Bret"];
+  /** Current Lobby Members */
+  let lobbyMembers = [];
 
   /**Takes you to game page */
   $("#start").click(() => {
@@ -60,21 +66,15 @@ $(document).ready(() => {
     window.location.href = "../main";
   });
 
-  /**Function disappear all players in the room */
-  $("#memberpool").click(() => {
-    console.log("k");
-    if (count < 4) {
-      const member = document.createElement("div");
-      member.setAttribute("class", "member");
-      member.textContent = username[count];
-      $("#memberpool").append(member);
-      count++;
-    }
-  });
-
   function connectSocket(lobby) {
-    console.log("/" + lobby.sessionId);
-    socket = io("/hello");
+    $("#roomNo").html(lobby.sessionId);
+    socket = io("http://localhost:3001");
+    socket.emit("register", localStorage.getItem("auth-token"));
+    socket.on("registered", user => {
+      lobbyMembers.push(user);
+      displayMembers(lobbyMembers);
+    });
+    socket.on("noavailablelobby", () => console.log("un-yay"));
   }
 
   getLobbyInfo(connectSocket);

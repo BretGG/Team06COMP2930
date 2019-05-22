@@ -5,10 +5,13 @@ const debug = require("debug")("comp2930-team2:server");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const { User } = require("../src/models/user");
-const app = require("../bin/server");
+const http = require("http");
 
-console.log(app);
+const gameServer = http.createServer().listen(3001, function() {
+  console.log("Game server is listening on port 3001");
+});
 
+const io = require("socket.io")(gameServer);
 /* Example session/game object:
 
   {
@@ -20,7 +23,41 @@ console.log(app);
 
 */
 
+// Create new connection and register the user
+io.on("connection", socket => {
+  console.log("New game connection");
+  // Should have better error checking here
+  socket.on("register", async playerInfo => {
+    const decode = jwt.verify(playerInfo, "FiveAlive");
+    token = jwt.decode(playerInfo);
+    console.log(playerInfo);
+    const user = await User.findById(token._id).select("-password");
+    let lobbyHolder;
+    for (let lobby of [...lobbies.values()]) {
+      for (let player of lobby.players) {
+        if (JSON.stringify(player.playerId) == JSON.stringify(user._id)) {
+          lobbyHolder = lobby;
+        }
+      }
+    }
+    if (!lobbyHolder) {
+      socket.emit("noavailablelobby");
+      socket.disconnect();
+    } else {
+      players.set(socket.id, { user: user, lobby: lobbyHolder });
+      socket.join(lobbyHolder.sessionId);
+      socket.emit("registered", user);
+    }
+  });
+});
+
 let lobbies = new Map();
+
+// key: socket.id, value: player.id
+// easy way to retrieve the player
+let players = new Map();
+
+// -------------------------------------------------- Routing -----------------------------------------------------
 
 /* GET game home page. */
 // Probably  remove this because the game files will be served based on the post (create game)
@@ -80,11 +117,6 @@ router.post("/", async (req, res) => {
   lobbies.set(lobby.sessionId, lobby);
 
   console.log("Creating a new session: " + lobby);
-
-  // Create socket namespace
-  let something = io.of("/hello").on("connection", function(socket) {
-    console.log("socketConnection");
-  });
 
   res.send(lobby);
 });
