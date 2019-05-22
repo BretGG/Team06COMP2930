@@ -24,15 +24,21 @@
 
         <div id='roomcon'>
           <!-- Label for room number -->
-          <label for="roomNo0"><b>Room Number</b></label>
+          <label for="roomNo"><b>Room Number</b></label>
           <!-- RoomNo grabbed from server -->
-          <div id='roomNo'>123ABC</div>
+          <input
+            id="roomNo"
+            type="text"
+            name="roomNo"
+            placeholder='roomNo'
+            required
+          />
 
           <!-- Label for room password -->
-          <label for="roomPass1"><b>Room Password</b></label>
+          <label for="roomPass"><b>Room Password</b></label>
           <!-- Takes input to set password for room-->
           <input
-            id="roomPass1"
+            id="roomPass"
             type="text"
             name="roomPass"
             placeholder='Enter Password'
