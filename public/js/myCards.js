@@ -147,6 +147,7 @@ $(document).ready(() => {
         return filteredCards;
     }
 
+    /** Gets a list of deck that this user has **/
     function getDeckList(callback) {
         $.ajax({
             type: "get",

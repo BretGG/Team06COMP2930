@@ -21,6 +21,7 @@ $(document).ready(() => {
     });
   }
 
+
   /** Takes user gameLobby page */
   $("#submit").click(() => {
     console.log("join");
