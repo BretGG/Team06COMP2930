@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
-var io = require("socket.io").listen(server);
+var io = require("socket.io")
+  .listen(server);
 module.exports = io;
 
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 const _ = require("lodash");
-const { Card } = require("../src/models/card.js");
+const {
+  Card
+} = require("../src/models/card.js");
 var glob = this;
 
 // Get port from environment and store in Express.
@@ -87,7 +90,8 @@ let currentRoundCard;
 var gameStarted = false;
 const losers = [];
 
-var io = require("socket.io").listen(server);
+var io = require("socket.io")
+  .listen(server);
 app.io = io;
 
 io.on("connection", function(socket) {
@@ -158,7 +162,7 @@ function onDisconnect(socket) {
 }
 
 function onPlayerAnswered(info, socket) {
-  if (info && glob.cards[round]) {
+  if (info && glob.cards) {
     let currentPlayer = players.get(info.playerId);
     currentPlayer.answeredRound = true;
     io.emit("playerStateChange", {
@@ -300,7 +304,8 @@ async function roundStart(s) {
   }
   glob.cards = await Card.find({
     format: "tf",
-    category: "Eco"
+    category: "test",
+    deck: "test"
   });
   console.log("card length: ", glob.cards.length);
 

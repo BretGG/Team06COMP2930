@@ -13,8 +13,8 @@ const config = {
     arcade: {
       gravity: {
         y: 450
-      },
-      debug: "true"
+      }
+      // debug: "false"
     }
   },
   scene: {
@@ -76,7 +76,7 @@ function preload() {
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
-  this.load.image("p1", "../assets/character/greyChar.png");
+  this.load.image("p1", "../assets/character/greyCharTest.png");
   this.load.image("p2", "../assets/character/eevee_resize.png");
   this.load.image("p3", "../assets/character/pikachu_resize.png");
   this.load.image("p4", "../assets/character/rapidash_resize.png");
@@ -388,8 +388,8 @@ function endRound(roundInfo) {
       });
       self.tweens.add({
         targets: card.text,
-        x: 400 - card.text.width / 2,
-        y: 480 + 70 - 18,
+        x: 400,
+        y: 480 + 70,
         ease: "Quint",
         duration: 3000,
         repeat: 0
@@ -440,9 +440,7 @@ function createPlayer(playerInfo) {
   let newPlayer;
   switch (players.length) {
     case 0:
-      newPlayer = self.physics.add.sprite(startingX, startingY, "p1")
-        .setScale(0.50);
-
+      newPlayer = self.physics.add.sprite(startingX, startingY, "p1");
       break;
     case 1:
       newPlayer = self.physics.add.sprite(startingX, startingY, "p2");
@@ -603,18 +601,20 @@ function displayQuestion(questionInfo) {
   // Set the question text
   question.text = self.add.text(0, 0, questionInfo, {
     fontFamily: "Arial",
-    fontSize: 50,
+    fontSize: 20,
     color: "#000000",
     align: "center",
-    boundsAlignH: "center",
-    boundsAlignV: "middle",
+    // boundsAlignH: "center",
+    // boundsAlignV: "middle",
     wordWrap: {
-      width: question.width - 25
+      width: question.displayWidth - 35
     }
   });
-  question.text.setDepth(2);
 
+  question.text.setDepth(2);
+  // question.text.setOrigin(0.5)
   // Center text on card
+
   question.text.setPosition(
     question.x - question.text.getBounds()
     .width / 2,
@@ -644,25 +644,28 @@ function displayAnswers(answers) {
     // Creation of text and adding to group
     card.text = self.add.text(0, 0, answer, {
       fontFamily: "Arial",
-      fontSize: 28,
+      fontSize: 17,
       color: "#000000",
       align: "center",
-      boundsAlignH: "center",
-      boundsAlignV: "middle",
+      // boundsAlignH: "center",
+      // boundsAlignV: "middle",
       wordWrap: {
-        width: card.width - 25
+        width: card.displayWidth - 25
       }
     });
 
+    console.log(card.width);
+
     card.text.setDepth(10);
+    card.text.setOrigin(0.5);
 
     // Center text on card
-    card.text.setPosition(
-      card.x - card.text.getBounds()
-      .width / 2,
-      card.y - card.text.getBounds()
-      .height / 2
-    );
+    // card.text.setPosition(
+    //   card.x - card.text.getBounds()
+    //   .width / 2,
+    //   card.y - card.text.getBounds()
+    //   .height / 2
+    // );
 
     // Set card to be interactive and fire answer on click
     card.setInteractive()
@@ -705,7 +708,7 @@ function displayAnswers(answers) {
       self.tweens.add({
         targets: answerCards[i].text,
         x: cardX[i],
-        y: cardY[i] - 18,
+        y: cardY[i],
         ease: "Quint",
         duration: 3000,
         repeat: 0
@@ -727,19 +730,15 @@ function scoreAndPlayer() {
   let scores = [];
   let me = players.find(player => player.playerId === mainPlayer.playerId);
 
-
-  console.log("Me, players.correctAnswers ", me.correctAnswers);
-
-
-  myScore = me.correctAnswers * 90;
+  myScore = me.correctAnswers * 180;
 
   for (let player of players) {
     if (player.playerId != me) {
-      scores.push(player.correctAnswers * 90);
+      scores.push(player.correctAnswers * 180);
     }
   }
 
-  let scoreBoard = "Score: " + myScore;
+  let scoreBoard = "Score: " + (myScore || 0);
 
 
   scoreText = self.add.text(16, 16, scoreBoard, {
