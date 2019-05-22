@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="icon" href="../images/icon.png" type="../images/icon.png"/>
+    <link rel="icon" href="../images/icon.png" type="image/x-icon"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <!-- Base CSS file all pages follow -->
     <link rel="stylesheet" href="../style/styleBase.css" >
@@ -20,43 +20,40 @@
       <h1 id='logo'> EcoQuest </h1>
       <!-- Container that holds all main content -->
       <div class='mainCon'>
-      <div id='header'><b>Create Room</b> </div>
+        <div id='header'><b>Create Room</b> </div>
 
-        <div id='roomcon'>
-          <!-- Label for room number -->
-          <label for="roomNo"><b>Room Number*</b></label>
-          <!-- RoomNo grabbed from server -->
-          <input
-            id="roomNo"
-            type="text"
-            name="roomNo"
-            placeholder='Enter Room Number'
-            required
-          />
+          <div id='roomcon'>
+            <!-- Label for room number -->
+            <label for="roomNo"><b>Room Number*</b></label>
+            <!-- RoomNo grabbed from server -->
+            <input
+              id="roomNo"
+              type="text"
+              name="roomNo"
+              placeholder='Enter Room Number'
+              required
+            />
 
-          <!-- Label for room password -->
-          <label for="roomPass"><b>Room Password*</b></label>
-          <!-- Takes input to set password for room-->
-          <input
-            id="roomPass"
-            type="text"
-            name="roomPass"
-            placeholder='Enter Password'
-            required
-          />
+            <!-- Label for room password -->
+            <label for="roomPass"><b>Room Password*</b></label>
+            <!-- Takes input to set password for room-->
+            <input
+              id="roomPass"
+              type="text"
+              name="roomPass"
+              placeholder='Enter Password'
+              required
+            />
 
-          </div>
-          <!-- Creates room -->
-          <a id='submit' class="waves-effect waves-light btn"><i class="material-icons right">create</i>Create</a>
-          <!-- Returns you to main menu-->
-        <a id='back' class="waves-effect waves-light btn-small">Back<i class="material-icons left">home</i></a>
-        </div>
+            </div>
+            <!-- Creates room -->
+            <a id='submit' class="waves-effect waves-light btn"><i class="material-icons right">create</i>Create</a>
+            <!-- Returns you to main menu-->
+          <a id='back' class="waves-effect waves-light btn-small">Back<i class="material-icons left">home</i></a>
+      </div>
 
     </div>
-    </div>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/materialize.min.js"></script>
     <script src="../js/createRoom.js"></script>
   </body>
 </html>
