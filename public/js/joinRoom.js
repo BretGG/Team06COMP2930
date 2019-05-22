@@ -37,7 +37,9 @@ $(document).ready(() => {
       },
       error: function(err) {
         M.Toast.dismissAll();
-        M.toast({ html: err.responseText, classes: "red",
+        M.toast({ 
+          html: err.responseText, 
+          classes: "red",
           displayLength: 2500 });
       }
     });
