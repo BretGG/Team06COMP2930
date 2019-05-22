@@ -30,6 +30,7 @@ const playerAnswers = new Map();
 
 let self;
 let background;
+let water;
 let cursor;
 let mainPlayer;
 let question;
@@ -66,6 +67,7 @@ if (window.innerHeight > window.innerWidth) {
 
 function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
+  this.load.image("water", "../assets/backgrounds/wave.png");
   this.load.image("exclamation", "../assets/character/exclamation.png");
   this.load.image("questionMark", "../assets/character/question.png");
   this.load.image("1st", "../assets/character/1st.png");
@@ -74,7 +76,7 @@ function preload() {
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
-  this.load.image("p1", "../assets/character/dratini_resize.png");
+  this.load.image("p1", "../assets/character/greyChar.png");
   this.load.image("p2", "../assets/character/eevee_resize.png");
   this.load.image("p3", "../assets/character/pikachu_resize.png");
   this.load.image("p4", "../assets/character/rapidash_resize.png");
@@ -99,6 +101,29 @@ function create() {
     .image(000, 00, "sky")
     .setOrigin(0)
     .setDisplaySize(800, 600);
+  water = this.physics.add.sprite(400, 530, "water");
+  water.setDepth(8);
+  water.alpha = 0.8;
+  water.body.allowGravity = false;
+  this.tweens.timeline({
+    targets: water.body.velocity,
+    loop: -1,
+    tweens: [{
+        // x: spawnPoints[players.length][players.length],
+        y: -30,
+        duration: 700,
+        ease: 'Stepped'
+      },
+      {
+        // x: spawnPoints[players.length][players.length],
+        y: 30,
+        duration: 700,
+        ease: 'Stepped'
+      },
+
+
+    ]
+  });
 
   // ----------------------------------------Server Connection----------------------------------------------
   // ----------Incoming Information----------
@@ -415,7 +440,9 @@ function createPlayer(playerInfo) {
   let newPlayer;
   switch (players.length) {
     case 0:
-      newPlayer = self.physics.add.sprite(startingX, startingY, "p1");
+      newPlayer = self.physics.add.sprite(startingX, startingY, "p1")
+        .setScale(0.50);
+
       break;
     case 1:
       newPlayer = self.physics.add.sprite(startingX, startingY, "p2");
@@ -491,7 +518,7 @@ function createPlatform(platformInfo) {
   // Slide platform onto the screen
   self.tweens.add({
     targets: newPlatform,
-    y: 400,
+    y: 345,
     ease: "Power4",
     duration: 1000,
     repeat: 0
@@ -612,6 +639,8 @@ function displayAnswers(answers) {
   // Start off screen
   for (let answer of answers) {
     let card = self.add.image(-100, 550, "cardFront");
+    card.setDepth(9);
+    card.alpha = 0.9;
     // Creation of text and adding to group
     card.text = self.add.text(0, 0, answer, {
       fontFamily: "Arial",
@@ -624,7 +653,8 @@ function displayAnswers(answers) {
         width: card.width - 25
       }
     });
-    card.text.setDepth(2);
+
+    card.text.setDepth(10);
 
     // Center text on card
     card.text.setPosition(
