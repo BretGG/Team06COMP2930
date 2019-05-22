@@ -7,10 +7,15 @@
 /** Player pool */
  #memberpool {
   background-color: #D9F2ED;
-  border: 1px solid #707070;
-  border-radius: 8px;
   height: 120px;
   margin-bottom: 4%;
+  padding-top: 7px;
+  border-radius: 8px;
+  border-width: 2px;
+  border-color: rgb(238, 238, 238);
+  background-color: #D9F2ED;
+  border-style: inset;
+  box-sizing: border-box;
 }
 
 /** Restict border, color, and placement of back button */

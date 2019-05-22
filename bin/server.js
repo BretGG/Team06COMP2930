@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+var io = require("socket.io")
+  .listen(server);
+module.exports = io;
+
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
@@ -88,6 +92,8 @@ const losers = [];
 
 var io = require("socket.io")
   .listen(server);
+app.io = io;
+
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
   self.id = socket.id;
@@ -203,7 +209,6 @@ function endRound() {
     _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
   );
 
-
   io.emit("endRound", {
     players: filteredPlayers,
     answer: currentRoundCard.answer
@@ -233,7 +238,6 @@ function endRound() {
 }
 
 function gameOver(id) {
-
   console.log(id, " Game Over");
 
   //check duplicates before adding
@@ -277,8 +281,6 @@ function onPlayerStateChange(socket, data) {
         });
       }
       break;
-
-
 
     case "questionMark":
       io.emit("playerStateChange", {
@@ -359,7 +361,6 @@ async function roundStart(s) {
   answers.sort(() => Math.random() - 0.5);
   //**************************
   io.emit("startRound", {
-
     question: question,
     answer: answers
   });
@@ -371,7 +372,6 @@ async function roundStart(s) {
 }
 
 function allPlayerAnswered() {
-
   for (let player of players.values()) {
     if (!player.answeredRound && !player.gameOver) {
       return false;

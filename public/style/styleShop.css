@@ -1,4 +1,5 @@
-body{user-select: none;   
+body{
+  user-select: none;   
 }
 
 #title{
@@ -59,7 +60,6 @@ body{user-select: none;
 
 #avatar{
   margin: 0 auto;
-  background-image: url(../images/platform/default.png);
   width: 176px;
   height: 251px;
   margin-bottom: 3%;

@@ -5,8 +5,9 @@ const debug = require("debug")("comp2930-team2:server");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const { User } = require("../src/models/user");
-const app = require("../app");
-const io = require("socket.io")(app);
+const app = require("../bin/server");
+
+console.log(app);
 
 /* Example session/game object:
 
@@ -32,6 +33,8 @@ router.get("/", (req, res) => {
 
 // Sends the information on the lobby that the given user is registered in
 router.get("/lobbyinfo", async (req, res) => {
+  console.log("request for lobby info");
+
   var token = req.get("auth-token");
   if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
   const decode = jwt.verify(token, "FiveAlive");
@@ -40,14 +43,15 @@ router.get("/lobbyinfo", async (req, res) => {
   const user = await User.findById(token._id).select("-password");
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
 
-  for (let holder of [...lobbies.values()]) {
-    let lobby = holder.players.find(playerHolder => {
-      playerHolder.playerId === user._id;
-    });
-    if (lobby) {
-      return res.send(lobby);
+  for (let lobby of [...lobbies.values()]) {
+    for (let player of lobby.players) {
+      if (JSON.stringify(player.playerId) == JSON.stringify(user._id)) {
+        return res.send(lobby);
+      }
     }
   }
+
+  res.status(404).send("No lobby found");
 });
 
 router.get("/lobby", (req, res) => {
@@ -78,9 +82,8 @@ router.post("/", async (req, res) => {
   console.log("Creating a new session: " + lobby);
 
   // Create socket namespace
-  let socket = io.of("/" + lobby.sessionId);
-  socket.on("connection", socket => {
-    console.log("new user");
+  let something = io.of("/hello").on("connection", function(socket) {
+    console.log("socketConnection");
   });
 
   res.send(lobby);

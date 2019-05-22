@@ -71,6 +71,7 @@ select{
   margin-bottom: 3%;
   border-radius: 8px;
   color: black;
+  padding-left: 2%;
 }
 
 /** All buttons under #inputcontainer */

@@ -32,9 +32,12 @@ $(document).ready(() => {
       type: "put",
       url: `/users/${item.category}/${item._id}`,
       success: function(data) {
+        M.Toast.dismissAll();
+        console.log("TOAST!!");
         M.toast({
           html: `Equipped: ${data.name}`,
-          classes: "green"
+          classes: "green",
+          displayLength: 2500
         });
       },
       err: function(err) {
@@ -78,17 +81,22 @@ $(document).ready(() => {
         $("#buy").addClass("disabled");
         getUserInfo(setPointBalance);
         getUserInfo(userInfo => (currentUserInfo.items = userInfo.items));
+        M.Toast.dismissAll();
         M.toast({
           html: `Purchased: ${data.name}`,
-          classes: "blue"
+          classes: "blue",
+          displayLength: 2500
+
         });
         setUserActive(data);
       },
       error: function(err) {
         console.log("ERROR: ", err.responseText);
+        M.Toast.dismissAll();
         M.toast({
           html: err.responseText,
-          classes: "red"
+          classes: "red",
+          displayLength: 2500
         });
       }
     });
