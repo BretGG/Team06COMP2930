@@ -32,7 +32,7 @@
 
 /** Container wrapping both username and user score */
 .userInfo{
-  padding-top: 5px;
+  padding-top: 7px;
   height: calc(50px - 3%);
   margin-left: 10px;
   font-size: 1.4em;

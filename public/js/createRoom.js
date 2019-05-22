@@ -40,9 +40,11 @@ $(document).ready(() => {
       },
       success: function(data) {},
       error: function(err) {
+        M.Toast.dismissAll();
         M.toast({
           html: `${err.responseText}`,
-          classes: "red"
+          classes: "red",
+          displayLength: 2500
         });
       }
     });
