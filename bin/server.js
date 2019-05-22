@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+var io = require("socket.io")
+  .listen(server);
+module.exports = io;
+
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
@@ -88,6 +92,8 @@ const losers = [];
 
 var io = require("socket.io")
   .listen(server);
+app.io = io;
+
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
   self.id = socket.id;
@@ -203,7 +209,6 @@ function endRound() {
     _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
   );
 
-
   io.emit("endRound", {
     players: filteredPlayers,
     answer: currentRoundCard.answer
@@ -223,9 +228,9 @@ function endRound() {
     }
   }, 3000);
   for (let player of filteredPlayers) {
-    // console.log("player.wrongAnswers ", player.wrongAnswers, "round: ", round);
 
-    if (player.wrongAnswers === 2 && round < glob.cards.length + 1) {
+    //If the player get 3 wrong answers, turn it into a ghost.
+    if (player.wrongAnswers === 3 && round < glob.cards.length + 1) {
 
       gameOver(player.playerId);
     }
@@ -233,7 +238,6 @@ function endRound() {
 }
 
 function gameOver(id) {
-
   console.log(id, " Game Over");
 
   //check duplicates before adding
@@ -278,8 +282,6 @@ function onPlayerStateChange(socket, data) {
       }
       break;
 
-
-
     case "questionMark":
       io.emit("playerStateChange", {
         playerId: "Not needed",
@@ -305,7 +307,7 @@ async function roundStart(s) {
   }
   glob.cards = await Card.find({
     format: "tf",
-    category: "test"
+    category: "Eco"
   });
   console.log("card length: ", glob.cards.length);
 
@@ -359,7 +361,6 @@ async function roundStart(s) {
   answers.sort(() => Math.random() - 0.5);
   //**************************
   io.emit("startRound", {
-
     question: question,
     answer: answers
   });
@@ -371,7 +372,6 @@ async function roundStart(s) {
 }
 
 function allPlayerAnswered() {
-
   for (let player of players.values()) {
     if (!player.answeredRound && !player.gameOver) {
       return false;

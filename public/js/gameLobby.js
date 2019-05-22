@@ -1,5 +1,4 @@
 $(document).ready(() => {
-  let socket;
   let lobbyInfo;
 
   $.ajaxSetup({
@@ -26,14 +25,17 @@ $(document).ready(() => {
 
   // Sets lobbyInfo and calls the cb with returned data
   function getLobbyInfo(cb) {
+    console.log("get lobby info");
     $.ajax({
       type: "get",
-      url: "/game/lobbyinfo",
-      success: data => {
+      url: "../../game/lobbyinfo",
+      success: function(data) {
+        console.log(data);
         lobbyInfo = data;
-        cd(lobbyInfo);
+        cb(lobbyInfo);
       },
-      error: err => {
+      error: function(err) {
+        console.log(err.responseText);
         // Let the user know that they have no lobby and send back to main page
       }
     });
@@ -55,7 +57,7 @@ $(document).ready(() => {
 
   /**Takes you back to the main page */
   $("#back").click(() => {
-    window.location.href = "main";
+    window.location.href = "../main";
   });
 
   /**Function disappear all players in the room */
@@ -71,8 +73,11 @@ $(document).ready(() => {
   });
 
   function connectSocket(lobby) {
-    socket = io("/" + lobby.sessionId);
+    console.log("/" + lobby.sessionId);
+    socket = io("/hello");
   }
 
   getLobbyInfo(connectSocket);
+
+  console.log("Game lobby");
 });

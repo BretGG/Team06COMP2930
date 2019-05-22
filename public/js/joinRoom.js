@@ -33,6 +33,7 @@ $(document).ready(() => {
       },
       success: function(data) {
         console.log("joined room: ", data);
+        window.location.href = "/game/lobby";
       },
       error: function(err) {
         M.Toast.dismissAll();
