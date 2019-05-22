@@ -1,5 +1,5 @@
 // TODO: Create button is gone when the screen width is smaller than 388px
-let myDecks;
+let allMyDecks;
 let allMyCards;
 
 $(document).ready(() => {
@@ -12,19 +12,19 @@ $(document).ready(() => {
 
 
     $('select').formSelect();
+    $('.modal').modal();
+
+    // $('.dropdown-trigger').dropdown();
+
     $('#headerLeftCon').hide();
 
 
     /** Switches container from Create Cards to My Cards */
     $(".headerRight").click(() => {
-        $("#status").text("");
         $('#headerLeftCon').hide();
         $('#headerRightCon').show();
         $(".headerLeft").css("border-bottom", "none");
         $(".headerRight").css("border-bottom", "2px solid #42A164");
-        // $("#back").css("padding-top:", "15px");
-        // $("#newdeck").hide();
-
     });
 
     /** Switches container from My Cards to Create Cards */
@@ -40,22 +40,53 @@ $(document).ready(() => {
     });
 
     function createCard(cardData) {
-        let card = document.createElement('div');
-        card.setAttribute('class', 'card');
 
-        let h5 = document.createElement('h5');
-        $(h5).css("padding-left", "8px");
-        $(h5).css("padding-top", "3px");
-        h5.textContent = cardData.question;
+        let card = $('<div class="card"></div>');
+        let cardcategory = $('<span class="cardC">Category: '+cardData.category+'</span>');
 
-        let p = document.createElement('p');
-        $(p).css("padding-left", "8px");
-        p.textContent = `${cardData.answer}`;
+        let cardquestion = $('<p class="cardQ">'+cardData.question+'</p>');
+
+        let edit = $('<a class = "modal-trigger editting hoverPointer" href = "#modal1" value = ' + cardData._id + '></a>');
+        let editIcon = $('<i class= "cardE material-icons right">more_vert</i>');
+        // $('.editting').innerHTML = "<i class= 'cardE material-icons right'>more_vert</i>"";
+        let deleting  = $('<a class = "modal-trigger deleting hoverPointer" href = "#modal2" value = ' + cardData._id + '></a>');
+        let deletingIcon = $('<i class= "cardD material-icons right">delete</i>');
+
+        let cardanswer = $('<p class = "cardA">' + cardData.answer + '</p>');
 
         $('#cardsCon').append(card);
-        card.appendChild(h5);
-        card.appendChild(p);
+        card.append(cardcategory, deleting, edit, cardquestion, cardanswer);
+        edit.append(editIcon);
+        deleting.append(deletingIcon);
     }
+
+    $(document).on("click", ".editting", function() {
+        let cardId = $(this).get(0).getAttribute('value');
+        $('#editcard').text($(this).get(0).getAttribute('value'));
+        // var editCon =
+    });
+    $(document).on("click", ".deleting", function() {
+        let cardId = $(this).get(0).getAttribute('value');
+            console.log("deleting "+$(this).get(0).getAttribute('value'));
+        $('#m2name').text($(this).get(0).getAttribute('value'));
+        $("#realDelete").click(function() {
+            console.log("realDelete "+cardId);
+
+        });
+        // var editCon =
+    });
+
+//     $(document).on("hover", ".editting", function() {
+//       function() {
+// console.log($(this));
+//         $(this).innerHTML = '<i class= "cardE material-icons right">more_horiz</i>';
+//       }, function() {
+//         $( this ).innerHTML = '<i class= "cardE material-icons right">more_vert</i>';
+//       }
+//     );
+//     $(document).on("click", "#realDelete", function() {
+//     });
+
 
     function filterCard(cards, catefilter, deckfilter) {
         let filteredCards = cards;
@@ -76,6 +107,7 @@ $(document).ready(() => {
             type: "get",
             url: "/decks",
             success: function(data) {
+                allMyDecks = data;
                 callback(data);
             },
             error: function(e) {
@@ -102,8 +134,6 @@ $(document).ready(() => {
     /*******************************************************************/
     /**           Down here, it is for displaying my cards!            */
     /*******************************************************************/
-
-
     //set up the  initial setting including cards.
     function setDeckList(decks) {
         if (decks.length == 0) {
@@ -117,7 +147,6 @@ $(document).ready(() => {
             $('#creDeck').formSelect();
         }
     }
-
 
     /** Populate cards from my list . . . Ta da */
     function populateCards(cards) {
@@ -133,18 +162,11 @@ $(document).ready(() => {
     }
 
 
-    //this gets only the cards that user want in the specific category
-    $("#myCate").change(function() {
+    //this gets only the cards that user want in the certain category and certain deck.
+    $("#myCate, #myDeck").change(function() {
         populateCards(filterCard(allMyCards, $('select#myCate').val(), $('select#myDeck').val()));
-        console.log($('select#myCate').val() + ' and ' + $('select#myDeck').val());
-        // console.log(allMyCards);
     });
 
-    //this gets only the cards that user want in the specific category
-    $("#myDeck").change(function() {
-        populateCards(filterCard(allMyCards, $('select#myCate').val(), $('select#myDeck').val()));
-        console.log($('select#myCate').val() + ' and ' + $('select#myDeck').val());
-    });
 
 
 
@@ -184,7 +206,6 @@ $(document).ready(() => {
                         name: $("#deckName").val(),
                     },
                     success: deck => {
-                        console.log(JSON.stringify(deck));
                         //and then store new card on the new deck
                         $.ajax({
                             type: "post",
@@ -198,30 +219,29 @@ $(document).ready(() => {
                                 deck: deck._id //store deckId
                             },
                             success: card => {
+                                // window.location.href = "/mycard";
                                 M.toast({
-                                    html: 'Card successfully added.<br>Check under My Cards',
+                                    html: 'Success! Check under My Cards',
                                     classes: 'greencolor'
                                 });
-                                console.log("Card Created: " + JSON.stringify(card));
 
-                                document.getElementById("question").setAttribute('value', "");
-                                document.getElementById("answer").setAttribute('value', "");
+                                // document.getElementById("question").setAttribute('value', "");
+                                // document.getElementById("answer").setAttribute('value', "");
 
                             },
                             error: err => {
                                 M.toast({
                                     html: "Unforunate circumstance. Card failed to be added.",
-                                    classes: "redclor"
+                                    classes: "redcolor"
                                 });
                                 console.log(err);
-                                // $("#status").fadeOut().delay(3000).innerHTML("");
                             }
                         });
                     },
                     error: err => {
                         M.toast({
                             html: "Unforunate circumstance. Deck failed to be added.",
-                            classes: "redclor"
+                            classes: "redcolor"
                         });
                         console.log(err);
                     }
@@ -239,7 +259,7 @@ $(document).ready(() => {
                     },
                     success: card => {
                         M.toast({
-                            html: 'Card successfully added. Check under My Cards',
+                            html: 'Success! Check under My Cards',
                             classes: 'greencolor'
                         });
                         console.log(JSON.stringify(card));
@@ -249,10 +269,9 @@ $(document).ready(() => {
                     error: err => {
                         M.toast({
                             html: "Unforunate circumstance. Card failed to be added.",
-                            classes: "redclor"
+                            classes: "redcolor"
                         });
                         console.log(err);
-                        // $("#status").fadeOut().delay(3000).innerHTML("");
                     }
                 });
             }
@@ -260,7 +279,6 @@ $(document).ready(() => {
         }
     });
 
-    console.log(allMyCards);
     /** Calling setDeckList function */
     getDeckList(setDeckList);
 

@@ -25,6 +25,7 @@ router.post("/", async (req, res) => {
   res.send(_.pick(card, ["question", "answer"]));
 });
 
+// To update card
 router.put("/", async (req, res) => {
   let cardInfo = _.pick(req.body, [
     "cardId",
@@ -47,6 +48,8 @@ router.put("/", async (req, res) => {
   });
 });
 
+
+// to delete card
 router.delete("/", async (req, res) => {
   let cardId = _.pick(req.body, "cardId");
   let card = Card.findById(req.body.cardId);
