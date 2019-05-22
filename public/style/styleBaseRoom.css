@@ -57,6 +57,7 @@
 
 /** Makes all inputs under #roomcon uniform */
 #roomcon input {
+  padding-left: 2%;
   width: 100%;
   margin-bottom: 3%;
   border-radius: 8px;

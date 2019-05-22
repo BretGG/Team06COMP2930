@@ -30,6 +30,10 @@ a {
   text-decoration: none;
 }
 
+input[type] {
+  padding-left: 2%;
+}
+
 .bounceIn {
   animation-name: bounceIn;
   animation-duration: 1s;
