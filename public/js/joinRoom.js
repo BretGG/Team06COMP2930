@@ -39,7 +39,7 @@ $(document).ready(() => {
         M.Toast.dismissAll();
         M.toast({ 
           html: err.responseText, 
-          classes: "red",
+          classes: "redcolor",
           displayLength: 2500 });
       }
     });

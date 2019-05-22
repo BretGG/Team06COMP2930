@@ -45,7 +45,7 @@ $(document).ready(() => {
                     M.Toast.dismissAll();
                     M.toast({ 
                         html: err.responseText, 
-                        classes: "red",
+                        classes: "redcolor",
                         displayLength: 2500 });
                     }
             });
@@ -53,7 +53,7 @@ $(document).ready(() => {
             M.Toast.dismissAll();
             M.toast({ 
                 html: "Passwords must match!", 
-                classes: "red",
+                classes: "redcolor",
                 displayLength: 2500 });
             }
     });
@@ -84,7 +84,7 @@ $(document).ready(() => {
                 M.Toast.dismissAll();
                 M.toast({ 
                     html: err.responseText, 
-                    classes: "red",
+                    classes: "redcolor",
                     displayLength: 2500 });
                 }
         });
