@@ -62,7 +62,7 @@ body{
 #avatar {
     margin: 0 auto;
     width: 101px;
-    height: 153px;
+    height: 163px;
     margin-bottom: 3%;
     background-size: contain;
     background-repeat: no-repeat;
@@ -70,7 +70,9 @@ body{
 }
 img {
         width: 105px;
-}
+    transform: translate(-2px);    
+
+        }
 .btn-small {
     height: 32.4px;
     line-height: 32.4px;
@@ -79,7 +81,9 @@ img {
 
 #title {
     font-family: ubuntu;
-    font-size: 30px;
+    font-size: 29px;
+    margin: 0px auto;
+    margin-top: -21px;
 }
 @media only screen and (max-width:767px) and (min-width: 411px) {
     
@@ -94,11 +98,14 @@ img {
     }
     #avatar {
     margin: 23 auto;
-    width: 153px;
+    width: 130px;
+    
     height: 220px;
     }
     img{
         width:148px;
+        transform: translate(-9px);    
+
     }
     #title{
         font-size:60px;

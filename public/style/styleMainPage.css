@@ -1,7 +1,7 @@
 #avatar{
     margin: 0 auto;
     width: 176px;
-    height: 251px;
+    height: 186px;
     margin-bottom: 3%;
     background-repeat: no-repeat;
     background-position: bottom 0px right 50%;
@@ -122,11 +122,11 @@
     }
 
     #avatar{
-        height:230px;
+        height:206px;
         margin-bottom:22px;
     }
     img{
-        width:150px;
+        width:120px;
     }
 }
 /**for ipad and table view*/

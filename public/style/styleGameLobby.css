@@ -4,6 +4,10 @@
   padding-top: 1%;
 }
 
+
+#roomNo{
+    padding: 0.1em 0 0.5em 0.5em;
+}
 /** Player pool */
  #memberpool {
   background-color: #D9F2ED;
@@ -13,7 +17,6 @@
   border-radius: 8px;
   border-width: 2px;
   border-color: rgb(238, 238, 238);
-  background-color: #D9F2ED;
   border-style: inset;
   box-sizing: border-box;
 }
@@ -53,7 +56,7 @@
 }
 
 /** WIDTH RANGE FROM 800px to 1079px */
-@media screen and (min-width: 800px) and (max-width: 1079px) {  
+@media screen and (min-width: 800px) and (max-width: 1079px) {
       #back{
         margin-top: 8.5%;
       }
