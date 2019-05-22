@@ -32,13 +32,6 @@ router.post("/", async (req, res) => {
 
 // To update card
 router.put("/:cardId", async (req, res) => {
-    let cardId = req.params.cardId;
-    // let cardFormat = req.body.format;
-    // let cardCategory = req.body.category;
-    // let cardQuestion = req.body.question;
-    // let cardAnswer = req.body.answer;
-    // let cardDeck = req.body.deck;
-    // console.log(cardId+": " + cardFormat+", "+cardCategory+", "+cardQuestion+", "+cardAnswer+", "+cardDeck);
 
     let cardInfo = _.pick(req.body, [
         "format",
@@ -47,25 +40,24 @@ router.put("/:cardId", async (req, res) => {
         "answer",
         "deck"
     ]);
-    console.log(cardInfo.answer);
+    // console.log(cardInfo.answer);
 
     let card = await Card.findById(req.params.cardId);
     console.log(card);
 
     if (!card)
         if (error) return res.status(400).send("No card by that id");
+
     console.log(cardInfo.answer ? cardInfo.answer : card.answer);
 
-    Card.update({_id: cardId},{ $set: {
-        format: cardInfo.format,
-        category: cardInfo.category,
-        question: cardInfo.question,
-        answer: cardInfo.answer ? cardInfo.answer : card.answer,
-        deck: cardInfo.deck ? cardInfo.deck : card.deck
-    }});
-    // await card.save();
+    card.format = cardInfo.format;
+    card.category = cardInfo.category;
+    card.question = cardInfo.question;
+    card.answer = cardInfo.answer ? cardInfo.answer : card.answer;
+    card.deck = cardInfo.deck ? cardInfo.deck : card.deck;
+    await card.save();
     console.log("Updated " + card);
-    // res.send(card);
+    res.send(card);
 });
 
 

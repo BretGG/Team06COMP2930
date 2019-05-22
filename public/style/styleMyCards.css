@@ -237,12 +237,3 @@ input {
         width: 480px !important;
     }
 }
-
-/** .redcolor and .greencolor are for toast in javascript **/
-.redcolor {
-    background-color: #f3989b !important;
-}
-
-.greencolor {
-    background-color: #26a69a !important;
-}
