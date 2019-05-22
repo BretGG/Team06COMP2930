@@ -45,8 +45,9 @@ body{
 }
 
 .carousel {
-  transform: translateY(30px);
+  transform: translateY(-80px);
   min-width: 300px;
+  z-index:0;
 }
 
 .itemCost {
@@ -58,11 +59,51 @@ body{
   display: inline;
 }
 
-#avatar{
-  margin: 0 auto;
-  width: 176px;
-  height: 251px;
-  margin-bottom: 3%;
-  background-repeat: no-repeat;
-  background-position: bottom 0px right 50%;
+#avatar {
+    margin: 0 auto;
+    width: 101px;
+    height: 153px;
+    margin-bottom: 3%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom 0px right 50%;
+}
+img {
+        width: 105px;
+}
+.btn-small {
+    height: 32.4px;
+    line-height: 32.4px;
+    font-size: 11px;
+}
+
+#title {
+    font-family: ubuntu;
+    font-size: 30px;
+}
+@media only screen and (max-width:767px) and (min-width: 411px) {
+    
+    .carousel {
+      transform: translateY(-50px);
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .carousel {
+      transform: translateY(80px);
+    }
+    #avatar {
+    margin: 23 auto;
+    width: 153px;
+    height: 220px;
+    }
+    img{
+        width:148px;
+    }
+    #title{
+        font-size:60px;
+    }
+    #mainpagecon{
+        width:400px;
+    }
 }
