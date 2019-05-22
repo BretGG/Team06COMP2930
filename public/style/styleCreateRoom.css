@@ -1,5 +1,44 @@
-#roomNo {
-	font-size: 19px;
+
+/* These are for dropdown */
+
+input {
+    font-family: 'Ubuntu', sans-serif;
+}
+.optionCon {
+    margin-top: 1rem;
+    margin-bottom: 0em;
+}
+
+.optionCon>.input-field {
+    margin-top: 0.1rem;
+}
+
+/* .row .category {
+    padding-left: 1.3rem !important;
+}
+
+.row .deck {
+    padding-right: 1.3rem !important;
+} */
+
+.select-wrapper input.select-dropdown {
+    margin-bottom: 0em;
+    height: 2.3rem;
+    padding-left: 1rem;
+    /* margin-left: 0.5rem; */
+    /* margin-right: 0.5rem; */
+    width: 90%;
+}
+
+.dropdown-content li {
+    min-height: 25px;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    overflow: hidden;
 }
 
 
@@ -32,6 +71,14 @@
 
 
 /** WIDTH RANGE FROM 800px to 1079px */
+<<<<<<< HEAD
+=======
+@media screen and (min-width: 800px) and (max-width: 1079px) {
+      /**Changes placement of div to match screen size*/
+      #back{
+        margin-top: 22%;
+      }
+>>>>>>> 47fadd7875ed704ba879b12a4fb11bf87cdada77
 
 @media screen and (min-width: 800px) and (max-width: 1079px) {
 	/**Changes placement of div to match screen size*/

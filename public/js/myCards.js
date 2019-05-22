@@ -14,6 +14,7 @@ $(document).ready(() => {
     $('.modal').modal();
     $('#headerLeftCon').hide();
 
+    /** User's own cosmetic is displaying **/
     function updateCosmetics() {
         $.ajax({
             type: "get",
@@ -29,7 +30,6 @@ $(document).ready(() => {
             }
         });
     }
-
     updateCosmetics();
 
     /** Switches container from Create Cards to My Cards */
@@ -53,6 +53,72 @@ $(document).ready(() => {
         window.location.href = "main";
     });
 
+    //Filter cards thru category or deck
+    function filterCard(cards, catefilter, deckfilter) {
+        let filteredCards = cards;
+        if (deckfilter) {
+            console.log("filtering by deck");
+            filteredCards = filteredCards.filter(card => card.deck == deckfilter);
+        }
+        if (catefilter) {
+            console.log("filtering by category");
+            filteredCards = filteredCards.filter(card => card.category == catefilter);
+        }
+        console.log(filteredCards);
+        return filteredCards;
+    }
+
+    /** Gets a list of deck that this user has **/
+    function getDeckList(callback) {
+        $.ajax({
+            type: "get",
+            url: "/decks",
+            success: function(data) {
+                allMyDecks = data;
+                callback(data);
+            },
+            error: function(e) {
+                console.log(e.responseText);
+            }
+        });
+    }
+
+    /** Gets all cards that this user created **/
+    function getAllMyCards(callback) {
+        $.ajax({
+            type: 'get',
+            url: '/decks/allcards',
+            success: function(data) {
+                allMyCards = data;
+                callback(data);
+            },
+            error: function(e) {
+                console.log(e.responseText);
+            }
+        });
+    }
+
+
+    /*******************************************************************/
+    /**           Down here, it is for displaying my cards!            */
+    /*******************************************************************/
+    //set up the  initial setting including cards.
+    function setDeckList(decks) {
+        if (decks.length == 0) {
+            console.log("You have no deck!");
+        } else {
+            for (let deck of decks) {
+                $('#myDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
+                $('#creDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
+                $('#editDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
+            }
+            $('#myDeck').formSelect();
+            $('#creDeck').formSelect();
+            $('#editDeck').formSelect();
+        }
+    }
+
+    // This creates a card on the page
     function createCard(cardData) {
         let card = $('<div class="card"></div>');
         let cardcategory = $('<span class="cardC">Category: ' + cardData.category + '</span>');
@@ -76,6 +142,7 @@ $(document).ready(() => {
         deleting.append(deletingIcon);
     }
 
+    // EDIT THE CARD
     $(document).on("click", ".editting", function() {
         let editCard = allMyCards.filter(card => card._id == $(this).get(0).getAttribute('value'));
 
@@ -133,67 +200,6 @@ $(document).ready(() => {
         });
     });
 
-    function filterCard(cards, catefilter, deckfilter) {
-        let filteredCards = cards;
-        if (deckfilter) {
-            console.log("filtering by deck");
-            filteredCards = filteredCards.filter(card => card.deck == deckfilter);
-        }
-        if (catefilter) {
-            console.log("filtering by category");
-            filteredCards = filteredCards.filter(card => card.category == catefilter);
-        }
-        console.log(filteredCards);
-        return filteredCards;
-    }
-
-    function getDeckList(callback) {
-        $.ajax({
-            type: "get",
-            url: "/decks",
-            success: function(data) {
-                allMyDecks = data;
-                callback(data);
-            },
-            error: function(e) {
-                console.log(e.responseText);
-            }
-        });
-    }
-
-    function getAllMyCards(callback) {
-        $.ajax({
-            type: 'get',
-            url: '/decks/allcards',
-            success: function(data) {
-                allMyCards = data;
-                callback(data);
-            },
-            error: function(e) {
-                console.log(e.responseText);
-            }
-        });
-    }
-
-
-    /*******************************************************************/
-    /**           Down here, it is for displaying my cards!            */
-    /*******************************************************************/
-    //set up the  initial setting including cards.
-    function setDeckList(decks) {
-        if (decks.length == 0) {
-            console.log("You have no deck!");
-        } else {
-            for (let deck of decks) {
-                $('#myDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
-                $('#creDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
-                $('#editDeck').append($("<option></option>").attr("value", deck._id).text(deck.name));
-            }
-            $('#myDeck').formSelect();
-            $('#creDeck').formSelect();
-            $('#editDeck').formSelect();
-        }
-    }
 
     /** Populate cards from my list . . . Ta da */
     function populateCards(cards) {
@@ -207,7 +213,6 @@ $(document).ready(() => {
             }
         }
     }
-
 
     //this gets only the cards that user want in the certain category and certain deck.
     $("#myCate, #myDeck").change(function() {
@@ -226,7 +231,6 @@ $(document).ready(() => {
             document.getElementById("deckName").disabled = false;
             document.getElementById("deckName").setAttribute('value', "");
             document.getElementById("deckName").setAttribute('placeholder', 'Your New Deck!');
-            // document.getElementById("deckName").setAttribute('background-color', 'rgb(217, 242, 237) !important');
         } else {
             document.getElementById("deckName").disabled = true;
             document.getElementById("deckName").setAttribute('value', $("#creDeck option:selected").text());

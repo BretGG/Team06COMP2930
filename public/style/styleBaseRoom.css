@@ -29,40 +29,40 @@
 
 /** Changes appearance of div */
 
-#roomNo {
-	width: 100%;
-	margin-bottom: 3%;
-	border-radius: 8px;
-	border-width: 2px;
-	border-color: rgb(238, 238, 238);
-	background-color: #D9F2ED;
-	border-style: inset;
-	box-sizing: border-box;
-	display: inline-block;
-	height: 40px;
-	padding-left: 4px;
-	padding-top: 4px;
-	font-size: 19px;
-}
+/* #roomNo{
+  width: 100%;
+  margin-bottom: 3%;
+  border-radius: 8px;
+  border-width: 2px;
+  border-color: rgb(238, 238, 238);
+  background-color: #D9F2ED;
+  border-style: inset;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 40px;
+  padding-left: 4px;
+  padding-top: 4px;
+  font-size: 19px;
+} */
 
 
 /** Makes all labels under #roomcon uniform */
 
 #roomcon label {
-	display: block;
-	clear: right;
-	font-size: 1em;
-	color: black;
+  display: block;
+  clear:right;
+  font-size: 16px;
+  color: black;
 }
 
 
 /** Restricts size of div and placement */
 
-#roomcon {
-	margin: 0 auto;
-	text-align: left;
-	width: 80%;
-	margin-bottom: 4%;
+#roomcon, .optionCon{
+  margin: 0 auto;
+  text-align: left;
+  width: 80%;
+  margin-bottom: 4%;
 }
 
 

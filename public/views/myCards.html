@@ -22,15 +22,16 @@
                 <div class='headerRight'> My Cards</div>
             </div>
 
+<!-- This is for displaying all my cards with filtering by category or deck. -->
             <div id='headerRightCon'>
                 <div class="row optionCon">
                     <div class="input-field col s6 category">
                         <select id='myCate'>
                             <option value="" disabled selected>Category</option>
+                            <option value="">All</option>
                             <option value="Eco">Eco</option>
                             <option value="Science">Science</option>
                             <option value="Math">Math</option>
-                            <option value="">All</option>
                         </select>
                     </div>
                     <div class="input-field col s6 deck">
@@ -43,6 +44,7 @@
                 <div id='cardsCon'> </div>
             </div>
 
+<!-- User can create a card in a specific category on a specific deck or a new deck. -->
             <div id='headerLeftCon'>
                 <div class="row optionCon">
                     <div class="input-field col s6 category">
@@ -65,7 +67,7 @@
                     <label for="deckName"><b>Deck Name *</b></label>
                     <input disabled value="" id="deckName" type="text" placeholder="Choose your Deck">
                     <label for="question"><b>Question *</b></label>
-                    <input id="question" type="text" required placeholder=""/>
+                    <input id="question" type="text" required placeholder="" />
 
                     <label for="answer"><b>Answer *</b></label>
                     <input id="answer" type="text" required />
@@ -79,45 +81,45 @@
     </div>
 
 
-<!-- Modal for editting -->
-    <div id="modal1" class="modal" >
-    <div class="modal-content">
-     <p class="lessMargin">E D I T</p>
-     <div class = "row lessMargin">
-      <div class="input-field col s6 lessMargin">
-          <select id='editCate'>
-              <option value="" disabled>Category</option>
-              <option value="Eco">Eco</option>
-              <option value="Science">Science</option>
-              <option value="Math">Math</option>
-          </select>
-      </div>
-      <div class="input-field col s6 lessMargin">
-           <select id='editDeck'>
-               <option value="" disabled selected>Deck</option>
-           </select>
-       </div>
-          <input id="editQuestion" class="shortWidth" type="text" required />
-          <input id="editAnswer" class="shortWidth" type="text" required />
-   </div>
+    <!-- Modal for editting -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <p class="lessMargin">E D I T</p>
+            <div class="row lessMargin">
+                <div class="input-field col s6 lessMargin">
+                    <select id='editCate'>
+                        <option value="" disabled>Category</option>
+                        <option value="Eco">Eco</option>
+                        <option value="Science">Science</option>
+                        <option value="Math">Math</option>
+                    </select>
+                </div>
+                <div class="input-field col s6 lessMargin">
+                    <select id='editDeck'>
+                        <option value="" disabled selected>Deck</option>
+                    </select>
+                </div>
+                <input id="editQuestion" class="shortWidth" type="text" required />
+                <input id="editAnswer" class="shortWidth" type="text" required />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="edityes" class="modal-close waves-effect waves-green btn-flat" style="color:#26a69a">Edit</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        </div>
     </div>
-    <div class="modal-footer">
-      <a href="#!" id="edityes" class="modal-close waves-effect waves-green btn-flat" style="color:#26a69a">Edit</a>
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-    </div>
-  </div>
 
 
-<!-- Modal for deleting -->
-  <div id="modal2" class="modal">
-  <div class="modal-content">
-    <p >Do you really want to delete this card?</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" id="deleteyes" class="modal-close waves-effect waves-green btn-flat" style="color:#ff4f4f;">Yes</a>
-    <a href="#!" class="modal-close waves-effect waves-green btn-flat">No</a>
-  </div>
-</div>
+    <!-- Modal for deleting -->
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <p>Do you really want to delete this card?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="deleteyes" class="modal-close waves-effect waves-green btn-flat" style="color:#ff4f4f;">Yes</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">No</a>
+        </div>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
