@@ -34,6 +34,7 @@ let cursor;
 let mainPlayer;
 let question;
 var players = [];
+var losers = [];
 let platforms = [];
 let states = [];
 let answerCards = [];
@@ -67,6 +68,7 @@ function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
   this.load.image("exclamation", "../assets/character/exclamation.png");
   this.load.image("questionMark", "../assets/character/question.png");
+  this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
   this.load.image("p1", "../assets/character/dratini_resize.png");
@@ -81,25 +83,6 @@ function preload() {
     "../assets/backgrounds/uglyQuestionBackground.png"
   );
 
-  //   // this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-  //   this.scale.forceOrientation(false, true);
-  //   this.scale.enterIncorrectOrientation.add(handleIncorrect);
-  //   this.scale.leaveIncorrectOrientation.add(handleCorrect);
-  //
-  // }
-  //
-  // function handleIncorrect() {
-  //   if (!this.device.desktop) {
-  //     document.getElementById("gameDiv")
-  //       .style.display = "block";
-  //   }
-  // }
-  //
-  // function handleCorrect() {
-  //   if (!this.device.desktop) {
-  //     document.getElementById("gameDiv")
-  //       .style.display = "none";
-  //   }
 }
 
 
@@ -126,13 +109,9 @@ function create() {
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
   // this.socket.on("gameOver", updatePlayerScoreHeight);
-  this.socket.on("gameOver", data => {
+  this.socket.on("gameOver", playerStateChange);
 
-    let me = players.find(player => data.playerId === player.playerId);
-    me.gameOver = true;
-    console.log("game over. disable the player");
-    updatePlayerScoreHeight();
-  });
+
   this.socket.on(
     "me",
     me => (mainPlayer = players.find(player => player.playerId === me.playerId))
@@ -190,25 +169,19 @@ function updateStatePosition(player) {
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
 
-  // if (!mainPlayer.gameOver) {
-  // if (!mainPlayer.gameOver) {
   gameStarted = true;
   scoreAndPlayer();
   // Other round start stuff, reset game objects
   console.log("startRound() in game.js");
-  setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
-  self.socket.emit("playerStateChange", {
-    state: "questionMark"
-  });
+  if (!mainPlayer.gameOver) {
+    console.log("I ran.");
+    setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
+    self.socket.emit("playerStateChange", {
+      state: "questionMark"
+    });
+  }
   displayAnswers(roundInfo.answer);
   displayQuestion(roundInfo.question);
-  // }
-  // } else {
-
-  // updatePlayerScoreHeight();
-
-  // setInterval(() => alert("GAME OVER "), 1000);
-  // }
 
 
 }
@@ -228,20 +201,52 @@ function playerStateChange(stateInfo) {
       player.supportingState.setTexture("ready");
       break;
     case "questionMark":
-      for (player of players) {
-        player.supportingState.setTexture("questionMark");
+      if (!isLoser(stateInfo.playerId)) {
+        for (player of players) {
+          player.supportingState.setTexture("questionMark");
+        }
       }
       break;
 
     case "exclamation":
+      if (!isLoser(stateInfo.playerId)) {
 
-
-      player.supportingState.setTexture("exclamation");
-
+        player.supportingState.setTexture("exclamation");
+      }
       break;
 
-    case "answered":
-      // console.log(stateInfo.wrongAnswers.get(stateInfo.playerId), "EEEE");
+    case "gameOver":
+
+      player.gameOver = true;
+      self.deadPlayerY = player.y;
+      player.body.allowGravity = false;
+      player.setTexture("ghost");
+      // player.supportingState.setTexture("none");
+      player.supportingState.destroy();
+      player.setImmovable(true);
+      player.supportingPlatform.destroy();
+      losers = stateInfo.losers;
+      console.log("Update losers list: ", losers);
+      self.tweens.timeline({
+        targets: player.body.velocity,
+        loop: -1,
+        tweens: [{
+            // x: spawnPoints[players.length][players.length],
+            y: -30,
+            duration: 700,
+            ease: 'Stepped'
+          },
+          {
+            // x: spawnPoints[players.length][players.length],
+            y: 30,
+            duration: 700,
+            ease: 'Stepped'
+          },
+
+
+        ]
+      });
+
     default:
       console.log("state undefined!!!");
       break;
@@ -262,14 +267,10 @@ function endRound(roundInfo) {
 
   console.log("Round ending");
   for (let card of answerCards) {
-    console.log("RoundInfo: " + JSON.stringify(roundInfo));
+    // console.log("RoundInfo: " + JSON.stringify(roundInfo));
 
-
-
-    // Slide correct answer card to center
-    // if (card.text.text === roundInfo.answer) {
     if (roundInfo.answer === card.text.text) {
-      // playerAnswers.set(roundInfo.playerId, this.numberOfCorrect++);
+
       self.tweens.add({
         targets: card,
         x: 400,
@@ -418,6 +419,7 @@ function createPlatform(platformInfo) {
   // collision with that player
   newPlatform.supportingPlayer = platformInfo.supportingPlayer;
   self.physics.add.collider(platformInfo.supportingPlayer, newPlatform);
+
   platforms.push(newPlatform);
 
   return newPlatform;
@@ -443,11 +445,11 @@ function removePlayer(playerInfo) {
 
 // Update y position of platform based on incorrect answers and the game score
 function updatePlayerScoreHeight() {
-  console.log("updating player heights: " + JSON.stringify(players));
+  // console.log("updating player heights: " + JSON.stringify(players));
 
 
   for (let i = 0; i < players.length; i++) {
-    console.log(players[i], ": player[i].wrongAnswers");
+    // console.log(players[i], ": player[i].wrongAnswers");
     self.tweens.add({
       targets: [players[i].supportingPlatform],
       y: 400 + 50 * players[i].wrongAnswers,
@@ -552,12 +554,20 @@ function displayAnswers(answers) {
 
     // Set card to be interactive and fire answer on click
     card.setInteractive()
-      .on("pointerdown", () =>
-        self.socket.emit("playerAnswered", {
-          answer: card.text.text,
-          playerId: mainPlayer.playerId
-        })
-      );
+      .on("pointerdown", () => {
+        if (!mainPlayer.gameOver) {
+          self.socket.emit("playerAnswered", {
+            answer: card.text.text,
+            playerId: mainPlayer.playerId
+          });
+        } else {
+          self.socket.emit("playerAnswered", {
+            answer: "N/A",
+            playerId: mainPlayer.playerId
+          });
+          console.log("Can't click, you're dead.");
+        }
+      });
 
     // Add card to our master list
     answerCards.push(card);
@@ -615,4 +625,14 @@ function scoreAndPlayer() {
     fontSize: "40px",
     fill: "#000"
   });
+}
+
+function isLoser(id) {
+  for (let playerId of losers) {
+    if (playerId === id) {
+      return true;
+    }
+  }
+  return false;
+
 }

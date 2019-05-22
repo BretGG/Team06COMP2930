@@ -84,13 +84,7 @@ let roundStarted;
 var round = 0;
 let currentRoundCard;
 var gameStarted = false;
-
-// const dummycards = [
-//   { question: "1 + 1 = ?", answer: "2" },
-//   { question: "9 + 1 = ?", answer: "10" },
-//   { question: "5 + 1 = ?", answer: "6" },
-//   { question: "8 x 3", answer: "24" }
-// ];
+const losers = [];
 
 var io = require("socket.io")
   .listen(server);
@@ -162,7 +156,7 @@ function onDisconnect(socket) {
 }
 
 function onPlayerAnswered(info, socket) {
-  if (info) {
+  if (info && glob.cards[round]) {
     let currentPlayer = players.get(info.playerId);
     currentPlayer.answeredRound = true;
     io.emit("playerStateChange", {
@@ -178,7 +172,7 @@ function onPlayerAnswered(info, socket) {
         " / correctAnswers, ",
         currentPlayer.correctAnswers
       );
-    } else {
+    } else if (info.answer !== "N/A") {
       this.answer = false;
       currentPlayer.wrongAnswers++;
       console.log(
@@ -235,16 +229,15 @@ function endRound() {
 }
 
 function gameOver(id) {
-  // let player = players.get(id);
-  // player.wrongAnswers = 100;
-  // this.socket.emit("gameOver", {
-  //   playerId: id,
-  //   wrongAnswers: player.wrongAnswers
-  // });
+
   console.log(id, " Game Over");
 
+  //check duplicates before adding
+  if (id !== losers.find(element => element === id)) {
+    losers.push(id);
+  }
+
   let currentPlayer = players.get(id);
-  currentPlayer.wrongAnswers = 100;
 
   let filteredPlayers = [...players.values()];
   filteredPlayers = filteredPlayers.map(player =>
@@ -253,9 +246,10 @@ function gameOver(id) {
 
   io.emit("gameOver", {
     playerId: id,
-    players: filteredPlayers
+    players: filteredPlayers,
+    losers: losers,
+    state: "gameOver"
   });
-  console.log("game over");
 }
 
 function onPlayerStateChange(socket, data) {
@@ -356,72 +350,3 @@ function allPlayerReady() {
   }
   return true;
 }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// function disconnectPlayer(id) {
-//   console.log("user ", id, " attempts to disconnect..");
-//   if (players[id] != undefined) {
-//     // console.log("disc: ", players[id].playerNo);
-//     Game1_players[players[id].playerNo].isTaken = false;
-//     delete players[id];
-//     io.emit("disconnect", id);
-//     if (self.EcoQuest_numberOfCurrentPlayers > 0) {
-//       self.EcoQuest_numberOfCurrentPlayers--;
-//     }
-//     console.log(
-//       "current number of players ",
-//       self.EcoQuest_numberOfCurrentPlayers
-//     );
-//     printPlayers(Game1_players);
-//   } else {
-//     console.log("User not exist, deleted already or never created");
-//     console.log(
-//       "current number of players ",
-//       self.EcoQuest_numberOfCurrentPlayers
-//     );
-//   }
-// }
