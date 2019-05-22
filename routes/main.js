@@ -32,10 +32,6 @@ router.get("/myCard", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/myCards.html"));
 });
 
-/* GET hannahtest page. */
-router.get("/hannahtest", function(req, res) {
-  res.render(path.resolve(__dirname, "../public/views/hannahtest.html"));
-});
 
 /* GET shop page. */
 router.get("/shop", function(req, res) {

@@ -55,12 +55,12 @@ $(document).ready(() => {
     $("#submitIN").click(() => {
         if($("#unameIN1").val()===("showmea")
             && $("#passIN1").val()===("sunset")){
-            $('body').css('background-image', 'url("../images/sunset.png');
+            $('html').css('background-image', 'url("../images/bg/sunset.png")');
             $("#unameIN1").val("Anything else you would to see?");
             $("#passIN1").val(null);
             return;
         }
-
+        /** Server request that saves user info to database */
         $.ajax({
             type: "post",
             url: "/login",

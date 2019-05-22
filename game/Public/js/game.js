@@ -39,7 +39,7 @@ let platforms = [];
 let states = [];
 let answerCards = [];
 let gameStarted = false;
-let score = 0;
+let myScore = 0;
 let scoreText;
 
 // var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
@@ -108,7 +108,7 @@ function create() {
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
-  // this.socket.on("gameOver", updatePlayerScoreHeight);
+  this.socket.on("gameEnd", playerStateChange);
   this.socket.on("gameOver", playerStateChange);
 
 
@@ -196,7 +196,7 @@ function playerStateChange(stateInfo) {
   let player = players.find(holder => stateInfo.playerId === holder.playerId);
   switch (stateInfo.state) {
     case "ready":
-      // console.log("HHHHHHHHEEEEEEEEEEEELLLLLLLLLLLLLLL");
+
       player.supportingState.setTexture("ready");
       break;
     case "questionMark":
@@ -247,6 +247,11 @@ function playerStateChange(stateInfo) {
 
         ]
       });
+      break;
+    case "gameEnd":
+      player.supportingState.destroy();
+      gameEnd();
+      break;
 
     default:
       console.log("state undefined!!!");
@@ -263,6 +268,25 @@ function currentPlayers(currentPlayers) {
   }
 }
 
+function gameEnd() {
+
+
+  for (let player of players) {
+
+    if (!player.gameOver) {
+      player.y = 0;
+      player.supportingState.destroy();
+      self.tweens.add({
+        targets: player.supportingPlatform,
+        y: 270,
+        ease: "Quint",
+        duration: 1000,
+        repeat: 0
+      });
+    }
+
+  }
+}
 // End the round and update players accordingly
 function endRound(roundInfo) {
 
@@ -608,24 +632,36 @@ function displayAnswers(answers) {
 
 // Add text to the screen for player score
 function scoreAndPlayer() {
-
+  console.log("array:", players);
 
   if (scoreText) {
     scoreText.destroy();
   }
-
+  let scores = [];
   let me = players.find(player => player.playerId === mainPlayer.playerId);
+
+
   console.log("Me, players.correctAnswers ", me.correctAnswers);
 
-  score = me.correctAnswers * 90;
 
-  let scoreBoard = "Score: " + score;
+  myScore = me.correctAnswers * 90;
+
+  for (let player of players) {
+    if (player.playerId != me) {
+      scores.push(player.correctAnswers * 90);
+    }
+  }
+
+  let scoreBoard = "Score: " + myScore;
+
 
   scoreText = self.add.text(16, 16, scoreBoard, {
     fontFamily: "Macondo Swash Caps",
     fontSize: "40px",
     fill: "#000"
   });
+
+
 }
 
 function isLoser(id) {

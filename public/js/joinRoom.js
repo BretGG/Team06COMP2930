@@ -36,7 +36,9 @@ $(document).ready(() => {
         window.location.href = "/game/lobby";
       },
       error: function(err) {
-        M.toast({ html: err.responseText, classes: "red" });
+        M.Toast.dismissAll();
+        M.toast({ html: err.responseText, classes: "red",
+          displayLength: 2500 });
       }
     });
   });

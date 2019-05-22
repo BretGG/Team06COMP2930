@@ -42,9 +42,11 @@ $(document).ready(() => {
         window.location.href = "/game/lobby";
       },
       error: function(err) {
+        M.Toast.dismissAll();
         M.toast({
           html: `${err.responseText}`,
-          classes: "red"
+          classes: "red",
+          displayLength: 2500
         });
       }
     });

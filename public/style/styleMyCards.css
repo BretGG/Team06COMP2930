@@ -58,17 +58,39 @@ input {
   display: inline;
 }
 
-
-
 /** Restricts size and color of card */
 .card {
   margin: 0.8rem;
   background: white;
   box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
-  border-radius: 3%;
+  border-radius: 5px;
+  /* padding: 0em; */
   overflow: hidden;
+  padding:8px;
 }
 
+.cardQ{
+    /* padding-left: 8px; */
+    /* padding-top: 3px !important; */
+    font-size: 1.3em;
+    margin-top: 0.4rem;
+}
+.cardA{
+    /* padding-left: 8px; */
+    margin: 0rem;
+
+}
+.cardE, .cardD{
+    /* padding: 0.4rem; */
+    color: grey;
+    margin:0px !important;
+    font-size:21px !important;
+}
+
+
+.cardC{
+    color: grey;
+}
 /** Restricts size, border, and color of card(s) container*/
 #cardsCon{
 	height: 280px;
@@ -86,12 +108,6 @@ input {
   margin-top: 2%;
 }
 
-/** Aligns text to center */
-#status {
-  margin-top: 4%;
-  text-align: center;
-  font-size: 1.2em;
-}
 
 .toast{
     text-align: center !important;
@@ -105,7 +121,7 @@ input {
 @media only screen and (max-width: 600px) {
     #toast-container {
         width: 100%;
-        bottom: 3%;
+        bottom: 0%;
     }
 }
 @media only screen and (min-width: 601px) and (max-width: 992px) {

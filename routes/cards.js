@@ -25,6 +25,7 @@ router.post("/", async (req, res) => {
   res.send(_.pick(card, ["question", "answer"]));
 });
 
+// To update card
 router.put("/", async (req, res) => {
   let cardInfo = _.pick(req.body, [
     "cardId",
@@ -47,9 +48,13 @@ router.put("/", async (req, res) => {
   });
 });
 
-router.delete("/", async (req, res) => {
-  let cardId = _.pick(req.body, "cardId");
-  let card = Card.findById(req.body.cardId);
+
+// to delete card
+router.delete("/:cardId", async (req, res) => {
+    console.log('router.delete starts');
+    let cardId = req.params.cardId;
+  let card = await Card.findById(cardId);
+  console.log(card);
 
   // TODO: check if they are the owner
   if (!card) if (error) return res.status(400).send("No card by that id");
