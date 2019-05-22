@@ -30,6 +30,24 @@ router.get("/", (req, res) => {
   });
 });
 
+// Sends the information on the lobby that the given user is registered in
+router.get("/lobby", (req, res) => {
+  var token = req.get("auth-token");
+  if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
+  const decode = jwt.verify(token, "FiveAlive");
+  token = jwt.decode(token);
+
+  const user = await User.findById(token._id).select("-password");
+  if (!user) return res.status(400).send("Uh Oh! You dont exist!");
+
+  for (let holder of [...lobbies.values()]) {
+    let lobby = holder.players.find(playerHolder => {playerHolder.playerId === user._id});
+    if (lobby) {
+      return res.send(lobby);
+    }
+  }
+});
+
 /* POST to create new game session */
 router.post("/", async (req, res) => {
   var token = req.get("auth-token");

@@ -1,11 +1,13 @@
 $(document).ready(() => {
-    $.ajaxSetup({
-        headers: {
-          "auth-token": localStorage.getItem("auth-token")
-        }
-    });
+  let socket;
 
-    function updateCosmetics() {
+  $.ajaxSetup({
+    headers: {
+      "auth-token": localStorage.getItem("auth-token")
+    }
+  });
+
+  function updateCosmetics() {
     $.ajax({
       type: "get",
       url: "/users/updateCosmetics",
@@ -21,14 +23,23 @@ $(document).ready(() => {
     });
   }
 
+  function getLobbyInfo(cb) {
+    $.ajax({
+      type: "get",
+      url: "/game/lobby",
+      success: data => {},
+      error: err => {}
+    });
+  }
+
   updateCosmetics();
 
-    /** Max number of players in a game lobby */
-    var max = 4;
-    /** Dummy counter */
-    var count = 0;
-    /** Dummy players info */
-    var username = ["Stella", "Jessica", "Rose", "Hannah", "Bret"]
+  /** Max number of players in a game lobby */
+  var max = 4;
+  /** Dummy counter */
+  var count = 0;
+  /** Dummy players info */
+  var username = ["Stella", "Jessica", "Rose", "Hannah", "Bret"];
 
   /**Takes you to game page */
   $("#start").click(() => {
@@ -51,4 +62,8 @@ $(document).ready(() => {
       count++;
     }
   });
+
+  function connectSocket(namespace) {
+    socket = io(namespace);
+  }
 });
