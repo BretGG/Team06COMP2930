@@ -50,9 +50,11 @@ router.put("/", async (req, res) => {
 
 
 // to delete card
-router.delete("/", async (req, res) => {
-  let cardId = _.pick(req.body, "cardId");
-  let card = Card.findById(req.body.cardId);
+router.delete("/:cardId", async (req, res) => {
+    console.log('router.delete starts');
+    let cardId = req.params.cardId;
+  let card = await Card.findById(cardId);
+  console.log(card);
 
   // TODO: check if they are the owner
   if (!card) if (error) return res.status(400).send("No card by that id");
