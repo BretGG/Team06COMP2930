@@ -1,0 +1,70 @@
+body {
+    text-shadow:
+    -1px -1px 0 #707070,  
+    1px -1px 0 #707070,
+    -1px 1px 0 #707070,
+    1px 1px 0 #707070;
+}
+
+#container {
+    width: 500px;
+    margin: 0 auto;
+    padding: 5%;
+}
+
+#mainpagecon {
+    height: 250px;
+}
+
+.descriptionBox {
+    font-family:"Dosis", sans-serif;
+    color: white;
+    font-weight:bolder;
+    font-size: 2em;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-radius: 25px;
+    border-width: 5px;
+    width: 90%;
+    background-color:rgba(0,0,0,.2);
+}
+
+.descriptionBox h1 {
+    text-align: center;
+}
+
+.descriptionBox p {
+    text-align: center;
+    font-size: .6em;
+    padding:2%;
+}
+
+.descritionBox h1 {
+    text-align: center;
+    padding:2%;
+}
+
+@media only screen and (max-width:1499px) and (min-width: 850px) {
+    #container {
+        width: 800px;
+      
+    }           
+}
+
+@media only screen and (min-width: 1500px) {
+    #container {
+        width: 1200px;
+       
+    }
+}
+
+.fixedButton{
+    position:fixed;
+    background-color:rgb(38, 166, 154);
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+}
