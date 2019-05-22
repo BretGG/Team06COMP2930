@@ -23,11 +23,11 @@ const io = require("socket.io")(gameServer);
 
 */
 
+// -------------------------------------------------Socket code----------------------------------------
 // Create new connection and register the user
 io.on("connection", socket => {
   console.log("New game connection");
 
-  // ------------------------------------------------Add User to list
   socket.on("register", async playerInfo => {
     console.log("register");
     const decode = jwt.verify(playerInfo, "FiveAlive");
@@ -38,13 +38,11 @@ io.on("connection", socket => {
     let lobbyHolder;
     for (let lobby of lobbies) {
       for (let player of lobby.players) {
-        if (JSON.stringify(player.playerId) == JSON.stringify(user._id)) {
+        if (JSON.stringify(player._id) == JSON.stringify(user._id)) {
           lobbyHolder = lobby;
         }
       }
     }
-
-    console.log("lobby: ", lobbyHolder);
 
     // Disconnect or join namespace
     if (!lobbyHolder) {
@@ -52,7 +50,7 @@ io.on("connection", socket => {
       socket.disconnect();
     } else {
       lobbyHolder.players.filter(
-        player => player._id === user._id
+        player => JSON.stringify(player._id) === JSON.stringify(user._id)
       )[0].socketId = socket.id;
       socket.join(lobbyHolder.sessionId);
       io.to(lobbyHolder.sessionId).emit(
@@ -65,11 +63,21 @@ io.on("connection", socket => {
   // Handling a user leaving the lobby
   socket.on("disconnect", () => {
     let sessionId = getSessionIdBySocketId(socket.id);
-    let disconnectPlayer = removePlayerBySocketId(socket.id);
+    removePlayerBySocketId(socket.id);
     io.to(sessionId).emit("users", usersInLobby(sessionId));
-    console.log("disconnect");
+    if (getLobbyBySession(sessionId).players.length == 0) {
+      removeLobbyBySession(sessionId);
+    }
   });
 });
+
+function removeLobbyBySession(sessionId) {
+  lobbies.forEach((value, index) => {
+    if (value.sessionId === sessionId) {
+      return lobbies.splice(index, 1);
+    }
+  });
+}
 
 function usersInLobby(sessionId) {
   for (let lobby of lobbies) {
@@ -112,7 +120,6 @@ function removePlayerBySocketId(socketId) {
   }
 }
 
-// key: socket.id, value: { lobby: { players, sessionId}}
 let lobbies = [];
 
 // -------------------------------------------------- Routing -----------------------------------------------------
