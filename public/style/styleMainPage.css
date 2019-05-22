@@ -1,155 +1,149 @@
-#avatar{
-    margin: 0 auto;
-    width: 176px;
-    height: 186px;
-    margin-bottom: 3%;
-    background-repeat: no-repeat;
-    background-position: bottom 0px right 50%;
+/*avatar to customize the size of the avatar size and location*/
+#avatar {
+	margin: 0 auto;
+	width: 176px;
+	height: 186px;
+	margin-bottom: 3%;
+	background-repeat: no-repeat;
+	background-position: bottom 0px right 50%;
+}
+/*Container to hold the upper title and logo of the page*/
+#mainpagecon {
+	padding-bottom: 4%;
+	font-size: 1em;
+	height: 600px;
+	width: 90%;
+	text-align: center;
+}
+/*customizes the title font*/
+#title {
+	font-size: 2em;
+}
+/*Customizes the button margin and width*/
+#buttons a {
+	margin-bottom: 2%;
+	width: 135px;
+}
+/
+#mainpagecon label {
+	font-size: 1.2em;
 }
 
-#mainpagecon{
-  padding-bottom: 4%;
-  font-size: 1em;
-  height:600px;
-  width:90%;    
-  text-align: center;
+#buttons {
+	display: flex;
+	width: 300px;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	margin: 0 auto;
 }
-
-#title{
-    font-size:2em;
-}
-#buttons a{
-  margin-bottom : 2%;
-  
-  width: 135px;
-}
-
-#mainpagecon label{
-  font-size: 1.2em;
-}
-
-
-#buttons{
-    display:flex;
-    width:300px;
-    flex-wrap:wrap;
-    justify-content: space-around;
-    margin: 0 auto; 
-}
-
 
 @media only screen and (max-width:800px) and (min-width: 651px) {
-    #avatar {
-    }
-    
-    
+	#avatar {}
 }
-    /* iphone 6, 6s, 7, 8 */
 
 
-
- /* iphone X */
- 
-@media only screen and (min-device-width: 375px) and (max-device-height: 812px) and (-webkit-device-pixel-ratio: 3) { 
+/* iphone 6, 6s, 7, 8 */
 
 
-    h2 {
-    font-size: 1.56rem;
-    }
-    #title {
-        font-size: 3.5em;
-    }
-    #logo{
-        font-size:4.5em;
-    }
+/* iphone X */
+
+@media only screen and (min-device-width: 375px) and (max-device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+	h2 {
+		font-size: 1.56rem;
+	}
+	#title {
+		font-size: 3.5em;
+	}
+	#logo {
+		font-size: 4.5em;
+	}
 }
-@media only screen and (min-device-width: 410px) and (max-device-width: 650px) { 
-    #logo{
-        font-size:4.5em;
-    }
-    #title{
-        font-size:3em;
-    }
+
+@media only screen and (min-device-width: 410px) and (max-device-width: 650px) {
+	#logo {
+		font-size: 4.5em;
+	}
+	#title {
+		font-size: 3em;
+	}
 }
+
 @media only screen and (max-width:900px) and (min-width: 600px) {
-    #buttons{
-        flex-direction: row;
-    width: 345px;
-        display:flex;
-        flex-wrap:wrap;
-        margin: 0 auto;
-        align-items:center;
-    }
-    #logo{
-        font-size:5.5em;
-    }
-    #mainpageCon{
-        width:70%;
-    }
-    #title {
-        font-size: 4.5em;
-    }
-#buttons a {
-    margin-bottom: 5%;
-    width: 156px;
-    height: 48px;
-    padding-top: 0px;
-    font-size: 16px;
+	#buttons {
+		flex-direction: row;
+		width: 345px;
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0 auto;
+		align-items: center;
+	}
+	#logo {
+		font-size: 5.5em;
+	}
+	#mainpageCon {
+		width: 70%;
+	}
+	#title {
+		font-size: 4.5em;
+	}
+	#buttons a {
+		margin-bottom: 5%;
+		width: 156px;
+		height: 48px;
+		padding-top: 0px;
+		font-size: 16px;
+	}
 }
-    
-}
+
 @media only screen and (min-width: 1025px) {
-
-    #logo{
-        font-size:3em;
-    }
-    #mainpageCon{
-        width:200px;
-    }
-    #title {
-    font-size: 2em;
-    margin: -9px;
-    }
-    #buttons{
-    flex-direction: row;
-    width: 522px;
-
-    }
-    #buttons a{
-        width: 153px;
-        height: 50px;
-        font-size: 12px;
-    }
-
-    #avatar{
-        height:206px;
-        margin-bottom:22px;
-    }
-    img{
-        width:120px;
-    }
+	#logo {
+		font-size: 3em;
+	}
+	#mainpageCon {
+		width: 200px;
+	}
+	#title {
+		font-size: 2em;
+		margin: -9px;
+	}
+	#buttons {
+		flex-direction: row;
+		width: 522px;
+	}
+	#buttons a {
+		width: 153px;
+		height: 50px;
+		font-size: 12px;
+	}
+	#avatar {
+		height: 206px;
+		margin-bottom: 22px;
+	}
+	img {
+		width: 120px;
+	}
 }
-/**for ipad and table view*/
-@media only screen and (max-width:1024px) and (min-width: 901px) {
-    #logo {
-        font-size: 5.5em;
-    }
 
-   
-    #mainpageCon{
-        width:200px;
-    }
-    #title {
-        font-size: 3.5em;
-    }
-    #buttons{
-        width:200px;
-       
-    }
-    #buttons a {
-        height: 56px;
-        font-size: 17px;
-        margin-bottom:20px;
-        width:162px;
-        }
+
+/**for ipad and table view*/
+
+@media only screen and (max-width:1024px) and (min-width: 901px) {
+	#logo {
+		font-size: 5.5em;
+	}
+	#mainpageCon {
+		width: 200px;
+	}
+	#title {
+		font-size: 3.5em;
+	}
+	#buttons {
+		width: 200px;
+	}
+	#buttons a {
+		height: 56px;
+		font-size: 17px;
+		margin-bottom: 20px;
+		width: 162px;
+	}
 }

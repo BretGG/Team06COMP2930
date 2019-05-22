@@ -1,28 +1,34 @@
 /** Restricts size, placement, and color of main container */
-.mainCon{
-  margin: 0 auto;
-  background-color: rgba(255,255,255, 0.53);
-  width: 100%;
-  padding-bottom: 4%;
-  font-size: 1em;
-  height:435px;
+
+.mainCon {
+	margin: 0 auto;
+	background-color: rgba(255, 255, 255, 0.53);
+	width: 100%;
+	padding-bottom: 4%;
+	font-size: 1em;
+	height: 435px;
 }
+
 
 /** Changes appearance of submit button */
+
 #submit {
-  margin: 0 auto;
-  display: block;
-  width: 40%;
+	margin: 0 auto;
+	display: block;
+	width: 40%;
 }
+
 
 /** Changes appearance of back button */
+
 #back {
-  margin-left: 5.5%
-  position: relative;
-  bottom: 3px;
+	margin-left: 5.5% position: relative;
+	bottom: 3px;
 }
 
+
 /** Changes appearance of div */
+
 /* #roomNo{
   width: 100%;
   margin-bottom: 3%;
@@ -39,7 +45,9 @@
   font-size: 19px;
 } */
 
+
 /** Makes all labels under #roomcon uniform */
+
 #roomcon label {
   display: block;
   clear:right;
@@ -47,7 +55,9 @@
   color: black;
 }
 
+
 /** Restricts size of div and placement */
+
 #roomcon, .optionCon{
   margin: 0 auto;
   text-align: left;
@@ -55,64 +65,73 @@
   margin-bottom: 4%;
 }
 
+
 /** Makes all inputs under #roomcon uniform */
+
 #roomcon input {
-  padding-left: 2%;
-  width: 100%;
-  margin-bottom: 3%;
-  border-radius: 8px;
-  background-color: #D9F2ED;
-  font-size: 16px;
-  padding-top: 0%;
+	padding-left: 2%;
+	width: 100%;
+	margin-bottom: 3%;
+	border-radius: 8px;
+	background-color: #D9F2ED;
+	font-size: 16px;
+	padding-top: 0%;
 }
+
+
 /** WIDTH RANGE FROM 373px to 499px */
-@media screen and (min-width: 373px) and (max-width: 499px){
-    /**Changes size of div to match screen size*/
-    .mainCon{
-        width:100%;
-    }
+
+@media screen and (min-width: 373px) and (max-width: 499px) {
+	/**Changes size of div to match screen size*/
+	.mainCon {
+		width: 100%;
+	}
 }
 
 
 /** WIDTH RANGE FROM 500px to 799px */
-@media screen and (min-width: 500px) and (max-width: 799px){
-    /**Changes size of div to match screen size*/
-    .mainCon{
-      width: 450px;
-      font-size: 1em;
-      height:410px;
-    }
+
+@media screen and (min-width: 500px) and (max-width: 799px) {
+	/**Changes size of div to match screen size*/
+	.mainCon {
+		width: 450px;
+		font-size: 1em;
+		height: 410px;
+	}
 }
 
 
 /** WIDTH RANGE FROM 800px to 1079px */
-@media screen and (min-width: 800px) and (max-width: 1079px) {
-      /**Changes size of div to match screen size*/
-      .mainCon{
-        width: 500px;
-        font-size: 1em;
-        height:430px;
-      }
 
+@media screen and (min-width: 800px) and (max-width: 1079px) {
+	/**Changes size of div to match screen size*/
+	.mainCon {
+		width: 500px;
+		font-size: 1em;
+		height: 430px;
+	}
 }
+
 
 /** WIDTH RANGE FROM 1080px to 1500px */
-@media screen and (min-width: 1080px) and (max-width: 1500px){
-      /**Changes size of div to match screen size*/
-      .mainCon{
-        width: 400px;
-        height:400px;
-        font-size: 1em;
-      }
+
+@media screen and (min-width: 1080px) and (max-width: 1500px) {
+	/**Changes size of div to match screen size*/
+	.mainCon {
+		width: 400px;
+		height: 400px;
+		font-size: 1em;
+	}
 }
 
-/** WIDTH RANGE FROM 1501px to infinity */
-@media screen and (min-width: 1501px){
-      /**Changes size of div to match screen size*/
-      .mainCon{
-        font-size: 1em;
-        width:500px;
-        height:430px;
-      }
 
+/** WIDTH RANGE FROM 1501px to infinity */
+
+@media screen and (min-width: 1501px) {
+	/**Changes size of div to match screen size*/
+	.mainCon {
+		font-size: 1em;
+		width: 500px;
+		height: 430px;
+	}
 }

@@ -1,3 +1,4 @@
+
 input {
     font-family: 'Ubuntu', sans-serif;
 }
@@ -13,23 +14,27 @@ input {
     width: 40%;
 }
 
+/** This is for dropdown **/
 .optionCon {
     margin-bottom: 0em;
 }
 
+/** This is for dropdown **/
 .optionCon>.input-field {
     margin-top: 0.1rem;
 }
 
+/** This is for dropdown **/
 .row .category {
     padding-left: 1.3rem !important;
 }
 
+/** This is for dropdown **/
 .row .deck {
     padding-right: 1.3rem !important;
 }
 
-/* These are for dropdown */
+/** This is for dropdown **/
 .select-wrapper input.select-dropdown {
     margin-bottom: 0em;
     height: 2.3rem;
@@ -60,7 +65,6 @@ input {
 
 #inputcon>input {
     background-color: rgb(217, 242, 237);
-    /* height: 1em; */
     display: inline;
 }
 
@@ -76,19 +80,15 @@ input {
 }
 
 .cardQ {
-    /* padding-left: 8px; */
-    /* padding-top: 3px !important; */
     font-size: 1.3em;
     margin-top: 0.4rem;
 }
 
 .cardA {
-    /* padding-left: 8px; */
     margin: 0rem;
 }
 
 .cardE, .cardD {
-    /* padding: 0.4rem; */
     color: grey;
     margin: 0px !important;
     font-size: 21px !important;
@@ -135,7 +135,6 @@ input {
 
 /** WIDTH RANGE FROM 500px to 799px */
 @media screen and (min-width: 500px) and (max-width: 799px) {
-
     /**Changes size of div to match screen size*/
     #cardsCon {
         height: 300px;
@@ -148,7 +147,6 @@ input {
 
 /** WIDTH RANGE FROM 1501px to infinity */
 @media screen and (min-width: 1501px) {
-
     /**Changes size of div to match screen size*/
     #cardsCon {
         height: 300px;
@@ -161,7 +159,6 @@ input {
 
 /** WIDTH RANGE FROM 1080px to 1500px */
 @media screen and (min-width: 1080px) and (max-width: 1500px) {
-
     /**Changes size of div to match screen size*/
     #cardsCon {
         height: 300px;
@@ -174,7 +171,6 @@ input {
 
 /** WIDTH RANGE FROM 800px to 1079px */
 @media screen and (min-width: 800px) and (max-width: 1079px) {
-
     /**Changes size of div to match screen size*/
     #cardsCon {
         height: 340px;
