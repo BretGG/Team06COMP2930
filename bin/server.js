@@ -90,7 +90,7 @@ var io = require("socket.io")
   .listen(server);
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
-
+  self.id = socket.id;
   // the connecion is made
   if (players.length >= maxPlayers) {
     return socket.disconnect();
@@ -213,6 +213,12 @@ function endRound() {
     if (round < glob.cards.length && !roundStarted) {
       roundStart(round);
     } else {
+
+      console.log("The end----------------------------");
+      io.emit("gameEnd", {
+        playerId: self.id,
+        state: "gameEnd"
+      });
       clearTimeout();
     }
   }, 3000);
@@ -301,18 +307,53 @@ async function roundStart(s) {
     format: "tf",
     category: "test"
   });
-  // console.log("testing, ",glob.cards);
+  console.log("card length: ", glob.cards.length);
+
   let question;
   let answers = [];
+
   currentRoundCard.question = glob.cards[s].question;
   currentRoundCard.answer = glob.cards[s].answer;
 
   question = glob.cards[s].question;
   answers.push(glob.cards[s].answer);
-  for (let i = 0; i < 4; i++) {
-    if (glob.cards[i].answer != glob.cards[s].answer) {
-      answers.push(glob.cards[i].answer);
+  if (glob.cards.length >= 4) {
+    for (let i = 0; i < 4; i++) {
+      if (glob.cards[i].answer != glob.cards[s].answer) {
+        answers.push(glob.cards[i].answer);
+      }
     }
+  } else {
+
+    for (let i = 0; i < glob.cards.length; i++) {
+
+      if (glob.cards[i].answer != glob.cards[s].answer) {
+        answers.push(glob.cards[i].answer);
+      }
+
+    }
+    let temp = 4 - glob.cards.length;
+    switch (temp) {
+      case 1:
+        answers.push("Chocolate");
+        break;
+
+      case 2:
+        answers.push("coffee");
+        answers.push("water");
+        break;
+      case 3:
+        answers.push("145");
+        answers.push("Ocean");
+        answers.push("Carbonated water");
+
+
+
+        break;
+      default:
+
+    }
+
   }
   //shuffling the answers
   answers.sort(() => Math.random() - 0.5);
@@ -325,6 +366,8 @@ async function roundStart(s) {
   //************************
   roundStarted = true;
   gamestarted = true;
+
+
 }
 
 function allPlayerAnswered() {
