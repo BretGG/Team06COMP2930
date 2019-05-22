@@ -64,5 +64,8 @@ app.use("/items", itemRouter);
 // Remove the public static folder if handling all UI with Phaser
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "game/public")));
+app.use((req, res, next) => {
+  res.render(path.resolve(__dirname, "./public/views/404.html"));
+});
 
 module.exports = app;

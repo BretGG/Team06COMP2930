@@ -5,7 +5,7 @@ $(document).ready(() => {
     }
   });
 
-	function updateCosmetics() {
+  function updateCosmetics() {
     $.ajax({
       type: "get",
       url: "/users/updateCosmetics",
@@ -20,11 +20,6 @@ $(document).ready(() => {
       }
     });
   }
-
- /** Takes user gameLobby page */
-  $("#submit").click(() => {
-  	window.location.href="gameLobby";
-  });
 
   updateCosmetics();
 
@@ -52,5 +47,4 @@ $(document).ready(() => {
       }
     });
   });
-  
 });
