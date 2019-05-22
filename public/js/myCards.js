@@ -14,6 +14,24 @@ $(document).ready(() => {
     $('.modal').modal();
     $('#headerLeftCon').hide();
 
+    function updateCosmetics() {
+        $.ajax({
+          type: "get",
+          url: "/users/updateCosmetics",
+          success: function(data) {
+            $("html").css(
+              "background-image",
+              `url(${data.activeBackground.imageLink})`
+            );
+          },
+          error: function(e) {
+            console.log(e.responseText);
+          }
+        });
+    }
+
+    updateCosmetics();
+
 
     /** Switches container from Create Cards to My Cards */
     $(".headerRight").click(() => {
