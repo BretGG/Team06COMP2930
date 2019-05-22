@@ -1,11 +1,14 @@
 $(document).ready(() => {
-    $.ajaxSetup({
-        headers: {
-          "auth-token": localStorage.getItem("auth-token")
-        }
-    });
+  let socket;
+  let lobbyInfo;
 
-    function updateCosmetics() {
+  $.ajaxSetup({
+    headers: {
+      "auth-token": localStorage.getItem("auth-token")
+    }
+  });
+
+  function updateCosmetics() {
     $.ajax({
       type: "get",
       url: "/users/updateCosmetics",
@@ -21,14 +24,29 @@ $(document).ready(() => {
     });
   }
 
+  // Sets lobbyInfo and calls the cb with returned data
+  function getLobbyInfo(cb) {
+    $.ajax({
+      type: "get",
+      url: "/game/lobbyinfo",
+      success: data => {
+        lobbyInfo = data;
+        cd(lobbyInfo);
+      },
+      error: err => {
+        // Let the user know that they have no lobby and send back to main page
+      }
+    });
+  }
+
   updateCosmetics();
 
-    /** Max number of players in a game lobby */
-    var max = 4;
-    /** Dummy counter */
-    var count = 0;
-    /** Dummy players info */
-    var username = ["Stella", "Jessica", "Rose", "Hannah", "Bret"]
+  /** Max number of players in a game lobby */
+  var max = 4;
+  /** Dummy counter */
+  var count = 0;
+  /** Dummy players info */
+  var username = ["Stella", "Jessica", "Rose", "Hannah", "Bret"];
 
   /**Takes you to game page */
   $("#start").click(() => {
@@ -51,4 +69,10 @@ $(document).ready(() => {
       count++;
     }
   });
+
+  function connectSocket(lobby) {
+    socket = io("/" + lobby.sessionId);
+  }
+
+  getLobbyInfo(connectSocket);
 });

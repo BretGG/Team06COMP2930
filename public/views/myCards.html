@@ -51,7 +51,6 @@
                             <option value="Eco">Eco</option>
                             <option value="Science">Science</option>
                             <option value="Math">Math</option>
-                            <option value="test">test</option>
                         </select>
                     </div>
                     <div class="input-field col s6 deck">
@@ -77,11 +76,35 @@
 
 
             <a id='back' class="waves-effect waves-light btn-small">Back<i class="material-icons right">home</i></a>
-            <div id='status'></div>
         </div>
 
     </div>
     </div>
+
+
+<!-- Modal for editting -->
+    <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p id='editcard'>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <!-- <a href="#modal2" class="modal-close waves-effect waves-green btn-flat" style="color:#ff4f4f;">Delete</a> -->
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Edit</a>
+    </div>
+  </div>
+
+
+<!-- Modal for deleting -->
+  <div id="modal2" class="modal">
+  <div class="modal-content">
+    <p>Do you really want to delete <span id='m2name'></span>?</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" id='realDelete' class="modal-close waves-effect waves-green btn-flat" style="color:#ff4f4f;">Yes</a>
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">No</a>
+  </div>
+</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
