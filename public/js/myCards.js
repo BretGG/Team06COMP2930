@@ -71,10 +71,10 @@ $(document).ready(() => {
         $("#editQuestion").attr('value', editCard[0].question);
         $("#editAnswer").attr('value', editCard[0].answer);
         $("#edityes").click(function() {
-            console.log('edityes is clicekd');
+            console.log('edityes: ' +editCard[0]._id+", "+ $('select#editCate').val() + ", " + $("#editQuestion").val() + "," + $("#editAnswer").val() + "," + $('select#editDeck').val());
             $.ajax({
                 type: "put",
-                url: "/cards",
+                url: "/cards/" + editCard[0]._id,
                 dataType: "json",
                 data: {
                     cardId: editCard[0]._id,
