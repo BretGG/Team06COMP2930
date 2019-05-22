@@ -43,14 +43,12 @@ router.post("/", async (req, res) => {
   const lobby = _.pick(req.body, ["gameType", "sessionId", "sessionPass"]);
 
   // Check if session id is taken
-  if (lobbies.get(lobby.sessionId)) {
-    res.status(400).send("GameId taken");
-  }
+  if (lobbies.get(lobby.sessionId)) return res.status(400).send("GameId taken");
 
   // Create the players array and add the owner to that array
   lobby.owner = user._id;
   lobby.players = [];
-  lobby.players.push(lobby.owner);
+  lobby.players.push({ playerId: lobby.owner, username: user.username });
   lobbies.set(lobby.sessionId, lobby);
 
   console.log("Creating a new session: " + lobby);
@@ -81,11 +79,11 @@ router.put("/", async (req, res) => {
   if (!lobby)
     return res
       .status(404)
-      .send("Failed to find room at : " + lobbyInfo.sessionId);
+      .send("Failed to find room at: " + lobbyInfo.sessionId);
 
   // Invalid password
   if (lobby.sessionPass !== lobbyInfo.sessionPass)
-    res.status(400).send("Invalid session password");
+    return res.status(400).send("Invalid session password");
 
   // Add user to the lobby and return lobby info
   lobby.players.push({ playerId: user._id, username: user.username });
