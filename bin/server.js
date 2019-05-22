@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
+var io = require("socket.io").listen(server);
+module.exports = io;
+
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 const _ = require("lodash");
-const {
-  Card
-} = require("../src/models/card.js");
+const { Card } = require("../src/models/card.js");
 var glob = this;
 
 // Get port from environment and store in Express.
@@ -86,8 +87,9 @@ let currentRoundCard;
 var gameStarted = false;
 const losers = [];
 
-var io = require("socket.io")
-  .listen(server);
+var io = require("socket.io").listen(server);
+app.io = io;
+
 io.on("connection", function(socket) {
   // Don't allow a player to connect when at max capacity, should handle this before
 
@@ -203,7 +205,6 @@ function endRound() {
     _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
   );
 
-
   io.emit("endRound", {
     players: filteredPlayers,
     answer: currentRoundCard.answer
@@ -220,14 +221,12 @@ function endRound() {
     // console.log("player.wrongAnswers ", player.wrongAnswers, "round: ", round);
 
     if (player.wrongAnswers === 2 && round < glob.cards.length + 1) {
-
       gameOver(player.playerId);
     }
   }
 }
 
 function gameOver(id) {
-
   console.log(id, " Game Over");
 
   //check duplicates before adding
@@ -271,8 +270,6 @@ function onPlayerStateChange(socket, data) {
         });
       }
       break;
-
-
 
     case "questionMark":
       io.emit("playerStateChange", {
@@ -318,7 +315,6 @@ async function roundStart(s) {
   answers.sort(() => Math.random() - 0.5);
   //**************************
   io.emit("startRound", {
-
     question: question,
     answer: answers
   });
@@ -328,7 +324,6 @@ async function roundStart(s) {
 }
 
 function allPlayerAnswered() {
-
   for (let player of players.values()) {
     if (!player.answeredRound && !player.gameOver) {
       return false;

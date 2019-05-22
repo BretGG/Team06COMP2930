@@ -38,7 +38,9 @@ $(document).ready(() => {
         sessionPass: $("#roomPass").val(),
         gameType: "no yet implemented"
       },
-      success: function(data) {},
+      success: function(data) {
+        window.location.href = "/game/lobby";
+      },
       error: function(err) {
         M.toast({
           html: `${err.responseText}`,
