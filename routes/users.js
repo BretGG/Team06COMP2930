@@ -15,7 +15,6 @@ This file is the router for handling user connections (creating, updating, remov
 // If an error occurs due to invalid req body or requirements, this call will return code 400.
 router.post("/", async (req, res) => {
   var user = _.pick(req.body, ["username", "email", "password"]);
-  debug("Request to create user: " + JSON.stringify(user));
 
   // Check if valid user data
   const { error } = validate(req.body);
@@ -46,7 +45,6 @@ router.post("/", async (req, res) => {
     category: "background"
   });
 
-  console.log(defaultAvatar);
   // Should include error handling (i.e. can't find the default items)
 
   user.cosmetics.activeAvatar = defaultAvatar;
@@ -55,10 +53,8 @@ router.post("/", async (req, res) => {
 
   user.items.push(defaultAvatar._id, defaultPlatform._id, defaultBackground._id);
 
-  console.log(user);
-
   await user.save();
-  debug("Creating user: " + JSON.stringify(user));
+  debug("Creating user: " + JSON.stringify(_.pick(user, ["username", "email"])));
   res.send(_.pick(user, ["username", "email"]));
 });
 

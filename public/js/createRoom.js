@@ -5,7 +5,7 @@ $(document).ready(() => {
     }
   });
 
-	function updateCosmetics() {
+  function updateCosmetics() {
     $.ajax({
       type: "get",
       url: "/users/updateCosmetics",
@@ -20,11 +20,6 @@ $(document).ready(() => {
       }
     });
   }
-
- /** Takes user gameLobby page */
-  $("#submit").click(() => {
-  	window.location.href="gameLobby";
-  });
 
   updateCosmetics();
 
@@ -43,14 +38,17 @@ $(document).ready(() => {
         sessionPass: $("#roomPass").val(),
         gameType: "no yet implemented"
       },
-      success: function(data) {},
+      success: function(data) {
+        window.location.href = "/game/lobby";
+      },
       error: function(err) {
+        M.Toast.dismissAll();
         M.toast({
           html: `${err.responseText}`,
-          classes: "red"
+          classes: "red",
+          displayLength: 2500
         });
       }
     });
   });
-  
 });

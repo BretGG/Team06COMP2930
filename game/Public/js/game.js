@@ -39,7 +39,7 @@ let platforms = [];
 let states = [];
 let answerCards = [];
 let gameStarted = false;
-let score = 0;
+let myScore = 0;
 let scoreText;
 
 // var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
@@ -68,6 +68,9 @@ function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
   this.load.image("exclamation", "../assets/character/exclamation.png");
   this.load.image("questionMark", "../assets/character/question.png");
+  this.load.image("1st", "../assets/character/1st.png");
+  this.load.image("2nd", "../assets/character/2nd.png");
+  this.load.image("3rd", "../assets/character/3rd.png");
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
@@ -108,7 +111,7 @@ function create() {
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
-  // this.socket.on("gameOver", updatePlayerScoreHeight);
+  this.socket.on("gameEnd", playerStateChange);
   this.socket.on("gameOver", playerStateChange);
 
 
@@ -174,7 +177,6 @@ function startRound(roundInfo) {
   // Other round start stuff, reset game objects
   console.log("startRound() in game.js");
   if (!mainPlayer.gameOver) {
-    console.log("I ran.");
     setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
     self.socket.emit("playerStateChange", {
       state: "questionMark"
@@ -197,7 +199,7 @@ function playerStateChange(stateInfo) {
   let player = players.find(holder => stateInfo.playerId === holder.playerId);
   switch (stateInfo.state) {
     case "ready":
-      // console.log("HHHHHHHHEEEEEEEEEEEELLLLLLLLLLLLLLL");
+
       player.supportingState.setTexture("ready");
       break;
     case "questionMark":
@@ -220,7 +222,9 @@ function playerStateChange(stateInfo) {
       player.gameOver = true;
       self.deadPlayerY = player.y;
       player.body.allowGravity = false;
+      player.alpha = 0.5;
       player.setTexture("ghost");
+
       // player.supportingState.setTexture("none");
       player.supportingState.destroy();
       player.setImmovable(true);
@@ -246,6 +250,12 @@ function playerStateChange(stateInfo) {
 
         ]
       });
+      break;
+    case "gameEnd":
+      player.supportingState.setTexture("none");
+
+      gameEnd();
+      break;
 
     default:
       console.log("state undefined!!!");
@@ -262,6 +272,78 @@ function currentPlayers(currentPlayers) {
   }
 }
 
+function gameEnd() {
+  let minusGhosts = players.filter(elem => elem.gameOver !== true);
+  console.log("inside game end players: ", minusGhosts);
+  let sortedCorrectAnswersDesc = [];
+
+
+  minusGhosts.forEach(function(element) {
+    sortedCorrectAnswersDesc.push(element.correctAnswers);
+    sortedCorrectAnswersDesc.sort(function(p, q) {
+      return q - p;
+    });
+
+  });
+  console.log("sortedCorrectAnswersDesc: ", sortedCorrectAnswersDesc);
+
+  if (minusGhosts.length <= 3) {
+    for (let i = 0; i < minusGhosts.length; i++) {
+
+      minusGhosts[i].y = 0;
+
+      self.tweens.add({
+        targets: minusGhosts[i].supportingPlatform,
+        y: 270,
+        ease: "Quint",
+        duration: 1000,
+        repeat: 0
+      });
+
+    }
+  } else {
+
+
+    for (let i = 0; i < minusGhosts.length; i++) {
+      //raise all players except the fourth place player
+      if (minusGhosts[i].correctAnswers !==
+        sortedCorrectAnswersDesc[sortedCorrectAnswersDesc.length - 1]) {
+        minusGhosts[i].y = 0;
+
+        self.tweens.add({
+          targets: minusGhosts[i].supportingPlatform,
+          y: 270,
+          ease: "Quint",
+          duration: 1000,
+          repeat: 0
+        });
+      }
+    }
+
+  }
+  let uniq = [...new Set(sortedCorrectAnswersDesc)];
+  console.log("uniq:", uniq);
+  for (let i = 0; i < minusGhosts.length; i++) {
+    if (minusGhosts[i].correctAnswers === uniq[0]) {
+      minusGhosts[i].supportingState.setTexture("1st");
+    } else if (minusGhosts[i].correctAnswers === uniq[1]) {
+      minusGhosts[i].supportingState.setTexture("2nd");
+    } else if (minusGhosts[i].correctAnswers === uniq[2]) {
+      minusGhosts[i].supportingState.setTexture("3rd");
+
+    } else {
+      minusGhosts[i].supportingState.setTexture("none");
+    }
+
+
+
+
+
+
+
+  }
+
+}
 // End the round and update players accordingly
 function endRound(roundInfo) {
 
@@ -607,24 +689,36 @@ function displayAnswers(answers) {
 
 // Add text to the screen for player score
 function scoreAndPlayer() {
-
+  console.log("array:", players);
 
   if (scoreText) {
     scoreText.destroy();
   }
-
+  let scores = [];
   let me = players.find(player => player.playerId === mainPlayer.playerId);
+
+
   console.log("Me, players.correctAnswers ", me.correctAnswers);
 
-  score = me.correctAnswers * 90;
 
-  let scoreBoard = "Score: " + score;
+  myScore = me.correctAnswers * 90;
+
+  for (let player of players) {
+    if (player.playerId != me) {
+      scores.push(player.correctAnswers * 90);
+    }
+  }
+
+  let scoreBoard = "Score: " + myScore;
+
 
   scoreText = self.add.text(16, 16, scoreBoard, {
     fontFamily: "Macondo Swash Caps",
     fontSize: "40px",
     fill: "#000"
   });
+
+
 }
 
 function isLoser(id) {
