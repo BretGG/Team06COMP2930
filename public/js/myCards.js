@@ -10,12 +10,8 @@ $(document).ready(() => {
         }
     });
 
-
     $('select').formSelect();
     $('.modal').modal();
-
-    // $('.dropdown-trigger').dropdown();
-
     $('#headerLeftCon').hide();
 
 
@@ -40,18 +36,17 @@ $(document).ready(() => {
     });
 
     function createCard(cardData) {
-
         let card = $('<div class="card"></div>');
-        let cardcategory = $('<span class="cardC">Category: '+cardData.category+'</span>');
+        let cardcategory = $('<span class="cardC">Category: ' + cardData.category + '</span>');
 
-        let cardquestion = $('<p class="cardQ">'+cardData.question+'</p>');
+        let cardquestion = $('<p class="cardQ">' + cardData.question + '</p>');
 
         let edit = $('<a class = "modal-trigger editting hoverPointer" href = "#modal1" value = ' + cardData._id + '></a>');
         let editIcon = $('<i class= "cardE material-icons right">more_vert</i>');
         // $('.editting').innerHTML = "<i class= 'cardE material-icons right'>more_vert</i>"";
 
 
-        let deleting  = $('<a class = "modal-trigger deleting hoverPointer" href = "#modal2" value = ' + cardData._id + '></a>');
+        let deleting = $('<a class = "modal-trigger deleting hoverPointer" href = "#modal2" value = ' + cardData._id + '></a>');
         let deletingIcon = $('<i class= "cardD material-icons right">delete</i>');
 
         let cardanswer = $('<p class = "cardA">' + cardData.answer + '</p>');
@@ -63,21 +58,18 @@ $(document).ready(() => {
     }
 
     $(document).on("click", ".editting", function() {
-        let cardId = $(this).get(0).getAttribute('value');
+        let editdId = $(this).get(0).getAttribute('value');
         $('#editcard').text($(this).get(0).getAttribute('value'));
         // var editCon =
     });
-    
+
+    //DELETE THE CARD
     $(document).on("click", ".deleting", function() {
         let deleteId = $(this).get(0).getAttribute('value');
-            console.log("deleting "+$(this).get(0).getAttribute('value'));
-
-        $('#m2name').text($(this).get(0).getAttribute('value'));
-
-        $("#realDelete").click(function() {
+        $("#deleteyes").click(function() {
             $.ajax({
                 type: "delete",
-                url: "/cards/"+deleteId,
+                url: "/cards/" + deleteId,
                 dataType: "json",
                 data: {
                     cardId: deleteId
