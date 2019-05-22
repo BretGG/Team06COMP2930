@@ -77,7 +77,7 @@ $(document).ready(() => {
       console.log(users);
       console.log(lobbyMembers);
     });
-    socket.on("noavailablelobby", () => console.log("un-yay"));
+    socket.on("noavailablelobby", () => console.log("No available lobby"));
   }
 
   getLobbyInfo(connectSocket);

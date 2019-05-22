@@ -16,22 +16,21 @@ $(document).ready(() => {
 
     function updateCosmetics() {
         $.ajax({
-          type: "get",
-          url: "/users/updateCosmetics",
-          success: function(data) {
-            $("html").css(
-              "background-image",
-              `url(${data.activeBackground.imageLink})`
-            );
-          },
-          error: function(e) {
-            console.log(e.responseText);
-          }
+            type: "get",
+            url: "/users/updateCosmetics",
+            success: function(data) {
+                $("html").css(
+                    "background-image",
+                    `url(${data.activeBackground.imageLink})`
+                );
+            },
+            error: function(e) {
+                console.log(e.responseText);
+            }
         });
     }
 
     updateCosmetics();
-
 
     /** Switches container from Create Cards to My Cards */
     $(".headerRight").click(() => {
@@ -89,7 +88,6 @@ $(document).ready(() => {
         $("#editQuestion").attr('value', editCard[0].question);
         $("#editAnswer").attr('value', editCard[0].answer);
         $("#edityes").click(function() {
-            console.log('edityes: ' +editCard[0]._id+", "+ $('select#editCate').val() + ", " + $("#editQuestion").val() + "," + $("#editAnswer").val() + "," + $('select#editDeck').val());
             $.ajax({
                 type: "put",
                 url: "/cards/" + editCard[0]._id,
@@ -103,7 +101,7 @@ $(document).ready(() => {
                     deck: $('select#editDeck').val() //store deckId
                 },
                 success: function(data) {
-                    console.log(data);
+                    window.location.href = "mycard";
                 },
                 error: function(e) {
                     console.log(e.responseText);
@@ -233,16 +231,16 @@ $(document).ready(() => {
             document.getElementById("deckName").disabled = true;
             document.getElementById("deckName").setAttribute('value', $("#creDeck option:selected").text());
         }
-
     });
 
     /** This is for storing new cards as user wants! */
     $("#submitLeft").click(function() {
-
         if (!$('select#creCate').val() || !$('#deckName').val()) {
+            M.Toast.dismissAll();
             M.toast({
                 html: 'Category and Deck must be set!',
-                classes: 'redcolor'
+                classes: 'redcolor',
+                displayLength: 2500
             });
         } else {
             if ($('select#creDeck').val() == 'createnewdeck') {
@@ -268,34 +266,44 @@ $(document).ready(() => {
                                 deck: deck._id //store deckId
                             },
                             success: card => {
-                                // window.location.href = "/mycard";
+                                M.Toast.dismissAll();
                                 M.toast({
                                     html: 'Success! Check under My Cards',
-                                    classes: 'greencolor'
+                                    classes: 'greencolor',
+                                    displayLength: 2500
                                 });
+                                console.log(card.deck);
+                                $('#creDeck').val(card.deck);
+                                $('#creDeck').formSelect();
 
-                                // document.getElementById("question").setAttribute('value', "");
-                                // document.getElementById("answer").setAttribute('value', "");
+                                $("#question").val("");
+                                $("#answer").val("");
 
                             },
                             error: err => {
+
+                                M.Toast.dismissAll();
                                 M.toast({
                                     html: "Unforunate circumstance. Card failed to be added.",
-                                    classes: "redcolor"
+                                    classes: "redcolor",
+                                    displayLength: 2500
                                 });
                                 console.log(err);
                             }
                         });
                     },
                     error: err => {
+
+                        M.Toast.dismissAll();
                         M.toast({
                             html: "Unforunate circumstance. Deck failed to be added.",
-                            classes: "redcolor"
+                            classes: "redcolor",
+                            displayLength: 2500
                         });
                         console.log(err);
                     }
                 });
-            } else {
+            } else { //storing a card on existing deck.
                 $.ajax({
                     type: "post",
                     url: "/cards",
@@ -307,18 +315,21 @@ $(document).ready(() => {
                         deck: $('select#creDeck').val() //store deckId
                     },
                     success: card => {
+                        M.Toast.dismissAll();
                         M.toast({
                             html: 'Success! Check under My Cards',
-                            classes: 'greencolor'
+                            classes: 'greencolor',
+                            displayLength: 2500
                         });
-                        console.log(JSON.stringify(card));
-                        document.getElementById("question").setAttribute('value', "");
-                        document.getElementById("answer").setAttribute('value', "");
+                        $("#question").val("");
+                        $("#answer").val("");
                     },
                     error: err => {
+                        M.Toast.dismissAll();
                         M.toast({
-                            html: "Unforunate circumstance. Card failed to be added.",
-                            classes: "redcolor"
+                            html: "Unforunately card failed to be added.",
+                            classes: "redcolor",
+                            displayLength: 2500
                         });
                         console.log(err);
                     }

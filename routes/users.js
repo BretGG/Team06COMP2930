@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { User, validate } = require("../src/models/user");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const { Item } = require("../src/models/item");
 /*
 
@@ -25,6 +26,35 @@ router.post("/", async (req, res) => {
   if (userEmail) return res.status(400).send("Email Taken");
   userName = await User.findOne({ username: user.username });
   if (userName) return res.status(400).send("Username Taken");
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'ecoquestteam06@gmail.com',
+      pass: 'team064tw'
+    }
+  });
+
+  console.log("EMAIL: " + user.name);
+  var mailOptions = {
+    from: 'ecoquestteam06@gmail.com',
+    to : user.email,
+    subject : 'Welcome to EcoQuest',
+    html: '<img style="display: block; width: 100%" src="url('/../public/images/emailHeader.png')"/>'
+    + '<p><b>Hi '+ user.username + '!</b></p><br><p>Thank you for creating an account with our app.' 
+    + 'Are you ready to embark on your first EcoQuest? We hope to amaze you with our project' 
+    + 'that was completed in five weeks. Our team worked hard to bring this project to you '
+    + 'so we hope you truly enjoy the experience.</p><br><p><b>From, the EcoQuest Team</b></p>'
+    + '<img style="display: inline; width: 100%" src="url('/../public/images/emailFooter.png')"/>'
+  }
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
 
   // Create user and hash password
   user = new User(user);

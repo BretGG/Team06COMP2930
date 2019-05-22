@@ -83,7 +83,7 @@ $(document).ready(() => {
         M.Toast.dismissAll();
         M.toast({
           html: `Purchased: ${data.name}`,
-          classes: "blue",
+          classes: "greencolor",
           displayLength: 2500
 
         });

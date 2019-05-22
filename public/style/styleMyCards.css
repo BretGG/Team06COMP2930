@@ -115,21 +115,6 @@ input {
     margin-top: 2%;
 }
 
-.toast {
-    text-align: center !important;
-}
-
-#toast-container {
-    display: block;
-    position: fixed;
-    z-index: 10000;
-    height: 55px;
-}
-
-/* .shortWidth{
-    width: 90% !important;
-} */
-
 .modal-content {
     background-color: #b6d4cf;
     padding: 5px 16px !important;
@@ -146,30 +131,6 @@ input {
 
 .modal .modal-footer .btn-flat{
     margin:5px 0;
-}
-@media only screen and (max-width: 600px) {
-    #toast-container {
-        width: 100%;
-        bottom: 0%;
-    }
-}
-
-@media only screen and (min-width: 601px) and (max-width: 992px) {
-    #toast-container {
-        position: absolute;
-        top: 30%;
-        left: 27.5%;
-        width: 45%;
-    }
-}
-
-@media only screen and (min-width: 993px) and (max-width: 1079px) {
-    #toast-container {
-        position: absolute;
-        top: 40%;
-        left: 35%;
-        width: 30%;
-    }
 }
 
 /** WIDTH RANGE FROM 500px to 799px */
@@ -193,13 +154,6 @@ input {
         height: 300px;
     }
 
-    #toast-container {
-        position: absolute;
-        top: 20%;
-        left: 44%;
-        width: 18%;
-    }
-
     .modal {
         width: 400px !important;
     }
@@ -211,13 +165,6 @@ input {
     /**Changes size of div to match screen size*/
     #cardsCon {
         height: 300px;
-    }
-
-    #toast-container {
-        position: absolute;
-        top: 40%;
-        left: 38%;
-        width: 24%;
     }
 
     .modal {
