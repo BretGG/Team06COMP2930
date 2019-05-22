@@ -23,21 +23,22 @@ const io = require("socket.io")(gameServer);
 
 */
 
+// -------------------------------------------------Socket code----------------------------------------
 // Create new connection and register the user
 io.on("connection", socket => {
   console.log("New game connection");
 
-  // ------------------------------------------------Add User to list
   socket.on("register", async playerInfo => {
+    console.log("register");
     const decode = jwt.verify(playerInfo, "FiveAlive");
     token = jwt.decode(playerInfo);
     const user = await User.findById(token._id).select("-password");
 
     // Register to the correct lobby
     let lobbyHolder;
-    for (let lobby of [...lobbies.values()]) {
+    for (let lobby of lobbies) {
       for (let player of lobby.players) {
-        if (JSON.stringify(player.playerId) == JSON.stringify(user._id)) {
+        if (JSON.stringify(player._id) == JSON.stringify(user._id)) {
           lobbyHolder = lobby;
         }
       }
@@ -48,41 +49,78 @@ io.on("connection", socket => {
       socket.emit("noavailablelobby");
       socket.disconnect();
     } else {
-      players.set(socket.id, user);
+      lobbyHolder.players.filter(
+        player => JSON.stringify(player._id) === JSON.stringify(user._id)
+      )[0].socketId = socket.id;
       socket.join(lobbyHolder.sessionId);
-      let something = usersInLobby(lobbyHolder.sessionId);
-      console.log(something);
-      io.to(lobbyHolder.sessionId).emit("users", something);
+      io.to(lobbyHolder.sessionId).emit(
+        "users",
+        usersInLobby(lobbyHolder.sessionId)
+      );
     }
   });
 
   // Handling a user leaving the lobby
   socket.on("disconnect", () => {
-    removePlayer(players.get(socket.id)._id);
-    players.delete(socket.id);
-    io.to(disconnectPlayer.lobby.sessionId).emit(
-      "users",
-      usersInLobby(disconnectPlayer.lobby.sessionId)
-    );
-    console.log(usersInLobby(disconnectPlayer.lobby.sessionId));
-    console.log("disconnect");
+    let sessionId = getSessionIdBySocketId(socket.id);
+    removePlayerBySocketId(socket.id);
+    io.to(sessionId).emit("users", usersInLobby(sessionId));
+    if (getLobbyBySession(sessionId).players.length == 0) {
+      removeLobbyBySession(sessionId);
+    }
   });
 });
 
+function removeLobbyBySession(sessionId) {
+  lobbies.forEach((value, index) => {
+    if (value.sessionId === sessionId) {
+      return lobbies.splice(index, 1);
+    }
+  });
+}
+
 function usersInLobby(sessionId) {
-  return [...lobbies.values()]
-    .filter(lobby => lobby.sessionId === sessionId)
-    .map(lobby => lobby.players)[0];
+  for (let lobby of lobbies) {
+    if (lobby.sessionId === sessionId) return lobby.players;
+  }
+}
+
+function getLobbyBySession(sessionId) {
+  for (let lobby of lobbies) {
+    if (lobby.sessionId === sessionId) return lobby;
+  }
+}
+
+function getSessionIdBySocketId(socketId) {
+  for (let lobby of lobbies) {
+    for (let player of lobby.players) {
+      if (player.socketId === socketId) {
+        return lobby.sessionId;
+      }
+    }
+  }
+}
+
+function getPlayerBySocketId(socketId) {
+  for (let lobby of lobbies) {
+    for (let player of lobby.players) {
+      if (player._id === socketId) return player;
+    }
+  }
 }
 
 // Update both lobbies and players
-function removePlayer(userId) {}
+function removePlayerBySocketId(socketId) {
+  for (let lobby of lobbies) {
+    lobby.players.forEach((value, index) => {
+      if (value.socketId === socketId) {
+        return lobby.players.splice(index, 1);
+      }
+    });
+  }
+}
 
-let lobbies = new Map();
-
-// key: socket.id, value: player.id
-// easy way to retrieve the player
-let players = new Map();
+let lobbies = [];
 
 // -------------------------------------------------- Routing -----------------------------------------------------
 
@@ -107,9 +145,10 @@ router.get("/lobbyinfo", async (req, res) => {
   const user = await User.findById(token._id).select("-password");
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
 
-  for (let lobby of [...lobbies.values()]) {
+  for (let lobby of lobbies) {
+    console.log(lobby);
     for (let player of lobby.players) {
-      if (JSON.stringify(player.playerId) == JSON.stringify(user._id)) {
+      if (JSON.stringify(player._id) == JSON.stringify(user._id)) {
         return res.send(lobby);
       }
     }
@@ -135,13 +174,15 @@ router.post("/", async (req, res) => {
   const lobby = _.pick(req.body, ["gameType", "sessionId", "sessionPass"]);
 
   // Check if session id is taken
-  if (lobbies.get(lobby.sessionId)) return res.status(400).send("GameId taken");
+  if (getLobbyBySession(lobby.sessionId)) {
+    return res.status(400).send("GameId taken");
+  }
 
   // Create the players array and add the owner to that array
   lobby.owner = user._id;
   lobby.players = [];
-  lobby.players.push({ playerId: lobby.owner, username: user.username });
-  lobbies.set(lobby.sessionId, lobby);
+  lobby.players.push(user);
+  lobbies.push(lobby);
 
   console.log("Creating a new session: " + lobby);
 
@@ -159,7 +200,7 @@ router.put("/", async (req, res) => {
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
 
   const lobbyInfo = _.pick(req.body, ["sessionId", "sessionPass"]);
-  const lobby = lobbies.get(lobbyInfo.sessionId);
+  const lobby = getLobbyBySession(lobbyInfo.sessionId);
 
   // Didn't find a lobby
   if (!lobby)
@@ -172,7 +213,7 @@ router.put("/", async (req, res) => {
     return res.status(400).send("Invalid session password");
 
   // Add user to the lobby and return lobby info
-  lobby.players.push({ playerId: user._id, username: user.username });
+  lobby.players.push(user);
   res.send(lobby);
 });
 

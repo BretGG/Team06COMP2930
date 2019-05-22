@@ -1,57 +1,73 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <link rel="icon" href="../images/icon.png" type="image/x-icon"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8" />
+    <link rel="icon" href="../images/icon.png" type="image/x-icon" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
     <!-- Base CSS file all pages follow -->
-    <link rel="stylesheet" href="../style/styleBase.css" >
-    <link rel="stylesheet" href="../style/styleBaseRoom.css" >
-    <link rel="stylesheet" href="../style/styleCreateRoom.css" >
-    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css"  media="screen,projection"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../style/styleBase.css" />
+    <link rel="stylesheet" href="../style/styleBaseRoom.css" />
+    <link rel="stylesheet" href="../style/styleCreateRoom.css" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../style/materialize.min.css"
+      media="screen,projection"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <title>EcoQuest</title>
-    <style>
-    </style>
-    </head>
+    <style></style>
+  </head>
 
   <body>
-    <div id='container'>
-      <h1 id='logo'> EcoQuest </h1>
+    <div id="container">
+      <h1 id="logo">EcoQuest</h1>
       <!-- Container that holds all main content -->
-      <div class='mainCon'>
-        <div id='header'><b>Create Room</b> </div>
+      <div class="mainCon">
+        <div id="header"><b>Create Room</b></div>
 
-          <div id='roomcon'>
-            <!-- Label for room number -->
-            <label for="roomNo"><b>Room Number*</b></label>
-            <!-- RoomNo grabbed from server -->
-            <input
-              id="roomNo"
-              type="text"
-              name="roomNo"
-              placeholder='Enter Room Number'
-              required
-            />
+        <div id="roomcon">
+          <!-- Label for room number -->
+          <label for="roomNo"><b>Room Number*</b></label>
+          <!-- RoomNo grabbed from server -->
+          <input
+            id="roomNo"
+            type="text"
+            name="roomNo"
+            placeholder="Enter Room Number"
+            required
+          />
 
-            <!-- Label for room password -->
-            <label for="roomPass"><b>Room Password*</b></label>
-            <!-- Takes input to set password for room-->
-            <input
-              id="roomPass"
-              type="text"
-              name="roomPass"
-              placeholder='Enter Password'
-              required
-            />
-
-            </div>
-            <!-- Creates room -->
-            <a id='submit' class="waves-effect waves-light btn"><i class="material-icons right">create</i>Create</a>
-            <!-- Returns you to main menu-->
-          <a id='back' class="waves-effect waves-light btn-small">Back<i class="material-icons left">home</i></a>
+          <!-- Label for room password -->
+          <label for="roomPass"><b>Room Password*</b></label>
+          <!-- Takes input to set password for room-->
+          <input
+            id="roomPass"
+            type="text"
+            name="roomPass"
+            placeholder="Enter Password"
+            required
+          />
+          <select id="creDeck">
+            <option value="" disabled selected>Deck</option>
+            <option value="createnewdeck">New</option>
+          </select>
+        </div>
+        <!-- Creates room -->
+        <a id="submit" class="waves-effect waves-light btn"
+          ><i class="material-icons right">create</i>Create</a
+        >
+        <!-- Returns you to main menu-->
+        <a id="back" class="waves-effect waves-light btn-small"
+          >Back<i class="material-icons left">home</i></a
+        >
       </div>
-
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../js/createRoom.js"></script>
