@@ -49,6 +49,8 @@ $(document).ready(() => {
         let edit = $('<a class = "modal-trigger editting hoverPointer" href = "#modal1" value = ' + cardData._id + '></a>');
         let editIcon = $('<i class= "cardE material-icons right">more_vert</i>');
         // $('.editting').innerHTML = "<i class= 'cardE material-icons right'>more_vert</i>"";
+
+
         let deleting  = $('<a class = "modal-trigger deleting hoverPointer" href = "#modal2" value = ' + cardData._id + '></a>');
         let deletingIcon = $('<i class= "cardD material-icons right">delete</i>');
 
@@ -65,28 +67,30 @@ $(document).ready(() => {
         $('#editcard').text($(this).get(0).getAttribute('value'));
         // var editCon =
     });
+    
     $(document).on("click", ".deleting", function() {
-        let cardId = $(this).get(0).getAttribute('value');
+        let deleteId = $(this).get(0).getAttribute('value');
             console.log("deleting "+$(this).get(0).getAttribute('value'));
+
         $('#m2name').text($(this).get(0).getAttribute('value'));
+
         $("#realDelete").click(function() {
-            console.log("realDelete "+cardId);
-
+            $.ajax({
+                type: "delete",
+                url: "/cards/"+deleteId,
+                dataType: "json",
+                data: {
+                    cardId: deleteId
+                },
+                success: function(data) {
+                    window.location.href = "mycard";
+                },
+                error: function(e) {
+                    console.log(e.responseText);
+                }
+            });
         });
-        // var editCon =
     });
-
-//     $(document).on("hover", ".editting", function() {
-//       function() {
-// console.log($(this));
-//         $(this).innerHTML = '<i class= "cardE material-icons right">more_horiz</i>';
-//       }, function() {
-//         $( this ).innerHTML = '<i class= "cardE material-icons right">more_vert</i>';
-//       }
-//     );
-//     $(document).on("click", "#realDelete", function() {
-//     });
-
 
     function filterCard(cards, catefilter, deckfilter) {
         let filteredCards = cards;

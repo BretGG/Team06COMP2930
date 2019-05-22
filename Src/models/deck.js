@@ -10,11 +10,6 @@ holds the information for a card deck.
 */
 
 const deckSchema = new mongoose.Schema({
-  // category: {
-  //   //category for cards
-  //   type: String,
-  //   required: true
-  // },
   name: {
     type: String,
     required: true
