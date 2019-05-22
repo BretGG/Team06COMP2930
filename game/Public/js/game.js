@@ -68,6 +68,9 @@ function preload() {
   this.load.image("sky", "../assets/backgrounds/sky.png");
   this.load.image("exclamation", "../assets/character/exclamation.png");
   this.load.image("questionMark", "../assets/character/question.png");
+  this.load.image("1st", "../assets/character/1st.png");
+  this.load.image("2nd", "../assets/character/2nd.png");
+  this.load.image("3rd", "../assets/character/3rd.png");
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
@@ -249,7 +252,8 @@ function playerStateChange(stateInfo) {
       });
       break;
     case "gameEnd":
-      player.supportingState.destroy();
+      player.supportingState.setTexture("none");
+
       gameEnd();
       break;
 
@@ -269,23 +273,76 @@ function currentPlayers(currentPlayers) {
 }
 
 function gameEnd() {
+  let minusGhosts = players.filter(elem => elem.gameOver !== true);
+  console.log("inside game end players: ", minusGhosts);
+  let sortedCorrectAnswersDesc = [];
 
 
-  for (let player of players) {
+  minusGhosts.forEach(function(element) {
+    sortedCorrectAnswersDesc.push(element.correctAnswers);
+    sortedCorrectAnswersDesc.sort(function(p, q) {
+      return q - p;
+    });
 
-    if (!player.gameOver) {
-      player.y = 0;
-      player.supportingState.destroy();
+  });
+  console.log("sortedCorrectAnswersDesc: ", sortedCorrectAnswersDesc);
+
+  if (minusGhosts.length <= 3) {
+    for (let i = 0; i < minusGhosts.length; i++) {
+
+      minusGhosts[i].y = 0;
+
       self.tweens.add({
-        targets: player.supportingPlatform,
+        targets: minusGhosts[i].supportingPlatform,
         y: 270,
         ease: "Quint",
         duration: 1000,
         repeat: 0
       });
+
+    }
+  } else {
+
+
+    for (let i = 0; i < minusGhosts.length; i++) {
+      //raise all players except the fourth place player
+      if (minusGhosts[i].correctAnswers !==
+        sortedCorrectAnswersDesc[sortedCorrectAnswersDesc.length - 1]) {
+        minusGhosts[i].y = 0;
+
+        self.tweens.add({
+          targets: minusGhosts[i].supportingPlatform,
+          y: 270,
+          ease: "Quint",
+          duration: 1000,
+          repeat: 0
+        });
+      }
     }
 
   }
+  let uniq = [...new Set(sortedCorrectAnswersDesc)];
+  console.log("uniq:", uniq);
+  for (let i = 0; i < minusGhosts.length; i++) {
+    if (minusGhosts[i].correctAnswers === uniq[0]) {
+      minusGhosts[i].supportingState.setTexture("1st");
+    } else if (minusGhosts[i].correctAnswers === uniq[1]) {
+      minusGhosts[i].supportingState.setTexture("2nd");
+    } else if (minusGhosts[i].correctAnswers === uniq[2]) {
+      minusGhosts[i].supportingState.setTexture("3rd");
+
+    } else {
+      minusGhosts[i].supportingState.setTexture("none");
+    }
+
+
+
+
+
+
+
+  }
+
 }
 // End the round and update players accordingly
 function endRound(roundInfo) {

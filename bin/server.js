@@ -223,9 +223,9 @@ function endRound() {
     }
   }, 3000);
   for (let player of filteredPlayers) {
-    // console.log("player.wrongAnswers ", player.wrongAnswers, "round: ", round);
 
-    if (player.wrongAnswers === 2 && round < glob.cards.length + 1) {
+    //If the player get 3 wrong answers, turn it into a ghost.
+    if (player.wrongAnswers === 3 && round < glob.cards.length + 1) {
 
       gameOver(player.playerId);
     }
@@ -305,7 +305,7 @@ async function roundStart(s) {
   }
   glob.cards = await Card.find({
     format: "tf",
-    category: "test"
+    category: "Eco"
   });
   console.log("card length: ", glob.cards.length);
 
