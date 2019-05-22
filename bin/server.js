@@ -133,12 +133,8 @@ io.on("connection", function(socket) {
   socket.on("playerJump", () => onPlayerJumped(socket));
   socket.on("playerStateChange", state => onPlayerStateChange(socket, state));
 
-  // let roundCard = {
-  //   question: "What is Stella's first name",
-  //   answer: "Hannah"
-  // };
-  //
-  // currentRoundCard = roundCard;
+  let roundCard = {};
+  currentRoundCard = roundCard;
 });
 
 // Find and return the players information at the given port
@@ -161,6 +157,7 @@ function onDisconnect(socket) {
 }
 //On player click on the answer
 function onPlayerAnswered(info, socket) {
+  console.log("round:::::", round);
   if (info && glob.cards) {
     let currentPlayer = players.get(info.playerId);
     currentPlayer.answeredRound = true;
@@ -177,7 +174,7 @@ function onPlayerAnswered(info, socket) {
     } else {
       console.log("");
     }
-    if (allPlayerAnswered()) {
+    if (allPlayerAnswered() && !currentPlayer.gameOver) {
       endRound();
     }
   }
@@ -361,7 +358,7 @@ function allPlayerAnswered() {
 
   return true;
 }
-//Check if all players are ready and good to go 
+//Check if all players are ready and good to go
 function allPlayerReady() {
   for (let player of players.values()) {
     if (player.ready != true) {

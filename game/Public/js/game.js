@@ -228,7 +228,7 @@ function playerStateChange(stateInfo) {
       self.deadPlayerY = player.y;
       player.body.allowGravity = false;
       player.alpha = 0.5;
-      setTimeout(() => player.setTexture("ghost"), 1000);
+      setTimeout(() => player.setTexture("ghost"), 800);
       player.supportingState.destroy();
       player.setImmovable(true);
       player.supportingPlatform.destroy();
@@ -249,6 +249,10 @@ function playerStateChange(stateInfo) {
           },
         ]
       });
+
+      if (players.length === 1) {
+        gameEnd();
+      }
       break;
     case "gameEnd":
       player.supportingState.setTexture("none");
