@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
     service: 'gmail',
     auth: {
       user: 'ecoquestteam06@gmail.com',
-      pass: 'team064tw'
+      pass: 'ecoquest2'
     }
   });
 
@@ -40,12 +40,21 @@ router.post("/", async (req, res) => {
     from: 'ecoquestteam06@gmail.com',
     to : user.email,
     subject : 'Welcome to EcoQuest',
-    html: '<img style="display: block; width: 100%" src="url('/../public/images/emailHeader.png')"/>'
-    + '<p><b>Hi '+ user.username + '!</b></p><br><p>Thank you for creating an account with our app.' 
+    html: ('<img style="display: block; width: 100%" src="cid:ecoQuestEmailHeader"/>'
+    + '<p><b>Hi' + user.username + '!</b></p><br><p>Thank you for creating an account with our app.' 
     + 'Are you ready to embark on your first EcoQuest? We hope to amaze you with our project' 
     + 'that was completed in five weeks. Our team worked hard to bring this project to you '
     + 'so we hope you truly enjoy the experience.</p><br><p><b>From, the EcoQuest Team</b></p>'
-    + '<img style="display: inline; width: 100%" src="url('/../public/images/emailFooter.png')"/>'
+    + '<img style="display: inline; width: 100%" src="cid:ecoQuestEmailFooter"/>'),
+    attachments: [{
+        filename: 'emailHeader.png',
+        path: __dirname + '/../public/images/emailHeader.png',
+        cid: 'ecoQuestEmailHeader' 
+    },
+    {filename: 'emailerFooter.png',
+        path: __dirname + '/../public/images/emailFooter.png',
+        cid: 'ecoQuestEmailFooter' 
+    }]
   }
 
   transporter.sendMail(mailOptions, function(error, info){
