@@ -174,7 +174,6 @@ function startRound(roundInfo) {
   // Other round start stuff, reset game objects
   console.log("startRound() in game.js");
   if (!mainPlayer.gameOver) {
-    console.log("I ran.");
     setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
     self.socket.emit("playerStateChange", {
       state: "questionMark"
@@ -220,7 +219,9 @@ function playerStateChange(stateInfo) {
       player.gameOver = true;
       self.deadPlayerY = player.y;
       player.body.allowGravity = false;
+      player.alpha = 0.5;
       player.setTexture("ghost");
+
       // player.supportingState.setTexture("none");
       player.supportingState.destroy();
       player.setImmovable(true);
