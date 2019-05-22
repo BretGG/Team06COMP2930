@@ -2,6 +2,10 @@ input {
     font-family: 'Ubuntu', sans-serif;
 }
 
+#back{
+    margin-left: 5.5%;
+}
+
 /*create button*/
 #submitLeft {
     display: block;
@@ -53,11 +57,6 @@ input {
 #headerLeftCon {
     display: none;
 }
-
-/* #deckName{
-  border-bottom: 0px;
-  background-color: #A0A0A0  ;
-} */
 
 #inputcon>input {
     background-color: rgb(217, 242, 237);

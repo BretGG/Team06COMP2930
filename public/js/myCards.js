@@ -14,6 +14,24 @@ $(document).ready(() => {
     $('.modal').modal();
     $('#headerLeftCon').hide();
 
+    function updateCosmetics() {
+        $.ajax({
+          type: "get",
+          url: "/users/updateCosmetics",
+          success: function(data) {
+            $("html").css(
+              "background-image",
+              `url(${data.activeBackground.imageLink})`
+            );
+          },
+          error: function(e) {
+            console.log(e.responseText);
+          }
+        });
+    }
+
+    updateCosmetics();
+
 
     /** Switches container from Create Cards to My Cards */
     $(".headerRight").click(() => {
@@ -71,10 +89,10 @@ $(document).ready(() => {
         $("#editQuestion").attr('value', editCard[0].question);
         $("#editAnswer").attr('value', editCard[0].answer);
         $("#edityes").click(function() {
-            console.log('edityes is clicekd');
+            console.log('edityes: ' +editCard[0]._id+", "+ $('select#editCate').val() + ", " + $("#editQuestion").val() + "," + $("#editAnswer").val() + "," + $('select#editDeck').val());
             $.ajax({
                 type: "put",
-                url: "/cards",
+                url: "/cards/" + editCard[0]._id,
                 dataType: "json",
                 data: {
                     cardId: editCard[0]._id,
