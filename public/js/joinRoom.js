@@ -38,8 +38,8 @@ $(document).ready(() => {
       error: function(err) {
         M.Toast.dismissAll();
         M.toast({ 
-          html: err.responseText, 
-          classes: "red",
+          html: err.responseText,
+          classes: "redcolor",
           displayLength: 2500 });
       }
     });

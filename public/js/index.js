@@ -38,22 +38,26 @@ $(document).ready(() => {
                     password: $("#pass1").val()
                 },
                 success: user => {
-                    console.log(JSON.stringify(user));
+                    // M.Toast.dismissAll();
+                    // M.toast({
+                    //     html: "Your account is created",
+                    //     classes: "greencolor",
+                    //     displayLength: 2500 });
                     window.location.href="/";
                 },
                 error: function(err) {
                     M.Toast.dismissAll();
-                    M.toast({ 
-                        html: err.responseText, 
-                        classes: "red",
+                    M.toast({
+                        html: err.responseText,
+                        classes: "redcolor",
                         displayLength: 2500 });
                     }
             });
         } else{
             M.Toast.dismissAll();
-            M.toast({ 
-                html: "Passwords must match!", 
-                classes: "red",
+            M.toast({
+                html: "Passwords must match!",
+                classes: "redcolor",
                 displayLength: 2500 });
             }
     });
@@ -82,9 +86,9 @@ $(document).ready(() => {
             },
             error: function(err) {
                 M.Toast.dismissAll();
-                M.toast({ 
-                    html: err.responseText, 
-                    classes: "red",
+                M.toast({
+                    html: err.responseText,
+                    classes: "redcolor",
                     displayLength: 2500 });
                 }
         });
