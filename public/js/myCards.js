@@ -204,7 +204,6 @@ $(document).ready(() => {
     /** Populate cards from my list . . . Ta da */
     function populateCards(cards) {
         $(".card").remove();
-        console.log(cards);
         if (!cards) {
             console.log("I told you no card!");
         } else {

@@ -22,6 +22,10 @@ body {
 	width: 300px;
 	margin: 0 auto;
 }
+.spacingDiv{
+    height:50px;
+    width:100%;
+}
 
 
 /*Customizes the avatarr for location*/
@@ -62,7 +66,7 @@ body {
 
 .nameDescContainer {
 	background-color: rgba(255, 255, 255, 0.5);
-	height: 120px;
+	height: 140px;
 }
 
 
@@ -182,7 +186,7 @@ body {
 		width: 295px;
 	}
 	.nameDescContainer {
-		height: 159px;
+		height: 169px;
 	}
 }
 
@@ -198,7 +202,7 @@ body {
 	}
 	.nameDescContainer {
 		width: 375px;
-		height: 123px;
+		height: 133px;
 	}
 	.nametitle {
 		font-size: 14px;
@@ -227,7 +231,7 @@ body {
 		width: 120px;
 	}
 	.nameDescContainer {
-		height: 162px;
+		height: 172px;
 	}
 	.nametitle {
 		font-size: 18px;
@@ -267,7 +271,6 @@ body {
 	#container {
 		width: 768px;
 	}
-	.nameDescContainer {}
 	.nametitle {
 		font-size318px;
 	}
@@ -321,7 +324,6 @@ body {
 	#container {
 		width: 1000px;
 	}
-	.nameDescContainer {}
 	.nametitle {
 		font-size: 22px;
 	}
