@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 module.exports = function(req, res, next) {
   console.log(
@@ -9,8 +10,7 @@ module.exports = function(req, res, next) {
   );
 
   const token = req.header("auth-token");
-  if (!token)
-    return res.render(path.resolve(__dirname, "../public/views/index.html"));
+  if (!token) res.render(path.resolve(__dirname, "../public/views/index.html"));
 
   try {
     const decode = jwt.verify(token, "F1veAl1ve");
