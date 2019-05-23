@@ -1,4 +1,5 @@
 /*avatar to customize the size of the avatar size and location*/
+
 #avatar {
 	margin: 0 auto;
 	width: 176px;
@@ -7,7 +8,10 @@
 	background-repeat: no-repeat;
 	background-position: bottom 0px right 50%;
 }
+
+
 /*Container to hold the upper title and logo of the page*/
+
 #mainpagecon {
 	padding-bottom: 4%;
 	font-size: 1em;
@@ -15,19 +19,31 @@
 	width: 90%;
 	text-align: center;
 }
+
+
 /*customizes the title font*/
+
 #title {
 	font-size: 2em;
 }
+
+
 /*Customizes the button margin and width*/
+
 #buttons a {
 	margin-bottom: 2%;
 	width: 135px;
 }
-/
+
+
+/*label for main page con*/
+
 #mainpagecon label {
 	font-size: 1.2em;
 }
+
+
+/*buttons for the materialize. customizing size*/
 
 #buttons {
 	display: flex;
@@ -36,13 +52,6 @@
 	justify-content: space-around;
 	margin: 0 auto;
 }
-
-@media only screen and (max-width:800px) and (min-width: 651px) {
-	#avatar {}
-}
-
-
-/* iphone 6, 6s, 7, 8 */
 
 
 /* iphone X */
@@ -59,6 +68,9 @@
 	}
 }
 
+
+/*media query for iphone 6 7 8 + */
+
 @media only screen and (min-device-width: 410px) and (max-device-width: 650px) {
 	#logo {
 		font-size: 4.5em;
@@ -68,6 +80,7 @@
 	}
 }
 
+//*media query for tablets*/
 @media only screen and (max-width:900px) and (min-width: 600px) {
 	#buttons {
 		flex-direction: row;
@@ -94,6 +107,9 @@
 		font-size: 16px;
 	}
 }
+
+
+/*media query for desktop*/
 
 @media only screen and (min-width: 1025px) {
 	#logo {

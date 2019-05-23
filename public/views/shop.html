@@ -2,43 +2,37 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
+    <!-- Window Tab Icon -->
     <link rel="icon" href="../images/icon.png" type="image/x-icon" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-    />
-    <!-- Style sheets -->
-    <link
-      type="text/css"
-      rel="stylesheet"
-      href="../style/materialize.min.css"
-      media="screen,projection"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <!-- STYLE SHEETS -->
+    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css" media="screen,projection"/>
     <link rel="stylesheet" href="../style/styleBase.css" />
     <link rel="stylesheet" href="../style/styleShop.css" />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <title>EcoQuest</title>
-    <style>
-    </style>
   </head>
 
   <body>
     <!-- Wraps all HTML content in one div -->
     <div id="container">
+
+      <!-- Project Logo -->
       <h1 id="logo">EcoQuest</h1>
+
       <!-- Holds all main content -->
       <div id="mainpagecon">
+
+        <!-- Title for page -->
         <div id="titlecon">
-          <!-- Title for page -->
           <h2 id="title">Shop</h2>
         </div>
+
         <!-- Player's avatar -->
         <div id="avatar">
           <img id="char" src=""/>
         </div>
+
         <!-- All shop categories -->
         <div class="category">
           <!-- Avatar skins -->
@@ -54,33 +48,42 @@
             Background
           </div>
         </div>
+        
+        <!-- Back button --> 
         <div class="buttons">
-          <a id="back" class="button waves-effect waves-light btn-small"
-            >Main Menu<i class="material-icons left">home</i></a
-          >
+          <a id="back" class="button waves-effect waves-light btn-small">
+            Main Menu<i class="material-icons left">home</i>
+          </a>
+        <!-- Points container -->
           <div class="button btn-small">
             <div id="points"></div>
             <i class="material-icons left">filter_vintage</i>
           </div>
+        <!-- Buy button -->
           <a id="buy" class="button waves-effect waves-light btn-small"
-            >Buy<i class="material-icons left">attach_money</i></a
-          >
+            >Buy<i class="material-icons left">attach_money</i></a>
         </div>
+
         <!-- Holds all items -->
         <div class="items">
           <div class="avatar"></div>
           <div class="platform"></div>
           <div class="background"></div>
         </div>
+
       </div>
     </div>
-    <div id="slideAvatar" class="carousel">
 
+    <!-- Shop carousel -->
+    <div id="slideAvatar" class="carousel">
+      <!-- To be populated by function populateCarousel() -->
     </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../js/shop.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
     <script>
+      //Sets carousel parameters
       document.addEventListener("DOMContentLoaded", function() {
         let options = {
           numVisible: 5
