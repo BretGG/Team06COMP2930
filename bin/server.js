@@ -5,13 +5,18 @@ var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
-const { Card } = require("../src/models/card.js");
-const { User } = require("../src/models/user");
+const {
+  Card
+} = require("../src/models/card.js");
+const {
+  User
+} = require("../src/models/user");
 var glob = this;
 
 // Create HTTP server.
 var server = http.Server(app);
-var io = require("socket.io").listen(server);
+var io = require("socket.io")
+  .listen(server);
 
 // Listen on provided port, on all network interfaces.
 var port = normalizePort(process.env.PORT || "3000");
@@ -100,7 +105,8 @@ io.on("connection", function(socket) {
   // Add a player to the master list (Map)
   players.set(socket.id, {
     playerId: socket.id,
-    userId: jwt.decode(idHolder)._id,
+    userId: jwt.decode(idHolder)
+      ._id,
     wrongAnswers: 0,
     correctAnswers: 0,
     answeredRound: false,
@@ -109,9 +115,13 @@ io.on("connection", function(socket) {
   });
 
   socket.on("getCosmetics", async () => {
-    let user = await User.findById(players.get(socket.id).userId);
+    let user = await User.findById(players.get(socket.id)
+      .userId);
     console.log("cosmeticss ", user);
-    io.emit("setCosmetics", { playerId: socket.id, cosmetics: user.cosmetics });
+    io.emit("setCosmetics", {
+      playerId: socket.id,
+      cosmetics: user.cosmetics
+    });
   });
 
   socket.on("currentPlayers", () => {
@@ -373,8 +383,10 @@ function allPlayerAnswered() {
 function allPlayerReady() {
   for (let player of players.values()) {
     if (player.ready != true) {
+      console.log("y'all ready: false");
       return false;
     }
   }
+  console.log("y'all ready: true");
   return true;
 }
