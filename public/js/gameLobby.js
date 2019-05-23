@@ -51,14 +51,12 @@ $(document).ready(() => {
     }
   }
 
-  updateCosmetics();
-
   /** Current Lobby Members */
   let lobbyMembers = [];
 
   /**Takes you to game page */
   $("#start").click(() => {
-    window.location.href = "game";
+    window.location.href = "../game";
   });
 
   /**Takes you back to the main page */
@@ -81,6 +79,8 @@ $(document).ready(() => {
   }
 
   getLobbyInfo(connectSocket);
+    updateCosmetics();
+
 
   console.log("Game lobby");
 });
