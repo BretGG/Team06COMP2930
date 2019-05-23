@@ -6,7 +6,7 @@ var http = require("http");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const { Card } = require("../src/models/card.js");
-const User = require("../src/models/user");
+const { User } = require("../src/models/user");
 var glob = this;
 
 // Create HTTP server.
@@ -110,6 +110,7 @@ io.on("connection", function(socket) {
 
   socket.on("getCosmetics", async () => {
     let user = await User.findById(players.get(socket.id).userId);
+    console.log("cosmeticss ", user);
     io.emit("setCosmetics", { playerId: socket.id, cosmetics: user.cosmetics });
   });
 

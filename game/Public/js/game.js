@@ -179,6 +179,7 @@ function create() {
   );
   // ---------Asking for Information-------------
   this.socket.emit("currentPlayers");
+  this.socket.emit("getCosmetics");
   this.socket.emit("me");
   // ------------------------------------------------------------------------------------------------------
   //Detects touch on mobile devices
@@ -224,8 +225,6 @@ function setCosmetics(cosmeticsInfo) {
   let player = players.find(
     holder => cosmeticsInfo.playerId === holder.playerId
   );
-
-  player;
 }
 
 // Start new round (i.e create new cards), reset game objects
