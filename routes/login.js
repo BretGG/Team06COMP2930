@@ -5,7 +5,6 @@ const express = require("express");
 const debug = require("debug")("comp2930-team2:server");
 const { User } = require("../src/models/user");
 const jwt = require("jsonwebtoken"); //h
-// const auth = require('../middleware/auth'); //h
 
 const router = express.Router();
 
@@ -13,12 +12,12 @@ const router = express.Router();
 
 Login is seperated from users so that we can use router.post.
 
-'post' is more secure than 'get' dues to post storing less information
+'post' is more secure than 'get' due to post storing less information
 
 */
 
 // Authorizing a user, reurns status 400 if not a valid login.
-// A valid login will return a web token
+// A valid login will return a web token that will be used for further access
 router.post("/", async (req, res) => {
   let user = _.pick(req.body, ["username", "password"]);
 
@@ -33,9 +32,7 @@ router.post("/", async (req, res) => {
   user = await User.findOne({ username: user.username });
   if (!user) {
     // req.connection.remoteAddress will return ::1 if logging in from localhost
-    debug(
-      `Invalid login from: ${req.connection.remoteAddress} user: ${user.username}`
-    );
+    debug(`Invalid login from: ${req.connection.remoteAddress}`);
     return res.status(400).send("Invalid email or password.");
   }
 
@@ -52,9 +49,10 @@ router.post("/", async (req, res) => {
 
   // req.connection.remoteAddress will return ::1 if logging in from localhost
   console.log(
-    `Valid login from: ${req.connection.remoteAddress} user: ${req.body.username}`
+    `Valid login from: ${req.connection.remoteAddress} user: ${
+      req.body.username
+    }`
   );
-
 
   // Returning a json object containing success and the jwt token that needs to be stored
   const token = user.generateAuthToken();
@@ -66,24 +64,21 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.get('/me', async (req, res) => {
-    var token = req.get('auth-token');
-    if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
-    const decode = jwt.verify(token, "FiveAlive");
-    token = jwt.decode(token);
+// Returns the current user's information, logged in using jwt
+router.get("/me", async (req, res) => {
+  var token = req.get("auth-token");
+  if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
+  const decode = jwt.verify(token, "FiveAlive");
+  token = jwt.decode(token);
 
-    console.log(`Request for me from user ${token._id} at ${req.connection.remoteAddress}`)
+  const user = await User.findById(token._id).select("-password");
 
-    const user = await User.findById(token._id).select('-password');
-    console.log(JSON.stringify(user));
-
-    if (!user) return res.status(400).send("Uh Oh! You dont exist!");
-    console.log(`Returning user ${user._id} to ${req.connection.remoteAddress}`)
-    res.send({user});
-
+  if (!user) return res.status(400).send("Uh Oh! You dont exist!");
+  console.log(`Returning user ${user._id} to ${req.connection.remoteAddress}`);
+  res.send(user);
 });
 
-//  Validates if the input is correct before authorizing function
+// Validates if the input is correct before authorizing function
 // Using this validate over the User class one due to this one only checking email and password
 function validate(req) {
   const schema = {

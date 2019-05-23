@@ -1,62 +1,182 @@
-/** Aligns text to center */
-#status {
-  text-align: center;
+
+input {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+#back{
+    margin-left: 5.5%;
+}
+
+/*create button*/
+#submitLeft {
+    display: block;
+    margin: 0 auto;
+    width: 40%;
+}
+
+/** This is for dropdown **/
+.optionCon {
+    margin-bottom: 0em;
+}
+
+/** This is for dropdown **/
+.optionCon>.input-field {
+    margin-top: 0.1rem;
+}
+
+/** This is for dropdown **/
+.row .category {
+    padding-left: 1.3rem !important;
+}
+
+/** This is for dropdown **/
+.row .deck {
+    padding-right: 1.3rem !important;
+}
+
+/** This is for dropdown **/
+.select-wrapper input.select-dropdown {
+    margin-bottom: 0em;
+    height: 2.3rem;
+    padding-left: 1rem;
+    /* margin-left: 0.5rem; */
+    /* margin-right: 0.5rem; */
+    width: 90%;
+}
+
+.lessMargin{
+    margin-top:2px;
+    margin-bottom:2px;
+}
+.dropdown-content li {
+    min-height: 25px;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    overflow: hidden;
+}
+
+#headerLeftCon {
+    display: none;
+}
+
+#inputcon>input {
+    background-color: rgb(217, 242, 237);
+    display: inline;
 }
 
 /** Restricts size and color of card */
 .card {
-  margin: 1rem;
-  background: white;
-  box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
-  border-radius: 12px;
-  overflow: hidden;
+    margin: 0.8rem;
+    background: white;
+    box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    /* padding: 0em; */
+    overflow: hidden;
+    padding: 8px;
+}
+
+.cardQ {
+    font-size: 1.3em;
+    margin-top: 0.4rem;
+}
+
+.cardA {
+    margin: 0rem;
+}
+
+.cardE, .cardD {
+    color: grey;
+    margin: 0px !important;
+    font-size: 21px !important;
+}
+
+.cardC {
+    color: grey;
 }
 
 /** Restricts size, border, and color of card(s) container*/
-#cardsCon{
-	height: 280px;
-  overflow-y: scroll;
-  background-color: #D9F2ED;
-  border: 2px solid #A7BAB6;
+#cardsCon {
+    height: 280px;
+    overflow-y: scroll;
+    background-color: #D9F2ED;
+    border: 2px solid #A7BAB6;
+    border-radius: 1.5%;
+    width: 90%;
+    margin: 0 auto;
+    clear: both;
 }
 
-#backcon {
-  padding-top: 15px;
-  position: relative;
-  bottom: 5px;
-  width: 60%;
-  margin: 0 auto;
+/*back button*/
+.btn-small {
+    margin-top: 2%;
+}
+
+.modal-content {
+    background-color: #b6d4cf;
+    padding: 5px 16px !important;
+}
+
+.modal-footer {
+    background-color: #b6d4cf !important;
+    height: 50px !important;
+}
+
+.modal-content > .input-field {
+    width: 50%;
+}
+
+.modal .modal-footer .btn-flat{
+    margin:5px 0;
 }
 
 /** WIDTH RANGE FROM 500px to 799px */
-@media screen and (min-width: 500px) and (max-width: 799px){
-  /**Changes size of div to match screen size*/
-  #cardsCon{
-    height: 300px;
-  }
+@media screen and (min-width: 500px) and (max-width: 799px) {
+    /**Changes size of div to match screen size*/
+    #cardsCon {
+        height: 300px;
+    }
+
+    .modal {
+        width: 360px !important;
+    }
 }
 
 /** WIDTH RANGE FROM 1501px to infinity */
-@media screen and (min-width: 1501px){
-  /**Changes size of div to match screen size*/
-  #cardsCon{
-    height: 300px;
-  }
+@media screen and (min-width: 1501px) {
+    /**Changes size of div to match screen size*/
+    #cardsCon {
+        height: 300px;
+    }
+
+    .modal {
+        width: 400px !important;
+    }
 }
 
 /** WIDTH RANGE FROM 1080px to 1500px */
-@media screen and (min-width: 1080px) and (max-width: 1500px){
-  /**Changes size of div to match screen size*/
-  #cardsCon{
-    height: 300px;
-  }
+@media screen and (min-width: 1080px) and (max-width: 1500px) {
+    /**Changes size of div to match screen size*/
+    #cardsCon {
+        height: 300px;
+    }
 
+    .modal {
+        width: 320px !important;
+    }
 }
 
 /** WIDTH RANGE FROM 800px to 1079px */
-@media screen and (min-width: 800px) and (max-width: 1079px) {  
-  /**Changes size of div to match screen size*/
-  #cardsCon{
-    height: 340px;
-  }
+@media screen and (min-width: 800px) and (max-width: 1079px) {
+    /**Changes size of div to match screen size*/
+    #cardsCon {
+        height: 340px;
+    }
+
+    .modal {
+        width: 480px !important;
+    }
 }

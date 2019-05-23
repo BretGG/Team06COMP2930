@@ -2,42 +2,50 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="icon" href="../images/icon.png" type="../images/icon.png"/>
+    <!-- Window Tab Icon -->
+    <link rel="icon" href="../images/icon.png" type="image/x-icon"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css"  media="screen,projection"/>
+    <!-- STYLE SHEETS -->
     <link rel="stylesheet" href="../style/styleBase.css" >
     <link rel="stylesheet" href="../style/styleBaseRoom.css" >
     <link rel="stylesheet" href="../style/styleGameLobby.css" >
-    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css"  media="screen,projection"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>EcoQuest</title>
-    <style>
-
-    </style>
-    </head>
+  </head>
 
   <body>
     <div id='container'>
+      <!-- Project Logo -->
       <h1 id='logo'> EcoQuest </h1>
       <div class='mainCon'>
-      <div id='header'><b>Game Lobby</b> </div>
+
+        <!-- Page Header -->
+        <div id='header'><b>Game Lobby</b> </div>
 
         <div id='roomcon'>
+          
+          <!-- Room Number -->
           <label for="roomNo0"><b>Room Number</b></label>
-          <div id='roomNo'>123ABC</div>
+          <p id='roomNo'></p>
 
+          <!-- Users in the room -->
           <label for="memberpool"><b>Members</b></label>
-          <div id='memberpool'>
+          <div id='memberpool'></div>
 
+          <!-- Start game button -->
+          <button  id="start" class="btn waves-effect waves-light"    type="submit" name="action">Start
+            <i class="material-icons right">donut_large</i>
+          </button>
+        </div>
 
-          </div>
-          <button id = "start" class="submit"><label>Start Game</label></button>
-
-          </div>
-             <div id='backcon'> <button id='back'>Back </button></div>
+          <!-- Back button -->
+          <a id='back' class="waves-effect waves-light btn-small">Leave<i class="material-icons left">home</i></a>
+      </div>
     </div>
-    </div>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
     <script src="../js/gameLobby.js"></script>
   </body>

@@ -1,38 +1,26 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
+var io = require("socket.io").listen(server);
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
+const _ = require("lodash");
+const { Card } = require("../src/models/card.js");
+var glob = this;
 
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || "3000");
-app.set("port", port);
-
-/**
- * Create HTTP server.
- */
-
+// Create HTTP server.
 var server = http.Server(app);
-var io = require("socket.io").listen(server);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+// Listen on provided port, on all network interfaces.
+// server.listen(port);
+server.listen(3000, "0.0.0.0", function() {
+  console.log("Listening to port:  " + 3000);
+});
 
-server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
+// Normalize a port into a number, string, or false.
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -49,10 +37,7 @@ function normalizePort(val) {
   return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
-
+// Event listener for HTTP server "error" event.
 function onError(error) {
   if (error.syscall !== "listen") {
     throw error;
@@ -75,10 +60,7 @@ function onError(error) {
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-
+// Event listener for HTTP server "listening" event.
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
@@ -86,201 +68,286 @@ function onListening() {
 }
 
 //--------------------------------------------------------Game code------------------------------------------------------------
+
+//declare instances of global varibles
 const self = this;
 const maxPlayers = 4;
-const players = [];
+const players = new Map();
+let roundStarted;
+var round = 0;
 let currentRoundCard;
+var gameStarted = false;
+const losers = [];
 
-// setInterval(() => {
-//   console.log(JSON.stringify(players));
-// }, 5000);
-const dummycards = [
-  { question: "1 + 1 = ?", answer: "2" },
-  { question: "9 + 1 = ?", answer: "10" },
-  { question: "5 + 1 = ?", answer: "6" },
-  { question: "8 x 3", answer: "24" }
-];
+//require socket io using express
+var io = require("socket.io").listen(server);
+app.io = io;
 
-// Setting up the server to client connection
+// incomming information. The connection is made
 io.on("connection", function(socket) {
-  socket.emit("flashcards", dummycards);
-  // cancel if at max capacity
+  self.id = socket.id;
   if (players.length >= maxPlayers) {
     return socket.disconnect();
   }
 
   console.log("A user connected: " + socket.id);
-
-  players.push({
+  // Add a player to the master list (Map)
+  players.set(socket.id, {
     playerId: socket.id,
     wrongAnswers: 0,
     correctAnswers: 0,
-    answeredRound: false
+    answeredRound: false,
+    ready: false,
+    gameOver: false
   });
 
-  // send all players to requesting user
   socket.on("currentPlayers", () => {
-    socket.emit("currentPlayers", players);
+    let playerHolder = [];
+    for (let player of players.values()) {
+      playerHolder.push(player);
+    }
+    socket.emit("currentPlayers", playerHolder);
   });
 
   // update all other players of the new player
-  socket.broadcast.emit(
-    "newPlayer",
-    players.find(player => player.playerId === socket.id)
-  );
+  socket.broadcast.emit("newPlayer", players.get(socket.id));
 
   //user disconnected, broadcast to all other users and remove from list
-  socket.on("disconnect", function() {
-    // remove player from list
-    let removedPlayer;
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].playerId === socket.id) {
-        removedPlayer = players.splice(i, 1);
-        break;
-      }
-    }
+  socket.on("disconnect", () => onDisconnect(socket));
+  socket.on("me", () => onMe(socket));
+  socket.on("playerAnswered", info => onPlayerAnswered(info, socket));
+  socket.on("playerJump", () => onPlayerJumped(socket));
+  socket.on("playerStateChange", state => onPlayerStateChange(socket, state));
 
-    console.log("removed player: " + JSON.stringify(removedPlayer));
-    // find and let all other players know
-    if (removedPlayer) {
-      socket.broadcast.emit("removePlayer", removedPlayer);
-      console.log("broadcast");
-    }
-
-    socket.disconnect();
-  });
-
-  socket.on("me", function() {
-    socket.emit("me", players.find(player => player.playerId === socket.id));
-  });
-
-  socket.on("playerAnswered", function(info) {
-    // { playerId: something.plareId, answer: "some answer to a question"}
-
-    let player = (players.find(
-      player => info.playerId,
-      playerInfo.playerId
-    ).answeredRound = true);
-
-    if (info.answer === currentRoundCard.answer) {
-      player.correctAnswers++;
-    } else {
-      player.wrongAnswers++;
-    }
-
-    socket.broadcast.emit("playerAnswered", player.playerId);
-  });
-
-  socket.on("playerJump", () => {
-    socket.broadcast.emit("playerJump", socket.id);
-  });
-
-  ////////////////////////////////////////// test code
-  let roundInfo = {
-    question: "What is Stella's first name",
-    answers: ["Jessica", "Rose", "Stella", "Hannah"]
-  };
-  //////////////////////////////////////////////////////
-
-  setInterval(() => {
-    socket.broadcast.emit("startRound", roundInfo);
-  }, 5000);
+  let roundCard = {};
+  currentRoundCard = roundCard;
 });
 
-function printPlayers(coordinates) {
-  for (let i = 0; i < coordinates.length; i++) {
-    // ???????????????
-    console.log(coordinates[i].isTaken);
+// Find and return the players information at the given port
+function onMe(socket) {
+  socket.emit("me", players.get(socket.id));
+}
+
+// When the player leaves the game or dic
+function onDisconnect(socket) {
+  // remove player from list
+  let removePlayer = players.get(socket.id);
+  if (removePlayer) {
+    players.delete(socket.id);
+    socket.broadcast.emit("removePlayer", removePlayer);
+  } else {
+    return;
+  }
+  console.log("removed player: " + JSON.stringify(removePlayer));
+  socket.disconnect();
+}
+//On player click on the answer
+function onPlayerAnswered(info, socket) {
+  if (info && glob.cards) {
+    let currentPlayer = players.get(info.playerId);
+    currentPlayer.answeredRound = true;
+    io.emit("playerStateChange", {
+      playerId: socket.id,
+      state: "exclamation"
+    });
+    if (info.answer === glob.cards[round].answer) {
+      this.answer = true;
+      currentPlayer.correctAnswers++;
+    } else if (info.answer !== "N/A") {
+      this.answer = false;
+      currentPlayer.wrongAnswers++;
+    } else {
+    }
+    if (allPlayerAnswered() && !currentPlayer.gameOver) {
+      endRound();
+    }
+  }
+}
+//Broadcast player jumping to the other clients
+function onPlayerJumped(socket) {
+  socket.broadcast.emit("playerJump", socket.id);
+}
+//At the end of the game emit information to the clients and determine the game over rule
+function endRound() {
+  round++;
+  roundStarted = false;
+
+  let filteredPlayers = [...players.values()];
+  filteredPlayers = filteredPlayers.map(player =>
+    _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
+  );
+
+  io.emit("endRound", {
+    players: filteredPlayers,
+    answer: currentRoundCard.answer
+  });
+
+  setTimeout(() => {
+    if (round < glob.cards.length && !roundStarted) {
+      roundStart(round);
+    } else {
+      console.log("The end----------------------------");
+      io.emit("gameEnd", {
+        playerId: self.id,
+        state: "gameEnd"
+      });
+      clearTimeout();
+    }
+  }, 3000);
+  for (let player of filteredPlayers) {
+    //If the player get 3 wrong answers, turn it into a ghost.
+    if (player.wrongAnswers === 3 && round < glob.cards.length + 1) {
+      gameOver(player.playerId);
+    }
+  }
+}
+//Sends game over massege to clients
+function gameOver(id) {
+  console.log(id, " Game Over");
+
+  //check duplicates before adding
+  if (id !== losers.find(element => element === id)) {
+    losers.push(id);
+  }
+
+  let currentPlayer = players.get(id);
+  currentPlayer.gameOver = true;
+  let filteredPlayers = [...players.values()];
+  filteredPlayers = filteredPlayers.map(player =>
+    _.pick(player, ["playerId", "correctAnswers", "wrongAnswers"])
+  );
+
+  io.emit("gameOver", {
+    playerId: id,
+    players: filteredPlayers,
+    losers: losers,
+    state: "gameOver"
+  });
+}
+//On the change of current state of player that's incoming,
+// apply or call functions accordingly.
+function onPlayerStateChange(socket, data) {
+  let player = players.get(socket.id);
+  switch (data.state) {
+    case "ready":
+      player.ready = true;
+
+      io.emit("playerStateChange", {
+        playerId: socket.id,
+        state: "ready"
+      });
+      // Start round if all players are ready
+      if (allPlayerReady()) {
+        if (!roundStarted) {
+          console.log("round has not started yet");
+          roundStart(round);
+        }
+        onPlayerStateChange("doesn't matter", {
+          state: "questionMark"
+        });
+      }
+      break;
+
+    case "questionMark":
+      io.emit("playerStateChange", {
+        playerId: "Not needed",
+        state: "questionMark"
+      });
+      break;
+    case "answered":
+      io.emit("playerStateChange", {
+        playerId: socket.id,
+        state: "answered"
+      });
+      // Check if all players have answered
+      // if so, emit round finished
+      break;
   }
 }
 
-// hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-//   if (Object.keys(io.sockets.sockets).length <= numberOfPlayers) {
-//     self.EcoQuest_numberOfCurrentPlayers = Object.keys(
-//       io.sockets.sockets
-//     ).length;
-//   }
-//
-//   if (self.EcoQuest_numberOfCurrentPlayers <= numberOfPlayers) {
-//     for (let i = 0; i < Game1_players.length; i++) {
-//       if (!Game1_players[i].isTaken) {
-//         self.playerNo = i;
-//         players[socket.id] = {
-//           playerNo: self.playerNo,
-//           playerId: socket.id
-//         };
-//         Game1_players[i].isTaken = true;
-//         console.log(
-//           "new player added, current players: ",
-//           self.EcoQuest_numberOfCurrentPlayers
-//         );
-//         printPlayers(Game1_players);
-//         break;
-//       }
-//     }
-//   } else {
-//     console.log("The room is full");
-//     disconnectPlayer(socket.id);
-//     console.log(
-//       "deleted attempted connect, current players: ",
-//       self.EcoQuest_numberOfCurrentPlayers
-//     );
-//   }
+// Imports deck of cards from the mongo database asynchronously and
+// send the incoming data to the clients.
+// Shuffling the answers and make them into a set of 4 multiple choices.
+// If the number of question is less than 4, add in dummy choices.
+async function roundStart(s) {
+  console.log("starting round: " + JSON.stringify(s));
 
-// when a player moves, update the player data
-//then sends it to the other players in socket.broadcast.emit*'playermoved'
+  for (let o of players.values()) {
+    o.answeredRound = false;
+  }
+  glob.cards = await Card.find({
+    format: "tf",
+    category: "test",
+    deck: "test"
+  });
+  console.log("card length: ", glob.cards.length);
 
-// client side code
-//   socket.on("playerMovement", function(movementData) {
-//     if (players[socket.id] != undefined) {
-//       players[socket.id].platformX = movementData.platformX;
-//       players[socket.id].platformY = movementData.platformY;
-//       players[socket.id].avatarX = movementData.avatarX;
-//       players[socket.id].avatarY = movementData.avatarY;
-//     }
-// emit a message to all players about the player that moved
-//     socket.broadcast.emit("playerMoved", players[socket.id]);
-//   });
-//Kicks the user out when he's not doing anything for 2 min.
+  let question;
+  let answers = [];
 
-// setTimeout(() => disconnectPlayer(socket.id), 120000);
+  currentRoundCard.question = glob.cards[s].question;
+  currentRoundCard.answer = glob.cards[s].answer;
 
-// function disconnectPlayer(id) {
-//   console.log("user ", id, " attempts to disconnect..");
-//   if (players[id] != undefined) {
-//     // console.log("disc: ", players[id].playerNo);
-//     Game1_players[players[id].playerNo].isTaken = false;
-//     delete players[id];
-//     io.emit("disconnect", id);
-//     if (self.EcoQuest_numberOfCurrentPlayers > 0) {
-//       self.EcoQuest_numberOfCurrentPlayers--;
-//     }
-//     console.log(
-//       "current number of players ",
-//       self.EcoQuest_numberOfCurrentPlayers
-//     );
-//     printPlayers(Game1_players);
-//   } else {
-//     console.log("User not exist, deleted already or never created");
-//     console.log(
-//       "current number of players ",
-//       self.EcoQuest_numberOfCurrentPlayers
-//     );
-//   }
-// }
+  question = glob.cards[s].question;
+  answers.push(glob.cards[s].answer);
+  if (glob.cards.length >= 4) {
+    for (let i = 0; i < 4; i++) {
+      if (glob.cards[i].answer != glob.cards[s].answer) {
+        answers.push(glob.cards[i].answer);
+      }
+    }
+  } else {
+    for (let i = 0; i < glob.cards.length; i++) {
+      if (glob.cards[i].answer != glob.cards[s].answer) {
+        answers.push(glob.cards[i].answer);
+      }
+    }
+    let temp = 4 - glob.cards.length;
+    switch (temp) {
+      case 1:
+        answers.push("Chocolate");
+        break;
 
-// function allPlayerAnswered(number) {
-//   console.log("allPlayerAnswered called ", number);
+      case 2:
+        answers.push("coffee");
+        answers.push("water");
+        break;
+      case 3:
+        answers.push("145");
+        answers.push("Ocean");
+        answers.push("Carbonated water");
 
-//   for (let i = 0; i < number; i++) {
-//     let num = players[Object.keys(io.sockets.sockets)[i]].playerNo;
-//     console.log("current playerNumbers...: ", num);
-//     console.log(i, " hi");
-//     if (!Game1_players[num].answeredQuestion) {
-//       console.log("all player answered return false");
-//       return false;
-//     }
-//   }
-//   console.log("all player answered return true");
-//   return true;
-// }
+        break;
+      default:
+    }
+  }
+  //shuffling the answers
+  answers.sort(() => Math.random() - 0.5);
+
+  io.emit("startRound", {
+    question: question,
+    answer: answers
+  });
+  roundStarted = true;
+  gamestarted = true;
+}
+
+//Check if all player have answered
+function allPlayerAnswered() {
+  for (let player of players.values()) {
+    if (!player.answeredRound && !player.gameOver) {
+      return false;
+    }
+  }
+
+  return true;
+}
+//Check if all players are ready and good to go
+function allPlayerReady() {
+  for (let player of players.values()) {
+    if (player.ready != true) {
+      return false;
+    }
+  }
+  return true;
+}

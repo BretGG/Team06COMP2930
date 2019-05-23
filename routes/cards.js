@@ -3,37 +3,70 @@ const debug = require("debug")("comp2930-team2:server");
 const { Card, validate } = require("../src/models/card");
 const _ = require("lodash");
 
+/*
+
+API points for creating, deleting, and getting cards
+
+*/
+
+// Endpoint for creating cards
 router.post("/", async (req, res) => {
-    var card = _.pick(req.body, ["format", "category", "question", "answer", "deck",]);
-    debug("Request to create cards: " + JSON.stringify(card));
+  var card = _.pick(req.body, [
+    "format",
+    "category",
+    "question",
+    "answer",
+    "deck"
+  ]);
+  debug("Request to create cards: " + JSON.stringify(card));
 
-    // Check if valid card data
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+  // Check if valid card data
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-    // Check if question is already in the database
-    // I should talk about this if we need this
-    // cardQuestion = await Card.findOne({ question: card.question });
-    // if (cardQuestion) return res.status(400).send("Same Question already exists");
+  // Create new card and save the database
+  card = new Card(card);
+  await card.save();
 
-    // let decks = await Deck.findAll({   owner: someId
-    // }); // Find decks by user
-    //
-    // for each await deck.getCards(); // Ask decks for cards
-
-
-    // Create card
-    card = new Card(card);
-    // Saving the user to the database
-    await card.save();
-
-    debug("Creating card: " + JSON.stringify(card));
-    res.send(_.pick(card, ["question", "answer"])); // do i need this
+  debug("Creating card: " + JSON.stringify(card));
+  res.send(_.pick(card, ["question", "answer"]));
 });
 
-// TODO: update card
+// To update card
+router.put("/:cardId", async (req, res) => {
+  let cardInfo = _.pick(req.body, [
+    "format",
+    "category",
+    "question",
+    "answer",
+    "deck"
+  ]);
 
-// TODO: delete card
+  let card = await Card.findById(req.params.cardId);
 
+  if (!card) if (error) return res.status(400).send("No card by that id");
+
+  card.format = cardInfo.format;
+  card.category = cardInfo.category;
+  card.question = cardInfo.question;
+  card.answer = cardInfo.answer ? cardInfo.answer : card.answer;
+  card.deck = cardInfo.deck ? cardInfo.deck : card.deck;
+  await card.save();
+  res.send(card);
+});
+
+// Delete a card based of given cardId
+router.delete("/:cardId", async (req, res) => {
+  let cardId = req.params.cardId;
+  let card = await Card.findById(cardId);
+  console.log(card);
+
+  if (!card) if (error) return res.status(400).send("No card by that id");
+
+  card = await Card.deleteOne({
+    _id: cardId
+  });
+  res.status(200).send(card);
+});
 
 module.exports = router;

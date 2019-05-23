@@ -1,0 +1,418 @@
+/*Determines the minimum width and the minimum height of the body and centers content*/
+
+body {
+	min-width: 300px;
+	max-width: 2000px;
+	margin: 0 auto;
+}
+
+
+/*Container for the title and logo  */
+
+#container {
+	width: 300px;
+	margin: 0 auto;
+}
+
+
+/*Containers for the paragraph and content*/
+
+#mainpagecon {
+	height: 130px;
+	width: 300px;
+	margin: 0 auto;
+}
+
+
+/*Customizes the avatarr for location*/
+
+#avatar {
+	width: 300px;
+}
+
+
+/*avatar image for size customization*/
+
+#avatar img {
+	width: 100px;
+}
+
+
+/*Holds the paragraph content */
+
+.descriptionBox {
+	font-weight: bolder;
+	font-size: 1em;
+	border-radius: 25px;
+	border-width: 5px;
+	width: 100%;
+}
+
+
+/*Customizes the content that explains what ecoQuest is*/
+
+.projDescription {
+	padding: 10px;
+	background: rgba(255, 255, 255, .4);
+}
+
+
+/* Contains the paragraph for name and writing content */
+
+.nameDescContainer {
+	background-color: rgba(255, 255, 255, 0.5);
+	height: 120px;
+}
+
+
+/*Customizes the person name*/
+
+.nametitle {
+	margin-left: 5px;
+	text-align: left;
+	width: 100%;
+	font-weight: bolder;
+	text-decoration: underline;
+	font-size: 16px;
+}
+
+
+/*Customizes the paragraph for each member description*/
+
+.descriptionBox p {
+	text-align: center;
+	font-size: 18px;
+	line-height: 20px;
+}
+
+.descritionBox h1 {
+	text-align: center;
+}
+
+
+/*Holds the individual members for flex and aligning purposes*/
+
+.wholeMemberContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+
+/*Contains information about each individual member*/
+
+.individualMemberContainer {
+	padding-left: 0%;
+	width: 100%;
+	margin-bottom: 25px;
+}
+
+
+/*Picture icon for team member*/
+
+.evenPicture {
+	width: 112px;
+	float: right;
+}
+
+
+/*Changes the image size of the team member*/
+
+.evenPicture img {
+	width: 100%;
+	height: auto;
+	border-radius: 50%;
+}
+
+
+/*image container inside the namedesc container*/
+
+.imageContainer {
+	width: 40%;
+}
+
+
+/*holds the paragraph and changes style of member description*/
+
+.description {
+	float: left;
+	width: 185px;
+	text-align: left;
+	font-size: 15px;
+	padding-left: 10px;
+	line-height: 13px;
+}
+
+
+/*Holds the name */
+
+.descriptionBoxTitle {
+	font-size: 40px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+/*Holds the container for members*/
+
+.whoWeAreContainer {
+	text-align: center;
+	width: 300px;
+	background: rgba(255, 255, 255, .53);
+	margin: 0 auto;
+	margin-top: 10px;
+	text-decoration: underline;
+	font-size: 35px;
+}
+
+
+/*Member name*/
+
+.whoWeAreContainerTitle {
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+/*media query for iphone 6, 7, 8*/
+
+@media only screen and (max-width:413px) and (min-width: 375px) {
+	.wholeMemberContainer {
+		width: 295px;
+	}
+	.nameDescContainer {
+		height: 159px;
+	}
+}
+
+
+/*Media Query for iphone 6+,7+,8+*/
+
+@media only screen and (max-width:413px) and (min-width: 375px) {
+	#container {
+		width: 375px;
+	}
+	.evenPicture {
+		width: 120px;
+	}
+	.nameDescContainer {
+		width: 375px;
+		height: 123px;
+	}
+	.nametitle {
+		font-size: 14px;
+	}
+	.description {
+		width: 255px;
+		font-size: 15px;
+		line-height: 20px;
+	}
+	.whoWeAreContainer {
+		width: 375px;
+	}
+	.description p {
+		font-size: 21px;
+	}
+}
+
+
+/*media query for iphone*/
+
+@media only screen and (max-width:757px) and (min-width: 414px) {
+	#container {
+		width: 414px;
+	}
+	.evenPicture {
+		width: 120px;
+	}
+	.nameDescContainer {
+		height: 162px;
+	}
+	.nametitle {
+		font-size: 18px;
+	}
+	.description {
+		width: 255px;
+		font-size: 18px;
+		line-height: 20px;
+	}
+	.whoWeAreContainer {
+		width: 414px;
+		;
+	}
+	.descriptionBox p {
+		font-size: 23px;
+	}
+	.descriptionBox {
+		font-size: 46px;
+		text-align: center;
+	}
+	.evenPicture {
+		width: 154px;
+	}
+}
+
+
+/*media query that customizes ipads*/
+
+@media only screen and (max-width:1023px) and (min-width: 768px) {
+	.wholeMemberContainer {
+		flex-wrap: wrap;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	#container {
+		width: 768px;
+	}
+	.nameDescContainer {}
+	.nametitle {
+		font-size318px;
+	}
+	.description {
+		width: 255px;
+		font-size: 15px;
+		line-height: 20px;
+	}
+	.whoWeAreContainer {
+		width: 768px;
+	}
+	.descriptionBox p {
+		font-size: 23px;
+	}
+	.descriptionBox h1 {
+		font-size: 5em;
+	}
+	.evenPicture {
+		width: 111px;
+	}
+	#avatar img {
+		width: 130px;
+	}
+	#mainpagecon {
+		height: 180px;
+	}
+	.projDescription {
+		padding: 10px 70px 20px 70px;
+	}
+	.descriptionBox p {
+		font-size: 30px;
+		line-height: 36px;
+	}
+	.individualMemberContainer {
+		width: 366px;
+		margin: 4px;
+	}
+}
+
+
+/*media query for ipad pro*/
+
+@media only screen and (max-width:1499px) and (min-width: 1024px) {
+	.wholeMemberContainer {
+		flex-wrap: wrap;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-evenly;
+	}
+	#container {
+		width: 1000px;
+	}
+	.nameDescContainer {}
+	.nametitle {
+		font-size: 22px;
+	}
+	.description {
+		width: 305px;
+		font-size: 20px;
+		line-height: 20px;
+	}
+	.whoWeAreContainer {
+		width: 1000px;
+	}
+	.descriptionBox p {
+		font-size: 4em;
+	}
+	.descriptionBox h1 {
+		font-size: 5em;
+	}
+	.evenPicture {
+		width: 135px;
+	}
+	#avatar img {
+		width: 130px;
+	}
+	#mainpagecon {
+		height: 180px;
+	}
+	.projDescription {
+		padding: 10px 70px 20px 70px;
+	}
+	.descriptionBox p {
+		font-size: 30px;
+		line-height: 36px;
+	}
+	.individualMemberContainer {
+		width: 440px;
+		margin: 4px;
+	}
+}
+
+
+/*media query for desktop*/
+
+@media only screen and (min-width: 1500px) {
+	.wholeMemberContainer {
+		flex-wrap: wrap;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-evenly;
+		padding-bottom: 40px;
+	}
+	#container {
+		width: 1400px;
+	}
+	.nameDescContainer {
+		height: 94px;
+	}
+	.nametitle {
+		font-size: 22px;
+	}
+	.description {
+		width: 170px;
+		font-size: 11px;
+		line-height: 11px;
+	}
+	.whoWeAreContainer {
+		width: 1400px;
+	}
+	.descriptionBox p {
+		font-size: 21px;
+		line-height: 30px;
+	}
+	.descriptionBox h1 {
+		font-size: 3em;
+	}
+	.evenPicture {
+		width: 70px;
+	}
+	#avatar img {
+		width: 120px;
+	}
+	#mainpagecon {
+		height: 180px;
+	}
+	.projDescription {
+		padding: 10px 70px 20px 70px;
+	}
+	.individualMemberContainer {
+		width: 250px;
+		margin: 4px;
+	}
+	.nametitle {
+		font-size: 13px;
+	}
+}

@@ -1,33 +1,35 @@
+/*disallows user selection*/
+body{
+  user-select: none;   
+}
+/*title page*/
+#title{
+  margin-top: 0;
+}
+
 /** Changes color, size, and border of all div under .category */
 .category div {
   display: inline-block;
   width: 30%;
   margin-bottom: 2%;
-  background-color: rgba(255,255,255, 0.75);
-  border: 4px solid #707070;
-  border-radius: 5px;
   position: relative;
   z-index: 100;
 }
-
+/*container for title page and avatar*/
 #mainpagecon {
     height: 300px;
 }
+/*Gallery title*/
 .singleGalleryTitle{
     text-align: center;
     font-size: 1.3em;
-    background-color: #A3A3A3;
+    background-color: rgb(85, 177, 193);
 }
-.carousel-item{
-    border:1.5px solid black;
-    background:white;
-}
-
+/*Customizing material carousel*/
 .carousel-item>img {
     display: block;
     margin: 0 auto;
     width: 100%;
-    height: 50%;
     overflow: hidden;
 }
 
@@ -37,33 +39,82 @@
     display: block;
     height: auto;
     overflow: hidden;
+}
+/*buttons for materialize*/
+.button {
+  margin-right: 2%;
+}
+/*carousel moving it upwards*/
+.carousel {
+  transform: translateY(-80px);
+  min-width: 300px;
+  z-index:0;
+}
+/*item cost layout*/
+.itemCost {
+  background-color: rgba(255, 255, 255, 0.2);
+  height: 25px;
+}
+/**currency holder*/
+#points {
+  display: inline;
+}
+/*Avatar that bounces. changing the size*/
+#avatar {
+    margin: 0 auto;
+    width: 101px;
+    height: 163px;
+    margin-bottom: 3%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom 0px right 50%;
+}
+/*avatar img size customization*/
+img {
+    width: 105px;
+    transform: translate(-2px);    
 
 }
-
-#ditem1{
-	background-color: #55B1C1;
+/*button small for materialize button*/
+.btn-small {
+    height: 32.4px;
+    line-height: 32.4px;
+    font-size: 11px;
 }
-
-#item1{
-	background-image: url(../images/shopIcons/avatar/default.png);
+/*title for the page*/
+#title {
+    font-family: ubuntu;
+    font-size: 29px;
+    margin: 0px auto;
+    margin-top: -21px;
 }
-
-#item2{
-	background-image: url(../images/shopIcons/avatar/greenChar.png);
+/*media query for iphone plus*/
+@media only screen and (max-width:767px) and (min-width: 411px) {
+    
+    .carousel {
+      transform: translateY(-50px);
+    }
 }
+/*media query for ipad and more*/
+@media only screen and (min-width: 768px) {
+    .carousel {
+      transform: translateY(80px);
+    }
+    #avatar {
+    margin: 23 auto;
+    width: 130px;
+    
+    height: 220px;
+    }
+    img{
+        width:148px;
+        transform: translate(-9px);    
 
-#item3{
-	background-image: url(../images/shopIcons/avatar/greyChar.png);
-}
-
-#item4{
-	background-image: url(../images/shopIcons/avatar/yellowChar.png);
-}
-
-#item5{
-	background-image: url(../images/shopIcons/avatar/redChar.png);
-}
-
-#item6{
-	background-image: url(../images/shopIcons/avatar/blueChar.png);
+    }
+    #title{
+        font-size:60px;
+    }
+    #mainpagecon{
+        width:400px;
+    }
 }

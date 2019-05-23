@@ -9,7 +9,8 @@
 /** Ranking in game i.e. 1st,2nd,3rd, or 4th */
 .ranking{
   padding-left: 13px;
-  padding-top: 5px;
+  padding-top: 10px;
+  margin: 0;
   width: 60px;
   height: calc(50px - 3%);
   float:left;
@@ -31,7 +32,7 @@
 
 /** Container wrapping both username and user score */
 .userInfo{
-  padding-top: 5px;
+  padding-top: 7px;
   height: calc(50px - 3%);
   margin-left: 10px;
   font-size: 1.4em;

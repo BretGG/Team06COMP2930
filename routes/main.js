@@ -2,6 +2,12 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 
+/*
+
+Handles the routing for main pages
+
+*/
+
 /* GET home page. */
 router.get("/", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/index.html"));
@@ -32,20 +38,14 @@ router.get("/myCard", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/myCards.html"));
 });
 
-
-/* GET BretsTest page. */
-router.get("/login", function(req, res) {
-  res.render(path.resolve(__dirname, "../login/BretsTest.html"));
-});
-/* GET hannahtest page. */
-router.get("/hannahtest", function(req, res) {
-  res.render(path.resolve(__dirname, "../public/views/hannahtest.html"));
-});
-
 /* GET shop page. */
 router.get("/shop", function(req, res) {
   res.render(path.resolve(__dirname, "../public/views/shop.html"));
 });
 
+/* GET about us page. */
+router.get("/aboutUs", function(req, res) {
+  res.render(path.resolve(__dirname, "../public/views/aboutUs.html"));
+});
 
 module.exports = router;

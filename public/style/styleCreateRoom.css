@@ -1,38 +1,80 @@
-/**Changes placement of div to match screen size*/
-#back {
-  border-color: rgb(127,196,181, 0.99);
-  background-color: #D9F2ED;
-  margin-left: 2%;
-  margin-top: 22%;
+
+/* These are for dropdown */
+
+input {
+    font-family: 'Ubuntu', sans-serif;
+}
+.optionCon {
+    margin-top: 1rem;
+    margin-bottom: 0em;
 }
 
-/** WIDTH RANGE FROM 1501px to infinity */
-@media screen and (min-width: 1501px){
-      /**Changes placement of div to match screen size*/
-      #back{
-        margin-left: 2%;
-        margin-top: 22%;
-      }
+.optionCon>.input-field {
+    margin-top: 0.1rem;
+}
 
+/* .row .category {
+    padding-left: 1.3rem !important;
+}
+
+.row .deck {
+    padding-right: 1.3rem !important;
+} */
+
+.select-wrapper input.select-dropdown {
+    margin-bottom: 0em;
+    height: 2.3rem;
+    padding-left: 1rem;
+    /* margin-left: 0.5rem; */
+    /* margin-right: 0.5rem; */
+    width: 90%;
+}
+
+.dropdown-content li {
+    min-height: 25px;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    overflow: hidden;
+}
+
+
+/**Changes placement of div to match screen size*/
+
+#back {
+	margin-left: 5.5%;
+	margin-top: 22%;
+}
+
+
+/** WIDTH RANGE FROM 1501px to infinity */
+
+@media screen and (min-width: 1501px) {
+	/**Changes placement of div to match screen size*/
+	#back {
+		margin-top: 22%;
+	}
 }
 
 
 /** WIDTH RANGE FROM 1080px to 1500px */
-@media screen and (min-width: 1080px) and (max-width: 1500px){
-      /**Changes placement of div to match screen size*/
-      #back{
-        margin-left: 2%;
-        margin-top: 24%;
-      }
+
+@media screen and (min-width: 1080px) and (max-width: 1500px) {
+	/**Changes placement of div to match screen size*/
+	#back {
+		margin-top: 24%;
+	}
 }
 
 
 /** WIDTH RANGE FROM 800px to 1079px */
-@media screen and (min-width: 800px) and (max-width: 1079px) {  
-      /**Changes placement of div to match screen size*/
-      #back{
-        margin-left: 2%;
-        margin-top: 22%;
-      }
 
+@media screen and (min-width: 800px) and (max-width: 1079px) {
+	/**Changes placement of div to match screen size*/
+	#back {
+		margin-top: 22%;
+	}
 }

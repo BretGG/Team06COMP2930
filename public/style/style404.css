@@ -1,0 +1,62 @@
+/**Allows text shadow to ALL text in the html file. **/ 
+body {
+	text-shadow: -1px -1px 0 #707070, 1px -1px 0
+    #707070, -1px 1px 0 #707070, 1px 1px 0 #707070;
+}
+/* Determining container to add content.*/
+#container {
+	width: 500px;
+	margin: 0 auto;
+	padding: 5%;
+}
+/*Determines height of the width*/
+#mainpagecon {
+	height: 250px;
+}
+/* Paragraph aesthetic. Determines size, font, background, and size */
+.descriptionBox {
+	font-family: "Dosis", sans-serif;
+	color: white;
+	font-weight: bolder;
+	font-size: 2em;
+	margin-left: 5%;
+	margin-right: 5%;
+	border-radius: 25px;
+	border-width: 5px;
+	width: 90%;
+	background-color: rgba(0, 0, 0, .2);
+}
+/*Aligns the paragraph */ 
+.descriptionBox h2 {
+	text-align: center;
+	padding: 2%;
+}
+/*Aligns the Title */
+.descriptionBox h1 {
+	text-align: center;
+	padding: 2%;
+}
+/*Query for tablet size*/
+@media only screen and (max-width:1499px) and (min-width: 850px) {
+	#container {
+		width: 800px;
+	}
+}
+
+/*Query for Desktop*/
+@media only screen and (min-width: 1500px) {
+	#container {
+		width: 1200px;
+	}
+}
+
+.fixedButton {
+	position: fixed;
+	background-color: rgb(38, 166, 154);
+}
+
+a {
+	color: #ffffff;
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+}

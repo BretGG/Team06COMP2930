@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
 const jwt = require("jsonwebtoken");
+const Item = require("./item");
 
 /*
 
 This file contains the the schema (essentially a class) for the database, that
 holds the information for a user account. This file will also contain the validation
-for User account creation, this will be added after meshing with the database.
+for User account creation.
 
 */
 
@@ -32,7 +33,19 @@ const schema = new mongoose.Schema({
   points: {
     type: Number,
     default: 0
-  }
+  },
+  cosmetics: {
+    activePlatform: {
+      type: Item
+    },
+    activeAvatar: {
+      type: Item
+    },
+    activeBackground: {
+      type: Item
+    }
+  },
+  items: Array
 });
 
 // Validates if the user object follows validation rules.
@@ -58,8 +71,7 @@ exports.validate = user => {
   return joi.validate(user, schema);
 };
 
-function somethng() {}
-
+// Easy method for creating the jwt
 schema.methods.generateAuthToken = function() {
   return jwt.sign({ _id: this._id, username: this.username }, "FiveAlive");
 };

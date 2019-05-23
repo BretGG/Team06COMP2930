@@ -13,6 +13,7 @@ const usersRouter = require("./routes/users");
 const authRouter = require("./routes/login");
 const cardRouter = require("./routes/cards");
 const deckRouter = require("./routes/decks");
+const itemRouter = require("./routes/items");
 
 var app = express();
 
@@ -26,7 +27,9 @@ app.set("view engine", "html");
 
 // Starting database connection
 mongoose
-  .connect("mongodb://ecoQuest:F1veAl1ve@ds155516.mlab.com:55516/heroku_nj2pbh4w")
+  .connect(
+    "mongodb://ecoQuest:F1veAl1ve@ds155516.mlab.com:55516/heroku_nj2pbh4w"
+  )
   .then(() => console.log("Connected to mongo...\n"))
   .catch(err => console.log("Failed connection to mongo ", err));
 
@@ -52,6 +55,7 @@ app.use("/users", usersRouter);
 app.use("/login", authRouter);
 app.use("/cards", cardRouter);
 app.use("/decks", deckRouter);
+app.use("/items", itemRouter);
 
 // app.get('/mainPage', function(req, res) {
 //   res.render('public/views/mainPage.html');
@@ -62,5 +66,8 @@ app.use("/decks", deckRouter);
 // Remove the public static folder if handling all UI with Phaser
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "game/public")));
+app.use((req, res, next) => {
+  res.render(path.resolve(__dirname, "./public/views/404.html"));
+});
 
 module.exports = app;

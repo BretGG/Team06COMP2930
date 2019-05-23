@@ -2,8 +2,10 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="icon" href="../images/icon.png" type="../images/icon.png"/>
+    <!-- Window Tab Icon -->
+    <link rel="icon" href="../images/icon.png" type="image/x-icon"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- STYLE SHEETS -->
     <link rel="stylesheet" href="../style/styleBase.css" >
     <link rel="stylesheet" href="../style/styleBaseRoom.css" >
     <link rel="stylesheet" href="../style/styleJoinRoom.css" >
@@ -17,23 +19,27 @@
 
   <body>
     <div id='container'>
+
+      <!-- Project Logo --> 
       <h1 id='logo'> EcoQuest </h1>
       <div class='mainCon'>
+
+      <!-- Page Header -->
       <div id='header'><b>Join Room</b> </div>
 
         <div id='roomcon'>
-          <label for="roomNo0"><b>Room Number</b></label>
+          <label for="roomNo"><b>Room Number*</b></label>
           <input
-            id="roomNo0"
+            id="roomNo"
             type="text"
             name="roomPass"
             placeholder='Enter Room Number'
             required
           />
 
-          <label for="roomPass1"><b>Room Password</b></label>
+          <label for="roomPass"><b>Room Password*</b></label>
           <input
-            id="roomPass1"
+            id="roomPass"
             type="text"
             name="roomPass"
             placeholder='Enter Password'
@@ -41,14 +47,15 @@
           />
 
           </div>
-          <button id = "join" class="submit"><label>Join</label></button>
-        <div id='backcon'> <button id='back'>Back </button></div>
+          <a id='submit' class="waves-effect waves-light btn"><i class="material-icons right">gamepad</i>Join</a>
+          <!-- Returns you to main menu-->
+        <a id='back' class="waves-effect waves-light btn-small">Back<i class="material-icons left">home</i></a>
         </div>
 
     </div>
     </div>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
     <script src="../js/joinRoom.js"></script>
   </body>

@@ -1,49 +1,28 @@
 const { Card } = require("./card");
 const mongoose = require("mongoose");
-const joi = require("joi");
-const _ = require('lodash');
-
+const _ = require("lodash");
 
 /*
 
-This file contains the the schema (essentially a class) for the database, that
-holds the information for a card deck.
+This file contains the the schema for the database, that
+holds the information for a deck.
 
 */
 
 const deckSchema = new mongoose.Schema({
-//   category: {       //category for cards
-//     type: String,
-//     required: true
-// },
-    deckname: {         //deckName
-        type: String,
-        required: true
-    },
-    owner: {        //Do not validate for owner
-        type: String,
-        required: true
-    }
+  name: {
+    type: String,
+    required: true
+  },
+  owner: {
+    type: String,
+    required: true
+  }
 });
 
-// easier way to get cards
-// deckSchema.methods.getCards = async function() {
-//     return await Card.findAll({ deck: this._id })
-// }
-
-const Deck = mongoose.model('Deck', deckSchema);
-
-
-
-// Validates if the card object follows validation rules.
-exports.validate = deck => {
-    console.log(deck);
-
-  const schema = joi.object().keys({
-    ndecknameame: joi.string().required()
-  });
-
-  return joi.validate(_.pick(deck, 'deckname'), schema);
+// Returns all cards in this deck (i.e. have this decks id), QoL function
+deckSchema.methods.getCards = async function() {
+  return await Card.find({ deck: this._id });
 };
 
 exports.Deck = mongoose.model("Deck", deckSchema);

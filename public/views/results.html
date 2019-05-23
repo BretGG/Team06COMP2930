@@ -2,8 +2,10 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="icon" href="../images/icon.png" type="../images/icon.png"/>
+    <!-- Window Tab Icon -->
+    <link rel="icon" href="../images/icon.png" type="image/x-icon"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- STYLE SHEETS -->
     <link rel="stylesheet" href="../style/styleBase.css" >
     <link rel="stylesheet" href="../style/styleBaseRoom.css" >
     <link rel="stylesheet" href="../style/styleResults.css" >
@@ -17,22 +19,25 @@
   <body>
     <!-- Wraps all HTML content in one div -->
     <div id='container'>
+      <!-- Project Logo -->
       <h1 id='logo'> EcoQuest </h1>
+
       <!-- Holds all main content -->
       <div class='mainCon'>
+
       <!-- Header for page -->
       <div id='header'><b>Results</b> </div>
-        <!-- Container that holds all results from player's in the room -->
+
+        <!-- Container that holds all results from players in the room -->
         <div id='roomCon'>
         </div>
-        <!-- Container holds the back button -->
-        <div id='backcon'> <button id='back'>Main Menu </button></div>
-        </div>
 
-    </div>
+        <!-- Back button -->
+        <a id='back' class="waves-effect waves-light btn-small">Main Menu<i class="material-icons left">home</i></a>
+      </div>
     </div>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../js/results.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
   </body>
