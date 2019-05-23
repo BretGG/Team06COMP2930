@@ -53,7 +53,7 @@ let myScore = 0;
 let scoreText;
 let startMessage;
 
-// var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
+var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
 
 // Holds all the spawn points for when users join, could be done with math (should be)
 // index 0 is for 1 player, index 1 is for 2 players and so on
@@ -76,8 +76,8 @@ if (window.innerHeight > window.innerWidth) {
 // }
 
 function preload() {
-  this.load.image("sky", "../assets/backgrounds/city.png");
-  this.load.image("water", "../assets/backgrounds/city-wave.png");
+  this.load.image("sky", "../assets/backgrounds/pixelatedbg.png");
+  this.load.image("water", "../assets/backgrounds/pixelatedbg-wave.png");
   this.load.image("exclamation", "../assets/character/exclamation.png");
   this.load.image("questionMark", "../assets/character/question.png");
   this.load.image("1st", "../assets/character/1st.png");
@@ -105,7 +105,7 @@ function create() {
   this.socket = io("", { query: "foo=" + localStorage.getItem("auth-token") });
   self = this;
   cursor = this.input.keyboard.createCursorKeys();
-  this.readyKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+  // this.readyKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
   background = this.add
     .image(000, 00, "sky")
