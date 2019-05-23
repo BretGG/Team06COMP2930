@@ -7,9 +7,27 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../src/models/user");
 const http = require("http");
 
-const gameServer = http.createServer().listen(3001, function() {
+var port = normalizePort(process.env.PORT || "3001");
+const gameServer = http.createServer().listen(port, function() {
   console.log("Game server is listening on port 3001");
 });
+
+// Normalize a port into a number, string, or false.
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
 
 const io = require("socket.io")(gameServer);
 /* Example session/game object:

@@ -14,8 +14,8 @@ var server = http.Server(app);
 var io = require("socket.io").listen(server);
 
 // Listen on provided port, on all network interfaces.
-// server.listen(port);
-server.listen(3000, "0.0.0.0", function() {
+var port = normalizePort(process.env.PORT || "3000");
+server.listen(port, "0.0.0.0", function() {
   console.log("Listening to port:  " + 3000);
 });
 
