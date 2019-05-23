@@ -84,10 +84,10 @@ function preload() {
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
-  this.load.image("p1", "../assets/character/default.png");
-  this.load.image("p2", "../assets/character/default.png");
-  this.load.image("p3", "../assets/character/default.png");
-  this.load.image("p4", "../assets/character/default.png");
+  this.load.image("p1", "../assets/character/yellowChar.png");
+  this.load.image("p2", "../assets/character/blueChar.png");
+  this.load.image("p3", "../assets/character/greenChar.png");
+  this.load.image("p4", "../assets/character/redChar.png");
   this.load.image("platform1", "../assets/backgrounds/platform3.png");
   this.load.image("platform", "../assets/character/platform.png");
   this.load.image("cardFront", "../assets/backgrounds/cardFront.png");
@@ -588,7 +588,7 @@ function displayQuestion(questionInfo) {
     color: "#000000",
     align: "center",
     wordWrap: {
-      width: question.displayWidth - 55
+      width: question.displayWidth - 60
     }
   });
 
