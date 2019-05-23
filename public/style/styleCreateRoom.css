@@ -71,14 +71,6 @@ input {
 
 
 /** WIDTH RANGE FROM 800px to 1079px */
-<<<<<<< HEAD
-=======
-@media screen and (min-width: 800px) and (max-width: 1079px) {
-      /**Changes placement of div to match screen size*/
-      #back{
-        margin-top: 22%;
-      }
->>>>>>> 47fadd7875ed704ba879b12a4fb11bf87cdada77
 
 @media screen and (min-width: 800px) and (max-width: 1079px) {
 	/**Changes placement of div to match screen size*/
