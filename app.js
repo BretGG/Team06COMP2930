@@ -50,7 +50,7 @@ require("console-stamp")(console, {
 // /login - logging in...
 app.use("/", mainRouter);
 app.use("/game", auth, gameRouter);
-app.use("/users", auth, usersRouter);
+app.use("/users", usersRouter);
 app.use("/login", authRouter);
 app.use("/cards", auth, cardRouter);
 app.use("/decks", auth, deckRouter);
