@@ -74,8 +74,8 @@ if (window.innerHeight > window.innerWidth) {
 // }
 
 function preload() {
-  this.load.image("sky", "../assets/backgrounds/sky.png");
-  this.load.image("water", "../assets/backgrounds/wave.png");
+  this.load.image("sky", "../assets/backgrounds/night.png");
+  this.load.image("water", "../assets/backgrounds/night-wave.png");
   this.load.image("exclamation", "../assets/character/exclamation.png");
   this.load.image("questionMark", "../assets/character/question.png");
   this.load.image("1st", "../assets/character/1st.png");
