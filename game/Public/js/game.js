@@ -42,6 +42,7 @@ let answerCards = [];
 let gameStarted = false;
 let myScore = 0;
 let scoreText;
+let startMessage;
 
 // var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
 
@@ -122,6 +123,33 @@ function create() {
 
     ]
   });
+  let startString = "Touch the screen or hit Space key to start";
+  startMessage = self.add.text(400, 300, startString, {
+    fontFamily: "Macondo Swash Caps",
+    fontSize: "35px",
+    fill: "#000"
+  });
+  startMessage.setOrigin(0.5);
+  startMessage.y += -150;
+
+
+  // this.tweens.timeline({
+  //   targets: startMessage,
+  //   loop: -1,
+  //   tweens: [{
+  //       y: -30,
+  //       duration: 700,
+  //       ease: 'Stepped'
+  //     },
+  //     {
+  //       y: 30,
+  //       duration: 700,
+  //       ease: 'Stepped'
+  //     },
+  //
+  //
+  //   ]
+  // });
 
   // ----------------------------------------Server Connection----------------------------------------------
   // ----------Incoming Information----------
@@ -185,6 +213,14 @@ function updateStatePosition(player) {
 
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
+  // self.tweens.add({
+  //   targets: startMessage,
+  //   y: -1500,
+  //   ease: "Quint",
+  //   duration: 8000,
+  //   repeat: 0
+  // });
+  // startMessage.destroy();
   gameStarted = true;
   scoreAndPlayer();
   // Other round start stuff, reset game objects
