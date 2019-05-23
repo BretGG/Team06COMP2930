@@ -73,7 +73,7 @@ $(document).ready(() => {
       $("#passIN1").val(null);
       return;
     }
-    
+
     /** Server request that saves user info to database */
     $.ajax({
       type: "post",
@@ -91,7 +91,7 @@ $(document).ready(() => {
         M.Toast.dismissAll();
         M.toast({
           html: err.responseText,
-          classes: "red",
+          classes: "redcolor",
           displayLength: 2500
         });
       }
