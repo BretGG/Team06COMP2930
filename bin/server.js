@@ -289,9 +289,13 @@ async function roundStart(s) {
   }
   glob.cards = await Card.find({
     format: "tf",
-    category: "test",
-    deck: "test"
+    category: "Eco",
+    // deck: "test"
   });
+
+
+
+
   console.log("card length: ", glob.cards.length);
 
   let question;
