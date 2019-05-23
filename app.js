@@ -53,10 +53,10 @@ require("console-stamp")(console, {
 app.use("/", mainRouter);
 app.use("/users", usersRouter);
 app.use("/login", authRouter);
-app.use("/game", auth, gameRouter);
+app.use("/game", gameRouter);
 app.use("/cards", auth, cardRouter);
 app.use("/decks", auth, deckRouter);
-app.use("/items", itemRouter);
+app.use("/items", auth, itemRouter);
 
 // app.get('/mainPage', function(req, res) {
 //   res.render('public/views/mainPage.html');
