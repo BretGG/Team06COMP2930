@@ -1,12 +1,14 @@
 $(document).ready(() => {
   let lobbyInfo;
 
+  //Preloads jwt into ajax header 
   $.ajaxSetup({
     headers: {
       "auth-token": localStorage.getItem("auth-token")
     }
   });
 
+  //Updates background according to the active background user has equipped.
   function updateCosmetics() {
     $.ajax({
       type: "get",
@@ -25,7 +27,6 @@ $(document).ready(() => {
 
   // Sets lobbyInfo and calls the cb with returned data
   function getLobbyInfo(cb) {
-    console.log("get lobby info");
     $.ajax({
       type: "get",
       url: "../../game/lobbyinfo",
@@ -41,6 +42,7 @@ $(document).ready(() => {
     });
   }
 
+  //Displays users on front end
   function displayMembers(players) {
     $("#memberpool").html("");
     for (let player of players) {
@@ -64,6 +66,7 @@ $(document).ready(() => {
     window.location.href = "../main";
   });
 
+  //Registers user into lobby
   function connectSocket(lobby) {
     $("#roomNo").html(lobby.sessionId);
     socket = io("http://localhost:3001");
@@ -72,15 +75,12 @@ $(document).ready(() => {
       lobbyMembers = [];
       lobbyMembers.push(...users);
       displayMembers(lobbyMembers);
-      console.log(users);
-      console.log(lobbyMembers);
     });
     socket.on("noavailablelobby", () => console.log("No available lobby"));
   }
 
+  //Connects Lobby into Socket.io
   getLobbyInfo(connectSocket);
-    updateCosmetics();
-
-
-  console.log("Game lobby");
+  //Calls function to update background
+  updateCosmetics();
 });

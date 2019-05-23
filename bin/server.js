@@ -2,8 +2,6 @@
 
 var io = require("socket.io")
   .listen(server);
-module.exports = io;
-
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
@@ -12,14 +10,6 @@ const {
   Card
 } = require("../src/models/card.js");
 var glob = this;
-
-// Get port from environment and store in Express.
-// var port = normalizePort(process.env.PORT || "3000");
-// app.set("port", port);
-//
-// app.listen(3000, '0.0.0.0', function() {
-//     console.log('Listening to port:  ' + 3000);
-// });
 
 // Create HTTP server.
 var server = http.Server(app);
@@ -161,7 +151,6 @@ function onDisconnect(socket) {
 }
 //On player click on the answer
 function onPlayerAnswered(info, socket) {
-  console.log("round:::::", round);
   if (info && glob.cards) {
     let currentPlayer = players.get(info.playerId);
     currentPlayer.answeredRound = true;

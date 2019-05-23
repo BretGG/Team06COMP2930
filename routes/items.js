@@ -5,7 +5,13 @@ const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const { User } = require("../src/models/user");
 
-// Get all items of category
+/*
+
+This router handles everything related to items, mainly used from the shop page
+
+*/
+
+// Get all items of given category
 router.get("/category/:category", async (req, res) => {
   let items = await Item.find({ category: req.params.category });
   res.send(items);
@@ -20,10 +26,11 @@ router.get("/:itemId", async (req, res) => {
   res.send(items);
 });
 
-// Request to buy item
+// Request to buy item, checks the current logged in users balance and either
+// returns with an error on failure to buy item or returns the item on success
 router.put("/:selectedItem", async (req, res) => {
   // Finding the item
-  console.log("Request to buy item: " + JSON.stringify(req.params));
+  debug("Request to buy item: " + JSON.stringify(req.params));
   let item = await Item.findById(req.params.selectedItem);
   if (!item) return res.status(404).send("Could not find item");
 
@@ -33,13 +40,8 @@ router.put("/:selectedItem", async (req, res) => {
   const decode = jwt.verify(token, "FiveAlive");
   token = jwt.decode(token);
 
-  console.log(
-    `Request for me from user ${token._id} at ${req.connection.remoteAddress}`
-  );
-
   // Getting user info
   const user = await User.findById(token._id).select("-password");
-  console.log(user);
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
 
   // Check if they already own it
@@ -57,7 +59,7 @@ router.put("/:selectedItem", async (req, res) => {
   }
 });
 
-// Create an item
+// Create an item based of req.body
 router.post("/", async (req, res) => {
   let item = _.pick(req.body, [
     "cost",

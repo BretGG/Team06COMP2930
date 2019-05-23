@@ -1,6 +1,11 @@
 const { isMainThrea } = require("worker_threads");
 /*
 
+----------------------------------------------------------------------------------------------------------------------------------------------
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!This is an experimental file that is no longer in development due to time constraints!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Additional code can be found on bret_session branch!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+----------------------------------------------------------------------------------------------------------------------------------------------
+
 session is the base class for a game object that will handle game interactions with clients and
 the game logic.
 
