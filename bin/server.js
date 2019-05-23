@@ -1,19 +1,21 @@
 #!/usr/bin/env node
 
-var io = require("socket.io").listen(server);
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
+const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const { Card } = require("../src/models/card.js");
+const { User } = require("../src/models/user");
 var glob = this;
 
 // Create HTTP server.
 var server = http.Server(app);
+var io = require("socket.io").listen(server);
 
 // Listen on provided port, on all network interfaces.
-// server.listen(port);
-server.listen(3000, "0.0.0.0", function() {
+var port = normalizePort(process.env.PORT || "3000");
+server.listen(port, "0.0.0.0", function() {
   console.log("Listening to port:  " + 3000);
 });
 
@@ -67,6 +69,14 @@ function onListening() {
   debug("Listening on " + bind);
 }
 
+let idHolder;
+io.use(function(socket, next) {
+  var handshakeData = socket.request;
+  console.log("Player connected to game:", handshakeData._query["token"]);
+  idHolder = handshakeData._query["token"];
+  next();
+});
+
 //--------------------------------------------------------Game code------------------------------------------------------------
 
 //declare instances of global varibles
@@ -79,10 +89,6 @@ let currentRoundCard;
 var gameStarted = false;
 const losers = [];
 
-//require socket io using express
-var io = require("socket.io").listen(server);
-app.io = io;
-
 // incomming information. The connection is made
 io.on("connection", function(socket) {
   self.id = socket.id;
@@ -94,11 +100,18 @@ io.on("connection", function(socket) {
   // Add a player to the master list (Map)
   players.set(socket.id, {
     playerId: socket.id,
+    userId: jwt.decode(idHolder)._id,
     wrongAnswers: 0,
     correctAnswers: 0,
     answeredRound: false,
     ready: false,
     gameOver: false
+  });
+
+  socket.on("getCosmetics", async () => {
+    let user = await User.findById(players.get(socket.id).userId);
+    console.log("cosmeticss ", user);
+    io.emit("setCosmetics", { playerId: socket.id, cosmetics: user.cosmetics });
   });
 
   socket.on("currentPlayers", () => {
@@ -115,7 +128,11 @@ io.on("connection", function(socket) {
   //user disconnected, broadcast to all other users and remove from list
   socket.on("disconnect", () => onDisconnect(socket));
   socket.on("me", () => onMe(socket));
-  socket.on("playerAnswered", info => onPlayerAnswered(info, socket));
+  socket.on("playerAnswered", info => {
+    if (info.answer !== "N/A") {
+      onPlayerAnswered(info, socket);
+    }
+  });
   socket.on("playerJump", () => onPlayerJumped(socket));
   socket.on("playerStateChange", state => onPlayerStateChange(socket, state));
 
@@ -146,6 +163,7 @@ function onPlayerAnswered(info, socket) {
   if (info && glob.cards) {
     let currentPlayer = players.get(info.playerId);
     currentPlayer.answeredRound = true;
+
     io.emit("playerStateChange", {
       playerId: socket.id,
       state: "exclamation"
@@ -156,7 +174,6 @@ function onPlayerAnswered(info, socket) {
     } else if (info.answer !== "N/A") {
       this.answer = false;
       currentPlayer.wrongAnswers++;
-    } else {
     }
     if (allPlayerAnswered() && !currentPlayer.gameOver) {
       endRound();
@@ -187,6 +204,7 @@ function endRound() {
       roundStart(round);
     } else {
       console.log("The end----------------------------");
+      console.log("self.id ", self.id);
       io.emit("gameEnd", {
         playerId: self.id,
         state: "gameEnd"
@@ -242,15 +260,18 @@ function onPlayerStateChange(socket, data) {
           console.log("round has not started yet");
           roundStart(round);
         }
-        onPlayerStateChange("doesn't matter", {
+        //need to pass in socket, otherwise player will be null in the clients
+        onPlayerStateChange(socket, {
           state: "questionMark"
         });
       }
       break;
 
     case "questionMark":
+      // console.log("socket, ", socket);
+      console.log("socket.ids ", socket.id);
       io.emit("playerStateChange", {
-        playerId: "Not needed",
+        playerId: socket.id,
         state: "questionMark"
       });
       break;
@@ -277,48 +298,54 @@ async function roundStart(s) {
   }
   glob.cards = await Card.find({
     format: "tf",
-    category: "test",
-    deck: "test"
+    category: "Eco"
+    // deck: "test"
   });
+
   console.log("card length: ", glob.cards.length);
 
   let question;
   let answers = [];
+  if (glob.cards && currentRoundCard) {
+    currentRoundCard.question = glob.cards[s].question;
+    currentRoundCard.answer = glob.cards[s].answer;
 
-  currentRoundCard.question = glob.cards[s].question;
-  currentRoundCard.answer = glob.cards[s].answer;
-
-  question = glob.cards[s].question;
-  answers.push(glob.cards[s].answer);
-  if (glob.cards.length >= 4) {
-    for (let i = 0; i < 4; i++) {
-      if (glob.cards[i].answer != glob.cards[s].answer) {
-        answers.push(glob.cards[i].answer);
+    question = glob.cards[s].question;
+    answers.push(glob.cards[s].answer);
+    if (glob.cards.length >= 4) {
+      for (let i = 0; i < 4; i++) {
+        if (
+          glob.cards[i].answer != glob.cards[s].answer &&
+          answers.length < 4
+        ) {
+          answers.push(glob.cards[i].answer);
+        }
       }
-    }
-  } else {
-    for (let i = 0; i < glob.cards.length; i++) {
-      if (glob.cards[i].answer != glob.cards[s].answer) {
-        answers.push(glob.cards[i].answer);
+    } else {
+      console.log("inside roundStart");
+      for (let i = 0; i < glob.cards.length; i++) {
+        if (glob.cards[i].answer != glob.cards[s].answer) {
+          answers.push(glob.cards[i].answer);
+        }
       }
-    }
-    let temp = 4 - glob.cards.length;
-    switch (temp) {
-      case 1:
-        answers.push("Chocolate");
-        break;
+      let temp = 4 - glob.cards.length;
+      switch (temp) {
+        case 1:
+          answers.push("Chocolate");
+          break;
 
-      case 2:
-        answers.push("coffee");
-        answers.push("water");
-        break;
-      case 3:
-        answers.push("145");
-        answers.push("Ocean");
-        answers.push("Carbonated water");
+        case 2:
+          answers.push("coffee");
+          answers.push("water");
+          break;
+        case 3:
+          answers.push("145");
+          answers.push("Ocean");
+          answers.push("Carbonated water");
 
-        break;
-      default:
+          break;
+        default:
+      }
     }
   }
   //shuffling the answers

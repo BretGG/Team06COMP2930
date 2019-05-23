@@ -13,9 +13,16 @@ const config = {
     arcade: {
       gravity: {
         y: 450
-      }
-      // debug: "false"
+      },
+      debug: "true"
     }
+  },
+  plugins: {
+    global: [{
+      key: "WebFontLoader",
+      plugin: WebFontLoaderPlugin,
+      start: true
+    }]
   },
   scene: {
     preload: preload,
@@ -32,6 +39,7 @@ let self;
 let background;
 let water;
 let cursor;
+let setBG = false;
 let mainPlayer;
 let question;
 var players = [];
@@ -67,8 +75,8 @@ if (window.innerHeight > window.innerWidth) {
 // }
 
 function preload() {
-  this.load.image("sky", "../assets/backgrounds/sky.png");
-  this.load.image("water", "../assets/backgrounds/wave.png");
+  this.load.image("sky", "../assets/backgrounds/city.png");
+  this.load.image("water", "../assets/backgrounds/city-wave.png");
   this.load.image("exclamation", "../assets/character/exclamation.png");
   this.load.image("questionMark", "../assets/character/question.png");
   this.load.image("1st", "../assets/character/1st.png");
@@ -77,23 +85,26 @@ function preload() {
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
-  this.load.image("p1", "../assets/character/default.png");
-  this.load.image("p2", "../assets/character/default.png");
-  this.load.image("p3", "../assets/character/default.png");
-  this.load.image("p4", "../assets/character/default.png");
-  this.load.image("platform1", "../assets/backgrounds/platform3.png");
+  this.load.image("yelloChar", "../assets/character/yellowChar.png");
+  this.load.image("blueChar", "../assets/character/blueChar.png");
+  this.load.image("greenChar", "../assets/character/greenChar.png");
+  this.load.image("redChar", "../assets/character/redChar.png");
+  this.load.image("platform3", "../assets/backgrounds/platform3.png");
   this.load.image("platform", "../assets/character/platform.png");
+  this.load.image("rabbitpet", "../assets/character/rabbitpet.png");
   this.load.image("cardFront", "../assets/backgrounds/cardFront.png");
   this.load.image(
     "questionBackground",
     "../assets/backgrounds/uglyQuestionBackground.png"
   );
-
+  this.load.webfont("ponderosa", "../fonts/ponderosa.ttf");
+  this.load.webfont("Ubuntu-Regular", "../fonts/Ubuntu-Regular.ttf");
 }
 
-
 function create() {
-  this.socket = io();
+  this.socket = io("", {
+    query: "token=" + localStorage.getItem("auth-token")
+  });
   self = this;
   cursor = this.input.keyboard.createCursorKeys();
   this.readyKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -112,26 +123,22 @@ function create() {
     tweens: [{
         y: -30,
         duration: 700,
-        ease: 'Stepped'
+        ease: "Stepped"
       },
       {
         y: 30,
         duration: 700,
-        ease: 'Stepped'
-      },
-
-
+        ease: "Stepped"
+      }
     ]
   });
-  let startString = "Touch the screen or hit Space key to start";
+  let startString = "Touch screen to start";
   startMessage = self.add.text(400, 300, startString, {
-    fontFamily: "Macondo Swash Caps",
-    fontSize: "35px",
+    font: "28px ponderosa",
     fill: "#000"
   });
   startMessage.setOrigin(0.5);
   startMessage.y += -150;
-
 
   // this.tweens.timeline({
   //   targets: startMessage,
@@ -162,6 +169,7 @@ function create() {
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
+  this.socket.on("setCosmetics", setCosmetics);
   this.socket.on("gameEnd", playerStateChange);
   this.socket.on("gameOver", playerStateChange);
   this.socket.on(
@@ -170,10 +178,11 @@ function create() {
   );
   // ---------Asking for Information-------------
   this.socket.emit("currentPlayers");
+  this.socket.emit("getCosmetics");
   this.socket.emit("me");
   // ------------------------------------------------------------------------------------------------------
   //Detects touch on mobile devices
-  this.input.on('pointerup', (pointer) => {
+  this.input.on("pointerup", pointer => {
     if (mainPlayer.body.touching.down && gameStarted) {
       mainPlayer.setVelocityY(-300);
       this.socket.emit("playerJump");
@@ -187,7 +196,6 @@ function create() {
 
 // One of the three main Phaser functions, this one gets called continuously
 function update() {
-
   // Jumping player
   if (cursor.space.isDown && mainPlayer.body.touching.down && gameStarted) {
     mainPlayer.setVelocityY(-300);
@@ -211,26 +219,56 @@ function updateStatePosition(player) {
   playerState.setY(player.y - playerState.height - 27);
 }
 
+// Sets players cosmetics
+function setCosmetics(cosmeticsInfo) {
+  let player = players.find(
+    holder => cosmeticsInfo.playerId === holder.playerId
+  );
+
+  let cosAvatar = cosmeticsInfo.cosmetics.activeAvatar.imageLink;
+  let cosPlatform = cosmeticsInfo.cosmetics.activePlatform.imageLink;
+  let cosBackground = cosmeticsInfo.cosmetics.activeBackground.imageLink;
+
+  // player.setTexture(cosmeticsInfo.cosmetics.activeAvatar.subString())
+  player.setTexture(
+    cosAvatar.substring(
+      cosAvatar.lastIndexOf("/") + 1,
+      cosAvatar.lastIndexOf(".")
+    )
+  );
+  player.supportingPlatform.setTexture(
+    cosPlatform.substring(
+      cosPlatform.lastIndexOf("/") + 1,
+      cosPlatform.lastIndexOf(".")
+    )
+  );
+  // if (!setBG) {
+  //   player.supportingPlatform.setTexture(
+  //     cosBackground.substring(
+  //       cosBackground.lastIndexOf("/") + 1,
+  //       cosBackground.lastIndexOf(".")
+  //     )
+  //   );
+  //   setBG = true;
+  // }
+}
+
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
-  // self.tweens.add({
-  //   targets: startMessage,
-  //   y: -1500,
-  //   ease: "Quint",
-  //   duration: 8000,
-  //   repeat: 0
-  // });
-  // startMessage.destroy();
+  startMessage.destroy();
   gameStarted = true;
   scoreAndPlayer();
   // Other round start stuff, reset game objects
   console.log("startRound() in game.js");
   if (!mainPlayer.gameOver) {
-    setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
+    // setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
+    console.log("mainPlayer.playerId ", mainPlayer.playerId);
     self.socket.emit("playerStateChange", {
+      playerId: mainPlayer.playerId,
       state: "questionMark"
     });
   }
+
   displayAnswers(roundInfo.answer);
   displayQuestion(roundInfo.question);
 }
@@ -243,18 +281,25 @@ function playerJump(playerId) {
 //Change the state icon according to the incoming state information
 function playerStateChange(stateInfo) {
   let player = players.find(holder => stateInfo.playerId === holder.playerId);
+  console.log("player ", player);
   switch (stateInfo.state) {
     case "ready":
+      console.log(stateInfo.playerId, " in case: ready, stateinfo.playerId");
       player.supportingState.setTexture("ready");
       break;
     case "questionMark":
+      console.log("players: ", players);
+      console.log("stateinfo: ", stateInfo);
+      console.log(stateInfo.playerId, " stateinfo.playerId");
+      player.answered = false;
       if (!isLoser(stateInfo.playerId)) {
-        for (player of players) {
+        for (let player of players) {
           player.supportingState.setTexture("questionMark");
         }
       }
       break;
     case "exclamation":
+      player.answered = true;
       if (!isLoser(stateInfo.playerId)) {
         player.supportingState.setTexture("exclamation");
       }
@@ -276,13 +321,13 @@ function playerStateChange(stateInfo) {
         tweens: [{
             y: -30,
             duration: 700,
-            ease: 'Stepped'
+            ease: "Stepped"
           },
           {
             y: 30,
             duration: 700,
-            ease: 'Stepped'
-          },
+            ease: "Stepped"
+          }
         ]
       });
 
@@ -339,8 +384,10 @@ function gameEnd() {
   } else {
     for (let i = 0; i < minusGhosts.length; i++) {
       //raise all players except the fourth place player
-      if (minusGhosts[i].correctAnswers !==
-        sortedCorrectAnswersDesc[sortedCorrectAnswersDesc.length - 1]) {
+      if (
+        minusGhosts[i].correctAnswers !==
+        sortedCorrectAnswersDesc[sortedCorrectAnswersDesc.length - 1]
+      ) {
         minusGhosts[i].y = 0;
         self.tweens.add({
           targets: minusGhosts[i].supportingPlatform,
@@ -471,7 +518,6 @@ function createPlayer(playerInfo) {
   newPlayer.gameOver = false;
   players.push(newPlayer);
 
-
   // Update other players positions, (i.e slide them over for the new player)
   updatePlayerPosition();
 }
@@ -574,12 +620,11 @@ function displayQuestion(questionInfo) {
 
   // Set the question text
   question.text = self.add.text(0, 0, questionInfo, {
-    fontFamily: "Arial",
-    fontSize: 20,
+    font: "20px Ubuntu-Regular",
     color: "#000000",
     align: "center",
     wordWrap: {
-      width: question.displayWidth - 35
+      width: question.displayWidth - 60
     }
   });
 
@@ -594,7 +639,6 @@ function displayQuestion(questionInfo) {
 
 // Creates the display for all answers
 function displayAnswers(answers) {
-
   let cardX = [400 - 135, 400 + 135, 400 - 135, 400 + 135];
   let cardY = [480, 480, 480 + 70, 480 + 70];
   // Remove all old answer cards
@@ -606,13 +650,14 @@ function displayAnswers(answers) {
 
   // Start off screen
   for (let answer of answers) {
+    console.log("answers.length, ", answers.length);
     let card = self.add.image(-100, 550, "cardFront");
     card.setDepth(9);
     card.alpha = 0.9;
     // Creation of text and adding to group
     card.text = self.add.text(0, 0, answer, {
-      fontFamily: "Arial",
-      fontSize: 17,
+      font: "17px Ubuntu-Regular",
+      // fontSize: 17,
       color: "#000000",
       align: "center",
       wordWrap: {
@@ -628,7 +673,7 @@ function displayAnswers(answers) {
     // Set card to be interactive and fire answer on click
     card.setInteractive()
       .on("pointerdown", () => {
-        if (!mainPlayer.gameOver) {
+        if (!mainPlayer.gameOver && !mainPlayer.answered) {
           self.socket.emit("playerAnswered", {
             answer: card.text.text,
             playerId: mainPlayer.playerId
@@ -638,7 +683,7 @@ function displayAnswers(answers) {
             answer: "N/A",
             playerId: mainPlayer.playerId
           });
-          console.log("Can't click, you're dead.");
+          console.log("Can't click");
         }
       });
 
@@ -648,10 +693,8 @@ function displayAnswers(answers) {
 
   // Cards sliding in animation
   if (answerCards.length > 0) {
-
     // for (let card of answerCards) {
     for (let i = 0; i < 4; i++) {
-
       // Slide in card front
       self.tweens.add({
         targets: answerCards[i],
@@ -671,11 +714,8 @@ function displayAnswers(answers) {
         duration: 3000,
         repeat: 0
       });
-
     }
   }
-
-
 }
 
 // Add text to the screen for player score
@@ -688,23 +728,22 @@ function scoreAndPlayer() {
   let scores = [];
   let me = players.find(player => player.playerId === mainPlayer.playerId);
 
-  myScore = me.correctAnswers * 180;
+  myScore = me.correctAnswers * 95;
 
   for (let player of players) {
     if (player.playerId != me) {
-      scores.push(player.correctAnswers * 180);
+      scores.push(player.correctAnswers * 95);
     }
   }
 
-  let scoreBoard = "Score: " + (myScore || 0);
+  let scoreBoard = "Score:" + (myScore || 0);
 
   scoreText = self.add.text(16, 16, scoreBoard, {
-    fontFamily: "Macondo Swash Caps",
-    fontSize: "40px",
+    // fontFamily: "Macondo Swash Caps",
+    font: "30px ponderosa",
+    // fontSize: "40px",
     fill: "#000"
   });
-
-
 }
 
 function isLoser(id) {
@@ -714,5 +753,4 @@ function isLoser(id) {
     }
   }
   return false;
-
 }
