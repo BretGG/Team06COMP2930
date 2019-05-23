@@ -28,7 +28,9 @@ app.set("view engine", "html");
 
 // Starting database connection
 mongoose
-  .connect("mongodb://localhost/ecoQuest")
+  .connect(
+    "mongodb://ecoQuest:F1veAl1ve@ds155516.mlab.com:55516/heroku_nj2pbh4w"
+  )
   .then(() => console.log("Connected to mongo...\n"))
   .catch(err => console.log("Failed connection to mongo ", err));
 
@@ -49,12 +51,12 @@ require("console-stamp")(console, {
 // /users - creating account...
 // /login - logging in...
 app.use("/", mainRouter);
-app.use("/game", auth, gameRouter);
-app.use("/users", auth, usersRouter);
+app.use("/users", usersRouter);
 app.use("/login", authRouter);
+app.use("/game", auth, gameRouter);
 app.use("/cards", auth, cardRouter);
 app.use("/decks", auth, deckRouter);
-app.use("/items", auth, itemRouter);
+app.use("/items", itemRouter);
 
 // app.get('/mainPage', function(req, res) {
 //   res.render('public/views/mainPage.html');

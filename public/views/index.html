@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <!-- Window Tab Icon -->
     <link rel="icon" href="../images/icon.png" type="image/x-icon" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
     <!-- STYLE SHEETS -->
-    <link rel="stylesheet" href="../style/styleBase.css" >
-    <link rel="stylesheet" href="../style/styleDoubleHeaderInput.css" >
-    <link type="text/css" rel="stylesheet" href="../style/materialize.min.css"  media="screen,projection"/>
-     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../style/styleBase.css" />
+    <link rel="stylesheet" href="../style/styleDoubleHeaderInput.css" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../style/materialize.min.css"
+      media="screen,projection"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <title>EcoQuest</title>
-    <style>
-    </style>
-    </head>
+    <style></style>
+  </head>
 
   <body>
     <div id="container">
-
-      <!--Project Logo --> 
+      <!--Project Logo -->
       <h1 id="logo">EcoQuest</h1>
       <div id="mainCon">
         <div id="headerCon" class="hoverPointer">
@@ -26,43 +35,55 @@
           <div class="headerRight">Sign-In</div>
         </div>
         <!-- Input container for all the information of the user-->
-        <div id='inputcon'>
-           <!-- Ids are used for jquery hiding and showing display -->
-          <div id='status'></div>
-          <div class='headerLeftCon' >
-          <label for="uname0"><b>Username*</b></label>
-          <input id="uname1" type="text" name="uname" required/>
+        <div id="inputcon">
+          <!-- Ids are used for jquery hiding and showing display -->
+          <div id="status"></div>
+          <div class="headerLeftCon">
+            <label for="uname0"><b>Username*</b></label>
+            <input id="uname1" type="text" name="uname" required />
 
-          <label id="email0" for="email"><b>Email*</b></label>
-          <input id="email1" type="text" name="email" />
+            <label id="email0" for="email"><b>Email*</b></label>
+            <input id="email1" type="text" name="email" />
 
-          <label for="pass0"><b>Password*</b></label>
-          <input id="pass1" type="password" name="psw" required />
+            <label for="pass0"><b>Password*</b></label>
+            <input id="pass1" type="password" name="psw" required />
 
-          <label id= "cpass0" for="cpsw"><b>Confirm Password*</b></label>
-          <input id="cpass1" type="password" name="cpsw" required/>
-          <!--Buttons -->
-          <button  id="submitUP" class="btn waves-effect waves-light"    type="submit" name="action">Sign Up
-            <i class="material-icons right">send</i>
-          </button>
-        </div>
-        <!-- Container for the headers -->
-        <div class='headerRightCon' >
-          <label for="unameIN0"><b>Username*</b></label>
-          <input id="unameIN1" type="text" name="uname" required/>
+            <label id="cpass0" for="cpsw"><b>Confirm Password*</b></label>
+            <input id="cpass1" type="password" name="cpsw" required />
+            <!--Buttons -->
+            <button
+              id="submitUP"
+              class="btn waves-effect waves-light"
+              type="submit"
+              name="action"
+            >
+              Sign Up
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+          <!-- Container for the headers -->
+          <div class="headerRightCon">
+            <label for="unameIN0"><b>Username*</b></label>
+            <input id="unameIN1" type="text" name="uname" required />
 
-          <label for="passIN0"><b>Password*</b></label>
-          <input id="passIN1" type="password" name="psw" required/>
+            <label for="passIN0"><b>Password*</b></label>
+            <input id="passIN1" type="password" name="psw" required />
 
-         <button  id="submitIN" class="btn waves-effect waves-light"    type="submit" name="action">Sign In
-          <i class="material-icons right">send</i>
-          </button>
+            <button
+              id="submitIN"
+              class="btn waves-effect waves-light"
+              type="submit"
+              name="action"
+            >
+              Sign In
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    </div>
-<!--Linking for Jquery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--Linking for Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
     <script src="../js/index.js"></script>
   </body>
