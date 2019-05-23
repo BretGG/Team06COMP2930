@@ -18,7 +18,6 @@ $(document).ready(() => {
       type: "get",
       url: "/login/me",
       success: function(data) {
-        console.log(data);
         callback(data);
       },
       error: function(e) {
@@ -178,8 +177,6 @@ $(document).ready(() => {
           $("html").css("background-image", `url(${item.imageLink})`);
         }
 
-        console.log(item);
-
         selectedItem = item._id;
       });
 
@@ -201,7 +198,6 @@ $(document).ready(() => {
 
   //Selects avatar category
   $("#shopAvatar").click(() => {
-    console.log("CLICK!!!");
     $("#buy").addClass("disabled");
     $("#shopPlatform").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#26a69a");
