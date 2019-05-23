@@ -96,6 +96,7 @@ function preload() {
     "../assets/backgrounds/uglyQuestionBackground.png"
   );
   this.load.webfont("ponderosa", "../fonts/ponderosa.ttf");
+  this.load.webfont("Ubuntu-Regular", "../fonts/Ubuntu-Regular.ttf");
 
 }
 
@@ -583,12 +584,11 @@ function displayQuestion(questionInfo) {
 
   // Set the question text
   question.text = self.add.text(0, 0, questionInfo, {
-    fontFamily: "Arial",
-    fontSize: 20,
+    font: "20px Ubuntu-Regular",
     color: "#000000",
     align: "center",
     wordWrap: {
-      width: question.displayWidth - 35
+      width: question.displayWidth - 55
     }
   });
 
@@ -621,8 +621,8 @@ function displayAnswers(answers) {
     card.alpha = 0.9;
     // Creation of text and adding to group
     card.text = self.add.text(0, 0, answer, {
-      fontFamily: "Arial",
-      fontSize: 17,
+      font: "17px Ubuntu-Regular",
+      // fontSize: 17,
       color: "#000000",
       align: "center",
       wordWrap: {
@@ -699,11 +699,11 @@ function scoreAndPlayer() {
   let scores = [];
   let me = players.find(player => player.playerId === mainPlayer.playerId);
 
-  myScore = me.correctAnswers * 180;
+  myScore = me.correctAnswers * 95;
 
   for (let player of players) {
     if (player.playerId != me) {
-      scores.push(player.correctAnswers * 180);
+      scores.push(player.correctAnswers * 95);
     }
   }
 
