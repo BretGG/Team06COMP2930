@@ -18,13 +18,11 @@ const config = {
     }
   },
   plugins: {
-    global: [
-      {
-        key: "WebFontLoader",
-        plugin: WebFontLoaderPlugin,
-        start: true
-      }
-    ]
+    global: [{
+      key: "WebFontLoader",
+      plugin: WebFontLoaderPlugin,
+      start: true
+    }]
   },
   scene: {
     preload: preload,
@@ -122,8 +120,7 @@ function create() {
   this.tweens.timeline({
     targets: water.body.velocity,
     loop: -1,
-    tweens: [
-      {
+    tweens: [{
         y: -30,
         duration: 700,
         ease: "Stepped"
@@ -271,13 +268,15 @@ function startRound(roundInfo) {
       state: "questionMark"
     });
   }
+
   displayAnswers(roundInfo.answer);
   displayQuestion(roundInfo.question);
 }
 
 // Make the player with the given id jump
 function playerJump(playerId) {
-  players.find(player => player.playerId === playerId).setVelocityY(-300);
+  players.find(player => player.playerId === playerId)
+    .setVelocityY(-300);
 }
 //Change the state icon according to the incoming state information
 function playerStateChange(stateInfo) {
@@ -319,8 +318,7 @@ function playerStateChange(stateInfo) {
       self.tweens.timeline({
         targets: player.body.velocity,
         loop: -1,
-        tweens: [
-          {
+        tweens: [{
             y: -30,
             duration: 700,
             ease: "Stepped"
@@ -632,8 +630,10 @@ function displayQuestion(questionInfo) {
 
   question.text.setDepth(2);
   question.text.setPosition(
-    question.x - question.text.getBounds().width / 2,
-    question.y - question.text.getBounds().height / 2
+    question.x - question.text.getBounds()
+    .width / 2,
+    question.y - question.text.getBounds()
+    .height / 2
   );
 }
 
@@ -671,20 +671,21 @@ function displayAnswers(answers) {
     card.text.setOrigin(0.5);
 
     // Set card to be interactive and fire answer on click
-    card.setInteractive().on("pointerdown", () => {
-      if (!mainPlayer.gameOver && !mainPlayer.answered) {
-        self.socket.emit("playerAnswered", {
-          answer: card.text.text,
-          playerId: mainPlayer.playerId
-        });
-      } else {
-        self.socket.emit("playerAnswered", {
-          answer: "N/A",
-          playerId: mainPlayer.playerId
-        });
-        console.log("Can't click");
-      }
-    });
+    card.setInteractive()
+      .on("pointerdown", () => {
+        if (!mainPlayer.gameOver && !mainPlayer.answered) {
+          self.socket.emit("playerAnswered", {
+            answer: card.text.text,
+            playerId: mainPlayer.playerId
+          });
+        } else {
+          self.socket.emit("playerAnswered", {
+            answer: "N/A",
+            playerId: mainPlayer.playerId
+          });
+          console.log("Can't click");
+        }
+      });
 
     // Add card to our master list
     answerCards.push(card);
