@@ -12,8 +12,9 @@ module.exports = function(req, res, next) {
   const token = req.header("auth-token");
   if (!token) res.render(path.resolve(__dirname, "../public/views/index.html"));
 
+  // Verify token
   try {
-    const decode = jwt.verify(token, "F1veAl1ve");
+    const decode = jwt.verify(token, "FiveAlive");
     req.user = decode;
     next();
   } catch (ex) {
