@@ -17,6 +17,13 @@ const config = {
       // debug: "false"
     }
   },
+  plugins: {
+    global: [{
+      key: 'WebFontLoader',
+      plugin: WebFontLoaderPlugin,
+      start: true
+    }]
+  },
   scene: {
     preload: preload,
     create: create,
@@ -88,6 +95,7 @@ function preload() {
     "questionBackground",
     "../assets/backgrounds/uglyQuestionBackground.png"
   );
+  this.load.webfont("ponderosa", "../fonts/ponderosa.ttf");
 
 }
 
@@ -123,10 +131,9 @@ function create() {
 
     ]
   });
-  let startString = "Touch the screen or hit Space key to start";
+  let startString = "Touch screen to start";
   startMessage = self.add.text(400, 300, startString, {
-    fontFamily: "Macondo Swash Caps",
-    fontSize: "35px",
+    font: "28px ponderosa",
     fill: "#000"
   });
   startMessage.setOrigin(0.5);
@@ -213,21 +220,16 @@ function updateStatePosition(player) {
 
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
-  // self.tweens.add({
-  //   targets: startMessage,
-  //   y: -1500,
-  //   ease: "Quint",
-  //   duration: 8000,
-  //   repeat: 0
-  // });
-  // startMessage.destroy();
+  startMessage.destroy();
   gameStarted = true;
   scoreAndPlayer();
   // Other round start stuff, reset game objects
   console.log("startRound() in game.js");
   if (!mainPlayer.gameOver) {
-    setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
+    // setTimeout(() => mainPlayer.supportingState.setTexture("questionMark"), 1500);
+    console.log("mainPlayer.playerId ", mainPlayer.playerId);
     self.socket.emit("playerStateChange", {
+      playerId: mainPlayer.playerId,
       state: "questionMark"
     });
   }
@@ -243,18 +245,25 @@ function playerJump(playerId) {
 //Change the state icon according to the incoming state information
 function playerStateChange(stateInfo) {
   let player = players.find(holder => stateInfo.playerId === holder.playerId);
+  console.log("player ", player);
   switch (stateInfo.state) {
     case "ready":
+      console.log(stateInfo.playerId, " in case: ready, stateinfo.playerId");
       player.supportingState.setTexture("ready");
       break;
     case "questionMark":
+      console.log("players: ", players);
+      console.log("stateinfo: ", stateInfo);
+      console.log(stateInfo.playerId, " stateinfo.playerId");
+      player.answered = false;
       if (!isLoser(stateInfo.playerId)) {
-        for (player of players) {
+        for (let player of players) {
           player.supportingState.setTexture("questionMark");
         }
       }
       break;
     case "exclamation":
+      player.answered = true;
       if (!isLoser(stateInfo.playerId)) {
         player.supportingState.setTexture("exclamation");
       }
@@ -606,6 +615,7 @@ function displayAnswers(answers) {
 
   // Start off screen
   for (let answer of answers) {
+    console.log("answers.length, ", answers.length);
     let card = self.add.image(-100, 550, "cardFront");
     card.setDepth(9);
     card.alpha = 0.9;
@@ -628,17 +638,18 @@ function displayAnswers(answers) {
     // Set card to be interactive and fire answer on click
     card.setInteractive()
       .on("pointerdown", () => {
-        if (!mainPlayer.gameOver) {
+        if (!mainPlayer.gameOver && !mainPlayer.answered) {
           self.socket.emit("playerAnswered", {
             answer: card.text.text,
             playerId: mainPlayer.playerId
           });
+
         } else {
           self.socket.emit("playerAnswered", {
             answer: "N/A",
             playerId: mainPlayer.playerId
           });
-          console.log("Can't click, you're dead.");
+          console.log("Can't click");
         }
       });
 
@@ -696,11 +707,12 @@ function scoreAndPlayer() {
     }
   }
 
-  let scoreBoard = "Score: " + (myScore || 0);
+  let scoreBoard = "Score:" + (myScore || 0);
 
   scoreText = self.add.text(16, 16, scoreBoard, {
-    fontFamily: "Macondo Swash Caps",
-    fontSize: "40px",
+    // fontFamily: "Macondo Swash Caps",
+    font: "30px ponderosa",
+    // fontSize: "40px",
     fill: "#000"
   });
 
