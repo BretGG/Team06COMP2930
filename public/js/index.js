@@ -73,6 +73,7 @@ $(document).ready(() => {
       $("#passIN1").val(null);
       return;
     }
+    
     /** Server request that saves user info to database */
     $.ajax({
       type: "post",

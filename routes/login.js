@@ -5,7 +5,6 @@ const express = require("express");
 const debug = require("debug")("comp2930-team2:server");
 const { User } = require("../src/models/user");
 const jwt = require("jsonwebtoken"); //h
-// const auth = require('../middleware/auth'); //h
 
 const router = express.Router();
 
@@ -18,7 +17,7 @@ Login is seperated from users so that we can use router.post.
 */
 
 // Authorizing a user, reurns status 400 if not a valid login.
-// A valid login will return a web token
+// A valid login will return a web token that will be used for further access
 router.post("/", async (req, res) => {
   let user = _.pick(req.body, ["username", "password"]);
 
@@ -65,6 +64,7 @@ router.post("/", async (req, res) => {
   });
 });
 
+// Returns the current user's information, logged in using jwt
 router.get("/me", async (req, res) => {
   var token = req.get("auth-token");
   if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
@@ -78,7 +78,7 @@ router.get("/me", async (req, res) => {
   res.send(user);
 });
 
-//  Validates if the input is correct before authorizing function
+// Validates if the input is correct before authorizing function
 // Using this validate over the User class one due to this one only checking email and password
 function validate(req) {
   const schema = {

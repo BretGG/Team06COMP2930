@@ -6,6 +6,11 @@ const { Worker, parentPort } = require("worker_threads");
 
 /*
 
+----------------------------------------------------------------------------------------------------------------------------------------------
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!This is an experimental file that is no longer in development due to time constraints!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Additional code can be found on bret_session branch!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+----------------------------------------------------------------------------------------------------------------------------------------------
+
 gameSessions will handle the creating of game pools, game pools holds the objects for running games, each pool
 will be working on a worker thread and each pool would be limited to a certain (yet to be determined) number of
 games.

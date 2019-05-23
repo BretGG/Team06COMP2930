@@ -1,5 +1,9 @@
 const { isMainThread, parentPort, workerData } = require("worker_threads");
 /*
+----------------------------------------------------------------------------------------------------------------------------------------------
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!This is an experimental file that is no longer in development due to time constraints!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Additional code can be found on bret_session branch!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+----------------------------------------------------------------------------------------------------------------------------------------------
 
 gamePool holds running game instances added to this pool, including additional information on each pool.
 

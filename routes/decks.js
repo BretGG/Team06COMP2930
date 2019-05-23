@@ -4,86 +4,74 @@ const { Deck, validate } = require("../src/models/deck");
 const { Card } = require("../src/models/card");
 const { User } = require("../src/models/user");
 const _ = require("lodash");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
+/*
 
+Holds API for creating and upate decks
+
+*/
+
+// Endpoint for creating a deck
 router.post("/", async (req, res) => {
+  let token = req.header("auth-token");
+  token = jwt.decode(token);
 
-    let token = req.header('auth-token');
-    token = jwt.decode(token);
+  let deck = new Deck(_.pick(req.body, "name"));
+  deck.owner = token._id;
 
-    let user = await User.findById(token._id);
-    let deck = new Deck(_.pick(req.body, 'name'));
-    deck.owner = token._id;
+  debug("Request to create decks: " + JSON.stringify(deck));
 
-    console.log(`Creating new deck from: ${req.connection.remoteAddress} user: ${user.username}`);
+  // Saving the deck to the database
+  await deck.save();
 
-    debug("Request to create decks: " + JSON.stringify(deck));
-
-    // Create deck
-    // deck = new Deck(deck);
-
-    // Saving the deck to the database
-    await deck.save();
-
-    // debug("Creating deck: " + JSON.stringify(deck));
-    res.send(_.pick(deck, ["name", "_id"]));
+  // debug("Creating deck: " + JSON.stringify(deck));
+  res.send(_.pick(deck, ["name", "_id"]));
 });
 
-// TODO: update deck
+// Endpoint to get all decks owen be current user (jwt)
+router.get("/", async (req, res) => {
+  let token = req.get("auth-token");
+  if (!token) return res.status(401).send("Invalid token! No deck for you!");
+  token = jwt.decode(token);
 
-// TODO: delete deck
+  let user = await User.findById(token._id);
 
-// get the decks
-router.get('/', async (req, res) => {
-    let token = req.get('auth-token');
-    if (!token) return res.status(401).send("Invalid token! No deck for you!");
-    token = jwt.decode(token);
+  let decks = await Deck.find({ owner: token._id });
+  if (!decks)
+    return res.status(400).send("You have no deck! Get your own deck first!");
 
-    let user = await User.findById(token._id);
-
-    console.log(`Get all decks from: ${req.connection.remoteAddress} user: ${user.username}`);
-
-    let decks = await Deck.find( { owner: token._id });
-    if (!decks) return res.status(400).send("You have no deck! Get your own deck first!");
-
-    console.log(`Returning ${decks.length} decks to ${token._id} at ${req.connection.remoteAddress}`);
-    res.send(decks);
+  res.send(decks);
 });
 
-//get the cards from this decks with the deck ID
-router.get('/card', async (req, res) => {
-    let mydeck = await Deck.findById(_.pick(req.body, ["deckId"]));
-    let cards = mydeck.getCards();
+// Endpoint to get all cards in the deck passed in through the req.body
+router.get("/card", async (req, res) => {
+  let mydeck = await Deck.findById(_.pick(req.body, ["deckId"]));
+  let cards = mydeck.getCards();
 
-    console.log(`Get all cards from: ${req.connection.remoteAddress} user: ${mydeck.name}`);
+  if (!cards)
+    return res.status(400).send("You have no card here! Get your card first!");
 
-    // let decks = await Deck.find( { owner: token._id });
-    if (!cards) return res.status(400).send("You have no card here! Get your card first!");
-
-    console.log(`Returning ${cards.length} cards on ${mydeck._id} at ${req.connection.remoteAddress}`);
-    res.send(cards);
+  res.send(cards);
 });
 
-router.get('/allcards', async (req, res) => {
-    let token = req.get('auth-token');
-    if (!token) return res.status(401).send("Invalid token! No deck for you!");
-    token = jwt.decode(token);
+// Endpoint to get all cards in all decks owned by the user (jwt)
+router.get("/allcards", async (req, res) => {
+  let token = req.get("auth-token");
+  if (!token) return res.status(401).send("Invalid token! No deck for you!");
+  token = jwt.decode(token);
 
-    let user = await User.findById(token._id);
+  let user = await User.findById(token._id);
 
-    console.log(`Get all decks from: ${req.connection.remoteAddress} user: ${user.username}`);
+  let decks = await Deck.find({ owner: token._id });
 
-    let decks = await Deck.find({owner: token._id});
+  // Check if we found deckSchema
+  let cards = [];
+  for (let deck of decks) {
+    cards = cards.concat(await deck.getCards());
+  }
 
-    // Check if we found deckSchema
-    let cards = [];
-    for (let deck of decks){
-            cards = cards.concat(await deck.getCards());
-    }
-console.log(cards);
-    console.log(`Returning ${cards.length} cards of user: ${user.username} at ${req.connection.remoteAddress}`);
-    res.send(cards);
+  res.send(cards);
 });
 
 module.exports = router;

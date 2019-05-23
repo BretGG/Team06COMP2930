@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 /*
 
-This file contains the the schema (essentially a class) for the database, that
-holds the information for the shop items a user has. 
+This file contains the the schema for the database, that
+holds the information for the shop items.
 
 */
 

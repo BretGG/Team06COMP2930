@@ -1,4 +1,5 @@
 $(document).ready(() => {
+  
   // setting encrypted and secure user token
   $.ajaxSetup({
     headers: {
@@ -6,6 +7,7 @@ $(document).ready(() => {
     }
   });
 
+  //Updates background according to the active background user has equipped.
   function updateCosmetics() {
     $.ajax({
       type: "get",
@@ -28,6 +30,7 @@ $(document).ready(() => {
     });
   }
 
+  //Gets item id from server
   function getItem(itemId, cb) {
     $.ajax({
       type: "get",
@@ -39,6 +42,7 @@ $(document).ready(() => {
     });
   }
 
+  //Gets relevant user info 
   function getUserInfo(callback) {
     $.ajax({
       type: "get",
@@ -94,6 +98,7 @@ $(document).ready(() => {
     window.location.href = "/aboutUs";
   });
 
+  //Ensures user info is grabbed first before any cosmetics changes happen
   getUserInfo(user => {
     setProfileInfo(user);
     updateCosmetics();

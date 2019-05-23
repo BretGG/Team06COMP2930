@@ -1,10 +1,13 @@
 $(document).ready(() => {
+
+  //Preloads jwt into ajax header 
   $.ajaxSetup({
     headers: {
       "auth-token": localStorage.getItem("auth-token")
     }
   });
 
+  //Updates background according to the active background user has equipped.
   function updateCosmetics() {
     $.ajax({
       type: "get",
@@ -24,7 +27,6 @@ $(document).ready(() => {
 
   /** Takes user gameLobby page */
   $("#submit").click(() => {
-    console.log("join");
     $.ajax({
       type: "put",
       url: "/game",
@@ -46,6 +48,7 @@ $(document).ready(() => {
     });
   });
 
+  //Calls function to update background
   updateCosmetics();
 
   /** Takes user back to main menu */

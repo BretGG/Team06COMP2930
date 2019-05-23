@@ -1,19 +1,23 @@
 $(document).ready(() => {
+  //Selected Item
   let selectedItem;
+
+  //Relevant user info
   let currentUserInfo;
 
+  // setting encrypted and secure user token
   $.ajaxSetup({
     headers: {
       "auth-token": localStorage.getItem("auth-token")
     }
   });
 
+  //Gets relevant user info 
   function getUserInfo(callback) {
     $.ajax({
       type: "get",
       url: "/login/me",
       success: function(data) {
-        console.log(data);
         callback(data);
       },
       error: function(e) {
@@ -23,10 +27,12 @@ $(document).ready(() => {
     });
   }
 
+  //Displays user's point on front end
   function setPointBalance(user) {
     $("#points").text(user.points);
   }
 
+  //Lets user know what item was equipped
   function setUserActive(item) {
     $.ajax({
       type: "put",
@@ -45,6 +51,7 @@ $(document).ready(() => {
     });
   }
 
+  //Updates background according to the active background user has equipped.
   function updateCosmetics() {
     $.ajax({
       type: "get",
@@ -101,6 +108,7 @@ $(document).ready(() => {
     });
   });
 
+  //On menu resize, reduces size of button
   $(window).resize(function() {
     if ($(window).width() < 400) {
       $("#back").html("<i class='material-icons'>home</i>");
@@ -114,10 +122,12 @@ $(document).ready(() => {
     }
   });
 
+  //Takes user back to main page
   $("#back").click(() => {
     window.location.href = "main";
   });
 
+  //Grabs all items info from database
   function getItems(category, cb) {
     $.ajax({
       url: `/items/category/${category}`,
@@ -132,6 +142,7 @@ $(document).ready(() => {
     });
   }
 
+  //Dynamically populates image carousel
   function populateCarousel(items) {
     let innerHtml = "";
 
@@ -166,8 +177,6 @@ $(document).ready(() => {
           $("html").css("background-image", `url(${item.imageLink})`);
         }
 
-        console.log(item);
-
         selectedItem = item._id;
       });
 
@@ -187,8 +196,8 @@ $(document).ready(() => {
     $(".carousel").carousel();
   }
 
+  //Selects avatar category
   $("#shopAvatar").click(() => {
-    console.log("CLICK!!!");
     $("#buy").addClass("disabled");
     $("#shopPlatform").css("background-color", "#26a69a");
     $("#shopBackground").css("background-color", "#26a69a");
@@ -196,6 +205,7 @@ $(document).ready(() => {
     getItems("avatar", populateCarousel);
   });
 
+  //Selects platform category
   $("#shopPlatform").click(() => {
     $("#buy").addClass("disabled");
     $("#shopAvatar").css("background-color", "#26a69a");
@@ -204,6 +214,7 @@ $(document).ready(() => {
     getItems("platform", populateCarousel);
   });
 
+  //Selects background category
   $("#shopBackground").click(() => {
     $("#buy").addClass("disabled");
     $("#shopPlatform").css("background-color", "#26a69a");
