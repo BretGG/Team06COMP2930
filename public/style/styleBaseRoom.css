@@ -28,8 +28,7 @@
 
 
 /** Changes appearance of div */
-
-/* #roomNo{
+ #roomNo{
   width: 100%;
   margin-bottom: 3%;
   border-radius: 8px;
@@ -43,7 +42,7 @@
   padding-left: 4px;
   padding-top: 4px;
   font-size: 19px;
-} */
+} 
 
 
 /** Makes all labels under #roomcon uniform */
