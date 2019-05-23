@@ -75,23 +75,41 @@ if (window.innerHeight > window.innerWidth) {
 // }
 
 function preload() {
-  this.load.image("sky", "../assets/backgrounds/city.png");
-  this.load.image("water", "../assets/backgrounds/city-wave.png");
+  this.load.image("sky", "../assets/backgrounds/pixelatedbg.png");
+  this.load.image("water", "../assets/backgrounds/default-wave.png");
+
+  this.load.image("night", "../assets/backgrounds/night.png");
+  this.load.image("night-wave", "../assets/backgrounds/night-wave.png");
+
+  this.load.image("city", "../assets/backgrounds/city.png");
+  this.load.image("city-wave", "../assets/backgrounds/city-wave.png");
+
+  this.load.image("darkblue", "../assets/backgrounds/darkblue.png");
+  this.load.image("darkblue-wave", "../assets/backgrounds/darkblue-wave.png");
+
+
+
+
   this.load.image("exclamation", "../assets/character/exclamation.png");
   this.load.image("questionMark", "../assets/character/question.png");
+
   this.load.image("1st", "../assets/character/1st.png");
   this.load.image("2nd", "../assets/character/2nd.png");
   this.load.image("3rd", "../assets/character/3rd.png");
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
-  this.load.image("yelloChar", "../assets/character/yellowChar.png");
+
+  this.load.image("yellowChar", "../assets/character/yellowChar.png");
   this.load.image("blueChar", "../assets/character/blueChar.png");
   this.load.image("greenChar", "../assets/character/greenChar.png");
   this.load.image("redChar", "../assets/character/redChar.png");
+
   this.load.image("platform3", "../assets/backgrounds/platform3.png");
-  this.load.image("platform", "../assets/character/platform.png");
-  this.load.image("rabbitpet", "../assets/character/rabbitpet.png");
+  this.load.image("duckpet", "../assets/backgrounds/duckpet.png");
+  this.load.image("pinkplatform", "../assets/character/pinkplatform.png");
+  this.load.image("purpleplatform", "../assets/character/purpleplatform.png");
+
   this.load.image("cardFront", "../assets/backgrounds/cardFront.png");
   this.load.image(
     "questionBackground",
@@ -242,15 +260,15 @@ function setCosmetics(cosmeticsInfo) {
       cosPlatform.lastIndexOf(".")
     )
   );
-  // if (!setBG) {
-  //   player.supportingPlatform.setTexture(
-  //     cosBackground.substring(
-  //       cosBackground.lastIndexOf("/") + 1,
-  //       cosBackground.lastIndexOf(".")
-  //     )
-  //   );
-  //   setBG = true;
-  // }
+  if (!setBG) {
+    background.setTexture(
+      cosBackground.substring(
+        cosBackground.lastIndexOf("/") + 1,
+        cosBackground.lastIndexOf(".")
+      )
+    );
+    setBG = true;
+  }
 }
 
 // Start new round (i.e create new cards), reset game objects
