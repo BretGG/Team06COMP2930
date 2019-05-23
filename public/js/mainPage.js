@@ -65,12 +65,12 @@ $(document).ready(() => {
 
   /** Takes user to create room page */
   $("#create").click(() => {
-    window.location.href = "createRoom";
+    window.location.href = "game";
   });
 
   /** Takes user to join room page */
   $("#join").click(() => {
-    window.location.href = "joinRoom";
+    window.location.href = "game";
   });
 
   /** Takes user to join room page */
