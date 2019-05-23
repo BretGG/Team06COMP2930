@@ -13,8 +13,8 @@ const config = {
     arcade: {
       gravity: {
         y: 450
-      },
-      debug: "true"
+      }
+      // debug: "false"
     }
   },
   scene: {
@@ -76,10 +76,10 @@ function preload() {
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
-  this.load.image("p1", "../assets/character/greyChar.png");
-  this.load.image("p2", "../assets/character/eevee_resize.png");
-  this.load.image("p3", "../assets/character/pikachu_resize.png");
-  this.load.image("p4", "../assets/character/rapidash_resize.png");
+  this.load.image("p1", "../assets/character/default.png");
+  this.load.image("p2", "../assets/character/default.png");
+  this.load.image("p3", "../assets/character/default.png");
+  this.load.image("p4", "../assets/character/default.png");
   this.load.image("platform1", "../assets/backgrounds/platform3.png");
   this.load.image("platform", "../assets/character/platform.png");
   this.load.image("cardFront", "../assets/backgrounds/cardFront.png");
@@ -109,13 +109,11 @@ function create() {
     targets: water.body.velocity,
     loop: -1,
     tweens: [{
-        // x: spawnPoints[players.length][players.length],
         y: -30,
         duration: 700,
         ease: 'Stepped'
       },
       {
-        // x: spawnPoints[players.length][players.length],
         y: 30,
         duration: 700,
         ease: 'Stepped'
@@ -138,8 +136,6 @@ function create() {
   this.socket.on("endRound", endRound);
   this.socket.on("gameEnd", playerStateChange);
   this.socket.on("gameOver", playerStateChange);
-
-
   this.socket.on(
     "me",
     me => (mainPlayer = players.find(player => player.playerId === me.playerId))
@@ -147,7 +143,7 @@ function create() {
   // ---------Asking for Information-------------
   this.socket.emit("currentPlayers");
   this.socket.emit("me");
-  // -------------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------------
   //Detects touch on mobile devices
   this.input.on('pointerup', (pointer) => {
     if (mainPlayer.body.touching.down && gameStarted) {
@@ -159,16 +155,9 @@ function create() {
       });
     }
   });
-
-
-
 }
 
-
-
 // One of the three main Phaser functions, this one gets called continuously
-
-
 function update() {
 
   // Jumping player
@@ -188,15 +177,14 @@ function update() {
     updateStatePosition(player);
   }
 }
-
+// pin state image above character's head
 function updateStatePosition(player) {
   let playerState = player.supportingState;
-  playerState.setY(player.y - playerState.height - 30);
+  playerState.setY(player.y - playerState.height - 27);
 }
 
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
-
   gameStarted = true;
   scoreAndPlayer();
   // Other round start stuff, reset game objects
@@ -209,22 +197,18 @@ function startRound(roundInfo) {
   }
   displayAnswers(roundInfo.answer);
   displayQuestion(roundInfo.question);
-
-
 }
-
 
 // Make the player with the given id jump
 function playerJump(playerId) {
   players.find(player => player.playerId === playerId)
     .setVelocityY(-300);
 }
-
+//Change the state icon according to the incoming state information
 function playerStateChange(stateInfo) {
   let player = players.find(holder => stateInfo.playerId === holder.playerId);
   switch (stateInfo.state) {
     case "ready":
-
       player.supportingState.setTexture("ready");
       break;
     case "questionMark":
@@ -234,23 +218,17 @@ function playerStateChange(stateInfo) {
         }
       }
       break;
-
     case "exclamation":
       if (!isLoser(stateInfo.playerId)) {
-
         player.supportingState.setTexture("exclamation");
       }
       break;
-
     case "gameOver":
-
       player.gameOver = true;
       self.deadPlayerY = player.y;
       player.body.allowGravity = false;
       player.alpha = 0.5;
-      player.setTexture("ghost");
-
-      // player.supportingState.setTexture("none");
+      setTimeout(() => player.setTexture("ghost"), 800);
       player.supportingState.destroy();
       player.setImmovable(true);
       player.supportingPlatform.destroy();
@@ -260,28 +238,26 @@ function playerStateChange(stateInfo) {
         targets: player.body.velocity,
         loop: -1,
         tweens: [{
-            // x: spawnPoints[players.length][players.length],
             y: -30,
             duration: 700,
             ease: 'Stepped'
           },
           {
-            // x: spawnPoints[players.length][players.length],
             y: 30,
             duration: 700,
             ease: 'Stepped'
           },
-
-
         ]
       });
+
+      if (players.length === 1) {
+        gameEnd();
+      }
       break;
     case "gameEnd":
       player.supportingState.setTexture("none");
-
       gameEnd();
       break;
-
     default:
       console.log("state undefined!!!");
       break;
@@ -296,27 +272,26 @@ function currentPlayers(currentPlayers) {
     createPlayer(player);
   }
 }
-
+// After the game is completely over, clear out unnessary object and ranking them
 function gameEnd() {
+  answerCards.forEach(e => {
+    e.destroy();
+    e.text.destroy();
+  });
+  question.destroy();
+  question.text.destroy();
   let minusGhosts = players.filter(elem => elem.gameOver !== true);
-  console.log("inside game end players: ", minusGhosts);
   let sortedCorrectAnswersDesc = [];
-
-
   minusGhosts.forEach(function(element) {
     sortedCorrectAnswersDesc.push(element.correctAnswers);
     sortedCorrectAnswersDesc.sort(function(p, q) {
       return q - p;
     });
-
   });
   console.log("sortedCorrectAnswersDesc: ", sortedCorrectAnswersDesc);
-
   if (minusGhosts.length <= 3) {
     for (let i = 0; i < minusGhosts.length; i++) {
-
       minusGhosts[i].y = 0;
-
       self.tweens.add({
         targets: minusGhosts[i].supportingPlatform,
         y: 270,
@@ -324,17 +299,13 @@ function gameEnd() {
         duration: 1000,
         repeat: 0
       });
-
     }
   } else {
-
-
     for (let i = 0; i < minusGhosts.length; i++) {
       //raise all players except the fourth place player
       if (minusGhosts[i].correctAnswers !==
         sortedCorrectAnswersDesc[sortedCorrectAnswersDesc.length - 1]) {
         minusGhosts[i].y = 0;
-
         self.tweens.add({
           targets: minusGhosts[i].supportingPlatform,
           y: 270,
@@ -344,7 +315,6 @@ function gameEnd() {
         });
       }
     }
-
   }
   let uniq = [...new Set(sortedCorrectAnswersDesc)];
   console.log("uniq:", uniq);
@@ -355,29 +325,16 @@ function gameEnd() {
       minusGhosts[i].supportingState.setTexture("2nd");
     } else if (minusGhosts[i].correctAnswers === uniq[2]) {
       minusGhosts[i].supportingState.setTexture("3rd");
-
     } else {
       minusGhosts[i].supportingState.setTexture("none");
     }
-
-
-
-
-
-
-
   }
-
 }
 // End the round and update players accordingly
 function endRound(roundInfo) {
-
   console.log("Round ending");
   for (let card of answerCards) {
-    // console.log("RoundInfo: " + JSON.stringify(roundInfo));
-
     if (roundInfo.answer === card.text.text) {
-
       self.tweens.add({
         targets: card,
         x: 400,
@@ -388,8 +345,8 @@ function endRound(roundInfo) {
       });
       self.tweens.add({
         targets: card.text,
-        x: 400 - card.text.width / 2,
-        y: 480 + 70 - 18,
+        x: 400,
+        y: 480 + 70,
         ease: "Quint",
         duration: 3000,
         repeat: 0
@@ -412,11 +369,7 @@ function endRound(roundInfo) {
       });
     }
   }
-
-
-
   updatePlayerValues(roundInfo);
-
   updatePlayerScoreHeight();
 }
 
@@ -429,10 +382,10 @@ function updatePlayerValues(data) {
         player.wrongAnswers = playerUpdate.wrongAnswers;
       }
   }
-
 }
 
-// Create to player object, could be another class but...
+// Create a player object according to the number of connected users
+//and determine the initial spawn position proportionally
 function createPlayer(playerInfo) {
   // Setting starting x to the next value of spawnPoints
   let startingX = spawnPoints[players.length][players.length];
@@ -440,9 +393,7 @@ function createPlayer(playerInfo) {
   let newPlayer;
   switch (players.length) {
     case 0:
-      newPlayer = self.physics.add.sprite(startingX, startingY, "p1")
-        .setScale(0.50);
-
+      newPlayer = self.physics.add.sprite(startingX, startingY, "p1");
       break;
     case 1:
       newPlayer = self.physics.add.sprite(startingX, startingY, "p2");
@@ -458,7 +409,6 @@ function createPlayer(playerInfo) {
   // Mage players bounce and have the player sit infront of the platforms
   newPlayer.setBounce(0.3);
   newPlayer.setDepth(5);
-  //   newPlayer.setImmovable(true);
   newPlayer.body.height = newPlayer.body.height - newPlayer.body.height / 2.5;
   newPlayer.playerId = playerInfo.playerId;
 
@@ -479,10 +429,7 @@ function createPlayer(playerInfo) {
     supportingPlayer: newPlayer
   });
 
-  // Have the player object contain a reference to their platform
-  // newPlayer.supportingState.setBounce(0.3);
-  // newPlayer.supportingState.setDepth(5);
-  // self.physics.add.collider(newPlayer.supportingState, newPlayer);
+  // Have the player object contain a reference to their platform and state
   newPlayer.supportingPlatform = newPlatform;
   newPlayer.supportingState = newState;
   newPlayer.gameOver = false;
@@ -528,9 +475,7 @@ function createPlatform(platformInfo) {
   // collision with that player
   newPlatform.supportingPlayer = platformInfo.supportingPlayer;
   self.physics.add.collider(platformInfo.supportingPlayer, newPlatform);
-
   platforms.push(newPlatform);
-
   return newPlatform;
 }
 
@@ -544,36 +489,28 @@ function removePlayer(playerInfo) {
       removing.supportingPlatform.destroy();
       removing.supportingState.destroy();
       removing.destroy();
-
       break;
     }
   }
-
   updatePlayerPosition();
 }
 
 // Update y position of platform based on incorrect answers and the game score
 function updatePlayerScoreHeight() {
-  // console.log("updating player heights: " + JSON.stringify(players));
-
-
   for (let i = 0; i < players.length; i++) {
-    // console.log(players[i], ": player[i].wrongAnswers");
     self.tweens.add({
       targets: [players[i].supportingPlatform],
-      y: 400 + 50 * players[i].wrongAnswers,
+      y: 345 + 50 * players[i].wrongAnswers,
+      //400+50?
       ease: "Power4",
       duration: 1000,
       repeat: 0
     });
   }
-
-
 }
 
 // Used for adding, removing, and setting player position
 function updatePlayerPosition() {
-
   for (let i = 0; i < players.length; i++) {
     self.tweens.add({
       targets: [
@@ -595,7 +532,6 @@ function displayQuestion(questionInfo) {
     question.text.destroy();
     question.destroy();
   }
-
   // Using group but will probably change this design
   question = self.add.image(400, 100, "questionBackground");
   question.setScale(0.5);
@@ -603,25 +539,21 @@ function displayQuestion(questionInfo) {
   // Set the question text
   question.text = self.add.text(0, 0, questionInfo, {
     fontFamily: "Arial",
-    fontSize: 50,
+    fontSize: 20,
     color: "#000000",
     align: "center",
-    boundsAlignH: "center",
-    boundsAlignV: "middle",
     wordWrap: {
-      width: question.width - 25
+      width: question.displayWidth - 35
     }
   });
-  question.text.setDepth(2);
 
-  // Center text on card
+  question.text.setDepth(2);
   question.text.setPosition(
     question.x - question.text.getBounds()
     .width / 2,
     question.y - question.text.getBounds()
     .height / 2
   );
-
 }
 
 // Creates the display for all answers
@@ -644,25 +576,18 @@ function displayAnswers(answers) {
     // Creation of text and adding to group
     card.text = self.add.text(0, 0, answer, {
       fontFamily: "Arial",
-      fontSize: 28,
+      fontSize: 17,
       color: "#000000",
       align: "center",
-      boundsAlignH: "center",
-      boundsAlignV: "middle",
       wordWrap: {
-        width: card.width - 25
+        width: card.displayWidth - 25
       }
     });
 
-    card.text.setDepth(10);
+    console.log(card.width);
 
-    // Center text on card
-    card.text.setPosition(
-      card.x - card.text.getBounds()
-      .width / 2,
-      card.y - card.text.getBounds()
-      .height / 2
-    );
+    card.text.setDepth(10);
+    card.text.setOrigin(0.5);
 
     // Set card to be interactive and fire answer on click
     card.setInteractive()
@@ -705,7 +630,7 @@ function displayAnswers(answers) {
       self.tweens.add({
         targets: answerCards[i].text,
         x: cardX[i],
-        y: cardY[i] - 18,
+        y: cardY[i],
         ease: "Quint",
         duration: 3000,
         repeat: 0
@@ -727,20 +652,15 @@ function scoreAndPlayer() {
   let scores = [];
   let me = players.find(player => player.playerId === mainPlayer.playerId);
 
-
-  console.log("Me, players.correctAnswers ", me.correctAnswers);
-
-
-  myScore = me.correctAnswers * 90;
+  myScore = me.correctAnswers * 180;
 
   for (let player of players) {
     if (player.playerId != me) {
-      scores.push(player.correctAnswers * 90);
+      scores.push(player.correctAnswers * 180);
     }
   }
 
-  let scoreBoard = "Score: " + myScore;
-
+  let scoreBoard = "Score: " + (myScore || 0);
 
   scoreText = self.add.text(16, 16, scoreBoard, {
     fontFamily: "Macondo Swash Caps",

@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
-var io = require("socket.io").listen(server);
+var io = require("socket.io")
+  .listen(server);
 module.exports = io;
 
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 const _ = require("lodash");
-const { Card } = require("../src/models/card.js");
+const {
+  Card
+} = require("../src/models/card.js");
 var glob = this;
 
 // Get port from environment and store in Express.
@@ -78,6 +81,8 @@ function onListening() {
 }
 
 //--------------------------------------------------------Game code------------------------------------------------------------
+
+//declare instances of global varibles
 const self = this;
 const maxPlayers = 4;
 const players = new Map();
@@ -87,19 +92,19 @@ let currentRoundCard;
 var gameStarted = false;
 const losers = [];
 
-var io = require("socket.io").listen(server);
+//require socket io using express
+var io = require("socket.io")
+  .listen(server);
 app.io = io;
 
+// incomming information. The connection is made
 io.on("connection", function(socket) {
-  // Don't allow a player to connect when at max capacity, should handle this before
   self.id = socket.id;
-  // the connecion is made
   if (players.length >= maxPlayers) {
     return socket.disconnect();
   }
 
   console.log("A user connected: " + socket.id);
-
   // Add a player to the master list (Map)
   players.set(socket.id, {
     playerId: socket.id,
@@ -119,7 +124,6 @@ io.on("connection", function(socket) {
   });
 
   // update all other players of the new player
-
   socket.broadcast.emit("newPlayer", players.get(socket.id));
 
   //user disconnected, broadcast to all other users and remove from list
@@ -129,12 +133,7 @@ io.on("connection", function(socket) {
   socket.on("playerJump", () => onPlayerJumped(socket));
   socket.on("playerStateChange", state => onPlayerStateChange(socket, state));
 
-  ////////////////////////////////////////// test code
-  let roundCard = {
-    question: "What is Stella's first name",
-    answer: "Hannah"
-  };
-
+  let roundCard = {};
   currentRoundCard = roundCard;
 });
 
@@ -156,9 +155,10 @@ function onDisconnect(socket) {
   console.log("removed player: " + JSON.stringify(removePlayer));
   socket.disconnect();
 }
-
+//On player click on the answer
 function onPlayerAnswered(info, socket) {
-  if (info && glob.cards[round]) {
+  console.log("round:::::", round);
+  if (info && glob.cards) {
     let currentPlayer = players.get(info.playerId);
     currentPlayer.answeredRound = true;
     io.emit("playerStateChange", {
@@ -168,34 +168,22 @@ function onPlayerAnswered(info, socket) {
     if (info.answer === glob.cards[round].answer) {
       this.answer = true;
       currentPlayer.correctAnswers++;
-      console.log(
-        "player :",
-        currentPlayer.playerId,
-        " / correctAnswers, ",
-        currentPlayer.correctAnswers
-      );
     } else if (info.answer !== "N/A") {
       this.answer = false;
       currentPlayer.wrongAnswers++;
-      console.log(
-        "player :",
-        currentPlayer.playerId,
-        " / wrongAnswers, ",
-        currentPlayer.wrongAnswers
-      );
+    } else {
+      console.log("");
     }
-    if (allPlayerAnswered()) {
+    if (allPlayerAnswered() && !currentPlayer.gameOver) {
       endRound();
     }
-
-    // onPlayerStateChange(socket, { state: "answered" });
   }
 }
-
+//Broadcast player jumping to the other clients
 function onPlayerJumped(socket) {
   socket.broadcast.emit("playerJump", socket.id);
 }
-
+//At the end of the game emit information to the clients and determine the game over rule
 function endRound() {
   round++;
   roundStarted = false;
@@ -229,7 +217,7 @@ function endRound() {
     }
   }
 }
-
+//Sends game over massege to clients
 function gameOver(id) {
   console.log(id, " Game Over");
 
@@ -252,7 +240,8 @@ function gameOver(id) {
     state: "gameOver"
   });
 }
-
+//On the change of current state of player that's incoming,
+// apply or call functions accordingly.
 function onPlayerStateChange(socket, data) {
   let player = players.get(socket.id);
   switch (data.state) {
@@ -292,6 +281,10 @@ function onPlayerStateChange(socket, data) {
   }
 }
 
+// Imports deck of cards from the mongo database asynchronously and
+// send the incoming data to the clients.
+// Shuffling the answers and make them into a set of 4 multiple choices.
+// If the number of question is less than 4, add in dummy choices.
 async function roundStart(s) {
   console.log("starting round: " + JSON.stringify(s));
 
@@ -300,7 +293,8 @@ async function roundStart(s) {
   }
   glob.cards = await Card.find({
     format: "tf",
-    category: "Eco"
+    category: "test",
+    deck: "test"
   });
   console.log("card length: ", glob.cards.length);
 
@@ -345,16 +339,16 @@ async function roundStart(s) {
   }
   //shuffling the answers
   answers.sort(() => Math.random() - 0.5);
-  //**************************
+
   io.emit("startRound", {
     question: question,
     answer: answers
   });
-  //************************
   roundStarted = true;
   gamestarted = true;
 }
 
+//Check if all player have answered
 function allPlayerAnswered() {
   for (let player of players.values()) {
     if (!player.answeredRound && !player.gameOver) {
@@ -364,7 +358,7 @@ function allPlayerAnswered() {
 
   return true;
 }
-
+//Check if all players are ready and good to go
 function allPlayerReady() {
   for (let player of players.values()) {
     if (player.ready != true) {
