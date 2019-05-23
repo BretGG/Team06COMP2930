@@ -13,8 +13,8 @@ const config = {
     arcade: {
       gravity: {
         y: 450
-      }
-      // debug: "false"
+      },
+      debug: "true"
     }
   },
   plugins: {
@@ -39,6 +39,7 @@ let self;
 let background;
 let water;
 let cursor;
+let setBG = false;
 let mainPlayer;
 let question;
 var players = [];
@@ -84,12 +85,13 @@ function preload() {
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
-  this.load.image("p1", "../assets/character/yellowChar.png");
-  this.load.image("p2", "../assets/character/blueChar.png");
-  this.load.image("p3", "../assets/character/greenChar.png");
-  this.load.image("p4", "../assets/character/redChar.png");
-  this.load.image("platform1", "../assets/backgrounds/platform3.png");
+  this.load.image("yelloChar", "../assets/character/yellowChar.png");
+  this.load.image("blueChar", "../assets/character/blueChar.png");
+  this.load.image("greenChar", "../assets/character/greenChar.png");
+  this.load.image("redChar", "../assets/character/redChar.png");
+  this.load.image("platform3", "../assets/backgrounds/platform3.png");
   this.load.image("platform", "../assets/character/platform.png");
+  this.load.image("rabbitpet", "../assets/character/rabbitpet.png");
   this.load.image("cardFront", "../assets/backgrounds/cardFront.png");
   this.load.image(
     "questionBackground",
@@ -222,6 +224,33 @@ function setCosmetics(cosmeticsInfo) {
   let player = players.find(
     holder => cosmeticsInfo.playerId === holder.playerId
   );
+
+  let cosAvatar = cosmeticsInfo.cosmetics.activeAvatar.imageLink;
+  let cosPlatform = cosmeticsInfo.cosmetics.activePlatform.imageLink;
+  let cosBackground = cosmeticsInfo.cosmetics.activeBackground.imageLink;
+
+  // player.setTexture(cosmeticsInfo.cosmetics.activeAvatar.subString())
+  player.setTexture(
+    cosAvatar.substring(
+      cosAvatar.lastIndexOf("/") + 1,
+      cosAvatar.lastIndexOf(".")
+    )
+  );
+  player.supportingPlatform.setTexture(
+    cosPlatform.substring(
+      cosPlatform.lastIndexOf("/") + 1,
+      cosPlatform.lastIndexOf(".")
+    )
+  );
+  // if (!setBG) {
+  //   player.supportingPlatform.setTexture(
+  //     cosBackground.substring(
+  //       cosBackground.lastIndexOf("/") + 1,
+  //       cosBackground.lastIndexOf(".")
+  //     )
+  //   );
+  //   setBG = true;
+  // }
 }
 
 // Start new round (i.e create new cards), reset game objects
