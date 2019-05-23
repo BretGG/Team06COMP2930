@@ -99,8 +99,8 @@ $(document).ready(() => {
 
   /**Takes you to game page */
   $("#start").click(() => {
-    addMembers();
-    // window.location.href = "../game";
+    // addMembers();
+    window.location.href = "../game";
   });
 
   // 
