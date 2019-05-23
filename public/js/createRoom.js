@@ -1,12 +1,16 @@
 $(document).ready(() => {
+
+    //Preloads jwt into ajax header 
     $.ajaxSetup({
         headers: {
             "auth-token": localStorage.getItem("auth-token")
         }
     });
 
+    //Initialized Materialize's input
     $('select').formSelect();
 
+    //Updates background according to the active background user has equipped.
     function updateCosmetics() {
         $.ajax({
             type: "get",
@@ -23,6 +27,7 @@ $(document).ready(() => {
         });
     }
 
+    //Calls function to update background
     updateCosmetics();
 
     /**Takes you back to the main page */
