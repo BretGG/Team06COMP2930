@@ -17,6 +17,6 @@ module.exports = function(req, res, next) {
     req.user = decode;
     next();
   } catch (ex) {
-    res.render(path.resolve(__dirname, "../public/views/index.html"));
+    res.send(ex);
   }
 };
