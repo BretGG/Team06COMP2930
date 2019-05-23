@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
   res.send(_.pick(deck, ["name", "_id"]));
 });
 
-// Endpoint to get all decks owen be current user (jwt)
+// Endpoint to get all decks owned by current user (jwt)
 router.get("/", async (req, res) => {
   let token = req.get("auth-token");
   if (!token) return res.status(401).send("Invalid token! No deck for you!");
@@ -38,6 +38,9 @@ router.get("/", async (req, res) => {
   let user = await User.findById(token._id);
 
   let decks = await Deck.find({ owner: token._id });
+
+  console.log("USER", user);
+  console.log("decksss", decks);
   if (!decks)
     return res.status(400).send("You have no deck! Get your own deck first!");
 

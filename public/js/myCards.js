@@ -104,7 +104,6 @@ $(document).ready(() => {
     /*******************************************************************/
     //set up the  initial setting including cards.
     function setDeckList(decks) {
-        console.log(localStorage.getItem("auth-token"));
         if (decks.length == 0) {
             console.log("You have no deck!");
         } else {
@@ -205,7 +204,6 @@ $(document).ready(() => {
     /** Populate cards from my list . . . Ta da */
     function populateCards(cards) {
         $(".card").remove();
-        console.log(cards);
         if (!cards) {
             console.log("I told you no card!");
         } else {

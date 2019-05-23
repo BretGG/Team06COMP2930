@@ -22,6 +22,10 @@ body {
 	width: 300px;
 	margin: 0 auto;
 }
+.spacingDiv{
+    height:50px;
+    width:100%;
+}
 
 
 /*Customizes the avatarr for location*/
