@@ -354,7 +354,7 @@ function playerStateChange(stateInfo) {
         ]
       });
 
-      if (players.length === 1) {
+      if (players.length === 1 && players.length === losers.length) {
         gameEnd();
       }
       break;
