@@ -765,7 +765,7 @@ function scoreAndPlayer() {
     // fontFamily: "Macondo Swash Caps",
     font: "30px ponderosa",
     // fontSize: "40px",
-    fill: "#000"
+    fill: "#FFF"
   });
 }
 
