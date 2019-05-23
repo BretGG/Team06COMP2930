@@ -75,8 +75,10 @@ if (window.innerHeight > window.innerWidth) {
 // }
 
 function preload() {
-  this.load.image("sky", "../assets/backgrounds/pixelatedbg.png");
-  this.load.image("water", "../assets/backgrounds/default-wave.png");
+  this.load.image("sky", "../assets/backgrounds/darkblue.png");
+  // this.load.image("default", "../assets/backgrounds/default.png");
+
+  this.load.image("water", "../assets/backgrounds/darkblue-wave.png");
 
   this.load.image("night", "../assets/backgrounds/night.png");
   this.load.image("night-wave", "../assets/backgrounds/night-wave.png");
@@ -105,7 +107,7 @@ function preload() {
   this.load.image("greenChar", "../assets/character/greenChar.png");
   this.load.image("redChar", "../assets/character/redChar.png");
 
-  this.load.image("platform3", "../assets/backgrounds/platform3.png");
+  this.load.image("platform1", "../assets/backgrounds/platform3.png");
   this.load.image("duckpet", "../assets/backgrounds/duckpet.png");
   this.load.image("pinkplatform", "../assets/character/pinkplatform.png");
   this.load.image("purpleplatform", "../assets/character/purpleplatform.png");
@@ -131,6 +133,7 @@ function create() {
     .image(000, 00, "sky")
     .setOrigin(0)
     .setDisplaySize(800, 600);
+  background.allowGravity = false;
   water = this.physics.add.sprite(400, 530, "water");
   water.setDepth(8);
   water.alpha = 0.8;
@@ -153,7 +156,7 @@ function create() {
   let startString = "Touch screen to start";
   startMessage = self.add.text(400, 300, startString, {
     font: "28px ponderosa",
-    fill: "#000"
+    fill: "#FFF"
   });
   startMessage.setOrigin(0.5);
   startMessage.y += -150;
@@ -246,6 +249,8 @@ function setCosmetics(cosmeticsInfo) {
   let cosAvatar = cosmeticsInfo.cosmetics.activeAvatar.imageLink;
   let cosPlatform = cosmeticsInfo.cosmetics.activePlatform.imageLink;
   let cosBackground = cosmeticsInfo.cosmetics.activeBackground.imageLink;
+  console.log("cosBackground ", cosAvatar);
+
 
   // player.setTexture(cosmeticsInfo.cosmetics.activeAvatar.subString())
   player.setTexture(
@@ -494,16 +499,16 @@ function createPlayer(playerInfo) {
   let newPlayer;
   switch (players.length) {
     case 0:
-      newPlayer = self.physics.add.sprite(startingX, startingY, "p1");
+      newPlayer = self.physics.add.sprite(startingX, startingY, "yellowChar");
       break;
     case 1:
-      newPlayer = self.physics.add.sprite(startingX, startingY, "p2");
+      newPlayer = self.physics.add.sprite(startingX, startingY, "blueChar");
       break;
     case 2:
-      newPlayer = self.physics.add.sprite(startingX, startingY, "p3");
+      newPlayer = self.physics.add.sprite(startingX, startingY, "greenChar");
       break;
     case 3:
-      newPlayer = self.physics.add.sprite(startingX, startingY, "p4");
+      newPlayer = self.physics.add.sprite(startingX, startingY, "redChar");
       break;
   }
 
@@ -760,7 +765,7 @@ function scoreAndPlayer() {
     // fontFamily: "Macondo Swash Caps",
     font: "30px ponderosa",
     // fontSize: "40px",
-    fill: "#000"
+    fill: "#FFF"
   });
 }
 
