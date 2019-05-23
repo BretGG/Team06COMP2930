@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="utf-8" />
+    <!-- Window Tab Icon -->
     <link rel="icon" href="../images/icon.png" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <link type="text/css" rel="stylesheet" href="../style/materialize.min.css" media="screen,projection" />
-    <!-- Base CSS file all pages follow -->
+    <!-- STYLE SHEETS -->
     <link rel="stylesheet" href="../style/styleBase.css" />
     <link rel="stylesheet" href="../style/styleBaseRoom.css" />
     <link rel="stylesheet" href="../style/styleCreateRoom.css" />
@@ -15,11 +16,17 @@
 </head>
 
 <body>
+    <!-- Container that holds all HTML elements -->
     <div id="container">
         <h1 id="logo">EcoQuest</h1>
+
         <!-- Container that holds all main content -->
         <div class="mainCon">
+
+            <!-- Header for page -->
             <div id="header"><b>Create Room</b></div>
+
+            <!-- Row contains headers deck and category -->
             <div class="optionCon row">
                 <div class="input-field col s6 category">
                     <select id='myCate'>
@@ -37,8 +44,9 @@
                     </select>
                 </div>
             </div>
-            <div id="roomcon">
 
+            <!-- Container for room information(Room number and password) -->
+            <div id="roomcon">
                 <!-- Label for room number -->
                 <label for="roomNo"><b>Room Number *</b></label>
                 <!-- RoomNo grabbed from server -->
@@ -49,8 +57,10 @@
                 <!-- Takes input to set password for room-->
                 <input id="roomPass" type="text" name="roomPass" placeholder="Enter Password" required />
             </div>
+
             <!-- Creates room -->
             <a id="submit" class="waves-effect waves-light btn"><i class="material-icons right">create</i>Create</a>
+            
             <!-- Returns you to main menu-->
             <a id="back" class="waves-effect waves-light btn-small">Back<i class="material-icons left">home</i></a>
         </div>
