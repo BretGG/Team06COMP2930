@@ -14,7 +14,7 @@ const config = {
       gravity: {
         y: 450
       },
-      debug: "true"
+      // debug: "true"
     }
   },
   plugins: {
@@ -265,16 +265,17 @@ function setCosmetics(cosmeticsInfo) {
       cosPlatform.lastIndexOf(".")
     )
   );
-  if (!setBG) {
-    background.setTexture(
-      cosBackground.substring(
-        cosBackground.lastIndexOf("/") + 1,
-        cosBackground.lastIndexOf(".")
-      )
-    );
-    setBG = true;
-  }
+  // if (!setBG) {
+  //   background.setTexture(
+  //     cosBackground.substring(
+  //       cosBackground.lastIndexOf("/") + 1,
+  //       cosBackground.lastIndexOf(".")
+  //     )
+  //   );
+  //   setBG = true;
+  // }
 }
+
 
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
@@ -354,11 +355,12 @@ function playerStateChange(stateInfo) {
         ]
       });
 
-      if (players.length === 1 && players.length === losers.length) {
+      if (players.length && players.length === losers.length) {
         gameEnd();
       }
       break;
     case "gameEnd":
+
       player.supportingState.setTexture("none");
       gameEnd();
       break;
