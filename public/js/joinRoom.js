@@ -27,7 +27,6 @@ $(document).ready(() => {
 
   /** Takes user gameLobby page */
   $("#submit").click(() => {
-    console.log("join");
     $.ajax({
       type: "put",
       url: "/game",

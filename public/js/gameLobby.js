@@ -27,7 +27,6 @@ $(document).ready(() => {
 
   // Sets lobbyInfo and calls the cb with returned data
   function getLobbyInfo(cb) {
-    console.log("get lobby info");
     $.ajax({
       type: "get",
       url: "../../game/lobbyinfo",
