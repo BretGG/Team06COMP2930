@@ -1,25 +1,12 @@
 #!/usr/bin/env node
 
-var io = require("socket.io")
-  .listen(server);
-module.exports = io;
-
+var io = require("socket.io").listen(server);
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
 const _ = require("lodash");
-const {
-  Card
-} = require("../src/models/card.js");
+const { Card } = require("../src/models/card.js");
 var glob = this;
-
-// Get port from environment and store in Express.
-// var port = normalizePort(process.env.PORT || "3000");
-// app.set("port", port);
-//
-// app.listen(3000, '0.0.0.0', function() {
-//     console.log('Listening to port:  ' + 3000);
-// });
 
 // Create HTTP server.
 var server = http.Server(app);
@@ -93,8 +80,7 @@ var gameStarted = false;
 const losers = [];
 
 //require socket io using express
-var io = require("socket.io")
-  .listen(server);
+var io = require("socket.io").listen(server);
 app.io = io;
 
 // incomming information. The connection is made
@@ -157,7 +143,6 @@ function onDisconnect(socket) {
 }
 //On player click on the answer
 function onPlayerAnswered(info, socket) {
-  console.log("round:::::", round);
   if (info && glob.cards) {
     let currentPlayer = players.get(info.playerId);
     currentPlayer.answeredRound = true;
@@ -172,7 +157,6 @@ function onPlayerAnswered(info, socket) {
       this.answer = false;
       currentPlayer.wrongAnswers++;
     } else {
-      console.log("");
     }
     if (allPlayerAnswered() && !currentPlayer.gameOver) {
       endRound();

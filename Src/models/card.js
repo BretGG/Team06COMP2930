@@ -3,7 +3,7 @@ const joi = require("joi");
 
 /*
 
-This file contains the the schema (essentially a class) for the database, that
+This file contains the the schema for the database, that
 holds the information for a question card.
 
 */
@@ -32,8 +32,7 @@ const cardSchema = new mongoose.Schema({
   }
 });
 
-// Validates if the card object follows validation rules.
-// Not sure if we need too validate all parts of the card
+// Validate a new card, may be overkill
 exports.validate = card => {
   const schema = joi.object().keys({
     format: joi.string().required(),

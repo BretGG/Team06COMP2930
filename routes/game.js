@@ -21,15 +21,21 @@ const io = require("socket.io")(gameServer);
     sessionPass: "password" // Can be stored in plane text
   }
 
+  This file contains the router for sending the game files, creating lobbies, and joining lobbies.
+
+  This file also contains the socket code for joining and leaving the lobbies. The lobbies use namespaces
+  to allow for multiple game instances to be running.
+
+  Lobby data transfers into the game instance.
+
+  Would be nice to split routing into seperate file.
+
 */
 
 // -------------------------------------------------Socket code----------------------------------------
 // Create new connection and register the user
 io.on("connection", socket => {
-  console.log("New game connection");
-
   socket.on("register", async playerInfo => {
-    console.log("register");
     const decode = jwt.verify(playerInfo, "FiveAlive");
     token = jwt.decode(playerInfo);
     const user = await User.findById(token._id).select("-password");
@@ -70,6 +76,8 @@ io.on("connection", socket => {
     }
   });
 });
+
+// ---------------------------Lobby helper functions for getting and updating data---------------------------------
 
 function removeLobbyBySession(sessionId) {
   lobbies.forEach((value, index) => {
@@ -133,10 +141,9 @@ router.get("/", (req, res) => {
   });
 });
 
-// Sends the information on the lobby that the given user is registered in
+// Sends the information on the lobby that the given user is registered in or 404
+// if not registered in a lobby
 router.get("/lobbyinfo", async (req, res) => {
-  console.log("request for lobby info");
-
   var token = req.get("auth-token");
   if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
   const decode = jwt.verify(token, "FiveAlive");
@@ -146,7 +153,6 @@ router.get("/lobbyinfo", async (req, res) => {
   if (!user) return res.status(400).send("Uh Oh! You dont exist!");
 
   for (let lobby of lobbies) {
-    console.log(lobby);
     for (let player of lobby.players) {
       if (JSON.stringify(player._id) == JSON.stringify(user._id)) {
         return res.send(lobby);
@@ -157,11 +163,12 @@ router.get("/lobbyinfo", async (req, res) => {
   res.status(404).send("No lobby found");
 });
 
+// Routing to game lobby
 router.get("/lobby", (req, res) => {
   res.render(path.resolve(__dirname, "../public/views/gameLobby.html"));
 });
 
-/* POST to create new game session */
+// Creating a game lobby
 router.post("/", async (req, res) => {
   var token = req.get("auth-token");
   if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
@@ -189,7 +196,7 @@ router.post("/", async (req, res) => {
   res.send(lobby);
 });
 
-// Join a lobby
+// Register a user to a lobby
 router.put("/", async (req, res) => {
   var token = req.get("auth-token");
   if (!token) return res.status(400).send("Uh Oh! You dont have a token!");
