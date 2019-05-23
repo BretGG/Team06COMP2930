@@ -56,10 +56,63 @@ $(document).ready(() => {
   /** Current Lobby Members */
   let lobbyMembers = [];
 
+  // 
+  //
+  //           START OF
+  //
+  //     STELLA'S TESTING AREA
+  //
+  //
+  //
+  //ø
+  //
+
+  var test = ["StellaKING", "StellaPeasant", "StellaRook", "StellaKnight"];
+
+  function addMembers(){
+    test.forEach((user) => {
+      console.log(user);
+      let ava = $('<div class="icon"></div>');
+
+      //THIS IS WHERE USER.ACTIVEAVATAR GOES V
+      ava.css("background-image", "url('../images/avatar/default.png')");
+      let con = $('<div class="memberCon" id="' + user + '">' + '</div>');
+      
+      //THIS IS FOR THE USER THAT IS ROOM MASTER!!!
+      if(user == "StellaKING"){
+        let crown = $('<img class="crown" src="../images/crown.png" />');
+        ava.append(crown);
+      } else {
+        let crown = $('<img class="crown" style="visibility: hidden" src="../images/crown.png" />');
+        ava.append(crown);
+      }
+
+      let name = $('<div class="name">' + user + '</div>');
+
+      con.append(ava);
+      con.append(name);
+      $("#memberpool").append(con);
+    })
+
+    
+  }
+
   /**Takes you to game page */
   $("#start").click(() => {
-    window.location.href = "../game";
+    addMembers();
+    // window.location.href = "../game";
   });
+
+  // 
+  //
+  //            END OF 
+  //
+  //     STELLA'S TESTING AREA
+  //
+  //
+  //
+  //
+  //
 
   /**Takes you back to the main page */
   $("#back").click(() => {
