@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
     subject: "Welcome to EcoQuest",
     html:
       '<img style="display: block; width: 100%" src="cid:ecoQuestEmailHeader"/>' +
-      "<p><b>Hi" +
+      "<p><b>Hi " +
       user.username +
       "!</b></p><br><p>Thank you for creating an account with our app." +
       "Are you ready to embark on your first EcoQuest? We hope to amaze you with our project" +
