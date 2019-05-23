@@ -6,6 +6,7 @@ const logger = require("morgan");
 const debug = require("debug")("comp2930-team2:server");
 const consolidate = require("consolidate");
 const mongoose = require("mongoose");
+const auth = require("./routes/auth");
 
 const mainRouter = require("./routes/main");
 const gameRouter = require("./routes/game");
@@ -48,12 +49,12 @@ require("console-stamp")(console, {
 // /users - creating account...
 // /login - logging in...
 app.use("/", mainRouter);
-app.use("/game", gameRouter);
-app.use("/users", usersRouter);
+app.use("/game", auth, gameRouter);
+app.use("/users", auth, usersRouter);
 app.use("/login", authRouter);
-app.use("/cards", cardRouter);
-app.use("/decks", deckRouter);
-app.use("/items", itemRouter);
+app.use("/cards", auth, cardRouter);
+app.use("/decks", auth, deckRouter);
+app.use("/items", auth, itemRouter);
 
 // app.get('/mainPage', function(req, res) {
 //   res.render('public/views/mainPage.html');

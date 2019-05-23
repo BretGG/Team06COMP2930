@@ -13,13 +13,13 @@ const config = {
     arcade: {
       gravity: {
         y: 450
-      }
-      // debug: "false"
+      },
+      debug: "true"
     }
   },
   plugins: {
     global: [{
-      key: 'WebFontLoader',
+      key: "WebFontLoader",
       plugin: WebFontLoaderPlugin,
       start: true
     }]
@@ -39,6 +39,7 @@ let self;
 let background;
 let water;
 let cursor;
+let setBG = false;
 let mainPlayer;
 let question;
 var players = [];
@@ -51,7 +52,7 @@ let myScore = 0;
 let scoreText;
 let startMessage;
 
-var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
+// var readyKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
 
 // Holds all the spawn points for when users join, could be done with math (should be)
 // index 0 is for 1 player, index 1 is for 2 players and so on
@@ -74,8 +75,8 @@ if (window.innerHeight > window.innerWidth) {
 // }
 
 function preload() {
-  this.load.image("sky", "../assets/backgrounds/pixelatedbg.png");
-  this.load.image("water", "../assets/backgrounds/pixelatedbg-wave.png");
+  this.load.image("sky", "../assets/backgrounds/city.png");
+  this.load.image("water", "../assets/backgrounds/city-wave.png");
   this.load.image("exclamation", "../assets/character/exclamation.png");
   this.load.image("questionMark", "../assets/character/question.png");
   this.load.image("1st", "../assets/character/1st.png");
@@ -84,12 +85,13 @@ function preload() {
   this.load.image("ghost", "../assets/character/ghost.png");
   this.load.image("ready", "../assets/character/star.png");
   this.load.image("none", "../assets/character/none.png");
-  this.load.image("p1", "../assets/character/yellowChar.png");
-  this.load.image("p2", "../assets/character/blueChar.png");
-  this.load.image("p3", "../assets/character/greenChar.png");
-  this.load.image("p4", "../assets/character/redChar.png");
-  this.load.image("platform1", "../assets/backgrounds/platform3.png");
+  this.load.image("yelloChar", "../assets/character/yellowChar.png");
+  this.load.image("blueChar", "../assets/character/blueChar.png");
+  this.load.image("greenChar", "../assets/character/greenChar.png");
+  this.load.image("redChar", "../assets/character/redChar.png");
+  this.load.image("platform3", "../assets/backgrounds/platform3.png");
   this.load.image("platform", "../assets/character/platform.png");
+  this.load.image("rabbitpet", "../assets/character/rabbitpet.png");
   this.load.image("cardFront", "../assets/backgrounds/cardFront.png");
   this.load.image(
     "questionBackground",
@@ -97,15 +99,15 @@ function preload() {
   );
   this.load.webfont("ponderosa", "../fonts/ponderosa.ttf");
   this.load.webfont("Ubuntu-Regular", "../fonts/Ubuntu-Regular.ttf");
-
 }
 
-
 function create() {
-  this.socket = io();
+  this.socket = io("", {
+    query: "token=" + localStorage.getItem("auth-token")
+  });
   self = this;
   cursor = this.input.keyboard.createCursorKeys();
-  // this.readyKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+  this.readyKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
   background = this.add
     .image(000, 00, "sky")
@@ -121,15 +123,13 @@ function create() {
     tweens: [{
         y: -30,
         duration: 700,
-        ease: 'Stepped'
+        ease: "Stepped"
       },
       {
         y: 30,
         duration: 700,
-        ease: 'Stepped'
-      },
-
-
+        ease: "Stepped"
+      }
     ]
   });
   let startString = "Touch screen to start";
@@ -139,7 +139,6 @@ function create() {
   });
   startMessage.setOrigin(0.5);
   startMessage.y += -150;
-
 
   // this.tweens.timeline({
   //   targets: startMessage,
@@ -170,6 +169,7 @@ function create() {
   this.socket.on("currentPlayers", currentPlayers);
   this.socket.on("startRound", startRound);
   this.socket.on("endRound", endRound);
+  this.socket.on("setCosmetics", setCosmetics);
   this.socket.on("gameEnd", playerStateChange);
   this.socket.on("gameOver", playerStateChange);
   this.socket.on(
@@ -178,10 +178,11 @@ function create() {
   );
   // ---------Asking for Information-------------
   this.socket.emit("currentPlayers");
+  this.socket.emit("getCosmetics");
   this.socket.emit("me");
   // ------------------------------------------------------------------------------------------------------
   //Detects touch on mobile devices
-  this.input.on('pointerup', (pointer) => {
+  this.input.on("pointerup", pointer => {
     if (mainPlayer.body.touching.down && gameStarted) {
       mainPlayer.setVelocityY(-300);
       this.socket.emit("playerJump");
@@ -195,7 +196,6 @@ function create() {
 
 // One of the three main Phaser functions, this one gets called continuously
 function update() {
-
   // Jumping player
   if (cursor.space.isDown && mainPlayer.body.touching.down && gameStarted) {
     mainPlayer.setVelocityY(-300);
@@ -219,6 +219,40 @@ function updateStatePosition(player) {
   playerState.setY(player.y - playerState.height - 27);
 }
 
+// Sets players cosmetics
+function setCosmetics(cosmeticsInfo) {
+  let player = players.find(
+    holder => cosmeticsInfo.playerId === holder.playerId
+  );
+
+  let cosAvatar = cosmeticsInfo.cosmetics.activeAvatar.imageLink;
+  let cosPlatform = cosmeticsInfo.cosmetics.activePlatform.imageLink;
+  let cosBackground = cosmeticsInfo.cosmetics.activeBackground.imageLink;
+
+  // player.setTexture(cosmeticsInfo.cosmetics.activeAvatar.subString())
+  player.setTexture(
+    cosAvatar.substring(
+      cosAvatar.lastIndexOf("/") + 1,
+      cosAvatar.lastIndexOf(".")
+    )
+  );
+  player.supportingPlatform.setTexture(
+    cosPlatform.substring(
+      cosPlatform.lastIndexOf("/") + 1,
+      cosPlatform.lastIndexOf(".")
+    )
+  );
+  // if (!setBG) {
+  //   player.supportingPlatform.setTexture(
+  //     cosBackground.substring(
+  //       cosBackground.lastIndexOf("/") + 1,
+  //       cosBackground.lastIndexOf(".")
+  //     )
+  //   );
+  //   setBG = true;
+  // }
+}
+
 // Start new round (i.e create new cards), reset game objects
 function startRound(roundInfo) {
   startMessage.destroy();
@@ -234,6 +268,7 @@ function startRound(roundInfo) {
       state: "questionMark"
     });
   }
+
   displayAnswers(roundInfo.answer);
   displayQuestion(roundInfo.question);
 }
@@ -286,13 +321,13 @@ function playerStateChange(stateInfo) {
         tweens: [{
             y: -30,
             duration: 700,
-            ease: 'Stepped'
+            ease: "Stepped"
           },
           {
             y: 30,
             duration: 700,
-            ease: 'Stepped'
-          },
+            ease: "Stepped"
+          }
         ]
       });
 
@@ -349,8 +384,10 @@ function gameEnd() {
   } else {
     for (let i = 0; i < minusGhosts.length; i++) {
       //raise all players except the fourth place player
-      if (minusGhosts[i].correctAnswers !==
-        sortedCorrectAnswersDesc[sortedCorrectAnswersDesc.length - 1]) {
+      if (
+        minusGhosts[i].correctAnswers !==
+        sortedCorrectAnswersDesc[sortedCorrectAnswersDesc.length - 1]
+      ) {
         minusGhosts[i].y = 0;
         self.tweens.add({
           targets: minusGhosts[i].supportingPlatform,
@@ -481,7 +518,6 @@ function createPlayer(playerInfo) {
   newPlayer.gameOver = false;
   players.push(newPlayer);
 
-
   // Update other players positions, (i.e slide them over for the new player)
   updatePlayerPosition();
 }
@@ -603,7 +639,6 @@ function displayQuestion(questionInfo) {
 
 // Creates the display for all answers
 function displayAnswers(answers) {
-
   let cardX = [400 - 135, 400 + 135, 400 - 135, 400 + 135];
   let cardY = [480, 480, 480 + 70, 480 + 70];
   // Remove all old answer cards
@@ -643,7 +678,6 @@ function displayAnswers(answers) {
             answer: card.text.text,
             playerId: mainPlayer.playerId
           });
-
         } else {
           self.socket.emit("playerAnswered", {
             answer: "N/A",
@@ -659,10 +693,8 @@ function displayAnswers(answers) {
 
   // Cards sliding in animation
   if (answerCards.length > 0) {
-
     // for (let card of answerCards) {
     for (let i = 0; i < 4; i++) {
-
       // Slide in card front
       self.tweens.add({
         targets: answerCards[i],
@@ -682,11 +714,8 @@ function displayAnswers(answers) {
         duration: 3000,
         repeat: 0
       });
-
     }
   }
-
-
 }
 
 // Add text to the screen for player score
@@ -715,8 +744,6 @@ function scoreAndPlayer() {
     // fontSize: "40px",
     fill: "#000"
   });
-
-
 }
 
 function isLoser(id) {
@@ -726,5 +753,4 @@ function isLoser(id) {
     }
   }
   return false;
-
 }

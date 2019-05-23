@@ -1,22 +1,21 @@
 #!/usr/bin/env node
 
-var io = require("socket.io")
-  .listen(server);
 var app = require("../app");
 var debug = require("debug")("comp2930-team2:server");
 var http = require("http");
+const jwt = require("jsonwebtoken");
 const _ = require("lodash");
-const {
-  Card
-} = require("../src/models/card.js");
+const { Card } = require("../src/models/card.js");
+const { User } = require("../src/models/user");
 var glob = this;
 
 // Create HTTP server.
 var server = http.Server(app);
+var io = require("socket.io").listen(server);
 
 // Listen on provided port, on all network interfaces.
-// server.listen(port);
-server.listen(3000, "0.0.0.0", function() {
+var port = normalizePort(process.env.PORT || "3000");
+server.listen(port, "0.0.0.0", function() {
   console.log("Listening to port:  " + 3000);
 });
 
@@ -70,6 +69,14 @@ function onListening() {
   debug("Listening on " + bind);
 }
 
+let idHolder;
+io.use(function(socket, next) {
+  var handshakeData = socket.request;
+  console.log("Player connected to game:", handshakeData._query["token"]);
+  idHolder = handshakeData._query["token"];
+  next();
+});
+
 //--------------------------------------------------------Game code------------------------------------------------------------
 
 //declare instances of global varibles
@@ -82,11 +89,6 @@ let currentRoundCard;
 var gameStarted = false;
 const losers = [];
 
-//require socket io using express
-var io = require("socket.io")
-  .listen(server);
-app.io = io;
-
 // incomming information. The connection is made
 io.on("connection", function(socket) {
   self.id = socket.id;
@@ -98,11 +100,18 @@ io.on("connection", function(socket) {
   // Add a player to the master list (Map)
   players.set(socket.id, {
     playerId: socket.id,
+    userId: jwt.decode(idHolder)._id,
     wrongAnswers: 0,
     correctAnswers: 0,
     answeredRound: false,
     ready: false,
     gameOver: false
+  });
+
+  socket.on("getCosmetics", async () => {
+    let user = await User.findById(players.get(socket.id).userId);
+    console.log("cosmeticss ", user);
+    io.emit("setCosmetics", { playerId: socket.id, cosmetics: user.cosmetics });
   });
 
   socket.on("currentPlayers", () => {
@@ -289,12 +298,9 @@ async function roundStart(s) {
   }
   glob.cards = await Card.find({
     format: "tf",
-    category: "Eco",
+    category: "Eco"
     // deck: "test"
   });
-
-
-
 
   console.log("card length: ", glob.cards.length);
 
@@ -308,7 +314,10 @@ async function roundStart(s) {
     answers.push(glob.cards[s].answer);
     if (glob.cards.length >= 4) {
       for (let i = 0; i < 4; i++) {
-        if ((glob.cards[i].answer != glob.cards[s].answer) && answers.length < 4) {
+        if (
+          glob.cards[i].answer != glob.cards[s].answer &&
+          answers.length < 4
+        ) {
           answers.push(glob.cards[i].answer);
         }
       }
