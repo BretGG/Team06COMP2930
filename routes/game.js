@@ -8,140 +8,140 @@ const { User } = require("../src/models/user");
 const http = require("http");
 
 // Normalize a port into a number, string, or false.
-// function normalizePort(val) {
-//   var port = parseInt(val, 10);
+function normalizePort(val) {
+  var port = parseInt(val, 10);
 
-//   if (isNaN(port)) {
-//     // named pipe
-//     return val;
-//   }
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
 
-//   if (port >= 0) {
-//     // port number
-//     return port;
-//   }
+  if (port >= 0) {
+    // port number
+    return port;
+  }
 
-//   return false;
-// }
+  return false;
+}
 
-// const io = require("socket.io")(gameServer);
-// /* Example session/game object:
+const io = require("socket.io")(gameServer);
+/* Example session/game object:
 
-//   {
-//     gameType: "ecoQuizlet",
-//     owner: "[playerId]",
-//     sessionId: "bobsGame", // Used for joining a running game
-//     sessionPass: "password" // Can be stored in plane text
-//   }
+  {
+    gameType: "ecoQuizlet",
+    owner: "[playerId]",
+    sessionId: "bobsGame", // Used for joining a running game
+    sessionPass: "password" // Can be stored in plane text
+  }
 
-//   This file contains the router for sending the game files, creating lobbies, and joining lobbies.
+  This file contains the router for sending the game files, creating lobbies, and joining lobbies.
 
-//   This file also contains the socket code for joining and leaving the lobbies. The lobbies use namespaces
-//   to allow for multiple game instances to be running.
+  This file also contains the socket code for joining and leaving the lobbies. The lobbies use namespaces
+  to allow for multiple game instances to be running.
 
-//   Lobby data transfers into the game instance.
+  Lobby data transfers into the game instance.
 
-//   Would be nice to split routing into seperate file.
+  Would be nice to split routing into seperate file.
 
-// */
+*/
 
-// // -------------------------------------------------Socket code----------------------------------------
-// // Create new connection and register the user
-// io.on("connection", socket => {
-//   socket.on("register", async playerInfo => {
-//     const decode = jwt.verify(playerInfo, "FiveAlive");
-//     token = jwt.decode(playerInfo);
-//     const user = await User.findById(token._id).select("-password");
+// -------------------------------------------------Socket code----------------------------------------
+// Create new connection and register the user
+io.on("connection", socket => {
+  socket.on("register", async playerInfo => {
+    const decode = jwt.verify(playerInfo, "FiveAlive");
+    token = jwt.decode(playerInfo);
+    const user = await User.findById(token._id).select("-password");
 
-//     // Register to the correct lobby
-//     let lobbyHolder;
-//     for (let lobby of lobbies) {
-//       for (let player of lobby.players) {
-//         if (JSON.stringify(player._id) == JSON.stringify(user._id)) {
-//           lobbyHolder = lobby;
-//         }
-//       }
-//     }
+    // Register to the correct lobby
+    let lobbyHolder;
+    for (let lobby of lobbies) {
+      for (let player of lobby.players) {
+        if (JSON.stringify(player._id) == JSON.stringify(user._id)) {
+          lobbyHolder = lobby;
+        }
+      }
+    }
 
-//     // Disconnect or join namespace
-//     if (!lobbyHolder) {
-//       socket.emit("noavailablelobby");
-//       socket.disconnect();
-//     } else {
-//       lobbyHolder.players.filter(
-//         player => JSON.stringify(player._id) === JSON.stringify(user._id)
-//       )[0].socketId = socket.id;
-//       socket.join(lobbyHolder.sessionId);
-//       io.to(lobbyHolder.sessionId).emit(
-//         "users",
-//         usersInLobby(lobbyHolder.sessionId)
-//       );
-//     }
-//   });
+    // Disconnect or join namespace
+    if (!lobbyHolder) {
+      socket.emit("noavailablelobby");
+      socket.disconnect();
+    } else {
+      lobbyHolder.players.filter(
+        player => JSON.stringify(player._id) === JSON.stringify(user._id)
+      )[0].socketId = socket.id;
+      socket.join(lobbyHolder.sessionId);
+      io.to(lobbyHolder.sessionId).emit(
+        "users",
+        usersInLobby(lobbyHolder.sessionId)
+      );
+    }
+  });
 
-//   // Handling a user leaving the lobby
-//   socket.on("disconnect", () => {
-//     let sessionId = getSessionIdBySocketId(socket.id);
-//     removePlayerBySocketId(socket.id);
-//     io.to(sessionId).emit("users", usersInLobby(sessionId));
-//     if (getLobbyBySession(sessionId).players.length == 0) {
-//       removeLobbyBySession(sessionId);
-//     }
-//   });
-// });
+  // Handling a user leaving the lobby
+  socket.on("disconnect", () => {
+    let sessionId = getSessionIdBySocketId(socket.id);
+    removePlayerBySocketId(socket.id);
+    io.to(sessionId).emit("users", usersInLobby(sessionId));
+    if (getLobbyBySession(sessionId).players.length == 0) {
+      removeLobbyBySession(sessionId);
+    }
+  });
+});
 
-// // ---------------------------Lobby helper functions for getting and updating data---------------------------------
+// ---------------------------Lobby helper functions for getting and updating data---------------------------------
 
-// function removeLobbyBySession(sessionId) {
-//   lobbies.forEach((value, index) => {
-//     if (value.sessionId === sessionId) {
-//       return lobbies.splice(index, 1);
-//     }
-//   });
-// }
+function removeLobbyBySession(sessionId) {
+  lobbies.forEach((value, index) => {
+    if (value.sessionId === sessionId) {
+      return lobbies.splice(index, 1);
+    }
+  });
+}
 
-// function usersInLobby(sessionId) {
-//   for (let lobby of lobbies) {
-//     if (lobby.sessionId === sessionId) return lobby.players;
-//   }
-// }
+function usersInLobby(sessionId) {
+  for (let lobby of lobbies) {
+    if (lobby.sessionId === sessionId) return lobby.players;
+  }
+}
 
-// function getLobbyBySession(sessionId) {
-//   for (let lobby of lobbies) {
-//     if (lobby.sessionId === sessionId) return lobby;
-//   }
-// }
+function getLobbyBySession(sessionId) {
+  for (let lobby of lobbies) {
+    if (lobby.sessionId === sessionId) return lobby;
+  }
+}
 
-// function getSessionIdBySocketId(socketId) {
-//   for (let lobby of lobbies) {
-//     for (let player of lobby.players) {
-//       if (player.socketId === socketId) {
-//         return lobby.sessionId;
-//       }
-//     }
-//   }
-// }
+function getSessionIdBySocketId(socketId) {
+  for (let lobby of lobbies) {
+    for (let player of lobby.players) {
+      if (player.socketId === socketId) {
+        return lobby.sessionId;
+      }
+    }
+  }
+}
 
-// function getPlayerBySocketId(socketId) {
-//   for (let lobby of lobbies) {
-//     for (let player of lobby.players) {
-//       if (player._id === socketId) return player;
-//     }
-//   }
-// }
+function getPlayerBySocketId(socketId) {
+  for (let lobby of lobbies) {
+    for (let player of lobby.players) {
+      if (player._id === socketId) return player;
+    }
+  }
+}
 
-// // Update both lobbies and players
-// function removePlayerBySocketId(socketId) {
-//   for (let lobby of lobbies) {
-//     lobby.players.forEach((value, index) => {
-//       if (value.socketId === socketId) {
-//         return lobby.players.splice(index, 1);
-//       }
-//     });
-//   }
-// }
+// Update both lobbies and players
+function removePlayerBySocketId(socketId) {
+  for (let lobby of lobbies) {
+    lobby.players.forEach((value, index) => {
+      if (value.socketId === socketId) {
+        return lobby.players.splice(index, 1);
+      }
+    });
+  }
+}
 
-// let lobbies = [];
+let lobbies = [];
 
 // -------------------------------------------------- Routing -----------------------------------------------------
 
