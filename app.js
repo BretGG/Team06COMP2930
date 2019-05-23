@@ -56,7 +56,7 @@ app.use("/login", authRouter);
 app.use("/game", auth, gameRouter);
 app.use("/cards", auth, cardRouter);
 app.use("/decks", auth, deckRouter);
-app.use("/items", auth, itemRouter);
+app.use("/items", itemRouter);
 
 // app.get('/mainPage', function(req, res) {
 //   res.render('public/views/mainPage.html');
