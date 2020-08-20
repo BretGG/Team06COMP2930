@@ -10,7 +10,7 @@
     "node": "10.15.3"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "compression": "^1.7.4",
     "console-stamp": "^0.2.7",
     "consolidate": "^0.15.1",
